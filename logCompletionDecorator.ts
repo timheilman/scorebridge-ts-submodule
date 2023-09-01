@@ -11,47 +11,47 @@
 //     "async.step.descr", { other: "stuff"});
 
 type LogType = (
-    catSuffix: string,
-    logLevel: string,
-    ...addlArgs: unknown[]
+  catSuffix: string,
+  logLevel: string,
+  ...addlArgs: unknown[]
 ) => void;
 
 type LcdType<PROMISE_RETURN_TYPE> = (
+  promise: Promise<PROMISE_RETURN_TYPE>,
+  catSuffix: string,
+  ...addlArgs: unknown[]
+) => Promise<PROMISE_RETURN_TYPE | undefined>;
+
+export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
+  log: LogType,
+  rethrowError = true,
+  successLevel = "debug",
+  errLevel = "error",
+): LcdType<PROMISE_RETURN_TYPE> => {
+  return (
     promise: Promise<PROMISE_RETURN_TYPE>,
     catSuffix: string,
     ...addlArgs: unknown[]
-) => Promise<PROMISE_RETURN_TYPE|undefined>;
-
-export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
-    log: LogType,
-    rethrowError = true,
-    successLevel = "debug",
-    errLevel = "error",
-): LcdType<PROMISE_RETURN_TYPE> => {
-  return (
-      promise: Promise<PROMISE_RETURN_TYPE>,
-      catSuffix: string,
-      ...addlArgs: unknown[]
   ) => {
     return logCompletionDecorator<PROMISE_RETURN_TYPE>(
-        log,
-        rethrowError,
-        promise,
-        catSuffix,
-        successLevel,
-        errLevel,
-        ...addlArgs,
+      log,
+      rethrowError,
+      promise,
+      catSuffix,
+      successLevel,
+      errLevel,
+      ...addlArgs,
     );
   };
 };
 async function logCompletionDecorator<PROMISE_RETURN_TYPE>(
-    log: LogType,
-    rethrowError: boolean,
-    promise: Promise<PROMISE_RETURN_TYPE>,
-    catSuffix: string,
-    logLevel: string,
-    errLogLevel: string,
-    ...addlArgs: unknown[]
+  log: LogType,
+  rethrowError: boolean,
+  promise: Promise<PROMISE_RETURN_TYPE>,
+  catSuffix: string,
+  logLevel: string,
+  errLogLevel: string,
+  ...addlArgs: unknown[]
 ) {
   log(`${catSuffix}.begin`, logLevel, ...addlArgs);
   try {
