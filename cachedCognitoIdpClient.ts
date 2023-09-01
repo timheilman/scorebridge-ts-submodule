@@ -10,7 +10,7 @@ const envDict: {
   [awsRegion: string]: CognitoIdentityProviderClient;
 } = {};
 
-export default function cachedCognitoIdpClientFromProfile(
+export default function cachedCognitoIdpClient(
   awsRegion: string,
   profile: string | null,
 ) {
