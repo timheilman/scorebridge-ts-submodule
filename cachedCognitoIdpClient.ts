@@ -1,24 +1,38 @@
 import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
+import { fromEnv } from "@aws-sdk/credential-providers";
 
 import fromSsoUsingProfile from "./fromSsoUsingProfile";
 
-const dict: {
+const profileDict: {
   [awsRegion: string]: { [profile: string]: CognitoIdentityProviderClient };
 } = {};
+const envDict: {
+  [awsRegion: string]: CognitoIdentityProviderClient;
+} = {};
 
-export default function cachedCognitoIdpClient(
+export default function cachedCognitoIdpClientFromProfile(
   awsRegion: string,
-  profile: string,
+  profile: string | null,
 ) {
-  if (dict[awsRegion] && dict[awsRegion][profile]) {
-    return dict[awsRegion][profile];
+  if (profile) {
+    if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {
+      return profileDict[awsRegion][profile];
+    }
+    if (!profileDict[awsRegion]) {
+      profileDict[awsRegion] = {};
+    }
+    profileDict[awsRegion][profile] = new CognitoIdentityProviderClient({
+      region: awsRegion,
+      credentials: fromSsoUsingProfile(profile),
+    });
+    return profileDict[awsRegion][profile];
   }
-  if (!dict[awsRegion]) {
-    dict[awsRegion] = {};
+  if (envDict[awsRegion]) {
+    return envDict[awsRegion];
   }
-  dict[awsRegion][profile] = new CognitoIdentityProviderClient({
+  envDict[awsRegion] = new CognitoIdentityProviderClient({
     region: awsRegion,
-    credentials: fromSsoUsingProfile(profile),
+    credentials: fromEnv(),
   });
-  return dict[awsRegion][profile];
+  return envDict[awsRegion];
 }
