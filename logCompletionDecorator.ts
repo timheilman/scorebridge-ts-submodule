@@ -24,7 +24,8 @@ type LcdType<PROMISE_RETURN_TYPE> = (
 
 export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
     log: LogType,
-    successLevel = "debug",
+    rethrowError = true,
+successLevel = "debug",
     errLevel = "error",
 ): LcdType<PROMISE_RETURN_TYPE> => {
   return (
@@ -34,6 +35,7 @@ export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
   ) => {
     return logCompletionDecorator<PROMISE_RETURN_TYPE>(
         log,
+        rethrowError,
         promise,
         catSuffix,
         successLevel,
@@ -44,6 +46,7 @@ export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
 };
 async function logCompletionDecorator<PROMISE_RETURN_TYPE>(
     log: LogType,
+    rethrowError: boolean,
     promise: Promise<PROMISE_RETURN_TYPE>,
     catSuffix: string,
     logLevel: string,
@@ -61,6 +64,8 @@ async function logCompletionDecorator<PROMISE_RETURN_TYPE>(
         errLogLevel,
         ...[e, ...addlArgs],
     );
-    throw e;
+    if (rethrowError) {
+      throw e;
+    }
   }
 }
