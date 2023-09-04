@@ -17,3 +17,14 @@ export function regTokenToEmail(regToken: string, stage: string) {
     regToken,
   )}@gmail.com`;
 }
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+export function randomRegToken() {
+  return [...Array(16).keys()]
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (_s) => {
+        return characters.charAt(Math.floor(Math.random() * characters.length));
+      },
+    )
+    .join("");
+}
