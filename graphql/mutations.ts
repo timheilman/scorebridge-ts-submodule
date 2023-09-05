@@ -8,6 +8,17 @@ export const mutationCreateClub = gql`
   }
 `;
 
+export const mutationUpdateClub = gql`
+  mutation updateClub($input: UpdateClubInput!) {
+    updateClub(input: $input) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 export const mutationCreateClubDevice = gql`
   mutation createClubDevice($input: CreateClubDeviceInput!) {
     createClubDevice(input: $input) {

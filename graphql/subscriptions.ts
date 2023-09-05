@@ -27,8 +27,8 @@ export const subscriptionDeletedClubDevice = gql`
 `;
 
 export const subscriptionUpdatedClub = gql`
-  subscription UpdatedClub($clubId: String!) {
-    updatedClub(clubId: $clubId) {
+  subscription UpdatedClub($id: String!) {
+    updatedClub(id: $id) {
       id
       name
       createdAt
