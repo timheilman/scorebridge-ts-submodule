@@ -42,11 +42,12 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       const variables: Record<string, unknown> = {};
       variables[clubIdVarName || "clubId"] = clubId;
 
+      const gql = subIdToSubGql[subId];
       pool[subId] = API.graphql<
         GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
       >({
         authMode: "AMAZON_COGNITO_USER_POOLS",
-        ...graphqlOperation(subIdToSubGql[subId], variables),
+        ...graphqlOperation(gql, variables),
       }).subscribe({
         next: (data: any) => {
           callback(data.value.data);
@@ -54,7 +55,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
         error: (e) => {
           appDispatch(
             setSubscriptionStatus([
-              "updatedClub",
+              subId,
               `failed post-initialization: ${e.error.errors[0].message}`,
             ]),
           );
