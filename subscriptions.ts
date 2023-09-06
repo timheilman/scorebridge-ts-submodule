@@ -1,7 +1,7 @@
 import { GraphQLSubscription } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
 
-import { Club, ClubDevice } from "../appsync";
+import { Club, ClubDevice } from "./graphql/appsync";
 import {
   allSubscriptionsI,
   setSubscriptionStatus,
