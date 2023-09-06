@@ -74,7 +74,7 @@ export const typedSubscription = <CALLBACKTYPE>({
   }
 };
 
-export const deleteSub = (
+const deleteSub = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   appDispatch: any,
   subId: keyof allSubscriptionsI,
