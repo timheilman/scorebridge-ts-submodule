@@ -1,18 +1,18 @@
 import {
   allSubscriptionsI,
   setSubscriptionStatus,
-} from "../features/subscriptions/subscriptionsSlice";
-import { logFn } from "../lib/logging";
-const log = logFn("scorebridge-ts-module.subscriptions");
+} from "./subscriptionStatesSlice";
 
-export const deleteSub = (
+export const deleteSub = <T>(
   subscriptions: Record<string, unknown>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: any,
   subId: keyof allSubscriptionsI,
+  log: (catSuffix: string, logLevel: T, ...addlParams: unknown[]) => void,
+  logLevel: T,
 ) => {
   if (subscriptions[subId]) {
-    log("deleteSub.foundSubId", "debug", { subId });
+    log("deleteSub.foundSubId", logLevel, { subId });
     /* eslint-disable @typescript-eslint/no-unsafe-call */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -22,5 +22,5 @@ export const deleteSub = (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     dispatch(setSubscriptionStatus([subId, "disconnected"]));
   }
-  log("deleteSub.noSuchSubId", "debug", { subId });
+  log("deleteSub.noSuchSubId", logLevel, { subId });
 };
