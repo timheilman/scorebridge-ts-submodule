@@ -1,6 +1,7 @@
 import { GraphQLSubscription } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
 
+import { Club, ClubDevice } from "../appsync";
 import {
   allSubscriptionsI,
   setSubscriptionStatus,
@@ -8,65 +9,69 @@ import {
 } from "./subscriptionStatesSlice";
 
 const pool: Record<string, unknown> = {};
-export interface TypedSubscriptionParams<CALLBACKTYPE> {
-  subId: keyof allSubscriptionsI;
+
+type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
+  T extends "createdClubDevice"
+    ? { createdClubDevice: ClubDevice }
+    : T extends "deletedClubDevice"
+    ? { deletedClubDevice: ClubDevice }
+    : T extends "updatedClub"
+    ? { updatedClub: Club }
+    : never;
+export interface TypedSubscriptionParams<T extends keyof allSubscriptionsI> {
+  subId: T;
   clubId: string;
-  callback: (arg0: CALLBACKTYPE) => void;
+  callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  appDispatch: any; // see store.ts in both consumers; I don't know how to type this
+  appDispatch: any;
   clubIdVarName?: string;
 }
-export const typedSubscription = <CALLBACKTYPE>({
+
+// unfortunately there's a lot to do for type safety and shortcuts are taken within
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+export const typedSubscription = <T extends keyof allSubscriptionsI>({
   subId,
   clubId,
   callback,
   appDispatch,
   clubIdVarName,
-}: TypedSubscriptionParams<CALLBACKTYPE>) => {
+}: TypedSubscriptionParams<T>) => {
   try {
     deleteSub(appDispatch, subId);
     if (!pool[subId]) {
       const variables: Record<string, unknown> = {};
       variables[clubIdVarName || "clubId"] = clubId;
-      pool[subId] = API.graphql<GraphQLSubscription<CALLBACKTYPE>>({
+
+      pool[subId] = API.graphql<
+        GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
+      >({
         authMode: "AMAZON_COGNITO_USER_POOLS",
         ...graphqlOperation(subIdToSubGql[subId], variables),
       }).subscribe({
-        next: (data) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          callback(data.value?.data);
+        next: (data: any) => {
+          callback(data.value.data);
         },
         error: (e) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           appDispatch(
             setSubscriptionStatus([
               "updatedClub",
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access
               `failed post-initialization: ${e.error.errors[0].message}`,
             ]),
           );
         },
       });
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     appDispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (e.message) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       appDispatch(
         setSubscriptionStatus([
           subId,
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access
           `failed at initialization: ${e.message}`,
         ]),
       );
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       appDispatch(
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         setSubscriptionStatus([subId, `failed at initialization: ${e}`]),
       );
     }
@@ -74,24 +79,15 @@ export const typedSubscription = <CALLBACKTYPE>({
   }
 };
 
-const deleteSub = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  appDispatch: any,
-  subId: keyof allSubscriptionsI,
-) => {
+const deleteSub = (appDispatch: any, subId: keyof allSubscriptionsI) => {
   if (pool[subId]) {
-    /* eslint-disable @typescript-eslint/no-unsafe-call */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     pool[subId].unsubscribe();
-    /* eslint-enable @typescript-eslint/no-unsafe-call */
     delete pool[subId];
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     appDispatch(setSubscriptionStatus([subId, "disconnected"]));
     return true;
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const deleteAllSubs = (appDispatch: any) => {
   Object.keys(subIdToSubGql).forEach((subId: string) => {
     deleteSub(
@@ -100,3 +96,4 @@ export const deleteAllSubs = (appDispatch: any) => {
     );
   });
 };
+/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
