@@ -1,6 +1,7 @@
 import { GraphQLSubscription } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
 
+import { AuthMode } from "../gql";
 import { Club, ClubDevice } from "./graphql/appsync";
 import {
   allSubscriptionsI,
@@ -26,6 +27,7 @@ export interface TypedSubscriptionParams<T extends keyof allSubscriptionsI> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: any;
   clubIdVarName?: string;
+  authMode?: AuthMode;
 }
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
@@ -36,6 +38,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
   callback,
   dispatch,
   clubIdVarName,
+  authMode,
 }: TypedSubscriptionParams<T>) => {
   try {
     deleteSub(dispatch, subId);
@@ -47,7 +50,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       pool[subId] = API.graphql<
         GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
       >({
-        authMode: clubId ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY",
+        authMode: authMode || "AMAZON_COGNITO_USER_POOLS",
         ...graphqlOperation(gql, variables),
       }).subscribe({
         next: (data: any) => {
