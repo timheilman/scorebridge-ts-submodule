@@ -50,6 +50,7 @@ export const subscriptionStatesSlice = createSlice({
 export const { setSubscriptionStatus } = subscriptionStatesSlice.actions;
 
 export const selectSubscriptionStateById =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (subId: keyof allSubscriptionsI) => (state: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
     return state.subscriptionStates[subId];
