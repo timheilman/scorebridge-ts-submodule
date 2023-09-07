@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DocumentNode } from "graphql/language";
 
+import { RootState } from "../utils/store";
 import {
   subscriptionCreatedClubDevice,
   subscriptionDeletedClubDevice,
@@ -52,12 +53,7 @@ export const subscriptionStatesSlice = createSlice({
 export const { setSubscriptionStatus } = subscriptionStatesSlice.actions;
 
 export const selectSubscriptionStateById =
-  <RootState>(subId: keyof allSubscriptionsI) =>
-  (state: RootState) =>
-    /* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+  (subId: keyof allSubscriptionsI) => (state: RootState) =>
     state.subscriptionStates.value[subId];
-/* eslint-enable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
 
-export default { subscriptionStates: subscriptionStatesSlice.reducer };
+export default subscriptionStatesSlice.reducer;

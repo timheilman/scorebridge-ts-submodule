@@ -93,12 +93,9 @@ const deleteSub = (appDispatch: any, subId: keyof allSubscriptionsI) => {
     return true;
   }
 };
-export const deleteAllSubs = (appDispatch: any) => {
+export const deleteAllSubs = (dispatch: any) => {
   Object.keys(subIdToSubGql).forEach((subId: string) => {
-    deleteSub(
-      appDispatch,
-      subId as keyof allSubscriptionsI /* actually safe */,
-    );
+    deleteSub(dispatch, subId as keyof allSubscriptionsI /* actually safe */);
   });
 };
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
