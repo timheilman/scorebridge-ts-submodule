@@ -24,7 +24,7 @@ export interface TypedSubscriptionParams<T extends keyof allSubscriptionsI> {
   clubId?: string;
   callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  appDispatch: any;
+  dispatch: any;
   clubIdVarName?: string;
 }
 
@@ -34,11 +34,11 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
   subId,
   clubId,
   callback,
-  appDispatch,
+  dispatch,
   clubIdVarName,
 }: TypedSubscriptionParams<T>) => {
   try {
-    deleteSub(appDispatch, subId);
+    deleteSub(dispatch, subId);
     if (!pool[subId]) {
       const variables: Record<string, unknown> = {};
       variables[clubIdVarName || "clubId"] = clubId;
@@ -54,7 +54,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
           callback(data.value.data);
         },
         error: (e) => {
-          appDispatch(
+          dispatch(
             setSubscriptionStatus([
               subId,
               `failed post-initialization: ${e.error.errors[0].message}`,
@@ -63,17 +63,17 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
         },
       });
     }
-    appDispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
+    dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
   } catch (e: any) {
     if (e.message) {
-      appDispatch(
+      dispatch(
         setSubscriptionStatus([
           subId,
           `failed at initialization: ${e.message}`,
         ]),
       );
     } else {
-      appDispatch(
+      dispatch(
         setSubscriptionStatus([subId, `failed at initialization: ${e}`]),
       );
     }
@@ -81,12 +81,12 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
   }
 };
 
-const deleteSub = (appDispatch: any, subId: keyof allSubscriptionsI) => {
+const deleteSub = (dispatch: any, subId: keyof allSubscriptionsI) => {
   if (pool[subId]) {
     // @ts-ignore
     pool[subId].unsubscribe();
     delete pool[subId];
-    appDispatch(setSubscriptionStatus([subId, "disconnected"]));
+    dispatch(setSubscriptionStatus([subId, "disconnected"]));
     return true;
   }
 };
