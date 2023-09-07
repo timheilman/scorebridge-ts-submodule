@@ -19,15 +19,13 @@ type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
     ? { updatedClub: Club }
     : never;
 
-export type AuthModeType = "API_KEY" | "AMAZON_COGNITO_USER_POOLS";
 export interface TypedSubscriptionParams<T extends keyof allSubscriptionsI> {
   subId: T;
-  clubId: string;
+  clubId?: string;
   callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   appDispatch: any;
   clubIdVarName?: string;
-  authMode?: AuthModeType;
 }
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
@@ -38,7 +36,6 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
   callback,
   appDispatch,
   clubIdVarName,
-  authMode,
 }: TypedSubscriptionParams<T>) => {
   try {
     deleteSub(appDispatch, subId);
@@ -50,7 +47,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       pool[subId] = API.graphql<
         GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
       >({
-        authMode: authMode || "AMAZON_COGNITO_USER_POOLS",
+        authMode: clubId ? "AMAZON_COGNITO_USER_POOLS" : "API_KEY",
         ...graphqlOperation(gql, variables),
       }).subscribe({
         next: (data: any) => {

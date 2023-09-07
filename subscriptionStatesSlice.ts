@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DocumentNode } from "graphql/language";
 
-import { RootState } from "../utils/store";
 import {
   subscriptionCreatedClubDevice,
   subscriptionDeletedClubDevice,
@@ -53,7 +52,7 @@ export const subscriptionStatesSlice = createSlice({
 export const { setSubscriptionStatus } = subscriptionStatesSlice.actions;
 
 export const selectSubscriptionStateById =
-  (subId: keyof allSubscriptionsI) => (state: RootState) =>
+  (subId: keyof allSubscriptionsI) => (state: any) =>
     state.subscriptionStates.value[subId];
 
 export default subscriptionStatesSlice.reducer;
