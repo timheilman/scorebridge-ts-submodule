@@ -33,7 +33,7 @@ export interface AccessParams {
 export interface SubscriptionParams<T extends keyof allSubscriptionsI> {
   subId: T;
   callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   clubIdVarName?: string;
 }
 
@@ -137,7 +137,6 @@ export function useSubscriptions(
     let priorConnectionState: ConnectionState;
     subscribeToAll({ dispatch, clubId, authMode });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stopListening = Hub.listen("api", (data: any) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { payload } = data;
