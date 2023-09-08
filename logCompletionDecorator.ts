@@ -10,9 +10,9 @@
 //     }) }),
 //     "async.step.descr", { other: "stuff"});
 
-type LogType = (
+type LogType<LOG_LEVEL_TYPE> = (
   catSuffix: string,
-  logLevel: string,
+  logLevel: LOG_LEVEL_TYPE,
   ...addlArgs: unknown[]
 ) => void;
 
@@ -22,18 +22,21 @@ type LcdType<PROMISE_RETURN_TYPE> = (
   ...addlArgs: unknown[]
 ) => Promise<PROMISE_RETURN_TYPE | undefined>;
 
-export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
-  log: LogType,
+export const logCompletionDecoratorFactory = <
+  PROMISE_RETURN_TYPE,
+  LOG_LEVEL_TYPE,
+>(
+  log: LogType<LOG_LEVEL_TYPE>,
   rethrowError = true,
-  successLevel = "debug",
-  errLevel = "error",
+  successLevel: LOG_LEVEL_TYPE = "debug" as LOG_LEVEL_TYPE,
+  errLevel: LOG_LEVEL_TYPE = "error" as LOG_LEVEL_TYPE,
 ): LcdType<PROMISE_RETURN_TYPE> => {
   return (
     promise: Promise<PROMISE_RETURN_TYPE>,
     catSuffix: string,
     ...addlArgs: unknown[]
   ) => {
-    return logCompletionDecorator<PROMISE_RETURN_TYPE>(
+    return logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
       log,
       rethrowError,
       promise,
@@ -44,13 +47,13 @@ export const logCompletionDecoratorFactory = <PROMISE_RETURN_TYPE>(
     );
   };
 };
-async function logCompletionDecorator<PROMISE_RETURN_TYPE>(
-  log: LogType,
+async function logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
+  log: LogType<LOG_LEVEL_TYPE>,
   rethrowError: boolean,
   promise: Promise<PROMISE_RETURN_TYPE>,
   catSuffix: string,
-  logLevel: string,
-  errLogLevel: string,
+  logLevel: LOG_LEVEL_TYPE,
+  errLogLevel: LOG_LEVEL_TYPE,
   ...addlArgs: unknown[]
 ) {
   log(`${catSuffix}.begin`, logLevel, ...addlArgs);

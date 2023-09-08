@@ -11,7 +11,7 @@ import {
 
 const pool: Record<string, unknown> = {};
 
-type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
+export type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
   T extends "createdClubDevice"
     ? { createdClubDevice: ClubDevice }
     : T extends "deletedClubDevice"
@@ -20,15 +20,21 @@ type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
     ? { updatedClub: Club }
     : never;
 
-export interface TypedSubscriptionParams<T extends keyof allSubscriptionsI> {
-  subId: T;
-  clubId?: string;
-  callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface AccessParams {
   dispatch: any;
-  clubIdVarName?: string;
+  clubId: string;
   authMode?: AuthMode;
 }
+
+export interface SubscriptionParams<T extends keyof allSubscriptionsI> {
+  subId: T;
+  callback: (arg0: SUBSCRIPTION_CALLBACK_TYPE<T>) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  clubIdVarName?: string;
+}
+
+export type TypedSubscriptionParams<T extends keyof allSubscriptionsI> =
+  AccessParams & SubscriptionParams<T>;
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
