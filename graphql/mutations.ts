@@ -61,7 +61,7 @@ export const mutationDeleteClubDevice = gql`
   }
 `;
 export const queryListClubDevices = gql`
-  query createClub($input: ListClubDevicesInput!) {
+  query listClubDevices($input: ListClubDevicesInput!) {
     listClubDevices(input: $input) {
       clubDevices {
         clubId
