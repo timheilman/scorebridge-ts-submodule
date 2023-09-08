@@ -36,6 +36,21 @@ export interface SubscriptionParams<T extends keyof allSubscriptionsI> {
 export type TypedSubscriptionParams<T extends keyof allSubscriptionsI> =
   AccessParams & SubscriptionParams<T>;
 
+export const generateTypedSubscription = <T extends keyof allSubscriptionsI>(
+  ap: AccessParams,
+  subId: T,
+  callback: (res: SUBSCRIPTION_CALLBACK_TYPE<T>) => void,
+  clubIdVarName?: string,
+) => {
+  const subscriptionParams: TypedSubscriptionParams<T> = {
+    subId,
+    callback,
+    clubIdVarName,
+    ...ap,
+  };
+  typedSubscription(subscriptionParams);
+};
+
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
 export const typedSubscription = <T extends keyof allSubscriptionsI>({
