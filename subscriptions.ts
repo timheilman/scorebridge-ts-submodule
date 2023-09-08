@@ -17,6 +17,8 @@ const pool: Record<string, unknown> = {};
 export type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
   T extends "createdClubDevice"
     ? { createdClubDevice: ClubDevice }
+    : T extends "updatedClubDevice"
+    ? { updatedClubDevice: ClubDevice }
     : T extends "deletedClubDevice"
     ? { deletedClubDevice: ClubDevice }
     : T extends "updatedClub"
@@ -27,6 +29,7 @@ export interface AccessParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: any;
   clubId: string;
+  clubDeviceId?: string;
   authMode?: AuthMode;
 }
 
@@ -60,6 +63,7 @@ export const generateTypedSubscription = <T extends keyof allSubscriptionsI>(
 export const typedSubscription = <T extends keyof allSubscriptionsI>({
   subId,
   clubId,
+  clubDeviceId,
   callback,
   dispatch,
   clubIdVarName,
@@ -70,6 +74,9 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
     if (!pool[subId]) {
       const variables: Record<string, unknown> = {};
       variables[clubIdVarName || "clubId"] = clubId;
+      if (clubDeviceId) {
+        variables["clubDeviceId"] = clubDeviceId;
+      }
 
       const gql = subIdToSubGql[subId];
       pool[subId] = API.graphql<

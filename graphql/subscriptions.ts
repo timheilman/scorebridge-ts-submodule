@@ -36,3 +36,17 @@ export const subscriptionUpdatedClub = gql`
     }
   }
 `;
+
+export const subscriptionUpdatedClubDevice = gql`
+  subscription UpdatedClubDevice($clubId: String!) {
+    updatedClubDevice(clubId: $clubId) {
+      clubId
+      clubDeviceId
+      name
+      email
+      table
+      createdAt
+      updatedAt
+    }
+  }
+`;

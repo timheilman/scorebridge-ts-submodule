@@ -5,16 +5,19 @@ import {
   subscriptionCreatedClubDevice,
   subscriptionDeletedClubDevice,
   subscriptionUpdatedClub,
+  subscriptionUpdatedClubDevice,
 } from "./graphql/subscriptions";
 
 export interface allSubscriptionsI {
   createdClubDevice: DocumentNode;
+  updatedClubDevice: DocumentNode;
   deletedClubDevice: DocumentNode;
   updatedClub: DocumentNode;
 }
 
 export const subIdToSubGql: allSubscriptionsI = {
   createdClubDevice: subscriptionCreatedClubDevice,
+  updatedClubDevice: subscriptionUpdatedClubDevice,
   deletedClubDevice: subscriptionDeletedClubDevice,
   updatedClub: subscriptionUpdatedClub,
 };
