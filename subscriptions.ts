@@ -1,5 +1,8 @@
 import { GraphQLSubscription } from "@aws-amplify/api";
-import { API, graphqlOperation } from "aws-amplify";
+import { CONNECTION_STATE_CHANGE, ConnectionState } from "@aws-amplify/pubsub";
+import { API, graphqlOperation, Hub } from "aws-amplify";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import { AuthMode } from "./authMode";
 import { Club, ClubDevice } from "./graphql/appsync";
@@ -21,6 +24,7 @@ export type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
     : never;
 
 export interface AccessParams {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: any;
   clubId: string;
   authMode?: AuthMode;
@@ -119,4 +123,50 @@ export const deleteAllSubs = (dispatch: any) => {
     deleteSub(dispatch, subId as keyof allSubscriptionsI /* actually safe */);
   });
 };
+
+export function useSubscriptions(
+  clubId: string,
+  subscribeToAll: (ap: AccessParams) => void,
+  fetchRecentData: (ap: AccessParams) => Promise<void>,
+  clearFetchedData: () => void,
+  authMode?: AuthMode,
+) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let priorConnectionState: ConnectionState;
+    subscribeToAll({ dispatch, clubId, authMode });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stopListening = Hub.listen("api", (data: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { payload } = data;
+      if (payload.event === CONNECTION_STATE_CHANGE) {
+        if (
+          priorConnectionState === ConnectionState.Connecting &&
+          payload.data.connectionState === ConnectionState.Connected
+        ) {
+          void fetchRecentData({ dispatch, clubId, authMode });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        priorConnectionState = payload.data.connectionState;
+      }
+    });
+    return () => {
+      deleteAllSubs(dispatch);
+      if (clearFetchedData) {
+        clearFetchedData();
+      }
+      stopListening();
+    };
+  }, [
+    authMode,
+    clearFetchedData,
+    clubId,
+    dispatch,
+    fetchRecentData,
+    subscribeToAll,
+  ]);
+}
+
 /* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
