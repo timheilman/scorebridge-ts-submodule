@@ -96,6 +96,7 @@ export type Mutation = {
   deleteClubDevice: ClubDevice;
   unexpectedError: UnexpectedErrorResponse;
   updateClub: Club;
+  updateClubDevice: ClubDevice;
 };
 
 
@@ -121,6 +122,11 @@ export type MutationDeleteClubDeviceArgs = {
 
 export type MutationUpdateClubArgs = {
   input: UpdateClubInput;
+};
+
+
+export type MutationUpdateClubDeviceArgs = {
+  input: UpdateClubDeviceInput;
 };
 
 export type Query = {
@@ -164,6 +170,13 @@ export type SubscriptionUpdatedClubArgs = {
 export type UnexpectedErrorResponse = {
   __typename?: 'UnexpectedErrorResponse';
   neverGetsReturned: Scalars['String']['output'];
+};
+
+export type UpdateClubDeviceInput = {
+  clubDeviceId: Scalars['String']['input'];
+  clubId: Scalars['String']['input'];
+  deviceName?: InputMaybe<Scalars['String']['input']>;
+  table?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UpdateClubInput = {
