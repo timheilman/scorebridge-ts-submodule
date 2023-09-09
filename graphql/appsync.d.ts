@@ -132,11 +132,18 @@ export type MutationUpdateClubDeviceArgs = {
 export type Query = {
   __typename?: 'Query';
   getClub: Club;
+  getClubDevice: ClubDevice;
   listClubDevices: ListClubDevicesOutput;
 };
 
 
 export type QueryGetClubArgs = {
+  clubId: Scalars['String']['input'];
+};
+
+
+export type QueryGetClubDeviceArgs = {
+  clubDeviceId: Scalars['String']['input'];
   clubId: Scalars['String']['input'];
 };
 
@@ -150,6 +157,7 @@ export type Subscription = {
   createdClubDevice?: Maybe<ClubDevice>;
   deletedClubDevice?: Maybe<ClubDevice>;
   updatedClub?: Maybe<Club>;
+  updatedClubDevice?: Maybe<ClubDevice>;
 };
 
 
@@ -165,6 +173,12 @@ export type SubscriptionDeletedClubDeviceArgs = {
 
 export type SubscriptionUpdatedClubArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type SubscriptionUpdatedClubDeviceArgs = {
+  clubDeviceId?: InputMaybe<Scalars['String']['input']>;
+  clubId: Scalars['String']['input'];
 };
 
 export type UnexpectedErrorResponse = {
