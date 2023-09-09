@@ -131,18 +131,27 @@ export const deleteAllSubs = (dispatch: any) => {
   });
 };
 
-export function useSubscriptions(
-  clubId: string,
-  subscribeToAll: (ap: AccessParams) => void,
-  fetchRecentData: (ap: AccessParams) => Promise<void>,
-  clearFetchedData: () => void,
-  authMode?: AuthMode,
-) {
+export interface UseSubscriptionsParams {
+  clubId: string;
+  clubDeviceId?: string;
+  subscribeToAll: (ap: AccessParams) => void;
+  fetchRecentData: (ap: AccessParams) => Promise<void>;
+  clearFetchedData: () => void;
+  authMode?: AuthMode;
+}
+export function useSubscriptions({
+  clubId,
+  clubDeviceId,
+  subscribeToAll,
+  fetchRecentData,
+  clearFetchedData,
+  authMode,
+}: UseSubscriptionsParams) {
   const dispatch = useDispatch();
 
   useEffect(() => {
     let priorConnectionState: ConnectionState;
-    subscribeToAll({ dispatch, clubId, authMode });
+    subscribeToAll({ dispatch, clubId, clubDeviceId, authMode });
 
     const stopListening = Hub.listen("api", (data: any) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -152,7 +161,7 @@ export function useSubscriptions(
           priorConnectionState === ConnectionState.Connecting &&
           payload.data.connectionState === ConnectionState.Connected
         ) {
-          void fetchRecentData({ dispatch, clubId, authMode });
+          void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         priorConnectionState = payload.data.connectionState;
@@ -168,6 +177,7 @@ export function useSubscriptions(
   }, [
     authMode,
     clearFetchedData,
+    clubDeviceId,
     clubId,
     dispatch,
     fetchRecentData,
