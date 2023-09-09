@@ -38,8 +38,8 @@ export const subscriptionUpdatedClub = gql`
 `;
 
 export const subscriptionUpdatedClubDevice = gql`
-  subscription UpdatedClubDevice($clubId: String!) {
-    updatedClubDevice(clubId: $clubId) {
+  subscription UpdatedClubDevice($clubId: String!, $clubDeviceId: String) {
+    updatedClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
       clubId
       clubDeviceId
       name

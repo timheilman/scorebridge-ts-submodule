@@ -71,33 +71,32 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
 }: TypedSubscriptionParams<T>) => {
   try {
     deleteSub(dispatch, subId);
-    if (!pool[subId]) {
-      const variables: Record<string, unknown> = {};
-      variables[clubIdVarName || "clubId"] = clubId;
-      if (clubDeviceId) {
-        variables["clubDeviceId"] = clubDeviceId;
-      }
-
-      const gql = subIdToSubGql[subId];
-      pool[subId] = API.graphql<
-        GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
-      >({
-        authMode: authMode || "AMAZON_COGNITO_USER_POOLS",
-        ...graphqlOperation(gql, variables),
-      }).subscribe({
-        next: (data: any) => {
-          callback(data.value.data);
-        },
-        error: (e) => {
-          dispatch(
-            setSubscriptionStatus([
-              subId,
-              `failed post-initialization: ${e.error.errors[0].message}`,
-            ]),
-          );
-        },
-      });
+    const variables: Record<string, unknown> = {};
+    variables[clubIdVarName || "clubId"] = clubId;
+    if (clubDeviceId) {
+      variables["clubDeviceId"] = clubDeviceId;
     }
+
+    const gql = subIdToSubGql[subId];
+    console.log(`*** vars are ${JSON.stringify(variables)}`);
+    pool[subId] = API.graphql<
+      GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
+    >({
+      authMode: authMode || "AMAZON_COGNITO_USER_POOLS",
+      ...graphqlOperation(gql, variables),
+    }).subscribe({
+      next: (data: any) => {
+        callback(data.value.data);
+      },
+      error: (e) => {
+        dispatch(
+          setSubscriptionStatus([
+            subId,
+            `failed post-initialization: ${e.error.errors[0].message}`,
+          ]),
+        );
+      },
+    });
     dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
   } catch (e: any) {
     if (e.message) {
