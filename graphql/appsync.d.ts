@@ -131,7 +131,7 @@ export type MutationUpdateClubDeviceArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getClub: Club;
+  getClub?: Maybe<Club>;
   getClubDevice: ClubDevice;
   listClubDevices: ListClubDevicesOutput;
 };
