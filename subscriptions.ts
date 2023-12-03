@@ -160,7 +160,8 @@ export function useSubscriptions({
       const { payload } = data;
       if (payload.event === CONNECTION_STATE_CHANGE) {
         log("hub.listen.connectionStateChange", "debug", {
-          previous: priorConnectionState, current: payload.data.connectionState
+          previous: priorConnectionState,
+          current: payload.data.connectionState,
         });
         if (
           priorConnectionState === ConnectionState.Connecting &&
