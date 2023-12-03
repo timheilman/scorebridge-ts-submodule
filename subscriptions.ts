@@ -161,6 +161,7 @@ export function useSubscriptions({
       if (payload.event === CONNECTION_STATE_CHANGE) {
         log("hub.listen.connectionStateChange", "debug", {
           previous: priorConnectionState,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           current: payload.data.connectionState,
         });
         if (
