@@ -11,6 +11,9 @@ import {
   setSubscriptionStatus,
   subIdToSubGql,
 } from "./subscriptionStatesSlice";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+
+const log = tsSubmoduleLogFn("subscriptions.");
 
 const pool: Record<string, unknown> = {};
 
@@ -78,7 +81,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
     }
 
     const gql = subIdToSubGql[subId];
-    console.log(`*** vars are ${JSON.stringify(variables)}`);
+    log("typedSubscription", "debug", variables);
     pool[subId] = API.graphql<
       GraphQLSubscription<SUBSCRIPTION_CALLBACK_TYPE<typeof subId>>
     >({
