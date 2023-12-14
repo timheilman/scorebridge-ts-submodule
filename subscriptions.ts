@@ -165,8 +165,7 @@ export function useSubscriptions({
           current: payload.data.connectionState,
         });
         if (
-          (priorConnectionState === ConnectionState.Connecting ||
-            priorConnectionState === undefined) &&
+          priorConnectionState !== ConnectionState.Connected &&
           payload.data.connectionState === ConnectionState.Connected
         ) {
           void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
