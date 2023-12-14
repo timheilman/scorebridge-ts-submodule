@@ -59,4 +59,6 @@ export const selectSubscriptionStateById =
     return state.subscriptionStates[subId];
   };
 
+export const selectSubscriptionStates = (state) => state.subscriptionStates;
+
 export default subscriptionStatesSlice.reducer;
