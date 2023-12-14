@@ -21,12 +21,12 @@ export type SUBSCRIPTION_CALLBACK_TYPE<T extends keyof allSubscriptionsI> =
   T extends "createdClubDevice"
     ? { createdClubDevice: ClubDevice }
     : T extends "updatedClubDevice"
-    ? { updatedClubDevice: ClubDevice }
-    : T extends "deletedClubDevice"
-    ? { deletedClubDevice: ClubDevice }
-    : T extends "updatedClub"
-    ? { updatedClub: Club }
-    : never;
+      ? { updatedClubDevice: ClubDevice }
+      : T extends "deletedClubDevice"
+        ? { deletedClubDevice: ClubDevice }
+        : T extends "updatedClub"
+          ? { updatedClub: Club }
+          : never;
 
 export interface AccessParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,11 +92,17 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
         callback(data.value.data);
       },
       error: (e) => {
+        if (e?.error?.errors?.length && e.error.errors[0].message) {
+          dispatch(
+            setSubscriptionStatus([
+              subId,
+              `failed post-initialization: ${e.error.errors[0].message}`,
+            ]),
+          );
+          return;
+        }
         dispatch(
-          setSubscriptionStatus([
-            subId,
-            `failed post-initialization: ${e.error.errors[0].message}`,
-          ]),
+          setSubscriptionStatus([subId, `failed post-initialization: ${e}`]),
         );
       },
     });
