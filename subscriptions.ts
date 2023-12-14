@@ -175,6 +175,18 @@ export function useSubscriptions({
           payload.data.connectionState === ConnectionState.Connected
         ) {
           void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
+        } else if (
+          priorConnectionState === ConnectionState.Connected &&
+          payload.data.connectionState !== ConnectionState.Connected
+        ) {
+          Object.keys(subIdToSubGql).forEach((subId) => {
+            dispatch(
+              setSubscriptionStatus([
+                subId as keyof allSubscriptionsI,
+                "disconnected",
+              ]),
+            );
+          });
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         priorConnectionState = payload.data.connectionState;

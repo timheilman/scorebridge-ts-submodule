@@ -59,6 +59,9 @@ export const selectSubscriptionStateById =
     return state.subscriptionStates[subId];
   };
 
-export const selectSubscriptionStates = (state) => state.subscriptionStates;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const selectSubscriptionStates = (state: any) =>
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+  state.subscriptionStates;
 
 export default subscriptionStatesSlice.reducer;
