@@ -123,9 +123,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       authMode: authMode || "AMAZON_COGNITO_USER_POOLS",
       ...graphqlOperation(gql, variables),
     }).subscribe({
-      next: (data: any) => {
-        callback(data.value.data);
-      },
+      next: (data: any) => callback(data.value.data),
       error: handleAmplifySubscriptionError(dispatch, subId),
     });
     dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
