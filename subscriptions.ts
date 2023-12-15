@@ -8,6 +8,8 @@ import { AuthMode } from "./authMode";
 import { Club, ClubDevice } from "./graphql/appsync";
 import {
   allSubscriptionsI,
+  setBornSubscriptionStatuses,
+  setSubscriptionBirth,
   setSubscriptionStatus,
   subIdToSubGql,
 } from "./subscriptionStatesSlice";
@@ -72,13 +74,13 @@ function handleAmplifySubscriptionError<T extends keyof allSubscriptionsI>(
       dispatch(
         setSubscriptionStatus([
           subId,
-          `failed post-initialization: ${e.error.errors[0].message}`,
+          `failed post-init w/message: ${e.error.errors[0].message}`,
         ]),
       );
       return;
     }
     dispatch(
-      setSubscriptionStatus([subId, `failed post-initialization: ${e}`]),
+      setSubscriptionStatus([subId, `failed post-init w/o message: ${e}`]),
     );
   };
 }
@@ -90,10 +92,12 @@ function handleUnexpectedSubscriptionError<T extends keyof allSubscriptionsI>(
 ) {
   if (e.message) {
     dispatch(
-      setSubscriptionStatus([subId, `failed at initialization: ${e.message}`]),
+      setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
     );
   } else {
-    dispatch(setSubscriptionStatus([subId, `failed at initialization: ${e}`]));
+    dispatch(
+      setSubscriptionStatus([subId, `failed at init w/o message: ${e}`]),
+    );
   }
   return;
 }
@@ -127,6 +131,7 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       error: handleAmplifySubscriptionError(dispatch, subId),
     });
     dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
+    dispatch(setSubscriptionBirth(subId));
   } catch (e: any) {
     handleUnexpectedSubscriptionError(e, dispatch, subId);
   }
@@ -183,6 +188,7 @@ export function useSubscriptions({
           payload.data.connectionState === ConnectionState.Connected
         ) {
           void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
+          dispatch(setBornSubscriptionStatuses("successfullySubscribed"));
         } else if (
           priorConnectionState === ConnectionState.Connected &&
           payload.data.connectionState !== ConnectionState.Connected
@@ -191,7 +197,7 @@ export function useSubscriptions({
             dispatch(
               setSubscriptionStatus([
                 subId as keyof allSubscriptionsI,
-                "disconnected",
+                "disconnected post-birth",
               ]),
             );
           });
