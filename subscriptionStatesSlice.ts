@@ -21,16 +21,16 @@ export const subIdToSubGql: allSubscriptionsI = {
   deletedClubDevice: subscriptionDeletedClubDevice,
   updatedClub: subscriptionUpdatedClub,
 };
-export type SubscriptionsStates = Record<keyof allSubscriptionsI, string>;
+export type SubscriptionStateType = Record<keyof allSubscriptionsI, string>;
 
-const initialState: SubscriptionsStates = Object.keys(subIdToSubGql).reduce<
+const initialState: SubscriptionStateType = Object.keys(subIdToSubGql).reduce<
   Record<keyof allSubscriptionsI, string>
 >(
-  (acc: SubscriptionsStates, subId: string) => {
+  (acc: SubscriptionStateType, subId: string) => {
     acc[subId as keyof allSubscriptionsI] = "disconnected";
     return acc;
   },
-  <SubscriptionsStates>{},
+  <SubscriptionStateType>{},
 );
 
 export const subscriptionStatesSlice = createSlice({
