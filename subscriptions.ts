@@ -63,6 +63,41 @@ export const generateTypedSubscription = <T extends keyof allSubscriptionsI>(
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+function handleAmplifySubscriptionError<T extends keyof allSubscriptionsI>(
+  dispatch: any,
+  subId: T,
+) {
+  return (e: any) => {
+    if (e?.error?.errors?.length && e.error.errors[0].message) {
+      dispatch(
+        setSubscriptionStatus([
+          subId,
+          `failed post-initialization: ${e.error.errors[0].message}`,
+        ]),
+      );
+      return;
+    }
+    dispatch(
+      setSubscriptionStatus([subId, `failed post-initialization: ${e}`]),
+    );
+  };
+}
+
+function handleUnexpectedSubscriptionError<T extends keyof allSubscriptionsI>(
+  e: any,
+  dispatch: any,
+  subId: T,
+) {
+  if (e.message) {
+    dispatch(
+      setSubscriptionStatus([subId, `failed at initialization: ${e.message}`]),
+    );
+  } else {
+    dispatch(setSubscriptionStatus([subId, `failed at initialization: ${e}`]));
+  }
+  return;
+}
+
 export const typedSubscription = <T extends keyof allSubscriptionsI>({
   subId,
   clubId,
@@ -91,36 +126,11 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       next: (data: any) => {
         callback(data.value.data);
       },
-      error: (e) => {
-        if (e?.error?.errors?.length && e.error.errors[0].message) {
-          dispatch(
-            setSubscriptionStatus([
-              subId,
-              `failed post-initialization: ${e.error.errors[0].message}`,
-            ]),
-          );
-          return;
-        }
-        dispatch(
-          setSubscriptionStatus([subId, `failed post-initialization: ${e}`]),
-        );
-      },
+      error: handleAmplifySubscriptionError(dispatch, subId),
     });
     dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
   } catch (e: any) {
-    if (e.message) {
-      dispatch(
-        setSubscriptionStatus([
-          subId,
-          `failed at initialization: ${e.message}`,
-        ]),
-      );
-    } else {
-      dispatch(
-        setSubscriptionStatus([subId, `failed at initialization: ${e}`]),
-      );
-    }
-    return;
+    handleUnexpectedSubscriptionError(e, dispatch, subId);
   }
 };
 
