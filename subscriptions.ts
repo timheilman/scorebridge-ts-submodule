@@ -148,6 +148,7 @@ const deleteSub = (dispatch: any, subId: keyof allSubscriptionsI) => {
 };
 export const deleteAllSubs = (dispatch: any) => {
   Object.keys(subIdToSubGql).forEach((subId: string) => {
+    log("deleteAllSubs", "debug", { subId });
     deleteSub(dispatch, subId as keyof allSubscriptionsI /* actually safe */);
   });
 };
