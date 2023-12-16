@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import FeatherIcon from "feather-icons-react";
+import { useSelector } from "react-redux";
 
-import { useAppSelector } from "../app/hooks";
 import {
   selectSubscriptionStates,
   SubscriptionStateType,
@@ -10,10 +10,12 @@ import {
 
 export default function OnlineStatus() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const subscriptionsStates: SubscriptionStateType = useAppSelector(
+  const subscriptionsStates: SubscriptionStateType = useSelector(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     selectSubscriptionStates,
   );
   if (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Object.entries(subscriptionsStates).every((arrElt) => {
       return arrElt[1][1] === "successfullySubscribed";
     })
