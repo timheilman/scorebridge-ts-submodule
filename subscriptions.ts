@@ -130,7 +130,9 @@ export const typedSubscription = <T extends keyof allSubscriptionsI>({
       next: (data: any) => callback(data.value.data),
       error: handleAmplifySubscriptionError(dispatch, subId),
     });
+    log("typedSubscription.success", "debug", { subId });
     dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
+    log("typedSubscription.success.birth", "debug", { subId });
     dispatch(setSubscriptionBirth(subId));
   } catch (e: any) {
     handleUnexpectedSubscriptionError(e, dispatch, subId);
@@ -189,11 +191,13 @@ export function useSubscriptions({
           payload.data.connectionState === ConnectionState.Connected
         ) {
           void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
+          log("hub.listen.unconnectedToConnected", "debug");
           dispatch(setBornSubscriptionStatuses("successfullySubscribed"));
         } else if (
           priorConnectionState === ConnectionState.Connected &&
           payload.data.connectionState !== ConnectionState.Connected
         ) {
+          log("hub.listen.connectedToUnconnected", "debug");
           Object.keys(subIdToSubGql).forEach((subId) => {
             dispatch(
               setSubscriptionStatus([

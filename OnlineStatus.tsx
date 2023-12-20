@@ -1,27 +1,46 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import FeatherIcon from "feather-icons-react";
+import { JSX } from "react";
 import { useSelector } from "react-redux";
 
 import {
   selectSubscriptionStates,
   SubscriptionStateType,
 } from "./subscriptionStatesSlice";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
-export default function OnlineStatus() {
+const log = tsSubmoduleLogFn("OnlineStatus.");
+
+export type OnlineStatusProps = {
+  subscriptionIds: string[];
+  upIcon: JSX.Element;
+  downIcon: JSX.Element;
+};
+
+export default function OnlineStatus({
+  subscriptionIds,
+  upIcon,
+  downIcon,
+}: OnlineStatusProps) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const subscriptionsStates: SubscriptionStateType = useSelector(
+  const subscriptionStates: SubscriptionStateType = useSelector(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     selectSubscriptionStates,
   );
+  // SCOR-105: this couldn't be tested using a development build, because
+  // interrupting wifi also interrupts the connection with expo server.
+  // tested instead with a preview build
+  log("subscriptionStates", "debug", {
+    subscriptionsStates: subscriptionStates,
+  });
+  log("subscriptionIds", "debug", { subscriptionIds });
   if (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    Object.entries(subscriptionsStates).every((arrElt) => {
-      return arrElt[1][1] === "successfullySubscribed";
-    })
+    Object.entries(subscriptionStates)
+      .filter((arrElt) => subscriptionIds.includes(arrElt[0]))
+      .every((arrElt) => {
+        return arrElt[1][1] === "successfullySubscribed";
+      })
   ) {
-    return <FeatherIcon icon="wifi" />;
+    return <>{upIcon}</>;
   } else {
-    return <FeatherIcon icon="wifi-off" />;
+    return <>{downIcon}</>;
   }
 }
