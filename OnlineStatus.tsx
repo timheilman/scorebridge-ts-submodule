@@ -22,7 +22,6 @@ export default function OnlineStatus({
 }: OnlineStatusProps) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const subscriptionStates: SubscriptionStateType = useSelector(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     selectSubscriptionStates,
   );
   // SCOR-105: this couldn't be tested using a development build, because
