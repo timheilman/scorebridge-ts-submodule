@@ -64,7 +64,7 @@ export const generateTypedSubscription = <T extends keyof allSubscriptionsI>(
 };
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment,@typescript-eslint/restrict-template-expressions */
 function handleAmplifySubscriptionError<T extends keyof allSubscriptionsI>(
   dispatch: any,
   subId: T,
@@ -229,4 +229,4 @@ export function useSubscriptions({
   ]);
 }
 
-/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment,@typescript-eslint/restrict-template-expressions */
