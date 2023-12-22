@@ -21,7 +21,7 @@ function localCurrentConfig() {
     return currentConfig(process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`]);
   } else if (Cypress?.env) {
     return currentConfig(Cypress.env[submoduleLoggingConfigKey]);
-  } else if (import?.meta?.env) {
+  } else if (import.meta?.env) {
     return currentConfig(import.meta.env[`VITE_${submoduleLoggingConfigKey}`]);
   }
   return currentConfig();
