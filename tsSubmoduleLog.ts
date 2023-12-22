@@ -25,6 +25,8 @@ function localCurrentConfig() {
     console.log(typeof e);
     console.log("e?.message");
     console.log(e?.message);
+    console.log("e instanceof ReferenceError");
+    console.log(e instanceof ReferenceError);
   }
   if (process && process.env && process.env["AWS_LAMBDA_FUNCTION_NAME"]) {
     return currentConfig(process.env[submoduleLoggingConfigKey]);
