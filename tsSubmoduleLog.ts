@@ -15,11 +15,11 @@ import {
 
 function localCurrentConfig() {
   const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
-  if (process?.env && process.env["AWS_LAMBDA_FUNCTION_NAME"]) {
+  if (process && process.env && process.env["AWS_LAMBDA_FUNCTION_NAME"]) {
     return currentConfig(process.env[submoduleLoggingConfigKey]);
-  } else if (process?.env && process.env["EXPO_PUBLIC_SB_EXPO"]) {
+  } else if (process && process.env && process.env["EXPO_PUBLIC_SB_EXPO"]) {
     return currentConfig(process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`]);
-  } else if (Cypress?.env) {
+  } else if (Cypress && Cypress.env) {
     return currentConfig(Cypress.env[submoduleLoggingConfigKey]);
   } else if (import.meta?.env) {
     return currentConfig(import.meta.env[`VITE_${submoduleLoggingConfigKey}`]);
