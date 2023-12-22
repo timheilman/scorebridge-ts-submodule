@@ -1,3 +1,5 @@
+// SCOR-143 this function is no longer going to be shared between webapp (REACT_APP)
+// and cloud, so it can move directly to cloud
 export default function requiredEnvVar(key: string): string {
   if (!process.env[key]) {
     throw new Error(
