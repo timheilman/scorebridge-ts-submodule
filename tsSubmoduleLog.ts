@@ -15,7 +15,7 @@ import {
 
 function localCurrentConfig() {
   const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
-  let foundProcess = true;
+  let foundProcess = true, foundCypress = true;
   try {
     process
   } catch (e) {
@@ -25,11 +25,20 @@ function localCurrentConfig() {
       throw e;
     }
   }
+  try {
+    Cypress
+  } catch (e) {
+    if (e instanceof ReferenceError && e?.message === "Cypress is not defined") {
+      foundCypress = false;
+    } else {
+      throw e;
+    }
+  }
   if (foundProcess && process.env["AWS_LAMBDA_FUNCTION_NAME"]) {
     return currentConfig(process.env[submoduleLoggingConfigKey]);
   } else if (foundProcess && process.env["EXPO_PUBLIC_SB_EXPO"]) {
     return currentConfig(process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`]);
-  } else if (Cypress && Cypress.env) {
+  } else if (foundCypress) {
     return currentConfig(Cypress.env[submoduleLoggingConfigKey]);
   } else if (import.meta?.env) {
     return currentConfig(import.meta.env[`VITE_${submoduleLoggingConfigKey}`]);
