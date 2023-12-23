@@ -43,7 +43,7 @@ function localCurrentConfig() {
   } else if (import.meta?.env) {
     return currentConfig(import.meta.env[`VITE_${submoduleLoggingConfigKey}`]);
   }
-  return currentConfig();
+  return currentConfig(undefined);
 }
 
 export function tsSubmoduleLogFn(
