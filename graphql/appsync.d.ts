@@ -1,8 +1,6 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends Record<string, unknown>> = {
-  [K in keyof T]: T[K];
-};
+export type Exact<T extends Record<string, unknown>> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]?: Maybe<T[SubKey]>;
 };
@@ -157,25 +155,25 @@ export interface QueryListClubDevicesArgs {
 
 export interface Subscription {
   __typename?: "Subscription";
-  createdClubDevice?: Maybe<ClubDevice>;
-  deletedClubDevice?: Maybe<ClubDevice>;
-  updatedClub?: Maybe<Club>;
-  updatedClubDevice?: Maybe<ClubDevice>;
+  onCreateClubDevice?: Maybe<ClubDevice>;
+  onDeleteClubDevice?: Maybe<ClubDevice>;
+  onUpdateClub?: Maybe<Club>;
+  onUpdateClubDevice?: Maybe<ClubDevice>;
 }
 
-export interface SubscriptionCreatedClubDeviceArgs {
+export interface SubscriptionOnCreateClubDeviceArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export interface SubscriptionDeletedClubDeviceArgs {
+export interface SubscriptionOnDeleteClubDeviceArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export interface SubscriptionUpdatedClubArgs {
+export interface SubscriptionOnUpdateClubArgs {
   id: Scalars["String"]["input"];
 }
 
-export interface SubscriptionUpdatedClubDeviceArgs {
+export interface SubscriptionOnUpdateClubDeviceArgs {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
 }
