@@ -94,7 +94,7 @@ export interface ListClubDevicesInput {
 
 export interface ListClubDevicesOutput {
   __typename?: "ListClubDevicesOutput";
-  clubDevices: Maybe<ClubDevice>[];
+  items: Maybe<ClubDevice>[];
   nextToken?: Maybe<Scalars["String"]["output"]>;
 }
 
