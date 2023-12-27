@@ -3,22 +3,16 @@ import { AwsCredentialIdentityProvider } from "@smithy/types/dist-types/identity
 
 import fromSsoUsingProfile from "./fromSsoUsingProfile";
 
-interface AwsClientConstructor<T> {
-  new (params: {
-    region: string;
-    credentials: AwsCredentialIdentityProvider;
-  }): T;
-}
+type AwsClientConstructor<T> = new (params: {
+  region: string;
+  credentials: AwsCredentialIdentityProvider;
+}) => T;
 export function cachedAwsSdkV3Client<T>(
   klass: AwsClientConstructor<T>,
   awsRegion: string,
   profile: string | null,
-  profileDict: {
-    [awsRegion: string]: { [profile: string]: T };
-  },
-  envDict: {
-    [awsRegion: string]: T;
-  },
+  profileDict: Record<string, Record<string, T>>,
+  envDict: Record<string, T>,
 ) {
   if (profile) {
     if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {

@@ -33,9 +33,7 @@ const levelToInt = {
   fatal: 600,
 };
 export type LogLevel = keyof typeof levelToInt;
-export type LoggingConfig = {
-  [keyPrefix: string]: LogLevel;
-};
+export type LoggingConfig = Record<string, LogLevel>;
 
 export interface PrintFnParams {
   matchingConfigCat: string;

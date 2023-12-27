@@ -9,11 +9,11 @@ import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("OnlineStatus.");
 
-export type OnlineStatusProps = {
+export interface OnlineStatusProps {
   subscriptionIds: string[];
   upIcon: JSX.Element;
   downIcon: JSX.Element;
-};
+}
 
 export default function OnlineStatus({
   subscriptionIds,

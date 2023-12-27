@@ -1,6 +1,18 @@
+import { GeneratedSubscription } from "@aws-amplify/api-graphql/src/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DocumentNode } from "graphql/language";
 
+import {
+  OnCreateClubDeviceSubscription,
+  OnDeleteClubDeviceSubscription,
+  OnUpdateClubDeviceSubscription,
+  OnUpdateClubSubscription,
+} from "./API";
+import {
+  SubscriptionCreatedClubDeviceArgs,
+  SubscriptionDeletedClubDeviceArgs,
+  SubscriptionUpdatedClubArgs,
+  SubscriptionUpdatedClubDeviceArgs,
+} from "./graphql/appsync";
 import {
   subscriptionCreatedClubDevice,
   subscriptionDeletedClubDevice,
@@ -9,10 +21,22 @@ import {
 } from "./graphql/subscriptions";
 
 export interface allSubscriptionsI {
-  createdClubDevice: DocumentNode;
-  updatedClubDevice: DocumentNode;
-  deletedClubDevice: DocumentNode;
-  updatedClub: DocumentNode;
+  createdClubDevice: GeneratedSubscription<
+    SubscriptionCreatedClubDeviceArgs,
+    OnCreateClubDeviceSubscription
+  >;
+  updatedClubDevice: GeneratedSubscription<
+    SubscriptionUpdatedClubDeviceArgs,
+    OnUpdateClubDeviceSubscription
+  >;
+  deletedClubDevice: GeneratedSubscription<
+    SubscriptionDeletedClubDeviceArgs,
+    OnDeleteClubDeviceSubscription
+  >;
+  updatedClub: GeneratedSubscription<
+    SubscriptionUpdatedClubArgs,
+    OnUpdateClubSubscription
+  >;
 }
 
 export const subIdToSubGql: allSubscriptionsI = {
@@ -29,13 +53,10 @@ export type SubscriptionStateType = Record<
 
 const initialState: SubscriptionStateType = Object.keys(subIdToSubGql).reduce<
   Record<keyof allSubscriptionsI, [boolean, string]>
->(
-  (acc: SubscriptionStateType, subId: string) => {
-    acc[subId as keyof allSubscriptionsI] = [false, "disconnected"];
-    return acc;
-  },
-  <SubscriptionStateType>{},
-);
+>((acc: SubscriptionStateType, subId: string) => {
+  acc[subId as keyof allSubscriptionsI] = [false, "disconnected"];
+  return acc;
+}, {} as SubscriptionStateType);
 
 export const subscriptionStatesSlice = createSlice({
   name: "subscriptionStates",

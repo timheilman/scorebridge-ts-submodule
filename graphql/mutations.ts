@@ -1,4 +1,11 @@
-import gql from "graphql-tag";
+import * as APITypes from "../API";
+import * as GqlCodegenTypes from "./appsync";
+
+type GeneratedMutation<InputType, OutputType> = string & {
+  __generatedMutationInput: InputType;
+  __generatedMutationOutput: OutputType;
+};
+
 export const mutationCreateClub = gql`
   mutation createClub($input: CreateClubInput!) {
     createClub(input: $input) {
@@ -48,8 +55,26 @@ export const mutationDeleteClubAndAdmin = gql`
   }
 `;
 
-export const mutationDeleteClubDevice = gql`
-  mutation deleteClubDevice($input: DeleteClubDeviceInput!) {
+// export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
+//   $input: DeleteTodoInput!
+//   $condition: ModelTodoConditionInput
+// ) {
+//   deleteTodo(input: $input, condition: $condition) {
+//     id
+//     name
+//     description
+//     createdAt
+//     updatedAt
+//     __typename
+//   }
+// }
+// ` as GeneratedMutation<
+//   APITypes.DeleteTodoMutationVariables,
+//   APITypes.DeleteTodoMutation
+// >;
+
+export const mutationDeleteClubDevice = /* GraphQL */`
+  mutation DeleteClubDevice($input: DeleteClubDeviceInput!) {
     deleteClubDevice(input: $input) {
       clubId
       clubDeviceId
@@ -59,18 +84,7 @@ export const mutationDeleteClubDevice = gql`
       updatedAt
     }
   }
-`;
-export const queryListClubDevices = gql`
-  query listClubDevices($input: ListClubDevicesInput!) {
-    listClubDevices(input: $input) {
-      clubDevices {
-        clubId
-        clubDeviceId
-        email
-        name
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
+` as GeneratedMutation<
+    GqlCodegenTypes.MutationDeleteClubDeviceArgs,
+    APITypes.DeleteClubDeviceMutation
+  >;

@@ -23,20 +23,27 @@ function logOrInformUndefined(s: string | undefined) {
 
 function localCurrentConfig() {
   const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
-  let foundProcess = true, foundCypress = true;
+  let foundProcess = true,
+    foundCypress = true;
   try {
-    process
+    process;
   } catch (e) {
-    if (e instanceof ReferenceError && e?.message === "process is not defined") {
+    if (
+      e instanceof ReferenceError &&
+      e?.message === "process is not defined"
+    ) {
       foundProcess = false;
     } else {
       throw e;
     }
   }
   try {
-    Cypress
+    Cypress;
   } catch (e) {
-    if (e instanceof ReferenceError && e?.message === "Cypress is not defined") {
+    if (
+      e instanceof ReferenceError &&
+      e?.message === "Cypress is not defined"
+    ) {
       foundCypress = false;
     } else {
       throw e;
@@ -44,14 +51,17 @@ function localCurrentConfig() {
   }
   // SCOR-143 TODO: use refreshed custom var here like EXPO_PUBLIC_SB_EXPO rather than
   // AWS_LAMBDA_FUNCTION_NAME in order to catch the Cypress task case
-  if (foundProcess && process.env["AWS_LAMBDA_FUNCTION_NAME"]) {
+  if (foundProcess && process.env.AWS_LAMBDA_FUNCTION_NAME) {
     console.log("Submodule logging config: using process.env with no prefix:");
     const processEnvNoPrefix = process.env[submoduleLoggingConfigKey];
     logOrInformUndefined(processEnvNoPrefix);
     return currentConfig(processEnvNoPrefix);
-  } else if (foundProcess && process.env["EXPO_PUBLIC_SB_EXPO"]) {
-    console.log("Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:");
-    const processEnvExpoPublicPrefix = process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`];
+  } else if (foundProcess && process.env.EXPO_PUBLIC_SB_EXPO) {
+    console.log(
+      "Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:",
+    );
+    const processEnvExpoPublicPrefix =
+      process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`];
     logOrInformUndefined(processEnvExpoPublicPrefix);
     return currentConfig(processEnvExpoPublicPrefix);
   } else if (foundCypress) {
@@ -60,8 +70,12 @@ function localCurrentConfig() {
     logOrInformUndefined(cypressEnvNoPrefix);
     return currentConfig(cypressEnvNoPrefix);
   } else if (import.meta?.env) {
-    console.log("Submodule logging config: using import.meta.env with VITE_ prefix:");
-    const importMetaEnvVitePrefix = import.meta.env[`VITE_${submoduleLoggingConfigKey}`];
+    console.log(
+      "Submodule logging config: using import.meta.env with VITE_ prefix:",
+    );
+    const importMetaEnvVitePrefix = import.meta.env[
+      `VITE_${submoduleLoggingConfigKey}`
+    ];
     logOrInformUndefined(importMetaEnvVitePrefix);
     return currentConfig(importMetaEnvVitePrefix);
   }

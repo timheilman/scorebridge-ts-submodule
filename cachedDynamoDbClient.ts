@@ -2,12 +2,8 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client";
 
-const profileDict: {
-  [awsRegion: string]: { [profile: string]: DynamoDBClient };
-} = {};
-const envDict: {
-  [awsRegion: string]: DynamoDBClient;
-} = {};
+const profileDict: Record<string, Record<string, DynamoDBClient>> = {};
+const envDict: Record<string, DynamoDBClient> = {};
 
 export const cachedDynamoDbClient = (
   awsRegion: string,

@@ -1,6 +1,12 @@
-import gql from "graphql-tag";
+import * as APITypes from "../API";
+import * as GqlCodegenTypes from "./appsync";
 
-export const subscriptionCreatedClubDevice = gql`
+type GeneratedSubscription<InputType, OutputType> = string & {
+  __generatedSubscriptionInput: InputType;
+  __generatedSubscriptionOutput: OutputType;
+};
+
+export const subscriptionCreatedClubDevice = /* GraphQL */ `
   subscription CreatedClubDevice($clubId: String!) {
     createdClubDevice(clubId: $clubId) {
       clubDeviceId
@@ -11,8 +17,14 @@ export const subscriptionCreatedClubDevice = gql`
       updatedAt
     }
   }
-`;
-
+` as GeneratedSubscription<
+  GqlCodegenTypes.SubscriptionCreatedClubDeviceArgs,
+  APITypes.OnCreateClubDeviceSubscription
+>;
+// ` as GeneratedMutation<
+//     GqlCodegenTypes.MutationDeleteClubDeviceArgs,
+//     APITypes.DeleteClubDeviceMutation
+//   >;
 export const subscriptionDeletedClubDevice = gql`
   subscription DeletedClubDevice($clubId: String!) {
     deletedClubDevice(clubId: $clubId) {

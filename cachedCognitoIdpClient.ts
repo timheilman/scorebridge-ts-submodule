@@ -2,12 +2,11 @@ import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-
 
 import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client";
 
-const profileDict: {
-  [awsRegion: string]: { [profile: string]: CognitoIdentityProviderClient };
-} = {};
-const envDict: {
-  [awsRegion: string]: CognitoIdentityProviderClient;
-} = {};
+const profileDict: Record<
+  string,
+  Record<string, CognitoIdentityProviderClient>
+> = {};
+const envDict: Record<string, CognitoIdentityProviderClient> = {};
 
 export const cachedCognitoIdpClient = (
   awsRegion: string,
