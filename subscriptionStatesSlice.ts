@@ -1,4 +1,3 @@
-import { GeneratedSubscription } from "@aws-amplify/api-graphql/src/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
@@ -15,6 +14,10 @@ import {
   subscriptionOnUpdateClubDevice,
 } from "./graphql/subscriptions";
 
+type GeneratedSubscription<InputType, OutputType> = string & {
+  __generatedSubscriptionInput: InputType;
+  __generatedSubscriptionOutput: OutputType;
+};
 // TODO: SCOR-143 see if we can eliminate this interface and use Subscription itself instead
 export interface allSubscriptionsI {
   onCreateClubDevice: GeneratedSubscription<

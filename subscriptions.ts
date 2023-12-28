@@ -1,4 +1,3 @@
-import { GraphQLAuthMode } from "@aws-amplify/core/internals/utils";
 // see https://github.com/aws-amplify/amplify-js/pull/12757 for a fix here
 import { /* CONNECTION_STATE_CHANGE,*/ ConnectionState } from "aws-amplify/api";
 import { Hub } from "aws-amplify/utils";
@@ -15,6 +14,13 @@ import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("subscriptions.");
 
+export type GraphQLAuthMode =
+  | "apiKey"
+  | "oidc"
+  | "userPool"
+  | "iam"
+  | "lambda"
+  | "none";
 export const pool: Record<string, unknown> = {};
 
 export interface AccessParams {
