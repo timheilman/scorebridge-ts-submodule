@@ -20,7 +20,7 @@ export const getClubGql = /* GraphQL */ `
 export const listClubDevicesGql = /* GraphQL */ `
     query listClubDevices($input: ListClubDevicesInput!) {
         listClubDevices(input: $input) {
-            clubDevices {
+            items {
                 clubDeviceId
                 name
                 table
@@ -35,7 +35,7 @@ export const listClubDevicesGql = /* GraphQL */ `
 export const queryListClubDevices = /* GraphQL */ `
     query listClubDevices($input: ListClubDevicesInput!) {
         listClubDevices(input: $input) {
-            clubDevices {
+            items {
                 clubId
                 clubDeviceId
                 email
