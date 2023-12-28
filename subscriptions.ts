@@ -21,7 +21,7 @@ export type GraphQLAuthMode =
   | "iam"
   | "lambda"
   | "none";
-export const pool: Record<string, unknown> = {};
+export const pool: Record<string, { unsubscribe: () => void }> = {};
 
 export interface AccessParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +32,7 @@ export interface AccessParams {
 }
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 export function handleAmplifySubscriptionError<
   T extends keyof allSubscriptionsI,
 >(dispatch: any, subId: T) {
@@ -69,7 +69,6 @@ export function handleUnexpectedSubscriptionError<
 
 export const deleteSub = (dispatch: any, subId: keyof allSubscriptionsI) => {
   if (pool[subId]) {
-    // @ts-ignore
     pool[subId].unsubscribe();
     delete pool[subId];
     dispatch(setSubscriptionStatus([subId, "disconnected"]));
@@ -158,4 +157,4 @@ export function useSubscriptions({
   ]);
 }
 
-/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call,@typescript-eslint/ban-ts-comment */
+/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
