@@ -1,7 +1,5 @@
-import gql from "graphql-tag";
-
-import * as APITypes from "../API";
 import * as GqlCodegenTypes from "./appsync";
+import { Query } from "./appsync";
 
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
@@ -17,7 +15,7 @@ export const getClubGql = /* GraphQL */ `
             updatedAt
         }
     }
-` as GeneratedQuery<GqlCodegenTypes.QueryGetClubArgs, APITypes.GetClubQuery>;
+` as GeneratedQuery<GqlCodegenTypes.QueryGetClubArgs, Pick<Query, "getClub">>;
 
 export const listClubDevicesGql = /* GraphQL */ `
     query listClubDevices($input: ListClubDevicesInput!) {
@@ -29,7 +27,10 @@ export const listClubDevicesGql = /* GraphQL */ `
             }
         }
     }
-` as GeneratedQuery<GqlCodegenTypes.QueryListClubDevicesArgs, APITypes.ListClubDevicesQuery>;
+` as GeneratedQuery<
+  GqlCodegenTypes.QueryListClubDevicesArgs,
+  Pick<Query, "listClubDevices">
+>;
 
 export const queryListClubDevices = /* GraphQL */ `
     query listClubDevices($input: ListClubDevicesInput!) {
@@ -44,4 +45,7 @@ export const queryListClubDevices = /* GraphQL */ `
             }
         }
     }
-` as GeneratedQuery<GqlCodegenTypes.QueryListClubDevicesArgs, APITypes.ListClubDevicesQuery>;
+` as GeneratedQuery<
+  GqlCodegenTypes.QueryListClubDevicesArgs,
+  Pick<Query, "listClubDevices">
+>;

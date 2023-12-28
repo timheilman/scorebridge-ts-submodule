@@ -1,21 +1,36 @@
-import * as APITypes from "../API";
 import * as GqlCodegenTypes from "./appsync";
+import { Mutation } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
 };
 
-export const mutationCreateClub = gql`
+export const mutationCreateClub = /* GraphQL */ `
   mutation createClub($input: CreateClubInput!) {
     createClub(input: $input) {
       clubId
       userId
     }
   }
-`;
+` as GeneratedMutation<
+  GqlCodegenTypes.MutationCreateClubArgs,
+  // SCOR-143 here's the example type from the tutorial:
+  // export type UpdateTodoMutation = {
+  //   updateTodo?:  {
+  //     __typename: "Todo",
+  //     id: string,
+  //     name: string,
+  //     description?: string | null,
+  //     createdAt: string,
+  //     updatedAt: string,
+  //   } | null,
+  // };
+  // So this should get the same thing:
+  Pick<Mutation, "createClub">
+>;
 
-export const mutationUpdateClub = gql`
+export const mutationUpdateClub = /* GraphQL */ `
   mutation updateClub($input: UpdateClubInput!) {
     updateClub(input: $input) {
       id
@@ -24,9 +39,12 @@ export const mutationUpdateClub = gql`
       updatedAt
     }
   }
-`;
+` as GeneratedMutation<
+  GqlCodegenTypes.MutationUpdateClubArgs,
+  Pick<Mutation, "updateClub">
+>;
 
-export const mutationCreateClubDevice = gql`
+export const mutationCreateClubDevice = /* GraphQL */ `
   mutation createClubDevice($input: CreateClubDeviceInput!) {
     createClubDevice(input: $input) {
       clubId
@@ -37,43 +55,31 @@ export const mutationCreateClubDevice = gql`
       updatedAt
     }
   }
-`;
+` as GeneratedMutation<
+  GqlCodegenTypes.MutationCreateClubDeviceArgs,
+  Pick<Mutation, "createClubDevice">
+>;
 
-export const mutationUnexpectedError = gql`
+export const mutationUnexpectedError = /* GraphQL */ `
   mutation unexpectedError {
     unexpectedError {
       neverGetsReturned
     }
   }
-`;
+` as GeneratedMutation<undefined, Pick<Mutation, "unexpectedError">>;
 
-export const mutationDeleteClubAndAdmin = gql`
+export const mutationDeleteClubAndAdmin = /* GraphQL */ `
   mutation deleteClubAndAdmin($input: DeleteClubAndAdminInput!) {
     deleteClubAndAdmin(input: $input) {
       status
     }
   }
-`;
+` as GeneratedMutation<
+  GqlCodegenTypes.MutationDeleteClubAndAdminArgs,
+  Pick<Mutation, "deleteClubAndAdmin">
+>;
 
-// export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
-//   $input: DeleteTodoInput!
-//   $condition: ModelTodoConditionInput
-// ) {
-//   deleteTodo(input: $input, condition: $condition) {
-//     id
-//     name
-//     description
-//     createdAt
-//     updatedAt
-//     __typename
-//   }
-// }
-// ` as GeneratedMutation<
-//   APITypes.DeleteTodoMutationVariables,
-//   APITypes.DeleteTodoMutation
-// >;
-
-export const mutationDeleteClubDevice = /* GraphQL */`
+export const mutationDeleteClubDevice = /* GraphQL */ `
   mutation DeleteClubDevice($input: DeleteClubDeviceInput!) {
     deleteClubDevice(input: $input) {
       clubId
@@ -85,6 +91,6 @@ export const mutationDeleteClubDevice = /* GraphQL */`
     }
   }
 ` as GeneratedMutation<
-    GqlCodegenTypes.MutationDeleteClubDeviceArgs,
-    APITypes.DeleteClubDeviceMutation
-  >;
+  GqlCodegenTypes.MutationDeleteClubDeviceArgs,
+  Pick<Mutation, "deleteClubDevice">
+>;

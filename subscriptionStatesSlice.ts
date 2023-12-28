@@ -2,48 +2,44 @@ import { GeneratedSubscription } from "@aws-amplify/api-graphql/src/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
-  OnCreateClubDeviceSubscription,
-  OnDeleteClubDeviceSubscription,
-  OnUpdateClubDeviceSubscription,
-  OnUpdateClubSubscription,
-} from "./API";
-import {
-  SubscriptionCreatedClubDeviceArgs,
-  SubscriptionDeletedClubDeviceArgs,
-  SubscriptionUpdatedClubArgs,
-  SubscriptionUpdatedClubDeviceArgs,
+  Subscription,
+  SubscriptionOnCreateClubDeviceArgs,
+  SubscriptionOnDeleteClubDeviceArgs,
+  SubscriptionOnUpdateClubArgs,
+  SubscriptionOnUpdateClubDeviceArgs,
 } from "./graphql/appsync";
 import {
-  subscriptionCreatedClubDevice,
-  subscriptionDeletedClubDevice,
-  subscriptionUpdatedClub,
-  subscriptionUpdatedClubDevice,
+  subscriptionOnCreateClubDevice,
+  subscriptionOnDeleteClubDevice,
+  subscriptionOnUpdateClub,
+  subscriptionOnUpdateClubDevice,
 } from "./graphql/subscriptions";
 
+// TODO: SCOR-143 see if we can eliminate this interface and use Subscription itself instead
 export interface allSubscriptionsI {
-  createdClubDevice: GeneratedSubscription<
-    SubscriptionCreatedClubDeviceArgs,
-    OnCreateClubDeviceSubscription
+  onCreateClubDevice: GeneratedSubscription<
+    SubscriptionOnCreateClubDeviceArgs,
+    Pick<Subscription, "onCreateClubDevice">
   >;
-  updatedClubDevice: GeneratedSubscription<
-    SubscriptionUpdatedClubDeviceArgs,
-    OnUpdateClubDeviceSubscription
+  onUpdateClubDevice: GeneratedSubscription<
+    SubscriptionOnUpdateClubDeviceArgs,
+    Pick<Subscription, "onUpdateClubDevice">
   >;
-  deletedClubDevice: GeneratedSubscription<
-    SubscriptionDeletedClubDeviceArgs,
-    OnDeleteClubDeviceSubscription
+  onDeleteClubDevice: GeneratedSubscription<
+    SubscriptionOnDeleteClubDeviceArgs,
+    Pick<Subscription, "onDeleteClubDevice">
   >;
-  updatedClub: GeneratedSubscription<
-    SubscriptionUpdatedClubArgs,
-    OnUpdateClubSubscription
+  onUpdateClub: GeneratedSubscription<
+    SubscriptionOnUpdateClubArgs,
+    Pick<Subscription, "onUpdateClub">
   >;
 }
 
 export const subIdToSubGql: allSubscriptionsI = {
-  createdClubDevice: subscriptionCreatedClubDevice,
-  updatedClubDevice: subscriptionUpdatedClubDevice,
-  deletedClubDevice: subscriptionDeletedClubDevice,
-  updatedClub: subscriptionUpdatedClub,
+  onCreateClubDevice: subscriptionOnCreateClubDevice,
+  onUpdateClubDevice: subscriptionOnUpdateClubDevice,
+  onDeleteClubDevice: subscriptionOnDeleteClubDevice,
+  onUpdateClub: subscriptionOnUpdateClub,
 };
 // the boolean is for whether the subscription has ever been active
 export type SubscriptionStateType = Record<
