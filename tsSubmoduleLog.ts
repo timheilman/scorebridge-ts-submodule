@@ -5,6 +5,10 @@ import {
   withConfigProvideLogFn,
 } from "./genericLogger";
 
+// because this file is referenced from cloud, webapp, cypress main, cypress
+// task, and device contexts, it is ignored for linting and formatting from all
+// contexts, since each will have different complaints
+
 function logOrInformUndefined(s: string | undefined) {
   if (s === undefined) {
     console.log("Submodule logging config: undefined");
