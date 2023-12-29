@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import {
   selectSubscriptionStates,
   SubscriptionStateType,
-} from "../subscriptionStatesSlice";
+} from "./subscriptionStatesSlice";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("OnlineStatus.");
