@@ -1,11 +1,11 @@
 import { JSX } from "react";
 import { useSelector } from "react-redux";
 
+import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
   selectSubscriptionStates,
   SubscriptionStateType,
 } from "./subscriptionStatesSlice";
-import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("OnlineStatus.");
 

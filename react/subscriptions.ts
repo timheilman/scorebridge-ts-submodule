@@ -4,13 +4,13 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
   allSubscriptionsI,
   setBornSubscriptionStatuses,
   setSubscriptionStatus,
   subIdToSubGql,
 } from "./subscriptionStatesSlice";
-import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("subscriptions.");
 
