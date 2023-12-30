@@ -3,7 +3,7 @@
 // import { logFn } from "repo-specific-logging-lib"
 // const catPrefix = "src.foo.bar.file.fn.";
 // const log = logFn(catPrefix);
-// const lcd = logCompletionDecoratorFactory(log, "debug", "error");
+// const lcd = logCompletionDecoratorFactory(log, true, "debug", "error");
 // log("step.outcome", "debug", { other: "stuff" })
 // lcd(new Promise((res, rej) => { setTimeout(500, () => {
 //       res() or rej()
@@ -16,29 +16,18 @@ type LogType<LOG_LEVEL_TYPE> = (
   ...addlArgs: unknown[]
 ) => void;
 
-type LcdType<PROMISE_RETURN_TYPE> = (
-  promise: Promise<PROMISE_RETURN_TYPE>,
-  catSuffix: string,
-  ...addlArgs: unknown[]
-) => Promise<PROMISE_RETURN_TYPE | undefined>;
-
-export const logCompletionDecoratorFactory = <
-  PROMISE_RETURN_TYPE,
-  LOG_LEVEL_TYPE,
->(
+export const logCompletionDecoratorFactory = <LOG_LEVEL_TYPE>(
   log: LogType<LOG_LEVEL_TYPE>,
-  rethrowError = true,
   successLevel: LOG_LEVEL_TYPE = "debug" as LOG_LEVEL_TYPE,
   errLevel: LOG_LEVEL_TYPE = "error" as LOG_LEVEL_TYPE,
-): LcdType<PROMISE_RETURN_TYPE> => {
-  return (
+) => {
+  return <PROMISE_RETURN_TYPE>(
     promise: Promise<PROMISE_RETURN_TYPE>,
     catSuffix: string,
     ...addlArgs: unknown[]
   ) => {
     return logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
       log,
-      rethrowError,
       promise,
       catSuffix,
       successLevel,
@@ -47,9 +36,34 @@ export const logCompletionDecoratorFactory = <
     );
   };
 };
+
+export const errorSwallowingLogCompletionDecoratorFactory = <LOG_LEVEL_TYPE>(
+  log: LogType<LOG_LEVEL_TYPE>,
+  successLevel: LOG_LEVEL_TYPE = "debug" as LOG_LEVEL_TYPE,
+  errLevel: LOG_LEVEL_TYPE = "error" as LOG_LEVEL_TYPE,
+) => {
+  return <PROMISE_RETURN_TYPE>(
+    promise: Promise<PROMISE_RETURN_TYPE>,
+    catSuffix: string,
+    ...addlArgs: unknown[]
+  ) => {
+    try {
+      return logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
+        log,
+        promise,
+        catSuffix,
+        successLevel,
+        errLevel,
+        ...addlArgs,
+      );
+    } catch (e: unknown) {
+      // deliberately swallowed
+    }
+  };
+};
+
 async function logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
   log: LogType<LOG_LEVEL_TYPE>,
-  rethrowError: boolean,
   promise: Promise<PROMISE_RETURN_TYPE>,
   catSuffix: string,
   logLevel: LOG_LEVEL_TYPE,
@@ -63,8 +77,6 @@ async function logCompletionDecorator<PROMISE_RETURN_TYPE, LOG_LEVEL_TYPE>(
     return r;
   } catch (e: unknown) {
     log(`${catSuffix}.end.error`, errLogLevel, ...[e, ...addlArgs]);
-    if (rethrowError) {
-      throw e;
-    }
+    throw e;
   }
 }
