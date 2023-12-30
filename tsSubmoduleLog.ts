@@ -17,12 +17,13 @@ function logOrInformUndefined(s: string | undefined) {
   }
 }
 
-// SCOR-143: because this fn is used only from within scorebridge-ts-submodule, we must
-// guess-and-check as to whether we are in node, webapp prod, webapp
-// testing or device, and pull the env var appropriately for each context:
+// because this fn is used only from within scorebridge-ts-submodule, we must
+// guess-and-check as to whether we are in node, webapp prod, webapp testing or
+// device, and pull the env var appropriately for each context:
 // cloud: node, process.env, no prefix
 // webapp prod: vite, import.meta.env, VITE_
 // webapp testing: cypress, Cypress.env(), no prefix
+// webapp testing task: cypress, process.env, no prefix
 // device: expo, process.env, EXPO_PUBLIC_
 
 function localCurrentConfig() {
