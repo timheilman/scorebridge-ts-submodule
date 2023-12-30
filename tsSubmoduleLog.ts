@@ -53,9 +53,11 @@ function localCurrentConfig() {
       throw e;
     }
   }
-  // SCOR-143 TODO: use refreshed custom var here like EXPO_PUBLIC_SB_EXPO rather than
-  // AWS_LAMBDA_FUNCTION_NAME in order to catch the Cypress task case
-  if (foundProcess && process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  if (
+    foundProcess &&
+    (process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      process.env.CYPRESS) /* task context */
+  ) {
     console.log("Submodule logging config: using process.env with no prefix:");
     const processEnvNoPrefix = process.env[submoduleLoggingConfigKey];
     logOrInformUndefined(processEnvNoPrefix);
