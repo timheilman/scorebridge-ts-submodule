@@ -37,17 +37,20 @@ export function handleAmplifySubscriptionError<
   T extends keyof allSubscriptionsI,
 >(dispatch: any, subId: T) {
   return (e: any) => {
-    if (e?.error?.errors?.length && e.error.errors[0].message) {
+    if (e?.errors?.length && e.errors[0].message) {
       dispatch(
         setSubscriptionStatus([
           subId,
-          `failed post-init w/message: ${e.error.errors[0].message}`,
+          `failed post-init w/message: ${e.errors[0].message}`,
         ]),
       );
       return;
     }
     dispatch(
-      setSubscriptionStatus([subId, `failed post-init w/o message: ${e}`]),
+      setSubscriptionStatus([
+        subId,
+        `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
+      ]),
     );
   };
 }
