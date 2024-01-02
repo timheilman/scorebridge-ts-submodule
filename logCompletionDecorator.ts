@@ -58,6 +58,7 @@ export const errorSwallowingLogCompletionDecoratorFactory = <LOG_LEVEL_TYPE>(
       );
     } catch (e: unknown) {
       // deliberately swallowed
+      return Promise.resolve();
     }
   };
 };

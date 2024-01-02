@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const loosyGoosyIsNetworkError = (error: any) => {
   if (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
