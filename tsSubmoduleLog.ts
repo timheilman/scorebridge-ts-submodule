@@ -54,15 +54,19 @@ function localCurrentConfig() {
       throw e;
     }
   }
-  if (
-    foundProcess &&
-    (process.env.AWS_LAMBDA_FUNCTION_NAME ||
-      process.env.CYPRESS) /* task context */
-  ) {
+  if (foundProcess && process.env.AWS_LAMBDA_FUNCTION_NAME) {
     console.log("Submodule logging config: using process.env with no prefix:");
     const processEnvNoPrefix = process.env[submoduleLoggingConfigKey];
     logOrInformUndefined(processEnvNoPrefix);
     return currentConfig(processEnvNoPrefix);
+  } else if (foundProcess && process.env.CYPRESS) {
+    console.log(
+      "Submodule logging config: using process.env with CYPRESS_TASK_ prefix:",
+    );
+    const processEnvCypressTaskPrefix =
+      process.env[`CYPRESS_TASK_${submoduleLoggingConfigKey}`];
+    logOrInformUndefined(processEnvCypressTaskPrefix);
+    return currentConfig(processEnvCypressTaskPrefix);
   } else if (foundProcess && process.env.EXPO_PUBLIC_SB_EXPO) {
     console.log(
       "Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:",
