@@ -18,24 +18,18 @@ function logOrInformUndefined(s: string | undefined) {
 }
 
 // because this fn is used only from within scorebridge-ts-submodule, we must
-// guess-and-check as to whether we are in node, webapp prod, a webapp Cypress
-// test, a webapp Cypress task, or device, and pull the env var appropriately
-// for each context.
-//
+// guess-and-check as to whether we are in node, webapp prod, webapp testing or
+// device, and pull the env var appropriately for each context:
 // cloud: node, process.env, no prefix
 // webapp prod: vite, import.meta.env, VITE_
-// webapp Cypress test: cypress, Cypress.env(), no prefix
-// webapp Cypress task: cypress, process.env, no prefix
+// webapp testing: cypress, Cypress.env(), no prefix
+// webapp testing task: cypress, process.env, no prefix
 // device: expo, process.env, EXPO_PUBLIC_
-//
-// Unfortunately in expo, any reference to Cypress or to import.meta causes an
-// uncatchable error, so that means that for ts-submodule code logging in the
-// context of webapp prod or a webapp Cypress test, the only way to specify
-// logging configuration will be via the file loggingConfig.json.
 
 function localCurrentConfig() {
   const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
-  let foundProcess = true;
+  let foundProcess = true,
+    foundCypress = true;
   try {
     process;
   } catch (e) {
@@ -48,7 +42,18 @@ function localCurrentConfig() {
       throw e;
     }
   }
-  // Cypress test guess removed, since it relies on Cypress object which breaks expo
+  try {
+    Cypress;
+  } catch (e) {
+    if (
+      e instanceof ReferenceError &&
+      e?.message === "Cypress is not defined"
+    ) {
+      foundCypress = false;
+    } else {
+      throw e;
+    }
+  }
   if (foundProcess && process.env.AWS_LAMBDA_FUNCTION_NAME) {
     console.log("Submodule logging config: using process.env with no prefix:");
     const processEnvNoPrefix = process.env[submoduleLoggingConfigKey];
@@ -70,8 +75,21 @@ function localCurrentConfig() {
       process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`];
     logOrInformUndefined(processEnvExpoPublicPrefix);
     return currentConfig(processEnvExpoPublicPrefix);
+  } else if (foundCypress) {
+    console.log("Submodule logging config: using Cypress.env with no prefix:");
+    const cypressEnvNoPrefix = Cypress.env(submoduleLoggingConfigKey);
+    logOrInformUndefined(cypressEnvNoPrefix);
+    return currentConfig(cypressEnvNoPrefix);
+  } else if (import.meta?.env) {
+    console.log(
+      "Submodule logging config: using import.meta.env with VITE_ prefix:",
+    );
+    const importMetaEnvVitePrefix = import.meta.env[
+      `VITE_${submoduleLoggingConfigKey}`
+    ];
+    logOrInformUndefined(importMetaEnvVitePrefix);
+    return currentConfig(importMetaEnvVitePrefix);
   }
-  // VITE guess removed since it also breaks expo
   return currentConfig(undefined);
 }
 

@@ -4,13 +4,13 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { client } from "../../gql";
 import {
   GeneratedSubscription,
   KeyedGeneratedSubscription,
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
+import { client } from "./gqlClient";
 import {
   setBornSubscriptionStatuses,
   setSubscriptionBirth,
