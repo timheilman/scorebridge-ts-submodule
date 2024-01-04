@@ -4,7 +4,7 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { setClub } from "../../features/clubDevices/clubDevicesSlice";
+import { Club } from "../graphql/appsync";
 import { getClubGql } from "../graphql/queries";
 import {
   GeneratedSubscription,
@@ -39,7 +39,10 @@ export interface AccessParams {
   authMode?: GraphQLAuthMode;
 }
 
-export const getClub = ({ clubId, authMode, dispatch }: AccessParams) => {
+export const getClub = (
+  { clubId, authMode, dispatch }: AccessParams,
+  setClub: (c: Club) => unknown,
+) => {
   return client
     .graphql({
       query: getClubGql,
