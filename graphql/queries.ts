@@ -1,3 +1,5 @@
+import gql from "graphql-tag";
+
 import * as GqlCodegenTypes from "./appsync";
 import { Query } from "./appsync";
 
@@ -32,20 +34,19 @@ export const listClubDevicesGql = /* GraphQL */ `
   Pick<Query, "listClubDevices">
 >;
 
-export const queryListClubDevices = /* GraphQL */ `
-    query listClubDevices($input: ListClubDevicesInput!) {
-        listClubDevices(input: $input) {
-            items {
-                clubId
-                clubDeviceId
-                email
-                name
-                createdAt
-                updatedAt
-            }
+export const getClubDeviceGql = /* GraphQL */ `
+    query getClubDevice($clubId: String!, $clubDeviceId: String!) {
+        getClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
+            clubId
+            clubDeviceId
+            email
+            name
+            table
+            createdAt
+            updatedAt
         }
     }
 ` as GeneratedQuery<
-  GqlCodegenTypes.QueryListClubDevicesArgs,
-  Pick<Query, "listClubDevices">
+  GqlCodegenTypes.QueryGetClubDeviceArgs,
+  Pick<Query, "getClubDevice">
 >;
