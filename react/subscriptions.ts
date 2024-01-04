@@ -4,10 +4,16 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { SubscriptionNames } from "../graphql/subscriptions";
+import { client } from "../../gql";
+import {
+  GeneratedSubscription,
+  KeyedGeneratedSubscription,
+  SubscriptionNames,
+} from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
   setBornSubscriptionStatuses,
+  setSubscriptionBirth,
   setSubscriptionStatus,
   subIdToSubGql,
 } from "./subscriptionStatesSlice";
@@ -86,6 +92,66 @@ export const deleteAllSubs = (dispatch: any) => {
     log("deleteAllSubs", "debug", { subId });
     deleteSub(dispatch, subId as SubscriptionNames);
   });
+};
+
+type OutType<T> = T extends GeneratedSubscription<any, infer OUT>
+  ? NeverEmpty<OUT>
+  : never;
+
+// these next three types are pulled from AWS Amplify v6 source code
+type NeverEmpty<T> = {
+  [K in keyof T]-?: Exclude<WithListsFixed<T[K]>, undefined | null>;
+};
+type WithListsFixed<T> = T extends PagedList<infer IT, infer NAME>
+  ? PagedList<Exclude<IT, null | undefined>, NAME>
+  : // eslint-disable-next-line @typescript-eslint/ban-types
+    T extends {}
+    ? {
+        [K in keyof T]: WithListsFixed<T[K]>;
+      }
+    : T;
+interface PagedList<T, TYPENAME> {
+  __typename: TYPENAME;
+  nextToken?: string | null | undefined;
+  items: T[];
+}
+export const errorCatchingSubscription = <
+  SubscriptionName extends SubscriptionNames,
+  SubscriptionArgs,
+>(
+  accessParams: AccessParams,
+  subId: SubscriptionName,
+  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>,
+  variables: SubscriptionArgs,
+  cb: (val: OutType<typeof query>[typeof subId]) => void,
+) => {
+  try {
+    deleteSub(accessParams.dispatch, subId);
+    log("errorCatchingSubscription", "debug", {
+      subscriptionName: subId,
+      ...variables,
+    });
+    pool[subId] = client
+      .graphql({
+        authMode: accessParams.authMode ?? "userPool",
+        query,
+        variables,
+      })
+      .subscribe({
+        next: (message) => cb(message.data[subId]),
+        error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
+      });
+    log("errorCatchingSubscription.ok", "debug", { subId });
+
+    accessParams.dispatch(
+      setSubscriptionStatus([subId, "successfullySubscribed"]),
+    );
+    log("errorCatchingSubscription.birth", "debug", { subId });
+
+    accessParams.dispatch(setSubscriptionBirth(subId));
+  } catch (e: unknown) {
+    handleUnexpectedSubscriptionError(e, accessParams.dispatch, subId);
+  }
 };
 
 export interface UseSubscriptionsParams {
