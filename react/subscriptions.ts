@@ -152,13 +152,19 @@ interface PagedList<T, TYPENAME> {
 export const errorCatchingSubscription = <
   SubscriptionName extends SubscriptionNames,
   SubscriptionArgs,
->(
-  accessParams: AccessParams,
-  subId: SubscriptionName,
-  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>,
-  variables: SubscriptionArgs,
-  cb: (val: OutType<typeof query>[typeof subId]) => void,
-) => {
+>({
+  accessParams,
+  subId,
+  query,
+  variables,
+  callback,
+}: {
+  accessParams: AccessParams;
+  subId: SubscriptionName;
+  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>;
+  variables: SubscriptionArgs;
+  callback: (val: OutType<typeof query>[typeof subId]) => void;
+}) => {
   try {
     deleteSub(accessParams.dispatch, subId);
     log("errorCatchingSubscription", "debug", {
@@ -172,7 +178,7 @@ export const errorCatchingSubscription = <
         variables,
       })
       .subscribe({
-        next: (message) => cb(message.data[subId]),
+        next: (message) => callback(message.data[subId]),
         error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
       });
     log("errorCatchingSubscription.ok", "debug", { subId });
