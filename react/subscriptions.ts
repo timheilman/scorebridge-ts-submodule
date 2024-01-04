@@ -4,6 +4,8 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import { setClub } from "../../features/clubDevices/clubDevicesSlice";
+import { getClubGql } from "../graphql/queries";
 import {
   GeneratedSubscription,
   KeyedGeneratedSubscription,
@@ -36,6 +38,24 @@ export interface AccessParams {
   clubDeviceId?: string;
   authMode?: GraphQLAuthMode;
 }
+
+export const getClub = ({ clubId, authMode, dispatch }: AccessParams) => {
+  return client
+    .graphql({
+      query: getClubGql,
+      variables: {
+        clubId,
+      },
+      authMode,
+    })
+    .then((res) => {
+      if (res.errors) {
+        throw new Error(JSON.stringify(res.errors, null, 2));
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      dispatch(setClub(res.data.getClub!));
+    });
+};
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
