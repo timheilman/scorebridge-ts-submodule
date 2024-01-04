@@ -1,5 +1,3 @@
-import gql from "graphql-tag";
-
 import * as GqlCodegenTypes from "./appsync";
 import { Query } from "./appsync";
 
