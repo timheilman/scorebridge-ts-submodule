@@ -94,3 +94,20 @@ export const mutationDeleteClubDevice = /* GraphQL */ `
   GqlCodegenTypes.MutationDeleteClubDeviceArgs,
   Pick<Mutation, "deleteClubDevice">
 >;
+
+export const setTableNumberGql = /* GraphQL */ `
+  mutation updateClubDevice($input: UpdateClubDeviceInput!) {
+    updateClubDevice(input: $input) {
+      clubId
+      clubDeviceId
+      email
+      name
+      table
+      createdAt
+      updatedAt
+    }
+  }
+` as GeneratedMutation<
+  GqlCodegenTypes.MutationUpdateClubDeviceArgs,
+  Pick<Mutation, "updateClubDevice">
+>;
