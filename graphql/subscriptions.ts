@@ -1,11 +1,24 @@
-import * as GqlCodegenTypes from "./appsync";
-import { Subscription } from "./appsync";
+import {
+  Subscription,
+  SubscriptionOnCreateClubDeviceArgs,
+  SubscriptionOnDeleteClubDeviceArgs,
+  SubscriptionOnUpdateClubArgs,
+  SubscriptionOnUpdateClubDeviceArgs,
+} from "./appsync";
 
-type GeneratedSubscription<InputType, OutputType> = string & {
+export type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
 };
 
+export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
+
+export type KeyedGeneratedSubscription<
+  SubscriptionName extends SubscriptionNames,
+  InputType,
+> = GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>> & {
+  __subscriptionName: SubscriptionName;
+};
 export const subscriptionOnCreateClubDevice = /* GraphQL */ `
   subscription OnCreateClubDevice($clubId: String!) {
     onCreateClubDevice(clubId: $clubId) {
@@ -17,9 +30,9 @@ export const subscriptionOnCreateClubDevice = /* GraphQL */ `
       updatedAt
     }
   }
-` as GeneratedSubscription<
-  GqlCodegenTypes.SubscriptionOnCreateClubDeviceArgs,
-  Pick<Subscription, "onCreateClubDevice">
+` as KeyedGeneratedSubscription<
+  "onCreateClubDevice",
+  SubscriptionOnCreateClubDeviceArgs
 >;
 export const subscriptionOnDeleteClubDevice = /* GraphQL */ `
   subscription OnDeleteClubDevice($clubId: String!) {
@@ -32,9 +45,9 @@ export const subscriptionOnDeleteClubDevice = /* GraphQL */ `
       updatedAt
     }
   }
-` as GeneratedSubscription<
-  GqlCodegenTypes.SubscriptionOnDeleteClubDeviceArgs,
-  Pick<Subscription, "onDeleteClubDevice">
+` as KeyedGeneratedSubscription<
+  "onDeleteClubDevice",
+  SubscriptionOnDeleteClubDeviceArgs
 >;
 
 export const subscriptionOnUpdateClub = /* GraphQL */ `
@@ -46,10 +59,7 @@ export const subscriptionOnUpdateClub = /* GraphQL */ `
       updatedAt
     }
   }
-` as GeneratedSubscription<
-  GqlCodegenTypes.SubscriptionOnUpdateClubArgs,
-  Pick<Subscription, "onUpdateClub">
->;
+` as KeyedGeneratedSubscription<"onUpdateClub", SubscriptionOnUpdateClubArgs>;
 
 export const subscriptionOnUpdateClubDevice = /* GraphQL */ `
   subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
@@ -63,7 +73,7 @@ export const subscriptionOnUpdateClubDevice = /* GraphQL */ `
       updatedAt
     }
   }
-` as GeneratedSubscription<
-  GqlCodegenTypes.SubscriptionOnUpdateClubDeviceArgs,
-  Pick<Subscription, "onUpdateClubDevice">
+` as KeyedGeneratedSubscription<
+  "onUpdateClubDevice",
+  SubscriptionOnUpdateClubDeviceArgs
 >;

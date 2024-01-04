@@ -4,9 +4,9 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import { SubscriptionNames } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
-  allSubscriptionsI,
   setBornSubscriptionStatuses,
   setSubscriptionStatus,
   subIdToSubGql,
@@ -33,9 +33,10 @@ export interface AccessParams {
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
-export function handleAmplifySubscriptionError<
-  T extends keyof allSubscriptionsI,
->(dispatch: any, subId: T) {
+export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
+  dispatch: any,
+  subId: T,
+) {
   return (e: any) => {
     if (e?.errors?.length && e.errors[0].message) {
       dispatch(
@@ -55,9 +56,11 @@ export function handleAmplifySubscriptionError<
   };
 }
 
-export function handleUnexpectedSubscriptionError<
-  T extends keyof allSubscriptionsI,
->(e: any, dispatch: any, subId: T) {
+export function handleUnexpectedSubscriptionError<T extends SubscriptionNames>(
+  e: any,
+  dispatch: any,
+  subId: T,
+) {
   if (e.message) {
     dispatch(
       setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
@@ -70,7 +73,7 @@ export function handleUnexpectedSubscriptionError<
   return;
 }
 
-export const deleteSub = (dispatch: any, subId: keyof allSubscriptionsI) => {
+export const deleteSub = (dispatch: any, subId: SubscriptionNames) => {
   if (pool[subId]) {
     pool[subId].unsubscribe();
     delete pool[subId];
@@ -81,7 +84,7 @@ export const deleteSub = (dispatch: any, subId: keyof allSubscriptionsI) => {
 export const deleteAllSubs = (dispatch: any) => {
   Object.keys(subIdToSubGql).forEach((subId: string) => {
     log("deleteAllSubs", "debug", { subId });
-    deleteSub(dispatch, subId as keyof allSubscriptionsI /* actually safe */);
+    deleteSub(dispatch, subId as SubscriptionNames);
   });
 };
 
@@ -133,7 +136,7 @@ export function useSubscriptions({
           Object.keys(subIdToSubGql).forEach((subId) => {
             dispatch(
               setSubscriptionStatus([
-                subId as keyof allSubscriptionsI,
+                subId as SubscriptionNames,
                 "disconnected post-birth",
               ]),
             );
