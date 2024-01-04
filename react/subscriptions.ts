@@ -70,6 +70,7 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
   return (e: any) => {
     if (e?.errors?.length && e.errors[0].message) {
       log("handleAmplifySubscriptionError", "debug", {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message: e.errors[0].message,
       });
       dispatch(
@@ -81,6 +82,7 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
       return;
     }
     log("handleAmplifySubscriptionError", "debug", {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       message: e,
     });
     dispatch(
@@ -97,6 +99,7 @@ export function handleUnexpectedSubscriptionError<T extends SubscriptionNames>(
   dispatch: any,
   subId: T,
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   log("handleUnexpectedSubscriptionError", "debug", { subId, e });
   if (e.message) {
     dispatch(
