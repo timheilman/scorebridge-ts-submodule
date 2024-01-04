@@ -66,8 +66,12 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
   dispatch: any,
   subId: T,
 ) {
+  log("handleAmplifySubscriptionError", "debug", { subId });
   return (e: any) => {
     if (e?.errors?.length && e.errors[0].message) {
+      log("handleAmplifySubscriptionError", "debug", {
+        message: e.errors[0].message,
+      });
       dispatch(
         setSubscriptionStatus([
           subId,
@@ -76,6 +80,9 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
       );
       return;
     }
+    log("handleAmplifySubscriptionError", "debug", {
+      message: e,
+    });
     dispatch(
       setSubscriptionStatus([
         subId,
@@ -90,6 +97,7 @@ export function handleUnexpectedSubscriptionError<T extends SubscriptionNames>(
   dispatch: any,
   subId: T,
 ) {
+  log("handleUnexpectedSubscriptionError", "debug", { subId, e });
   if (e.message) {
     dispatch(
       setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
