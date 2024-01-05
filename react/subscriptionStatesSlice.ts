@@ -15,7 +15,7 @@ export const subIdToSubGql = {
   onUpdateClubDevice: subscriptionOnUpdateClubDevice,
   onDeleteClubDevice: subscriptionOnDeleteClubDevice,
   onUpdateClub: subscriptionOnUpdateClub,
-};
+} as const;
 // the boolean is for whether the subscription has ever been active
 export type SubscriptionStateType = Record<
   SubscriptionNames,
