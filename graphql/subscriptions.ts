@@ -16,7 +16,9 @@ export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
 export type KeyedGeneratedSubscription<
   SubscriptionName extends SubscriptionNames,
   InputType,
-> = GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>>;
+> = GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>> & {
+  __subscriptionName: SubscriptionName;
+};
 
 export const createKeyedGeneratedSubscription = <
   SubscriptionName extends SubscriptionNames,
@@ -24,10 +26,7 @@ export const createKeyedGeneratedSubscription = <
 >(
   subGql: string,
 ): KeyedGeneratedSubscription<SubscriptionName, InputType> => {
-  return subGql as GeneratedSubscription<
-    InputType,
-    Pick<Subscription, SubscriptionName>
-  >;
+  return subGql as KeyedGeneratedSubscription<SubscriptionName, InputType>;
 };
 export const subscriptionOnCreateClubDevice = createKeyedGeneratedSubscription<
   "onCreateClubDevice",

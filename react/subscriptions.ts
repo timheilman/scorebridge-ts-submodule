@@ -4,7 +4,7 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { Club } from "../graphql/appsync";
+import { Club, Subscription } from "../graphql/appsync";
 import { getClubGql } from "../graphql/queries";
 import {
   GeneratedSubscription,
@@ -39,25 +39,22 @@ export interface AccessParams {
   authMode?: GraphQLAuthMode;
 }
 
-export const getClub = (
+export const getClub = async (
   { clubId, authMode, dispatch }: AccessParams,
   setClub: (c: Club) => unknown,
 ) => {
-  return client
-    .graphql({
-      query: getClubGql,
-      variables: {
-        clubId,
-      },
-      authMode,
-    })
-    .then((res) => {
-      if (res.errors) {
-        throw new Error(JSON.stringify(res.errors, null, 2));
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      dispatch(setClub(res.data.getClub!));
-    });
+  const res = await client.graphql({
+    query: getClubGql,
+    variables: {
+      clubId,
+    },
+    authMode,
+  });
+  if (res.errors) {
+    throw new Error(JSON.stringify(res.errors, null, 2));
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  dispatch(setClub(res.data.getClub!));
 };
 
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
@@ -149,6 +146,25 @@ interface PagedList<T, TYPENAME> {
   nextToken?: string | null | undefined;
   items: T[];
 }
+
+export interface SubscriptionDetails<
+  SubscriptionName extends SubscriptionNames,
+  SubscriptionArgs,
+> {
+  accessParams: AccessParams;
+  subId: SubscriptionName;
+  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>;
+  variables: SubscriptionArgs;
+  callback: (
+    val: OutType<
+      string & {
+        __generatedSubscriptionInput: SubscriptionArgs;
+        __generatedSubscriptionOutput: Pick<Subscription, SubscriptionName>;
+      } & { __subscriptionName: SubscriptionName }
+    >[SubscriptionName],
+  ) => void;
+}
+
 export const errorCatchingSubscription = <
   SubscriptionName extends SubscriptionNames,
   SubscriptionArgs,
@@ -158,13 +174,7 @@ export const errorCatchingSubscription = <
   query,
   variables,
   callback,
-}: {
-  accessParams: AccessParams;
-  subId: SubscriptionName;
-  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>;
-  variables: SubscriptionArgs;
-  callback: (val: OutType<typeof query>[typeof subId]) => void;
-}) => {
+}: SubscriptionDetails<SubscriptionName, SubscriptionArgs>) => {
   try {
     deleteSub(accessParams.dispatch, subId);
     log("errorCatchingSubscription", "debug", {

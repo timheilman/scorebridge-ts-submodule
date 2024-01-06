@@ -8,4 +8,4 @@ The typescript types in:
 
 appsync.d.ts
 
-are generated from schema.api.graphql .  All of these files are processed and copied into this repo by running `npm run codegen-gql-types` in scorebridge-cloud.
+are generated from schema.api.graphql . All of these files are processed and copied into this repo by running `npm run codegen-gql-types` in scorebridge-cloud.
