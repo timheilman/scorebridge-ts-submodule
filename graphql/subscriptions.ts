@@ -13,67 +13,108 @@ export type GeneratedSubscription<InputType, OutputType> = string & {
 
 export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
 
-export type KeyedGeneratedSubscription<
+interface SubscriptionOutputMap {
+  onUpdateClub: Subscription["onUpdateClub"];
+  onUpdateClubDevice: Subscription["onUpdateClubDevice"];
+  onDeleteClubDevice: Subscription["onDeleteClubDevice"];
+  onCreateClubDevice: Subscription["onCreateClubDevice"];
+}
+export type SubscriptionOutput<T extends SubscriptionNames> = NonNullable<
+  SubscriptionOutputMap[T]
+>;
+export interface KeyedGeneratedSubscription<
   SubscriptionName extends SubscriptionNames,
   InputType,
-> = GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>> & {
+> {
   __subscriptionName: SubscriptionName;
+  gql: GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>>;
+}
+
+export const createKeyedGeneratedSubscription = <
+  SubscriptionName extends SubscriptionNames,
+  InputType,
+>(
+  subName: SubscriptionName,
+  subGql: string,
+): KeyedGeneratedSubscription<SubscriptionName, InputType> => {
+  return {
+    __subscriptionName: subName,
+    gql: subGql as GeneratedSubscription<
+      InputType,
+      Pick<Subscription, SubscriptionName>
+    >,
+  };
 };
-export const subscriptionOnCreateClubDevice = /* GraphQL */ `
-  subscription OnCreateClubDevice($clubId: String!) {
-    onCreateClubDevice(clubId: $clubId) {
-      clubDeviceId
-      clubId
-      createdAt
-      email
-      name
-      updatedAt
-    }
-  }
-` as KeyedGeneratedSubscription<
+export const subscriptionOnCreateClubDevice = createKeyedGeneratedSubscription<
   "onCreateClubDevice",
   SubscriptionOnCreateClubDeviceArgs
->;
-export const subscriptionOnDeleteClubDevice = /* GraphQL */ `
-  subscription OnDeleteClubDevice($clubId: String!) {
-    onDeleteClubDevice(clubId: $clubId) {
-      clubDeviceId
-      clubId
-      createdAt
-      email
-      name
-      updatedAt
+>(
+  "onCreateClubDevice",
+  /* GraphQL */ `
+    subscription OnCreateClubDevice($clubId: String!) {
+      onCreateClubDevice(clubId: $clubId) {
+        clubDeviceId
+        clubId
+        createdAt
+        email
+        name
+        updatedAt
+      }
     }
-  }
-` as KeyedGeneratedSubscription<
+  `,
+);
+export const subscriptionOnDeleteClubDevice = createKeyedGeneratedSubscription<
   "onDeleteClubDevice",
   SubscriptionOnDeleteClubDeviceArgs
->;
-
-export const subscriptionOnUpdateClub = /* GraphQL */ `
-  subscription OnUpdateClub($id: String!) {
-    onUpdateClub(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
+>(
+  "onDeleteClubDevice",
+  /* GraphQL */ `
+    subscription OnDeleteClubDevice($clubId: String!) {
+      onDeleteClubDevice(clubId: $clubId) {
+        clubDeviceId
+        clubId
+        createdAt
+        email
+        name
+        updatedAt
+      }
     }
-  }
-` as KeyedGeneratedSubscription<"onUpdateClub", SubscriptionOnUpdateClubArgs>;
+  `,
+);
 
-export const subscriptionOnUpdateClubDevice = /* GraphQL */ `
-  subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
-    onUpdateClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
-      clubId
-      clubDeviceId
-      name
-      email
-      table
-      createdAt
-      updatedAt
+export const subscriptionOnUpdateClub = createKeyedGeneratedSubscription<
+  "onUpdateClub",
+  SubscriptionOnUpdateClubArgs
+>(
+  "onUpdateClub",
+  /* GraphQL */ `
+    subscription OnUpdateClub($id: String!) {
+      onUpdateClub(id: $id) {
+        id
+        name
+        createdAt
+        updatedAt
+      }
     }
-  }
-` as KeyedGeneratedSubscription<
+  `,
+);
+
+export const subscriptionOnUpdateClubDevice = createKeyedGeneratedSubscription<
   "onUpdateClubDevice",
   SubscriptionOnUpdateClubDeviceArgs
->;
+>(
+  "onUpdateClubDevice",
+  /* GraphQL */ `
+    subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
+      onUpdateClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
+        clubId
+        clubDeviceId
+        name
+        email
+        table
+        createdAt
+        updatedAt
+      }
+    }
+  `,
+);

@@ -1,0 +1,157 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+# ignore for now; Query simply has to be present
+type Query {
+  getClub(clubId: String!): Club
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+
+  listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  # I think ClubDevice could technically be null here...
+  getClubDevice(clubId: String!, clubDeviceId: String!): ClubDevice!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+}
+type Mutation {
+  unexpectedError: UnexpectedErrorResponse!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+
+  createClub(input: CreateClubInput!): CreateClubResponse!
+    @aws_api_key
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+
+  updateClub(input: UpdateClubInput!): Club!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+
+  deleteClubAndAdmin(
+    input: DeleteClubAndAdminInput!
+  ): DeleteClubAndAdminResponse!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  updateClubDevice(input: UpdateClubDeviceInput!): ClubDevice!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+
+  deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+}
+
+type Subscription {
+  onCreateClubDevice(clubId: String!): ClubDevice
+    @aws_subscribe(mutations: ["createClubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  onDeleteClubDevice(clubId: String!): ClubDevice
+    @aws_subscribe(mutations: ["deleteClubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  onUpdateClubDevice(clubId: String!, clubDeviceId: String): ClubDevice
+    @aws_subscribe(mutations: ["updateClubDevice"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+
+  onUpdateClub(id: String!): Club
+    @aws_subscribe(mutations: ["updateClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+}
+input ListClubDevicesInput {
+  clubId: String!
+  nextToken: String
+  limit: Int = 50
+}
+
+type ListClubDevicesOutput {
+  items: [ClubDevice]!
+  nextToken: String
+}
+
+type Club {
+  id: String!
+  name: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type ClubDevice {
+  clubId: String!
+  clubDeviceId: String!
+  name: String!
+  email: AWSEmail!
+  table: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input CreateClubDeviceInput {
+  clubId: String!
+  deviceName: String!
+  regToken: String!
+}
+
+input UpdateClubDeviceInput {
+  clubId: String!
+  clubDeviceId: String!
+  deviceName: String
+  table: Int
+}
+
+input UpdateClubInput {
+  id: String!
+  name: String
+}
+
+input DeleteClubDeviceInput {
+  clubId: String!
+  clubDeviceId: String!
+}
+
+type UnexpectedErrorResponse {
+  neverGetsReturned: String!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+}
+
+input CreateClubInput {
+  newAdminEmail: AWSEmail!
+  newClubName: String!
+  suppressInvitationEmail: Boolean
+  recaptchaToken: String!
+}
+
+type CreateClubResponse {
+  userId: String!
+    @aws_api_key
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+  clubId: String!
+    @aws_api_key
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+}
+
+input DeleteClubAndAdminInput {
+  userId: String!
+  clubId: String!
+}
+
+type DeleteClubAndAdminResponse {
+  status: String!
+}
+
+# How to do paginated lists:
+#type ProfilesPage {
+#  profiles: [IProfile!]
+#  nextToken: String
+#}
