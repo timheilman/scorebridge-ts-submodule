@@ -66,10 +66,10 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
   dispatch: any,
   subId: T,
 ) {
-  log("handleAmplifySubscriptionError", "debug", { subId });
+  log("handleAmplifySubscriptionError", "error", { subId });
   return (e: any) => {
     if (e?.errors?.length && e.errors[0].message) {
-      log("handleAmplifySubscriptionError", "debug", {
+      log("handleAmplifySubscriptionError.message", "error", {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message: e.errors[0].message,
       });
@@ -81,7 +81,7 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
       );
       return;
     }
-    log("handleAmplifySubscriptionError", "debug", {
+    log("handleAmplifySubscriptionError.unexpected", "error", {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       message: e,
     });
@@ -100,7 +100,7 @@ export function handleUnexpectedSubscriptionError<T extends SubscriptionNames>(
   subId: T,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  log("handleUnexpectedSubscriptionError", "debug", { subId, e });
+  log("handleUnexpectedSubscriptionError", "error", { subId, e });
   if (e.message) {
     dispatch(
       setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
