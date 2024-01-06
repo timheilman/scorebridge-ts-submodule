@@ -13,15 +13,6 @@ export type GeneratedSubscription<InputType, OutputType> = string & {
 
 export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
 
-interface SubscriptionOutputMap {
-  onUpdateClub: Subscription["onUpdateClub"];
-  onUpdateClubDevice: Subscription["onUpdateClubDevice"];
-  onDeleteClubDevice: Subscription["onDeleteClubDevice"];
-  onCreateClubDevice: Subscription["onCreateClubDevice"];
-}
-export type SubscriptionOutput<T extends SubscriptionNames> = NonNullable<
-  SubscriptionOutputMap[T]
->;
 export interface KeyedGeneratedSubscription<
   SubscriptionName extends SubscriptionNames,
   InputType,
