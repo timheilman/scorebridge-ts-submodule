@@ -1,10 +1,10 @@
 // see https://github.com/aws-amplify/amplify-js/pull/12757 for a fix here
-import { /* CONNECTION_STATE_CHANGE,*/ ConnectionState } from "aws-amplify/api";
+import { ConnectionState } from "aws-amplify/api";
 import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { Club, Subscription } from "../graphql/appsync";
+import { Club } from "../graphql/appsync";
 import { getClubGql } from "../graphql/queries";
 import {
   GeneratedSubscription,
@@ -129,7 +129,12 @@ type OutType<T> = T extends GeneratedSubscription<any, infer OUT>
   ? NeverEmpty<OUT>
   : never;
 
+type NameType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
+  ? NAME
+  : never;
 // these next three types are pulled from AWS Amplify v6 source code
+// For why these are copied-into this repo, see
+// https://stackoverflow.com/questions/77783165/how-do-i-write-a-type-safe-function-signature-accepting-the-callback-function-fo
 type NeverEmpty<T> = {
   [K in keyof T]-?: Exclude<WithListsFixed<T[K]>, undefined | null>;
 };
@@ -147,50 +152,41 @@ interface PagedList<T, TYPENAME> {
   items: T[];
 }
 
-export interface SubscriptionDetails<
-  SubscriptionName extends SubscriptionNames,
-  SubscriptionArgs,
-> {
-  accessParams: AccessParams;
-  subId: SubscriptionName;
-  query: KeyedGeneratedSubscription<SubscriptionName, SubscriptionArgs>;
-  variables: SubscriptionArgs;
-  callback: (
-    val: OutType<
-      string & {
-        __generatedSubscriptionInput: SubscriptionArgs;
-        __generatedSubscriptionOutput: Pick<Subscription, SubscriptionName>;
-      } & { __subscriptionName: SubscriptionName }
-    >[SubscriptionName],
-  ) => void;
-}
-
 export const errorCatchingSubscription = <
-  SubscriptionName extends SubscriptionNames,
-  SubscriptionArgs,
+  SUB_NAME extends SubscriptionNames,
+  INPUT_TYPE,
 >({
   accessParams,
   subId,
   query,
   variables,
   callback,
-}: SubscriptionDetails<SubscriptionName, SubscriptionArgs>) => {
+}: {
+  accessParams: AccessParams;
+  subId: NameType<typeof query>;
+  query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
+  variables: Parameters<
+    typeof client.graphql<unknown, typeof query>
+  >[0]["variables"];
+  callback: (d: OutType<typeof query>[NameType<typeof query>]) => void;
+}) => {
   try {
     deleteSub(accessParams.dispatch, subId);
     log("errorCatchingSubscription", "debug", {
       subscriptionName: subId,
       ...variables,
     });
-    pool[subId] = client
-      .graphql({
-        authMode: accessParams.authMode ?? "userPool",
-        query,
-        variables,
-      })
-      .subscribe({
-        next: (message) => callback(message.data[subId]),
-        error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
-      });
+    const graphqlResponse = client.graphql({
+      authMode: accessParams.authMode ?? "userPool",
+      query,
+      variables,
+    });
+    pool[subId] = graphqlResponse.subscribe({
+      next: (gqlSubMsg) => {
+        callback(gqlSubMsg.data[subId]);
+      },
+      error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
+    });
     log("errorCatchingSubscription.ok", "debug", { subId });
 
     accessParams.dispatch(
