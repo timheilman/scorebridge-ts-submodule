@@ -4,10 +4,9 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { Club } from "../graphql/appsync";
+import { Club, Subscription } from "../graphql/appsync";
 import { getClubGql } from "../graphql/queries";
 import {
-  GeneratedSubscription,
   KeyedGeneratedSubscription,
   SubscriptionNames,
 } from "../graphql/subscriptions";
@@ -125,13 +124,10 @@ export const deleteAllSubs = (dispatch: any) => {
   });
 };
 
-type OutType<T> = T extends GeneratedSubscription<any, infer OUT>
-  ? NeverEmpty<OUT>
+type OutType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
+  ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
   : never;
 
-type NameType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
-  ? NAME
-  : never;
 // these next three types are pulled from AWS Amplify v6 source code
 // For why these are copied-into this repo, see
 // https://stackoverflow.com/questions/77783165/how-do-i-write-a-type-safe-function-signature-accepting-the-callback-function-fo
@@ -157,19 +153,18 @@ export const errorCatchingSubscription = <
   INPUT_TYPE,
 >({
   accessParams,
-  subId,
   query,
   variables,
   callback,
 }: {
   accessParams: AccessParams;
-  subId: NameType<typeof query>;
   query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
   variables: Parameters<
-    typeof client.graphql<unknown, typeof query>
+    typeof client.graphql<unknown, (typeof query)["gql"]>
   >[0]["variables"];
-  callback: (d: OutType<typeof query>[NameType<typeof query>]) => void;
+  callback: (d: OutType<typeof query>) => void;
 }) => {
+  const subId = query.__subscriptionName;
   try {
     deleteSub(accessParams.dispatch, subId);
     log("errorCatchingSubscription", "debug", {
@@ -178,13 +173,11 @@ export const errorCatchingSubscription = <
     });
     const graphqlResponse = client.graphql({
       authMode: accessParams.authMode ?? "userPool",
-      query,
+      query: query.gql,
       variables,
     });
     pool[subId] = graphqlResponse.subscribe({
-      next: (gqlSubMsg) => {
-        callback(gqlSubMsg.data[subId]);
-      },
+      next: (gqlSubMsg) => callback(gqlSubMsg.data[subId]),
       error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
     });
     log("errorCatchingSubscription.ok", "debug", { subId });
