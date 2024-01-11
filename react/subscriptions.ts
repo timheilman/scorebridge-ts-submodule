@@ -124,7 +124,7 @@ export const deleteAllSubs = (dispatch: any) => {
   });
 };
 
-type OutType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
+export type OutType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
   ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
   : never;
 
@@ -159,9 +159,7 @@ export const errorCatchingSubscription = <
 }: {
   accessParams: AccessParams;
   query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
-  variables: Parameters<
-    typeof client.graphql<unknown, (typeof query)["gql"]>
-  >[0]["variables"];
+  variables: INPUT_TYPE;
   callback: (d: OutType<typeof query>) => void;
 }) => {
   const subId = query.__subscriptionName;
