@@ -1,5 +1,4 @@
-// see https://github.com/aws-amplify/amplify-js/pull/12757 for a fix here
-import { ConnectionState } from "aws-amplify/api";
+import { CONNECTION_STATE_CHANGE, ConnectionState } from "aws-amplify/api";
 import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -216,10 +215,7 @@ export function useSubscriptions({
     const stopListening = Hub.listen("api", (data: any) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { payload } = data;
-      if (
-        payload.event ===
-        /* CONNECTION_STATE_CHANGE; see top of file */ "ConnectionStateChange"
-      ) {
+      if (payload.event === CONNECTION_STATE_CHANGE) {
         log("hub.listen.connectionStateChange", "debug", {
           previous: priorConnectionState,
           current: payload.data.connectionState as ConnectionState,
