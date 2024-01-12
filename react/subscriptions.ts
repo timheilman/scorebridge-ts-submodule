@@ -22,11 +22,11 @@ const log = tsSubmoduleLogFn("subscriptions.");
 
 export type GraphQLAuthMode =
   | "apiKey"
-  | "oidc"
-  | "userPool"
-  | "iam"
-  | "lambda"
-  | "none";
+  // | "oidc"
+  // | "iam"
+  // | "lambda"
+  // | "none"
+  | "userPool";
 export const pool: Record<string, { unsubscribe: () => void }> = {};
 
 export interface AccessParams {
