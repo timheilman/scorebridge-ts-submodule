@@ -74,7 +74,7 @@ export interface CreateClubResponse {
 export interface CreateGameInput {
   clubId: Scalars["String"]["input"];
   rotation: Scalars["String"]["input"];
-  tableCount: Scalars["String"]["input"];
+  tableCount: Scalars["Int"]["input"];
 }
 
 export interface DeleteClubAndAdminInput {

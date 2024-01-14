@@ -172,7 +172,7 @@ type Game {
 input CreateGameInput {
   clubId: String!
   rotation: String!
-  tableCount: String!
+  tableCount: Int!
 }
 
 input UpdateGameInput {
