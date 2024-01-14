@@ -1,4 +1,3 @@
-import * as GqlCodegenTypes from "./appsync";
 import { Query } from "./appsync";
 
 type GeneratedQuery<InputType, OutputType> = string & {
@@ -6,45 +5,64 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const getClubGql = /* GraphQL */ `
-    query getClub($clubId: String!) {
+type QueryNames = keyof Omit<Query, "__typename">;
+
+interface KeyedGeneratedQuery<NAME extends QueryNames, ARGS> {
+  gql: GeneratedQuery<ARGS, Pick<Query, NAME>>;
+  __queryName: NAME;
+}
+
+const createKeyedGeneratedQuery = <NAME extends QueryNames, ARGS>(
+  queryGql: string,
+  queryName: NAME,
+) => {
+  return {
+    gql: queryGql,
+    __queryName: queryName,
+  } as KeyedGeneratedQuery<NAME, ARGS>;
+};
+export const qidToQueryGql = {
+  getClub: createKeyedGeneratedQuery(
+    /* GraphQL */ `
+      query getClub($clubId: String!) {
         getClub(clubId: $clubId) {
-            id
-            name
-            createdAt
-            updatedAt
+          id
+          name
+          createdAt
+          updatedAt
         }
-    }
-` as GeneratedQuery<GqlCodegenTypes.QueryGetClubArgs, Pick<Query, "getClub">>;
-
-export const listClubDevicesGql = /* GraphQL */ `
-    query listClubDevices($input: ListClubDevicesInput!) {
-        listClubDevices(input: $input) {
-            items {
-                clubDeviceId
-                name
-                table
-            }
-        }
-    }
-` as GeneratedQuery<
-  GqlCodegenTypes.QueryListClubDevicesArgs,
-  Pick<Query, "listClubDevices">
->;
-
-export const getClubDeviceGql = /* GraphQL */ `
-    query getClubDevice($clubId: String!, $clubDeviceId: String!) {
-        getClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
-            clubId
+      }
+    `,
+    "getClub",
+  ),
+  listClubDevices: createKeyedGeneratedQuery(
+    /* GraphQL */ `
+      query listClubDevices($clubId: String!, $nextToken: String, $limit: Int) {
+        listClubDevices(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
+          items {
             clubDeviceId
-            email
             name
             table
-            createdAt
-            updatedAt
+          }
         }
-    }
-` as GeneratedQuery<
-  GqlCodegenTypes.QueryGetClubDeviceArgs,
-  Pick<Query, "getClubDevice">
->;
+      }
+    `,
+    "listClubDevices",
+  ),
+  getClubDevice: createKeyedGeneratedQuery(
+    /* GraphQL */ `
+      query getClubDevice($clubId: String!, $clubDeviceId: String!) {
+        getClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
+          clubId
+          clubDeviceId
+          email
+          name
+          table
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "getClubDevice",
+  ),
+};

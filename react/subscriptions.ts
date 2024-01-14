@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { Club, Subscription } from "../graphql/appsync";
-import { getClubGql } from "../graphql/queries";
+import { qidToQueryGql } from "../graphql/queries";
 import {
   KeyedGeneratedSubscription,
   subIdToSubGql,
@@ -42,7 +42,7 @@ export const getClub = async (
   setClub: (c: Club) => unknown,
 ) => {
   const res = await client.graphql({
-    query: getClubGql,
+    query: qidToQueryGql.getClub.gql,
     variables: {
       clubId,
     },
