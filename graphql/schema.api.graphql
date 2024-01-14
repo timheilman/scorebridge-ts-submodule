@@ -11,7 +11,7 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
+  listClubDevices(clubId: String!, nextToken: String, limit: Int = 50): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   # I think ClubDevice could technically be null here...
@@ -20,7 +20,7 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  listGames(input: ListGamesInput!): ListGamesOutput!
+  listGames(clubId: String!, nextToken: String, limit: Int = 50): ListGamesOutput!
   @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   getGame(clubId: String!, gameId: String!): Game
@@ -100,17 +100,6 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-}
-input ListClubDevicesInput {
-  clubId: String!
-  nextToken: String
-  limit: Int = 50
-}
-
-input ListGamesInput {
-  clubId: String!
-  nextToken: String
-  limit: Int = 50
 }
 
 type ListClubDevicesOutput {

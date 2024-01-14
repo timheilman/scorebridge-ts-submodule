@@ -107,22 +107,10 @@ export interface Game {
   updatedAt: Scalars["AWSDateTime"]["output"];
 }
 
-export interface ListClubDevicesInput {
-  clubId: Scalars["String"]["input"];
-  limit?: InputMaybe<Scalars["Int"]["input"]>;
-  nextToken?: InputMaybe<Scalars["String"]["input"]>;
-}
-
 export interface ListClubDevicesOutput {
   __typename?: "ListClubDevicesOutput";
   items: Maybe<ClubDevice>[];
   nextToken?: Maybe<Scalars["String"]["output"]>;
-}
-
-export interface ListGamesInput {
-  clubId: Scalars["String"]["input"];
-  limit?: InputMaybe<Scalars["Int"]["input"]>;
-  nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface ListGamesOutput {
@@ -205,11 +193,15 @@ export interface QueryGetGameArgs {
 }
 
 export interface QueryListClubDevicesArgs {
-  input: ListClubDevicesInput;
+  clubId: Scalars["String"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface QueryListGamesArgs {
-  input: ListGamesInput;
+  clubId: Scalars["String"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface Subscription {
