@@ -14,24 +14,24 @@ export type GeneratedSubscription<InputType, OutputType> = string & {
 export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
 
 export interface KeyedGeneratedSubscription<
-  SubscriptionName extends SubscriptionNames,
-  InputType,
+  NAME extends SubscriptionNames,
+  ARGS,
 > {
-  gql: GeneratedSubscription<InputType, Pick<Subscription, SubscriptionName>>;
-  __subscriptionName: SubscriptionName;
+  gql: GeneratedSubscription<ARGS, Pick<Subscription, NAME>>;
+  __subscriptionName: NAME;
 }
 
 export const createKeyedGeneratedSubscription = <
-  SubscriptionName extends SubscriptionNames,
-  InputType,
+  NAME extends SubscriptionNames,
+  ARGS,
 >(
   subGql: string,
-  subscriptionName: SubscriptionName,
-): KeyedGeneratedSubscription<SubscriptionName, InputType> => {
+  subscriptionName: NAME,
+) => {
   return {
     gql: subGql,
     __subscriptionName: subscriptionName,
-  } as KeyedGeneratedSubscription<SubscriptionName, InputType>;
+  } as KeyedGeneratedSubscription<NAME, ARGS>;
 };
 export const subIdToSubGql = {
   onCreateClubDevice: createKeyedGeneratedSubscription<

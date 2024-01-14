@@ -1,113 +1,158 @@
-import * as GqlCodegenTypes from "./appsync";
-import { Mutation } from "./appsync";
+import {
+  Mutation,
+  MutationCreateClubArgs,
+  MutationCreateClubDeviceArgs,
+  MutationDeleteClubAndAdminArgs,
+  MutationDeleteClubDeviceArgs,
+  MutationUpdateClubArgs,
+  MutationUpdateClubDeviceArgs,
+} from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
 };
+export type MutationNames = keyof Omit<Mutation, "__typename">;
+export interface KeyedGeneratedMutation<NAME extends MutationNames, ARGS> {
+  gql: GeneratedMutation<ARGS, Pick<Mutation, NAME>>;
+  __mutationName: NAME;
+}
 
-export const mutationCreateClub = /* GraphQL */ `
-  mutation createClub($input: CreateClubInput!) {
-    createClub(input: $input) {
-      clubId
-      userId
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationCreateClubArgs,
-  // SCOR-143 here's the example type from the tutorial:
-  // export type UpdateTodoMutation = {
-  //   updateTodo?:  {
-  //     __typename: "Todo",
-  //     id: string,
-  //     name: string,
-  //     description?: string | null,
-  //     createdAt: string,
-  //     updatedAt: string,
-  //   } | null,
-  // };
-  // So this should get the same thing:
-  Pick<Mutation, "createClub">
->;
+const createKeyedGeneratedMutation = <NAME extends MutationNames, ARGS>(
+  mutGql: string,
+  mutationName: NAME,
+) => {
+  return {
+    gql: mutGql,
+    __mutationName: mutationName,
+  } as KeyedGeneratedMutation<NAME, ARGS>;
+};
 
-export const mutationUpdateClub = /* GraphQL */ `
-  mutation updateClub($input: UpdateClubInput!) {
-    updateClub(input: $input) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationUpdateClubArgs,
-  Pick<Mutation, "updateClub">
->;
-
-export const mutationCreateClubDevice = /* GraphQL */ `
-  mutation createClubDevice($input: CreateClubDeviceInput!) {
-    createClubDevice(input: $input) {
-      clubId
-      clubDeviceId
-      name
-      email
-      createdAt
-      updatedAt
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationCreateClubDeviceArgs,
-  Pick<Mutation, "createClubDevice">
->;
-
-export const mutationUnexpectedError = /* GraphQL */ `
-  mutation unexpectedError {
-    unexpectedError {
-      neverGetsReturned
-    }
-  }
-` as GeneratedMutation<undefined, Pick<Mutation, "unexpectedError">>;
-
-export const mutationDeleteClubAndAdmin = /* GraphQL */ `
-  mutation deleteClubAndAdmin($input: DeleteClubAndAdminInput!) {
-    deleteClubAndAdmin(input: $input) {
-      status
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationDeleteClubAndAdminArgs,
-  Pick<Mutation, "deleteClubAndAdmin">
->;
-
-export const mutationDeleteClubDevice = /* GraphQL */ `
-  mutation DeleteClubDevice($input: DeleteClubDeviceInput!) {
-    deleteClubDevice(input: $input) {
-      clubId
-      clubDeviceId
-      name
-      email
-      createdAt
-      updatedAt
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationDeleteClubDeviceArgs,
-  Pick<Mutation, "deleteClubDevice">
->;
-
-export const setTableNumberGql = /* GraphQL */ `
-  mutation updateClubDevice($input: UpdateClubDeviceInput!) {
-    updateClubDevice(input: $input) {
-      clubId
-      clubDeviceId
-      email
-      name
-      table
-      createdAt
-      updatedAt
-    }
-  }
-` as GeneratedMutation<
-  GqlCodegenTypes.MutationUpdateClubDeviceArgs,
-  Pick<Mutation, "updateClubDevice">
->;
+export const mutIdToMutGql = {
+  createClub: createKeyedGeneratedMutation<
+    "createClub",
+    MutationCreateClubArgs
+  >(
+    /* GraphQL */ `
+      mutation createClub($input: CreateClubInput!) {
+        createClub(input: $input) {
+          clubId
+          userId
+        }
+      }
+    `,
+    "createClub",
+  ),
+  updateClub: createKeyedGeneratedMutation<
+    "updateClub",
+    MutationUpdateClubArgs
+  >(
+    /* GraphQL */ `
+      mutation updateClub($input: UpdateClubInput!) {
+        updateClub(input: $input) {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "updateClub",
+  ),
+  createClubDevice: createKeyedGeneratedMutation<
+    "createClubDevice",
+    MutationCreateClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      mutation createClubDevice($input: CreateClubDeviceInput!) {
+        createClubDevice(input: $input) {
+          clubId
+          clubDeviceId
+          name
+          email
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "createClubDevice",
+  ),
+  unexpectedError: createKeyedGeneratedMutation<"unexpectedError", undefined>(
+    /* GraphQL */ `
+      mutation unexpectedError {
+        unexpectedError {
+          neverGetsReturned
+        }
+      }
+    `,
+    "unexpectedError",
+  ),
+  deleteClubAndAdmin: createKeyedGeneratedMutation<
+    "deleteClubAndAdmin",
+    MutationDeleteClubAndAdminArgs
+  >(
+    /* GraphQL */ `
+      mutation deleteClubAndAdmin($input: DeleteClubAndAdminInput!) {
+        deleteClubAndAdmin(input: $input) {
+          status
+        }
+      }
+    `,
+    "deleteClubAndAdmin",
+  ),
+  deleteClubDevice: createKeyedGeneratedMutation<
+    "deleteClubDevice",
+    MutationDeleteClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      mutation DeleteClubDevice($input: DeleteClubDeviceInput!) {
+        deleteClubDevice(input: $input) {
+          clubId
+          clubDeviceId
+          name
+          email
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "deleteClubDevice",
+  ),
+  updateClubDevice: createKeyedGeneratedMutation<
+    "updateClubDevice",
+    MutationUpdateClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      mutation updateClubDevice($input: UpdateClubDeviceInput!) {
+        updateClubDevice(input: $input) {
+          clubId
+          clubDeviceId
+          email
+          name
+          table
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "updateClubDevice",
+  ),
+  createGame: createKeyedGeneratedMutation<
+    "createGame",
+    MutationCreateClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      mutation createGame($input: CreateGameInput!) {
+        createGame(input: $input) {
+          clubId
+          gameId
+          rotation
+          tableCount
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "createGame",
+  ),
+};
