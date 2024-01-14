@@ -7,6 +7,7 @@ import { Club, Subscription } from "../graphql/appsync";
 import { getClubGql } from "../graphql/queries";
 import {
   KeyedGeneratedSubscription,
+  subIdToSubGql,
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
@@ -15,7 +16,6 @@ import {
   setBornSubscriptionStatuses,
   setSubscriptionBirth,
   setSubscriptionStatus,
-  subIdToSubGql,
 } from "./subscriptionStatesSlice";
 
 const log = tsSubmoduleLogFn("subscriptions.");

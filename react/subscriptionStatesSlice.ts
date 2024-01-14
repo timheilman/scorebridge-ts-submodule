@@ -1,21 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // import { Subscription } from "../graphql/appsync";
-import {
-  SubscriptionNames,
-  // SubscriptionArgs,
-  subscriptionOnCreateClubDevice,
-  subscriptionOnDeleteClubDevice,
-  subscriptionOnUpdateClub,
-  subscriptionOnUpdateClubDevice,
-} from "../graphql/subscriptions";
+import { subIdToSubGql, SubscriptionNames } from "../graphql/subscriptions";
 
-export const subIdToSubGql = {
-  onCreateClubDevice: subscriptionOnCreateClubDevice,
-  onUpdateClubDevice: subscriptionOnUpdateClubDevice,
-  onDeleteClubDevice: subscriptionOnDeleteClubDevice,
-  onUpdateClub: subscriptionOnUpdateClub,
-} as const;
 // the boolean is for whether the subscription has ever been active
 export type SubscriptionStateType = Record<
   SubscriptionNames,

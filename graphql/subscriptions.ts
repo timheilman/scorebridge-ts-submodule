@@ -33,76 +33,92 @@ export const createKeyedGeneratedSubscription = <
     __subscriptionName: subscriptionName,
   } as KeyedGeneratedSubscription<SubscriptionName, InputType>;
 };
-export const subscriptionOnCreateClubDevice = createKeyedGeneratedSubscription<
-  "onCreateClubDevice",
-  SubscriptionOnCreateClubDeviceArgs
->(
-  /* GraphQL */ `
-    subscription OnCreateClubDevice($clubId: String!) {
-      onCreateClubDevice(clubId: $clubId) {
-        clubDeviceId
-        clubId
-        createdAt
-        email
-        name
-        updatedAt
+export const subIdToSubGql = {
+  onCreateClubDevice: createKeyedGeneratedSubscription<
+    "onCreateClubDevice",
+    SubscriptionOnCreateClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      subscription OnCreateClubDevice($clubId: String!) {
+        onCreateClubDevice(clubId: $clubId) {
+          clubDeviceId
+          clubId
+          createdAt
+          email
+          name
+          updatedAt
+        }
       }
-    }
-  `,
-  "onCreateClubDevice",
-);
-export const subscriptionOnDeleteClubDevice = createKeyedGeneratedSubscription<
-  "onDeleteClubDevice",
-  SubscriptionOnDeleteClubDeviceArgs
->(
-  /* GraphQL */ `
-    subscription OnDeleteClubDevice($clubId: String!) {
-      onDeleteClubDevice(clubId: $clubId) {
-        clubDeviceId
-        clubId
-        createdAt
-        email
-        name
-        updatedAt
+    `,
+    "onCreateClubDevice",
+  ),
+  onUpdateClubDevice: createKeyedGeneratedSubscription<
+    "onUpdateClubDevice",
+    SubscriptionOnUpdateClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
+        onUpdateClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
+          clubId
+          clubDeviceId
+          name
+          email
+          table
+          createdAt
+          updatedAt
+        }
       }
-    }
-  `,
-  "onDeleteClubDevice",
-);
-
-export const subscriptionOnUpdateClub = createKeyedGeneratedSubscription<
-  "onUpdateClub",
-  SubscriptionOnUpdateClubArgs
->(
-  /* GraphQL */ `
-    subscription OnUpdateClub($id: String!) {
-      onUpdateClub(id: $id) {
-        id
-        name
-        createdAt
-        updatedAt
+    `,
+    "onUpdateClubDevice",
+  ),
+  onDeleteClubDevice: createKeyedGeneratedSubscription<
+    "onDeleteClubDevice",
+    SubscriptionOnDeleteClubDeviceArgs
+  >(
+    /* GraphQL */ `
+      subscription OnDeleteClubDevice($clubId: String!) {
+        onDeleteClubDevice(clubId: $clubId) {
+          clubDeviceId
+          clubId
+          createdAt
+          email
+          name
+          updatedAt
+        }
       }
-    }
-  `,
-  "onUpdateClub",
-);
-
-export const subscriptionOnUpdateClubDevice = createKeyedGeneratedSubscription<
-  "onUpdateClubDevice",
-  SubscriptionOnUpdateClubDeviceArgs
->(
-  /* GraphQL */ `
-    subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
-      onUpdateClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
-        clubId
-        clubDeviceId
-        name
-        email
-        table
-        createdAt
-        updatedAt
+    `,
+    "onDeleteClubDevice",
+  ),
+  onUpdateClub: createKeyedGeneratedSubscription<
+    "onUpdateClub",
+    SubscriptionOnUpdateClubArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUpdateClub($id: String!) {
+        onUpdateClub(id: $id) {
+          id
+          name
+          createdAt
+          updatedAt
+        }
       }
-    }
-  `,
-  "onUpdateClubDevice",
-);
+    `,
+    "onUpdateClub",
+  ),
+  // onCreateGame: createKeyedGeneratedSubscription<
+  //   "onCreateGame",
+  //   SubscriptionOnCreateGameArgs
+  // >(
+  //   /* GraphQL */ `
+  //     subscription OnCreateGame($clubId: String!) {
+  //       onCreateGame(clubId: $clubId) {
+  //         id
+  //         name
+  //         createdAt
+  //         updatedAt
+  //       }
+  //     }
+  //   `,
+  //   "onCreateGame",
+  // ),
+} as const;
