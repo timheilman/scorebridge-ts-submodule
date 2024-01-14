@@ -11,7 +11,11 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  listClubDevices(clubId: String!, nextToken: String, limit: Int = 50): ListClubDevicesOutput!
+  listClubDevices(
+    clubId: String!
+    nextToken: String
+    limit: Int = 50
+  ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   # I think ClubDevice could technically be null here...
@@ -20,13 +24,17 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  listGames(clubId: String!, nextToken: String, limit: Int = 50): ListGamesOutput!
-  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  listGames(
+    clubId: String!
+    nextToken: String
+    limit: Int = 50
+  ): ListGamesOutput!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   getGame(clubId: String!, gameId: String!): Game
-  @aws_cognito_user_pools(
-    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-  )
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
 }
 type Mutation {
   unexpectedError: UnexpectedErrorResponse!
@@ -55,15 +63,15 @@ type Mutation {
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   createGame(input: CreateGameInput!): Game!
-  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   updateGame(input: UpdateGameInput!): Game!
-  @aws_cognito_user_pools(
-    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-  )
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
 
   deleteGame(input: DeleteGameInput!): Game!
-  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 }
 
 type Subscription {
@@ -82,18 +90,18 @@ type Subscription {
     )
 
   onCreateGame(clubId: String!): Game
-  @aws_subscribe(mutations: ["createGame"])
-  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_subscribe(mutations: ["createGame"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   onDeleteGame(clubId: String!): Game
-  @aws_subscribe(mutations: ["deleteGame"])
-  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_subscribe(mutations: ["deleteGame"])
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   onUpdateGame(clubId: String!, gameId: String): Game
-  @aws_subscribe(mutations: ["updateGame"])
-  @aws_cognito_user_pools(
-    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-  )
+    @aws_subscribe(mutations: ["updateGame"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
 
   onUpdateClub(id: String!): Club
     @aws_subscribe(mutations: ["updateClub"])
