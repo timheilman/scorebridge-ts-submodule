@@ -2,10 +2,13 @@ import {
   Mutation,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
+  MutationCreateGameArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
+  MutationDeleteGameArgs,
   MutationUpdateClubArgs,
   MutationUpdateClubDeviceArgs,
+  MutationUpdateGameArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
@@ -139,7 +142,7 @@ export const mutIdToMutGql = {
   ),
   createGame: createKeyedGeneratedMutation<
     "createGame",
-    MutationCreateClubDeviceArgs
+    MutationCreateGameArgs
   >(
     /* GraphQL */ `
       mutation createGame($input: CreateGameInput!) {
@@ -154,5 +157,41 @@ export const mutIdToMutGql = {
       }
     `,
     "createGame",
+  ),
+  updateGame: createKeyedGeneratedMutation<
+    "updateGame",
+    MutationUpdateGameArgs
+  >(
+    /* GraphQL */ `
+      mutation updateGame($input: UpdateGameInput!) {
+        updateGame(input: $input) {
+          clubId
+          gameId
+          rotation
+          tableCount
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "updateGame",
+  ),
+  deleteGame: createKeyedGeneratedMutation<
+    "deleteGame",
+    MutationDeleteGameArgs
+  >(
+    /* GraphQL */ `
+      mutation deleteGame($input: DeleteGameInput!) {
+        deleteGame(input: $input) {
+          clubId
+          gameId
+          rotation
+          tableCount
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+    "deleteGame",
   ),
 };
