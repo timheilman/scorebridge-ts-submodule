@@ -241,8 +241,8 @@ export interface SubscriptionOnUpdateClubDeviceArgs {
 }
 
 export interface SubscriptionOnUpdateGameArgs {
-  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
+  gameId?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface UnexpectedErrorResponse {
