@@ -19,6 +19,14 @@ type Query {
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
+
+  listGames(input: ListGamesInput!): ListGamesOutput!
+  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  getGame(clubId: String!, gameId: String!): Game
+  @aws_cognito_user_pools(
+    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+  )
 }
 type Mutation {
   unexpectedError: UnexpectedErrorResponse!
@@ -46,6 +54,16 @@ type Mutation {
 
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  createGame(input: CreateGameInput!): Game!
+  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  updateGame(input: UpdateGameInput!): Game!
+  @aws_cognito_user_pools(
+    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+  )
+
+  deleteGame(input: DeleteGameInput!): Game!
+  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 }
 
 type Subscription {
@@ -63,6 +81,20 @@ type Subscription {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
+  onCreateGame(clubId: String!): Game
+  @aws_subscribe(mutations: ["createGame"])
+  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  onDeleteGame(clubId: String!): Game
+  @aws_subscribe(mutations: ["deleteGame"])
+  @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  onUpdateGame(clubId: String!, clubDeviceId: String): Game
+  @aws_subscribe(mutations: ["updateGame"])
+  @aws_cognito_user_pools(
+    cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+  )
+
   onUpdateClub(id: String!): Club
     @aws_subscribe(mutations: ["updateClub"])
     @aws_cognito_user_pools(
@@ -75,8 +107,19 @@ input ListClubDevicesInput {
   limit: Int = 50
 }
 
+input ListGamesInput {
+  clubId: String!
+  nextToken: String
+  limit: Int = 50
+}
+
 type ListClubDevicesOutput {
   items: [ClubDevice]!
+  nextToken: String
+}
+
+type ListGamesOutput {
+  items: [Game]!
   nextToken: String
 }
 
@@ -118,6 +161,33 @@ input UpdateClubInput {
 input DeleteClubDeviceInput {
   clubId: String!
   clubDeviceId: String!
+}
+
+type Game {
+  clubId: String!
+  gameId: String!
+  rotation: String!
+  tableCount: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input CreateGameInput {
+  clubId: String!
+  rotation: String!
+  tableCount: String!
+}
+
+input UpdateGameInput {
+  clubId: String!
+  gameId: String!
+  rotation: String
+  tableCount: Int
+}
+
+input DeleteGameInput {
+  clubId: String!
+  gameId: String!
 }
 
 type UnexpectedErrorResponse {
