@@ -35,6 +35,7 @@ export interface Scalars {
 
 export interface ClearCurrentGameIdResponse {
   __typename?: "ClearCurrentGameIdResponse";
+  clubId: Scalars["String"]["output"];
   oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
 
@@ -296,6 +297,7 @@ export interface UpdateClubNameResponse {
 
 export interface UpdateCurrentGameIdResponse {
   __typename?: "UpdateCurrentGameIdResponse";
+  clubId: Scalars["String"]["output"];
   newCurrentGameId: Scalars["String"]["output"];
   oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
