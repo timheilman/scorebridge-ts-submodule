@@ -143,6 +143,10 @@ export interface Mutation {
   updateGame: Game;
 }
 
+export interface MutationClearCurrentGameIdArgs {
+  clubId: Scalars["String"]["input"];
+}
+
 export interface MutationCreateClubArgs {
   input: CreateClubInput;
 }
@@ -177,6 +181,7 @@ export interface MutationUpdateClubNameArgs {
 }
 
 export interface MutationUpdateCurrentGameIdArgs {
+  clubId: Scalars["String"]["input"];
   newGameId: Scalars["String"]["input"];
 }
 

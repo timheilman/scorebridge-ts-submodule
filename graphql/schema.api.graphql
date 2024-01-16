@@ -45,9 +45,9 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
   updateClubName(clubId: String!, newName: String!): UpdateClubNameResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  updateCurrentGameId(newGameId: String!): UpdateCurrentGameIdResponse!
+  updateCurrentGameId(clubId: String!, newGameId: String!): UpdateCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  clearCurrentGameId: ClearCurrentGameIdResponse!
+  clearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   deleteClubAndAdmin(
     input: DeleteClubAndAdminInput!
