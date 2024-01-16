@@ -107,7 +107,7 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper"]
     )
-  onUpdateCurrentGameId(clubId: String!, id: String!): UpdateCurrentGameIdResponse
+  onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper"]
