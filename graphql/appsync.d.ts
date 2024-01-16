@@ -33,6 +33,11 @@ export interface Scalars {
   AWSURL: { input: string; output: string };
 }
 
+export interface ClearCurrentGameIdResponse {
+  __typename?: "ClearCurrentGameIdResponse";
+  oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
+}
+
 export interface Club {
   __typename?: "Club";
   createdAt: Scalars["AWSDateTime"]["output"];
@@ -124,7 +129,7 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
-  clearCurrentGameId: Scalars["String"]["output"];
+  clearCurrentGameId: ClearCurrentGameIdResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -133,8 +138,8 @@ export interface Mutation {
   deleteGame: Game;
   unexpectedError: UnexpectedErrorResponse;
   updateClubDevice: ClubDevice;
-  updateClubName: Scalars["String"]["output"];
-  updateCurrentGameId: Scalars["String"]["output"];
+  updateClubName: UpdateClubNameResponse;
+  updateCurrentGameId: UpdateCurrentGameIdResponse;
   updateGame: Game;
 }
 
@@ -276,6 +281,18 @@ export interface UpdateClubDeviceInput {
   clubId: Scalars["String"]["input"];
   deviceName?: InputMaybe<Scalars["String"]["input"]>;
   table?: InputMaybe<Scalars["Int"]["input"]>;
+}
+
+export interface UpdateClubNameResponse {
+  __typename?: "UpdateClubNameResponse";
+  newClubName: Scalars["String"]["output"];
+  oldClubName?: Maybe<Scalars["String"]["output"]>;
+}
+
+export interface UpdateCurrentGameIdResponse {
+  __typename?: "UpdateCurrentGameIdResponse";
+  newCurrentGameId: Scalars["String"]["output"];
+  oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface UpdateGameInput {
