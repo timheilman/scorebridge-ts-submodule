@@ -165,6 +165,7 @@ type Game {
   gameId: String!
   movement: String!
   tableCount: Int!
+  roundCount: Int!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -173,13 +174,16 @@ input CreateGameInput {
   clubId: String!
   movement: String!
   tableCount: Int!
+  roundCount: Int!
 }
-
+# probably don't want to be able to update movement, tableCount, roundCount, but
+# later there will be things to update
 input UpdateGameInput {
   clubId: String!
   gameId: String!
   movement: String
   tableCount: Int
+  roundCount: Int
 }
 
 input DeleteGameInput {

@@ -74,6 +74,7 @@ export interface CreateClubResponse {
 export interface CreateGameInput {
   clubId: Scalars["String"]["input"];
   movement: Scalars["String"]["input"];
+  roundCount: Scalars["Int"]["input"];
   tableCount: Scalars["Int"]["input"];
 }
 
@@ -103,6 +104,7 @@ export interface Game {
   createdAt: Scalars["AWSDateTime"]["output"];
   gameId: Scalars["String"]["output"];
   movement: Scalars["String"]["output"];
+  roundCount: Scalars["Int"]["output"];
   tableCount: Scalars["Int"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
 }
@@ -266,5 +268,6 @@ export interface UpdateGameInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   movement?: InputMaybe<Scalars["String"]["input"]>;
+  roundCount?: InputMaybe<Scalars["Int"]["input"]>;
   tableCount?: InputMaybe<Scalars["Int"]["input"]>;
 }
