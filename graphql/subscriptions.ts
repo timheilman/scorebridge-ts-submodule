@@ -101,6 +101,7 @@ export const subIdToSubGql = {
         onUpdateClub(id: $id) {
           id
           name
+          currentGameId
           createdAt
           updatedAt
         }
