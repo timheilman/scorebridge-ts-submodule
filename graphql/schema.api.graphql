@@ -43,7 +43,7 @@ type Mutation {
   createClub(input: CreateClubInput!): CreateClubResponse!
     @aws_api_key
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
-  updateClubName(newName: String!): String!
+  updateClubName(clubId: String!, newName: String!): String!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   updateCurrentGameId(newGameId: String!): String!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])

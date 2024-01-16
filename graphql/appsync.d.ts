@@ -167,6 +167,7 @@ export interface MutationUpdateClubDeviceArgs {
 }
 
 export interface MutationUpdateClubNameArgs {
+  clubId: Scalars["String"]["input"];
   newName: Scalars["String"]["input"];
 }
 
