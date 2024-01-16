@@ -1,4 +1,10 @@
-import { Query } from "./appsync";
+import {
+  Query,
+  QueryGetClubArgs,
+  QueryGetClubDeviceArgs,
+  QueryListClubDevicesArgs,
+  QueryListGamesArgs,
+} from "./appsync";
 
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
@@ -22,7 +28,7 @@ const createKeyedGeneratedQuery = <NAME extends QueryNames, ARGS>(
   } as KeyedGeneratedQuery<NAME, ARGS>;
 };
 export const qidToQueryGql = {
-  getClub: createKeyedGeneratedQuery(
+  getClub: createKeyedGeneratedQuery<"getClub", QueryGetClubArgs>(
     /* GraphQL */ `
       query getClub($clubId: String!) {
         getClub(clubId: $clubId) {
@@ -35,7 +41,10 @@ export const qidToQueryGql = {
     `,
     "getClub",
   ),
-  listClubDevices: createKeyedGeneratedQuery(
+  listClubDevices: createKeyedGeneratedQuery<
+    "listClubDevices",
+    QueryListClubDevicesArgs
+  >(
     /* GraphQL */ `
       query listClubDevices($clubId: String!, $nextToken: String, $limit: Int) {
         listClubDevices(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
@@ -49,7 +58,10 @@ export const qidToQueryGql = {
     `,
     "listClubDevices",
   ),
-  getClubDevice: createKeyedGeneratedQuery(
+  getClubDevice: createKeyedGeneratedQuery<
+    "getClubDevice",
+    QueryGetClubDeviceArgs
+  >(
     /* GraphQL */ `
       query getClubDevice($clubId: String!, $clubDeviceId: String!) {
         getClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
@@ -64,5 +76,21 @@ export const qidToQueryGql = {
       }
     `,
     "getClubDevice",
+  ),
+  listGames: createKeyedGeneratedQuery<"listGames", QueryListGamesArgs>(
+    /* GraphQL */ `
+      query listGames($clubId: String!, $nextToken: String, $limit: Int) {
+        listGames(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
+          items {
+            gameId
+            rotation
+            tableCount
+            createdAt
+            updatedAt
+          }
+        }
+      }
+    `,
+    "listGames",
   ),
 };
