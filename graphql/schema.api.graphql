@@ -164,7 +164,7 @@ type Game {
   clubId: String!
   gameId: String!
   movement: String!
-  tableCount: String!
+  tableCount: Int!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }

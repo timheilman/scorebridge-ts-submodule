@@ -103,7 +103,7 @@ export interface Game {
   createdAt: Scalars["AWSDateTime"]["output"];
   gameId: Scalars["String"]["output"];
   movement: Scalars["String"]["output"];
-  tableCount: Scalars["String"]["output"];
+  tableCount: Scalars["Int"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
 }
 
