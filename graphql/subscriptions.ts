@@ -1,12 +1,9 @@
 import {
   Subscription,
   SubscriptionOnCreateClubDeviceArgs,
-  SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteClubDeviceArgs,
-  SubscriptionOnDeleteGameArgs,
   SubscriptionOnUpdateClubArgs,
   SubscriptionOnUpdateClubDeviceArgs,
-  SubscriptionOnUpdateGameArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {
@@ -108,58 +105,20 @@ export const subIdToSubGql = {
     `,
     "onUpdateClub",
   ),
-  onCreateGame: createKeyedGeneratedSubscription<
-    "onCreateGame",
-    SubscriptionOnCreateGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnCreateGame($clubId: String!) {
-        onCreateGame(clubId: $clubId) {
-          clubId
-          gameId
-          rotation
-          tableCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onCreateGame",
-  ),
-  onUpdateGame: createKeyedGeneratedSubscription<
-    "onUpdateGame",
-    SubscriptionOnUpdateGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUpdateGame($clubId: String!) {
-        onUpdateGame(clubId: $clubId) {
-          clubId
-          gameId
-          rotation
-          tableCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onUpdateGame",
-  ),
-  onDeleteGame: createKeyedGeneratedSubscription<
-    "onDeleteGame",
-    SubscriptionOnDeleteGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnDeleteGame($clubId: String!) {
-        onDeleteGame(clubId: $clubId) {
-          clubId
-          gameId
-          rotation
-          tableCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onDeleteGame",
-  ),
+  // onCreateGame: createKeyedGeneratedSubscription<
+  //   "onCreateGame",
+  //   SubscriptionOnCreateGameArgs
+  // >(
+  //   /* GraphQL */ `
+  //     subscription OnCreateGame($clubId: String!) {
+  //       onCreateGame(clubId: $clubId) {
+  //         id
+  //         name
+  //         createdAt
+  //         updatedAt
+  //       }
+  //     }
+  //   `,
+  //   "onCreateGame",
+  // ),
 } as const;

@@ -149,7 +149,7 @@ export const mutIdToMutGql = {
         createGame(input: $input) {
           clubId
           gameId
-          rotation
+          movement
           tableCount
           createdAt
           updatedAt
@@ -167,7 +167,7 @@ export const mutIdToMutGql = {
         updateGame(input: $input) {
           clubId
           gameId
-          rotation
+          movement
           tableCount
           createdAt
           updatedAt
@@ -185,7 +185,7 @@ export const mutIdToMutGql = {
         deleteGame(input: $input) {
           clubId
           gameId
-          rotation
+          movement
           tableCount
           createdAt
           updatedAt

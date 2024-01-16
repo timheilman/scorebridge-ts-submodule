@@ -163,7 +163,7 @@ input DeleteClubDeviceInput {
 type Game {
   clubId: String!
   gameId: String!
-  rotation: String!
+  movement: String!
   tableCount: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -171,14 +171,14 @@ type Game {
 
 input CreateGameInput {
   clubId: String!
-  rotation: String!
+  movement: String!
   tableCount: Int!
 }
 
 input UpdateGameInput {
   clubId: String!
   gameId: String!
-  rotation: String
+  movement: String
   tableCount: Int
 }
 
