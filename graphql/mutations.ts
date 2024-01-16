@@ -70,6 +70,7 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation updateCurrentGameId($clubId: String!, $newGameId: String!) {
         updateCurrentGameId(clubId: $clubId, newGameId: $newGameId) {
+          clubId
           oldCurrentGameId
           newCurrentGameId
         }
@@ -84,6 +85,7 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation clearCurrentGameId($clubId: String!) {
         clearCurrentGameId(clubId: $clubId) {
+          clubId
           oldCurrentGameId
         }
       }

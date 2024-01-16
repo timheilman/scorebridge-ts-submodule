@@ -224,11 +224,13 @@ type UpdateClubNameResponse {
 }
 
 type UpdateCurrentGameIdResponse {
+  clubId: String!,
   oldCurrentGameId: String,
   newCurrentGameId: String!
 }
 
 type ClearCurrentGameIdResponse {
+  clubId: String!,
   oldCurrentGameId: String,
 }
 
