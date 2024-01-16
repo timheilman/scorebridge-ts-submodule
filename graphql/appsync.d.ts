@@ -226,14 +226,14 @@ export interface QueryListGamesArgs {
 
 export interface Subscription {
   __typename?: "Subscription";
-  onClearCurrentGameId?: Maybe<Scalars["String"]["output"]>;
+  onClearCurrentGameId?: Maybe<ClearCurrentGameIdResponse>;
   onCreateClubDevice?: Maybe<ClubDevice>;
   onCreateGame?: Maybe<Game>;
   onDeleteClubDevice?: Maybe<ClubDevice>;
   onDeleteGame?: Maybe<Game>;
   onUpdateClubDevice?: Maybe<ClubDevice>;
-  onUpdateClubName?: Maybe<Scalars["String"]["output"]>;
-  onUpdateCurrentGameId?: Maybe<Scalars["String"]["output"]>;
+  onUpdateClubName?: Maybe<UpdateClubNameResponse>;
+  onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdateGame?: Maybe<Game>;
 }
 
