@@ -55,6 +55,7 @@ export const mutIdToMutGql = {
         updateClub(input: $input) {
           id
           name
+          currentGameId
           createdAt
           updatedAt
         }
