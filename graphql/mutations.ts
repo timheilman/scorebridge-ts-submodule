@@ -1,13 +1,15 @@
 import {
   Mutation,
+  MutationClearCurrentGameIdArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
-  MutationUpdateClubArgs,
   MutationUpdateClubDeviceArgs,
+  MutationUpdateClubNameArgs,
+  MutationUpdateCurrentGameIdArgs,
   MutationUpdateGameArgs,
 } from "./appsync";
 
@@ -47,21 +49,45 @@ export const mutIdToMutGql = {
     "createClub",
   ),
   updateClub: createKeyedGeneratedMutation<
-    "updateClub",
-    MutationUpdateClubArgs
+    "updateClubName",
+    MutationUpdateClubNameArgs
   >(
     /* GraphQL */ `
-      mutation updateClub($input: UpdateClubInput!) {
-        updateClub(input: $input) {
-          id
-          name
-          currentGameId
-          createdAt
-          updatedAt
+      mutation updateClubName($clubId: String!, $newName: String!) {
+        updateClubName(clubId: $clubId, newName: $newName) {
+          oldClubName
+          newClubName
         }
       }
     `,
-    "updateClub",
+    "updateClubName",
+  ),
+  updateCurrentGameId: createKeyedGeneratedMutation<
+    "updateCurrentGameId",
+    MutationUpdateCurrentGameIdArgs
+  >(
+    /* GraphQL */ `
+      mutation updateCurrentGameId($clubId: String!, $newGameId: String!) {
+        updateCurrentGameId(clubId: $clubId, newGameId: $newGameId) {
+          oldCurrentGameId
+          newCurrentGameId
+        }
+      }
+    `,
+    "updateCurrentGameId",
+  ),
+  clearCurrentGameId: createKeyedGeneratedMutation<
+    "clearCurrentGameId",
+    MutationClearCurrentGameIdArgs
+  >(
+    /* GraphQL */ `
+      mutation clearCurrentGameId($clubId: String!) {
+        clearCurrentGameId(clubId: $clubId) {
+          oldCurrentGameId
+        }
+      }
+    `,
+    "clearCurrentGameId",
   ),
   createClubDevice: createKeyedGeneratedMutation<
     "createClubDevice",
