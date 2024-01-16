@@ -48,7 +48,7 @@ export const mutIdToMutGql = {
     `,
     "createClub",
   ),
-  updateClub: createKeyedGeneratedMutation<
+  updateClubName: createKeyedGeneratedMutation<
     "updateClubName",
     MutationUpdateClubNameArgs
   >(
