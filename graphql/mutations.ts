@@ -151,6 +151,7 @@ export const mutIdToMutGql = {
           gameId
           movement
           tableCount
+          roundCount
           createdAt
           updatedAt
         }
@@ -169,6 +170,7 @@ export const mutIdToMutGql = {
           gameId
           movement
           tableCount
+          roundCount
           createdAt
           updatedAt
         }
@@ -187,6 +189,7 @@ export const mutIdToMutGql = {
           gameId
           movement
           tableCount
+          roundCount
           createdAt
           updatedAt
         }
