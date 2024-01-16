@@ -289,6 +289,7 @@ export interface UpdateClubDeviceInput {
 
 export interface UpdateClubNameResponse {
   __typename?: "UpdateClubNameResponse";
+  clubId: Scalars["String"]["output"];
   newClubName: Scalars["String"]["output"];
   oldClubName?: Maybe<Scalars["String"]["output"]>;
 }
