@@ -61,7 +61,7 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
   dispatch: any,
   subId: T,
 ) {
-  log("handleAmplifySubscriptionError", "error", { subId });
+  log("handleAmplifySubscriptionError", "debug", { subId });
   return (e: any) => {
     if (e?.errors?.length && e.errors[0].message) {
       log("handleAmplifySubscriptionError.message", "error", {
