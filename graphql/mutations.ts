@@ -55,6 +55,7 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation updateClubName($clubId: String!, $newName: String!) {
         updateClubName(clubId: $clubId, newName: $newName) {
+          clubId
           oldClubName
           newClubName
         }
