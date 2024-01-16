@@ -36,6 +36,7 @@ export interface Scalars {
 export interface Club {
   __typename?: "Club";
   createdAt: Scalars["AWSDateTime"]["output"];
+  currentGameId?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
@@ -260,6 +261,7 @@ export interface UpdateClubDeviceInput {
 }
 
 export interface UpdateClubInput {
+  currentGameId?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["String"]["input"];
   name?: InputMaybe<Scalars["String"]["input"]>;
 }

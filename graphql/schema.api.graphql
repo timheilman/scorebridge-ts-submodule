@@ -43,10 +43,8 @@ type Mutation {
   createClub(input: CreateClubInput!): CreateClubResponse!
     @aws_api_key
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
-
   updateClub(input: UpdateClubInput!): Club!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-
   deleteClubAndAdmin(
     input: DeleteClubAndAdminInput!
   ): DeleteClubAndAdminResponse!
@@ -54,22 +52,19 @@ type Mutation {
 
   createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-
   updateClubDevice(input: UpdateClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
   createGame(input: CreateGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-
   updateGame(input: UpdateGameInput!): Game!
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-
   deleteGame(input: DeleteGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 }
@@ -123,6 +118,7 @@ type ListGamesOutput {
 type Club {
   id: String!
   name: String!
+  currentGameId: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -153,6 +149,7 @@ input UpdateClubDeviceInput {
 input UpdateClubInput {
   id: String!
   name: String
+  currentGameId: String
 }
 
 input DeleteClubDeviceInput {
