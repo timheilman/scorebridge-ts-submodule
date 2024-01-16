@@ -263,7 +263,7 @@ export interface SubscriptionOnUpdateClubDeviceArgs {
 }
 
 export interface SubscriptionOnUpdateClubNameArgs {
-  id: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
 }
 
 export interface SubscriptionOnUpdateCurrentGameIdArgs {
