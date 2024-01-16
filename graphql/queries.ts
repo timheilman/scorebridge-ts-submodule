@@ -34,6 +34,7 @@ export const qidToQueryGql = {
         getClub(clubId: $clubId) {
           id
           name
+          currentGameId
           createdAt
           updatedAt
         }
