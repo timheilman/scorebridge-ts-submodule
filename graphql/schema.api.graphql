@@ -45,7 +45,10 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
   updateClubName(clubId: String!, newName: String!): UpdateClubNameResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  updateCurrentGameId(clubId: String!, newGameId: String!): UpdateCurrentGameIdResponse!
+  updateCurrentGameId(
+    clubId: String!
+    newGameId: String!
+  ): UpdateCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   clearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
@@ -104,19 +107,13 @@ type Subscription {
 
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   onClearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse
     @aws_subscribe(mutations: ["clearCurrentGameId"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 }
 
 type ListClubDevicesOutput {
@@ -223,12 +220,12 @@ type UpdateClubNameResponse {
 }
 
 type UpdateCurrentGameIdResponse {
-  oldCurrentGameId: String,
+  oldCurrentGameId: String
   newCurrentGameId: String!
 }
 
 type ClearCurrentGameIdResponse {
-  oldCurrentGameId: String,
+  oldCurrentGameId: String
 }
 
 input DeleteClubAndAdminInput {

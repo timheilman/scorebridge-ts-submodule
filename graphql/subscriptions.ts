@@ -1,11 +1,13 @@
 import {
   Subscription,
+  SubscriptionOnClearCurrentGameIdArgs,
   SubscriptionOnCreateClubDeviceArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteClubDeviceArgs,
   SubscriptionOnDeleteGameArgs,
-  SubscriptionOnUpdateClubArgs,
   SubscriptionOnUpdateClubDeviceArgs,
+  SubscriptionOnUpdateClubNameArgs,
+  SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdateGameArgs,
 } from "./appsync";
 
@@ -92,22 +94,46 @@ export const subIdToSubGql = {
     `,
     "onDeleteClubDevice",
   ),
-  onUpdateClub: createKeyedGeneratedSubscription<
-    "onUpdateClub",
-    SubscriptionOnUpdateClubArgs
+  onUpdateClubName: createKeyedGeneratedSubscription<
+    "onUpdateClubName",
+    SubscriptionOnUpdateClubNameArgs
   >(
     /* GraphQL */ `
-      subscription OnUpdateClub($id: String!) {
-        onUpdateClub(id: $id) {
-          id
-          name
-          currentGameId
-          createdAt
-          updatedAt
+      subscription OnUpdateClubName($clubId: String!) {
+        onUpdateClubName(clubId: $clubId) {
+          oldClubName
+          newClubName
         }
       }
     `,
-    "onUpdateClub",
+    "onUpdateClubName",
+  ),
+  onUpdateCurrentGameId: createKeyedGeneratedSubscription<
+    "onUpdateCurrentGameId",
+    SubscriptionOnUpdateCurrentGameIdArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUpdateCurrentGameId($clubId: String!) {
+        onUpdateCurrentGameId(clubId: $clubId) {
+          oldCurrentGameId
+          newCurrentGameId
+        }
+      }
+    `,
+    "onUpdateCurrentGameId",
+  ),
+  onClearCurrentGameId: createKeyedGeneratedSubscription<
+    "onClearCurrentGameId",
+    SubscriptionOnClearCurrentGameIdArgs
+  >(
+    /* GraphQL */ `
+      subscription OnClearCurrentGameId($clubId: String!) {
+        onClearCurrentGameId(clubId: $clubId) {
+          oldCurrentGameId
+        }
+      }
+    `,
+    "onClearCurrentGameId",
   ),
   onCreateGame: createKeyedGeneratedSubscription<
     "onCreateGame",
