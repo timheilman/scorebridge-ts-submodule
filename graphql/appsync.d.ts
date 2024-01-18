@@ -228,12 +228,9 @@ export interface QueryListGamesArgs {
 export interface Subscription {
   __typename?: "Subscription";
   onClearCurrentGameId?: Maybe<ClearCurrentGameIdResponse>;
-  onCreateClubDevice?: Maybe<ClubDevice>;
   onCreateGame?: Maybe<Game>;
-  onDeleteClubDevice?: Maybe<ClubDevice>;
   onDeleteGame?: Maybe<Game>;
   onUpdateClubDevice?: Maybe<ClubDevice>;
-  onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdateGame?: Maybe<Game>;
 }
@@ -242,15 +239,7 @@ export interface SubscriptionOnClearCurrentGameIdArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export interface SubscriptionOnCreateClubDeviceArgs {
-  clubId: Scalars["String"]["input"];
-}
-
 export interface SubscriptionOnCreateGameArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface SubscriptionOnDeleteClubDeviceArgs {
   clubId: Scalars["String"]["input"];
 }
 
@@ -260,10 +249,6 @@ export interface SubscriptionOnDeleteGameArgs {
 
 export interface SubscriptionOnUpdateClubDeviceArgs {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
-  clubId: Scalars["String"]["input"];
-}
-
-export interface SubscriptionOnUpdateClubNameArgs {
   clubId: Scalars["String"]["input"];
 }
 
