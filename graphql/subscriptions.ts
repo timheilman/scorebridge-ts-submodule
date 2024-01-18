@@ -1,12 +1,9 @@
 import {
   Subscription,
   SubscriptionOnClearCurrentGameIdArgs,
-  SubscriptionOnCreateClubDeviceArgs,
   SubscriptionOnCreateGameArgs,
-  SubscriptionOnDeleteClubDeviceArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnUpdateClubDeviceArgs,
-  SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdateGameArgs,
 } from "./appsync";
@@ -39,24 +36,6 @@ export const createKeyedGeneratedSubscription = <
   } as KeyedGeneratedSubscription<NAME, ARGS>;
 };
 export const subIdToSubGql = {
-  onCreateClubDevice: createKeyedGeneratedSubscription<
-    "onCreateClubDevice",
-    SubscriptionOnCreateClubDeviceArgs
-  >(
-    /* GraphQL */ `
-      subscription OnCreateClubDevice($clubId: String!) {
-        onCreateClubDevice(clubId: $clubId) {
-          clubDeviceId
-          clubId
-          createdAt
-          email
-          name
-          updatedAt
-        }
-      }
-    `,
-    "onCreateClubDevice",
-  ),
   onUpdateClubDevice: createKeyedGeneratedSubscription<
     "onUpdateClubDevice",
     SubscriptionOnUpdateClubDeviceArgs
@@ -75,38 +54,6 @@ export const subIdToSubGql = {
       }
     `,
     "onUpdateClubDevice",
-  ),
-  onDeleteClubDevice: createKeyedGeneratedSubscription<
-    "onDeleteClubDevice",
-    SubscriptionOnDeleteClubDeviceArgs
-  >(
-    /* GraphQL */ `
-      subscription OnDeleteClubDevice($clubId: String!) {
-        onDeleteClubDevice(clubId: $clubId) {
-          clubDeviceId
-          clubId
-          createdAt
-          email
-          name
-          updatedAt
-        }
-      }
-    `,
-    "onDeleteClubDevice",
-  ),
-  onUpdateClubName: createKeyedGeneratedSubscription<
-    "onUpdateClubName",
-    SubscriptionOnUpdateClubNameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUpdateClubName($clubId: String!) {
-        onUpdateClubName(clubId: $clubId) {
-          oldClubName
-          newClubName
-        }
-      }
-    `,
-    "onUpdateClubName",
   ),
   onUpdateCurrentGameId: createKeyedGeneratedSubscription<
     "onUpdateCurrentGameId",
