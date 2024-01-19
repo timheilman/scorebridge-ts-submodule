@@ -1,7 +1,5 @@
 import {
   Subscription,
-  SubscriptionOnCreateGameArgs,
-  SubscriptionOnDeleteGameArgs,
   SubscriptionOnUpdateClubDeviceArgs,
   SubscriptionOnUpdateGameArgs,
 } from "./appsync";
