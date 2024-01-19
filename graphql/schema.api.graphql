@@ -82,21 +82,11 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-
-  onCreateGame(clubId: String!): Game
-    @aws_subscribe(mutations: ["createGame"])
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-
-  onDeleteGame(clubId: String!): Game
-    @aws_subscribe(mutations: ["deleteGame"])
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-
   onUpdateGame(clubId: String!, gameId: String): Game
     @aws_subscribe(mutations: ["updateGame"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
