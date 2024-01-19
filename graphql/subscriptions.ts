@@ -1,10 +1,8 @@
 import {
   Subscription,
-  SubscriptionOnClearCurrentGameIdArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnUpdateClubDeviceArgs,
-  SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdateGameArgs,
 } from "./appsync";
 
@@ -55,51 +53,6 @@ export const subIdToSubGql = {
     `,
     "onUpdateClubDevice",
   ),
-  onUpdateCurrentGameId: createKeyedGeneratedSubscription<
-    "onUpdateCurrentGameId",
-    SubscriptionOnUpdateCurrentGameIdArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUpdateCurrentGameId($clubId: String!) {
-        onUpdateCurrentGameId(clubId: $clubId) {
-          oldCurrentGameId
-          newCurrentGameId
-        }
-      }
-    `,
-    "onUpdateCurrentGameId",
-  ),
-  onClearCurrentGameId: createKeyedGeneratedSubscription<
-    "onClearCurrentGameId",
-    SubscriptionOnClearCurrentGameIdArgs
-  >(
-    /* GraphQL */ `
-      subscription OnClearCurrentGameId($clubId: String!) {
-        onClearCurrentGameId(clubId: $clubId) {
-          oldCurrentGameId
-        }
-      }
-    `,
-    "onClearCurrentGameId",
-  ),
-  onCreateGame: createKeyedGeneratedSubscription<
-    "onCreateGame",
-    SubscriptionOnCreateGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnCreateGame($clubId: String!) {
-        onCreateGame(clubId: $clubId) {
-          gameId
-          movement
-          tableCount
-          roundCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onCreateGame",
-  ),
   onUpdateGame: createKeyedGeneratedSubscription<
     "onUpdateGame",
     SubscriptionOnUpdateGameArgs
@@ -117,23 +70,5 @@ export const subIdToSubGql = {
       }
     `,
     "onUpdateGame",
-  ),
-  onDeleteGame: createKeyedGeneratedSubscription<
-    "onDeleteGame",
-    SubscriptionOnDeleteGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnDeleteGame($clubId: String!) {
-        onDeleteGame(clubId: $clubId) {
-          gameId
-          movement
-          tableCount
-          roundCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onDeleteGame",
   ),
 } as const;
