@@ -124,7 +124,7 @@ export const subIdToSubGql = {
     "onUpdateCurrentGameId",
   ),
 
-  clearCurrentGameId: createKeyedGeneratedSubscription<
+  onClearCurrentGameId: createKeyedGeneratedSubscription<
     "onClearCurrentGameId",
     SubscriptionOnClearCurrentGameIdArgs
   >(
