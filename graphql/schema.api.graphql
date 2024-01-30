@@ -95,10 +95,10 @@ type Subscription {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onClearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse
     @aws_subscribe(mutations: ["clearCurrentGameId"])
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
 type ListClubDevicesOutput {
