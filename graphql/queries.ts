@@ -54,6 +54,7 @@ export const qidToQueryGql = {
             name
             table
           }
+          nextToken
         }
       }
     `,
@@ -91,6 +92,7 @@ export const qidToQueryGql = {
             createdAt
             updatedAt
           }
+          nextToken
         }
       }
     `,
