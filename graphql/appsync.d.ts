@@ -1,3 +1,5 @@
+# THIS IS A GENERATED FILE; SEE scorebridge-cloud/package.json
+# Types here are derived from schema.api.graphql
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends Record<string, unknown>> = { [K in keyof T]: T[K] };
@@ -228,12 +230,22 @@ export interface QueryListGamesArgs {
 export interface Subscription {
   __typename?: "Subscription";
   onClearCurrentGameId?: Maybe<ClearCurrentGameIdResponse>;
+  onCreateGame?: Maybe<Game>;
+  onDeleteGame?: Maybe<Game>;
   onUpdateClubDevice?: Maybe<ClubDevice>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdateGame?: Maybe<Game>;
 }
 
 export interface SubscriptionOnClearCurrentGameIdArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnCreateGameArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnDeleteGameArgs {
   clubId: Scalars["String"]["input"];
 }
 
