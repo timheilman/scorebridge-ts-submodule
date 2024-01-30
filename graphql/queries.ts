@@ -80,8 +80,8 @@ export const qidToQueryGql = {
   ),
   listGames: createKeyedGeneratedQuery<"listGames", QueryListGamesArgs>(
     /* GraphQL */ `
-      query listGames($clubId: String!) {
-        listGames(clubId: $clubId) {
+      query listGames($clubId: String!, $nextToken: String, $limit: Int) {
+        listGames(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
           items {
             clubId
             gameId
