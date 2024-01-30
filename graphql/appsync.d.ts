@@ -1,5 +1,5 @@
-# THIS IS A GENERATED FILE; SEE scorebridge-cloud/package.json
-# Types here are derived from schema.api.graphql
+// THIS IS A GENERATED FILE; SEE scorebridge-cloud/package.json
+// Types here are derived from schema.api.graphql
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends Record<string, unknown>> = { [K in keyof T]: T[K] };
