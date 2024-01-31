@@ -1,6 +1,7 @@
 import { JSX } from "react";
 import { useSelector } from "react-redux";
 
+import { SubscriptionNames } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
   selectSubscriptionStates,
@@ -10,7 +11,7 @@ import {
 const log = tsSubmoduleLogFn("OnlineStatus.");
 
 export interface OnlineStatusProps {
-  subscriptionIds: string[];
+  subscriptionIds: SubscriptionNames[];
   upIcon: JSX.Element;
   downIcon: JSX.Element;
 }
@@ -33,7 +34,9 @@ export default function OnlineStatus({
   log("subscriptionIds", "debug", { subscriptionIds });
   if (
     Object.entries(subscriptionStates)
-      .filter((arrElt) => subscriptionIds.includes(arrElt[0]))
+      .filter((arrElt) =>
+        subscriptionIds.includes(arrElt[0] as SubscriptionNames),
+      )
       .every((arrElt) => {
         return arrElt[1][1] === "successfullySubscribed";
       })
