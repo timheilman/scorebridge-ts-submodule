@@ -3,8 +3,7 @@ import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { Club, Subscription } from "../graphql/appsync";
-import { qidToQueryGql } from "../graphql/queries";
+import { Subscription } from "../graphql/appsync";
 import {
   KeyedGeneratedSubscription,
   subIdToSubGql,
@@ -37,29 +36,11 @@ export interface AccessParams {
   authMode?: GraphQLAuthMode;
 }
 
-export const getClub = async (
-  { clubId, authMode, dispatch }: AccessParams,
-  setClub: (c: Club) => unknown,
-) => {
-  const res = await client.graphql({
-    query: qidToQueryGql.getClub.gql,
-    variables: {
-      clubId,
-    },
-    authMode,
-  });
-  if (res.errors) {
-    throw new Error(JSON.stringify(res.errors, null, 2));
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  dispatch(setClub(res.data.getClub!));
-};
-
 // unfortunately there's a lot to do for type safety and shortcuts are taken within
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
-export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
+export function handleAmplifySubscriptionError(
   dispatch: any,
-  subId: T,
+  subId: SubscriptionNames,
 ) {
   log("handleAmplifySubscriptionError", "debug", { subId });
   return (e: any) => {
@@ -89,10 +70,10 @@ export function handleAmplifySubscriptionError<T extends SubscriptionNames>(
   };
 }
 
-export function handleUnexpectedSubscriptionError<T extends SubscriptionNames>(
+export function handleUnexpectedSubscriptionError(
   e: any,
   dispatch: any,
-  subId: T,
+  subId: SubscriptionNames,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   log("handleUnexpectedSubscriptionError", "error", { subId, e });
