@@ -147,6 +147,7 @@ export interface Mutation {
 export interface MutationAssignTableArgs {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -258,6 +259,7 @@ export interface TableAssignmentResult {
   __typename?: "TableAssignmentResult";
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
