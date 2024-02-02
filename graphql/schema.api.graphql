@@ -50,8 +50,6 @@ type Mutation {
     newGameId: String!
   ): UpdateCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  clearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   deleteClubAndAdmin(
     input: DeleteClubAndAdminInput!
   ): DeleteClubAndAdminResponse!
@@ -59,38 +57,19 @@ type Mutation {
 
   createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  updateClubDevice(input: UpdateClubDeviceInput!): ClubDevice!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   createGame(input: CreateGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  updateGame(input: UpdateGameInput!): Game!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
   deleteGame(input: DeleteGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  assignTable(clubId: String!, clubDeviceId: String!, tableNumber: Int!): TableAssignment
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
 type Subscription {
-  # I think this maybe should become onSetTableNumber instead...
-  # This is the initial device-to-web subscription test:
-  onUpdateClubDevice(clubId: String!, clubDeviceId: String): ClubDevice
-    @aws_subscribe(mutations: ["updateClubDevice"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
-  # I think this maybe should be more granular, like onSetContract, onSetResult, etc.
-  # It is for device-to-web subscriptions on the currentGame page, later
-  onUpdateGame(clubId: String!, gameId: String!): Game
-    @aws_subscribe(mutations: ["updateGame"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
   # These next four are for web-to-device subscriptions to know when a device's current
   # game has been updated (automatically on create, and to null on delete)
   onCreateGame(clubId: String!): Game
@@ -102,13 +81,13 @@ type Subscription {
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  onClearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse
-    @aws_subscribe(mutations: ["clearCurrentGameId"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  # This is going to be my initial web-to-device subscription test, just to
-  # establish the pattern:
+
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
+  onAssignTable(clubId: String!): TableAssignment
+    @aws_subscribe(mutations: ["assignTable"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
@@ -135,7 +114,6 @@ type ClubDevice {
   clubDeviceId: String!
   name: String!
   email: AWSEmail!
-  table: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -146,15 +124,13 @@ input CreateClubDeviceInput {
   regToken: String!
 }
 
-input UpdateClubDeviceInput {
-  clubId: String!
-  clubDeviceId: String!
-  deviceName: String
-  table: Int
-}
-
 input DeleteClubDeviceInput {
   clubId: String!
+  clubDeviceId: String!
+}
+
+type TableAssignment {
+  tableNumber: Int!
   clubDeviceId: String!
 }
 
@@ -164,6 +140,8 @@ type Game {
   movement: String!
   tableCount: Int!
   roundCount: Int!
+  label: String
+  tableAssignments: [TableAssignment]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -173,15 +151,6 @@ input CreateGameInput {
   movement: String!
   tableCount: Int!
   roundCount: Int!
-}
-# probably don't want to be able to update movement, tableCount, roundCount, but
-# later there will be things to update
-input UpdateGameInput {
-  clubId: String!
-  gameId: String!
-  movement: String
-  tableCount: Int
-  roundCount: Int
 }
 
 input DeleteGameInput {
