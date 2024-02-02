@@ -4,6 +4,7 @@ import {
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnUpdateClubDeviceArgs,
+  SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdateGameArgs,
 } from "./appsync";
@@ -60,8 +61,8 @@ export const subIdToSubGql = {
     SubscriptionOnUpdateGameArgs
   >(
     /* GraphQL */ `
-      subscription OnUpdateGame($clubId: String!) {
-        onUpdateGame(clubId: $clubId) {
+      subscription OnUpdateGame($clubId: String!, $gameId: String!) {
+        onUpdateGame(clubId: $clubId, gameId: $gameId) {
           gameId
           movement
           tableCount
@@ -136,5 +137,19 @@ export const subIdToSubGql = {
       }
     `,
     "onClearCurrentGameId",
+  ),
+  onUpdateClubName: createKeyedGeneratedSubscription<
+    "onUpdateClubName",
+    SubscriptionOnUpdateClubNameArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUpdateClubName($clubId: String!) {
+        onUpdateClubName(clubId: $clubId) {
+          clubId
+          newClubName
+        }
+      }
+    `,
+    "onUpdateClubName",
   ),
 } as const;
