@@ -1,3 +1,4 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import { CONNECTION_STATE_CHANGE, ConnectionState } from "aws-amplify/api";
 import { Hub } from "aws-amplify/utils";
 import { useEffect } from "react";
@@ -29,29 +30,29 @@ export type GraphQLAuthMode =
 export const pool: Record<string, { unsubscribe: () => void }> = {};
 
 export interface AccessParams {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dispatch: any;
+  dispatch: Dispatch;
   clubId: string;
   clubDeviceId?: string;
   authMode?: GraphQLAuthMode;
 }
 
-// unfortunately there's a lot to do for type safety and shortcuts are taken within
-/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 export function handleAmplifySubscriptionError(
-  dispatch: any,
+  dispatch: Dispatch,
   subId: SubscriptionNames,
 ) {
   log("handleAmplifySubscriptionError", "debug", { subId });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (e?.errors?.length && e.errors[0].message) {
       log("handleAmplifySubscriptionError.message", "error", {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
         message: e.errors[0].message,
       });
       dispatch(
         setSubscriptionStatus([
           subId,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           `failed post-init w/message: ${e.errors[0].message}`,
         ]),
       );
@@ -71,14 +72,17 @@ export function handleAmplifySubscriptionError(
 }
 
 export function handleUnexpectedSubscriptionError(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   e: any,
-  dispatch: any,
+  dispatch: Dispatch,
   subId: SubscriptionNames,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   log("handleUnexpectedSubscriptionError", "error", { subId, e });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (e.message) {
     dispatch(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
     );
   } else {
@@ -89,7 +93,7 @@ export function handleUnexpectedSubscriptionError(
   return;
 }
 
-export const deleteSub = (dispatch: any, subId: SubscriptionNames) => {
+export const deleteSub = (dispatch: Dispatch, subId: SubscriptionNames) => {
   if (pool[subId]) {
     pool[subId].unsubscribe();
     delete pool[subId];
@@ -97,14 +101,17 @@ export const deleteSub = (dispatch: any, subId: SubscriptionNames) => {
     return true;
   }
 };
-export const deleteAllSubs = (dispatch: any) => {
+export const deleteAllSubs = (dispatch: Dispatch) => {
   Object.keys(pool).forEach((subId: string) => {
     log("deleteAllSubs", "debug", { subId });
     deleteSub(dispatch, subId as SubscriptionNames);
   });
 };
 
-export type OutType<T> = T extends KeyedGeneratedSubscription<infer NAME, any>
+export type OutType<T> = T extends KeyedGeneratedSubscription<
+  infer NAME,
+  unknown
+>
   ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
   : never;
 
@@ -193,13 +200,15 @@ export function useSubscriptions({
     let priorConnectionState: ConnectionState;
     subscribeToAll({ dispatch, clubId, clubDeviceId, authMode });
 
-    const stopListening = Hub.listen("api", (data: any) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const stopListening = Hub.listen<{
+      event: string;
+      data: { connectionState: ConnectionState };
+    }>("api", (data) => {
       const { payload } = data;
       if (payload.event === CONNECTION_STATE_CHANGE) {
         log("hub.listen.connectionStateChange", "debug", {
           previous: priorConnectionState,
-          current: payload.data.connectionState as ConnectionState,
+          current: payload.data.connectionState,
         });
         if (
           priorConnectionState !== ConnectionState.Connected &&
@@ -222,7 +231,7 @@ export function useSubscriptions({
             );
           });
         }
-        priorConnectionState = payload.data.connectionState as ConnectionState;
+        priorConnectionState = payload.data.connectionState;
       }
     });
     return () => {
@@ -242,5 +251,3 @@ export function useSubscriptions({
     subscribeToAll,
   ]);
 }
-
-/* eslint-enable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
