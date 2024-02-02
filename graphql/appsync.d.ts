@@ -38,7 +38,6 @@ export interface Scalars {
 export interface ClearCurrentGameIdResponse {
   __typename?: "ClearCurrentGameIdResponse";
   clubId: Scalars["String"]["output"];
-  oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface Club {
@@ -233,6 +232,7 @@ export interface Subscription {
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
   onUpdateClubDevice?: Maybe<ClubDevice>;
+  onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdateGame?: Maybe<Game>;
 }
@@ -254,13 +254,17 @@ export interface SubscriptionOnUpdateClubDeviceArgs {
   clubId: Scalars["String"]["input"];
 }
 
+export interface SubscriptionOnUpdateClubNameArgs {
+  clubId: Scalars["String"]["input"];
+}
+
 export interface SubscriptionOnUpdateCurrentGameIdArgs {
   clubId: Scalars["String"]["input"];
 }
 
 export interface SubscriptionOnUpdateGameArgs {
   clubId: Scalars["String"]["input"];
-  gameId?: InputMaybe<Scalars["String"]["input"]>;
+  gameId: Scalars["String"]["input"];
 }
 
 export interface UnexpectedErrorResponse {
@@ -279,14 +283,12 @@ export interface UpdateClubNameResponse {
   __typename?: "UpdateClubNameResponse";
   clubId: Scalars["String"]["output"];
   newClubName: Scalars["String"]["output"];
-  oldClubName?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface UpdateCurrentGameIdResponse {
   __typename?: "UpdateCurrentGameIdResponse";
   clubId: Scalars["String"]["output"];
   newCurrentGameId: Scalars["String"]["output"];
-  oldCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface UpdateGameInput {

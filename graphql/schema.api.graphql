@@ -52,17 +52,13 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   clearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  deleteClubAndAdmin(
-    input: DeleteClubAndAdminInput!
-  ): DeleteClubAndAdminResponse!
+  deleteClubAndAdmin(input: DeleteClubAndAdminInput!): DeleteClubAndAdminResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   updateClubDevice(input: UpdateClubDeviceInput!): ClubDevice!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper", "clubDevice"])
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
@@ -77,16 +73,22 @@ type Mutation {
 }
 
 type Subscription {
+  # I think this maybe should become onSetTableNumber instead...
+  # This is the initial device-to-web subscription test:
   onUpdateClubDevice(clubId: String!, clubDeviceId: String): ClubDevice
     @aws_subscribe(mutations: ["updateClubDevice"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
-  onUpdateGame(clubId: String!, gameId: String): Game
+  # I think this maybe should be more granular, like onSetContract, onSetResult, etc.
+  # It is for device-to-web subscriptions on the currentGame page, later
+  onUpdateGame(clubId: String!, gameId: String!): Game
     @aws_subscribe(mutations: ["updateGame"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
+  # These next four are for web-to-device subscriptions to know when a device's current
+  # game has been updated (automatically on create, and to null on delete)
   onCreateGame(clubId: String!): Game
     @aws_subscribe(mutations: ["createGame"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
@@ -98,6 +100,11 @@ type Subscription {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onClearCurrentGameId(clubId: String!): ClearCurrentGameIdResponse
     @aws_subscribe(mutations: ["clearCurrentGameId"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  # This is going to be my initial web-to-device subscription test, just to
+  # establish the pattern:
+  onUpdateClubName(clubId: String!): UpdateClubNameResponse
+    @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
@@ -201,19 +208,16 @@ type CreateClubResponse {
 
 type UpdateClubNameResponse {
   clubId: String!
-  oldClubName: String
   newClubName: String!
 }
 
 type UpdateCurrentGameIdResponse {
   clubId: String!
-  oldCurrentGameId: String
   newCurrentGameId: String!
 }
 
 type ClearCurrentGameIdResponse {
   clubId: String!
-  oldCurrentGameId: String
 }
 
 input DeleteClubAndAdminInput {
@@ -224,9 +228,3 @@ input DeleteClubAndAdminInput {
 type DeleteClubAndAdminResponse {
   status: String!
 }
-
-# How to do paginated lists:
-#type ProfilesPage {
-#  profiles: [IProfile!]
-#  nextToken: String
-#}
