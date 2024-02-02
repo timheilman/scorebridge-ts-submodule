@@ -69,7 +69,7 @@ type Mutation {
     clubId: String!
     clubDeviceId: String!
     tableNumber: Int!
-  ): TableAssignmentResult
+  ): TableAssignmentResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 

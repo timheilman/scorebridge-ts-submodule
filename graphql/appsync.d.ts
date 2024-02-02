@@ -132,7 +132,7 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
-  assignTable?: Maybe<TableAssignmentResult>;
+  assignTable: TableAssignmentResult;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
