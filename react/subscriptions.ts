@@ -98,7 +98,7 @@ export const deleteSub = (dispatch: any, subId: SubscriptionNames) => {
   }
 };
 export const deleteAllSubs = (dispatch: any) => {
-  Object.keys(subIdToSubGql).forEach((subId: string) => {
+  Object.keys(pool).forEach((subId: string) => {
     log("deleteAllSubs", "debug", { subId });
     deleteSub(dispatch, subId as SubscriptionNames);
   });
