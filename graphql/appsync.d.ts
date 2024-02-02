@@ -132,7 +132,7 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
-  assignTable?: Maybe<TableAssignment>;
+  assignTable?: Maybe<TableAssignmentResult>;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -251,6 +251,13 @@ export interface SubscriptionOnUpdateCurrentGameIdArgs {
 export interface TableAssignment {
   __typename?: "TableAssignment";
   clubDeviceId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
+export interface TableAssignmentResult {
+  __typename?: "TableAssignmentResult";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
