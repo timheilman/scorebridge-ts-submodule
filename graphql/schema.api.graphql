@@ -86,7 +86,7 @@ type Subscription {
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  onAssignTable(clubId: String!): TableAssignment
+  onAssignTable(clubId: String!): TableAssignmentResult
     @aws_subscribe(mutations: ["assignTable"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }

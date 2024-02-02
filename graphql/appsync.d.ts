@@ -221,7 +221,7 @@ export interface QueryListGamesArgs {
 
 export interface Subscription {
   __typename?: "Subscription";
-  onAssignTable?: Maybe<TableAssignment>;
+  onAssignTable?: Maybe<TableAssignmentResult>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
