@@ -56,7 +56,6 @@ export const mutIdToMutGql = {
       mutation updateClubName($clubId: String!, $newName: String!) {
         updateClubName(clubId: $clubId, newName: $newName) {
           clubId
-          oldClubName
           newClubName
         }
       }
@@ -71,7 +70,6 @@ export const mutIdToMutGql = {
       mutation updateCurrentGameId($clubId: String!, $newGameId: String!) {
         updateCurrentGameId(clubId: $clubId, newGameId: $newGameId) {
           clubId
-          oldCurrentGameId
           newCurrentGameId
         }
       }
@@ -86,7 +84,6 @@ export const mutIdToMutGql = {
       mutation clearCurrentGameId($clubId: String!) {
         clearCurrentGameId(clubId: $clubId) {
           clubId
-          oldCurrentGameId
         }
       }
     `,
