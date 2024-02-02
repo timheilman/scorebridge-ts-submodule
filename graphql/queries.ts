@@ -2,6 +2,7 @@ import {
   Query,
   QueryGetClubArgs,
   QueryGetClubDeviceArgs,
+  QueryGetGameArgs,
   QueryListClubDevicesArgs,
   QueryListGamesArgs,
 } from "./appsync";
@@ -52,7 +53,6 @@ export const qidToQueryGql = {
           items {
             clubDeviceId
             name
-            table
           }
           nextToken
         }
@@ -71,7 +71,6 @@ export const qidToQueryGql = {
           clubDeviceId
           email
           name
-          table
           createdAt
           updatedAt
         }
@@ -97,5 +96,25 @@ export const qidToQueryGql = {
       }
     `,
     "listGames",
+  ),
+  getGame: createKeyedGeneratedQuery<"getGame", QueryGetGameArgs>(
+    /* GraphQL */ `
+      query getGame($clubId: String!, $gameId: String!) {
+        getGame(clubId: $clubId, gameId: $gameId) {
+          clubId
+          gameId
+          tableCount
+          movement
+          roundCount
+          createdAt
+          updatedAt
+          tableAssignments {
+            tableNumber
+            clubDeviceId
+          }
+        }
+      }
+    `,
+    "getGame",
   ),
 };

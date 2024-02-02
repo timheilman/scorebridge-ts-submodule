@@ -1,12 +1,10 @@
 import {
   Subscription,
-  SubscriptionOnClearCurrentGameIdArgs,
+  SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
-  SubscriptionOnUpdateClubDeviceArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
-  SubscriptionOnUpdateGameArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {
@@ -37,43 +35,6 @@ export const createKeyedGeneratedSubscription = <
   } as KeyedGeneratedSubscription<NAME, ARGS>;
 };
 export const subIdToSubGql = {
-  onUpdateClubDevice: createKeyedGeneratedSubscription<
-    "onUpdateClubDevice",
-    SubscriptionOnUpdateClubDeviceArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUpdateClubDevice($clubId: String!, $clubDeviceId: String) {
-        onUpdateClubDevice(clubId: $clubId, clubDeviceId: $clubDeviceId) {
-          clubId
-          clubDeviceId
-          name
-          email
-          table
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onUpdateClubDevice",
-  ),
-  onUpdateGame: createKeyedGeneratedSubscription<
-    "onUpdateGame",
-    SubscriptionOnUpdateGameArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUpdateGame($clubId: String!, $gameId: String!) {
-        onUpdateGame(clubId: $clubId, gameId: $gameId) {
-          gameId
-          movement
-          tableCount
-          roundCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "onUpdateGame",
-  ),
   onCreateGame: createKeyedGeneratedSubscription<
     "onCreateGame",
     SubscriptionOnCreateGameArgs
@@ -125,19 +86,6 @@ export const subIdToSubGql = {
     "onUpdateCurrentGameId",
   ),
 
-  onClearCurrentGameId: createKeyedGeneratedSubscription<
-    "onClearCurrentGameId",
-    SubscriptionOnClearCurrentGameIdArgs
-  >(
-    /* GraphQL */ `
-      subscription OnClearCurrentGameId($clubId: String!) {
-        onClearCurrentGameId(clubId: $clubId) {
-          clubId
-        }
-      }
-    `,
-    "onClearCurrentGameId",
-  ),
   onUpdateClubName: createKeyedGeneratedSubscription<
     "onUpdateClubName",
     SubscriptionOnUpdateClubNameArgs
@@ -151,5 +99,20 @@ export const subIdToSubGql = {
       }
     `,
     "onUpdateClubName",
+  ),
+  onAssignTable: createKeyedGeneratedSubscription<
+    "onAssignTable",
+    SubscriptionOnAssignTableArgs
+  >(
+    /* GraphQL */ `
+      subscription OnAssignTable($clubId: String!) {
+        onAssignTable(clubId: $clubId) {
+          clubId
+          clubDeviceId
+          tableNumber
+        }
+      }
+    `,
+    "onAssignTable",
   ),
 } as const;

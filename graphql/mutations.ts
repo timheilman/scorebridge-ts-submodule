@@ -1,16 +1,14 @@
 import {
   Mutation,
-  MutationClearCurrentGameIdArgs,
+  MutationAssignTableArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
-  MutationUpdateClubDeviceArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
-  MutationUpdateGameArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
@@ -34,6 +32,16 @@ const createKeyedGeneratedMutation = <NAME extends MutationNames, ARGS>(
 };
 
 export const mutIdToMutGql = {
+  unexpectedError: createKeyedGeneratedMutation<"unexpectedError", undefined>(
+    /* GraphQL */ `
+      mutation unexpectedError {
+        unexpectedError {
+          neverGetsReturned
+        }
+      }
+    `,
+    "unexpectedError",
+  ),
   createClub: createKeyedGeneratedMutation<
     "createClub",
     MutationCreateClubArgs
@@ -62,6 +70,7 @@ export const mutIdToMutGql = {
     `,
     "updateClubName",
   ),
+
   updateCurrentGameId: createKeyedGeneratedMutation<
     "updateCurrentGameId",
     MutationUpdateCurrentGameIdArgs
@@ -76,18 +85,18 @@ export const mutIdToMutGql = {
     `,
     "updateCurrentGameId",
   ),
-  clearCurrentGameId: createKeyedGeneratedMutation<
-    "clearCurrentGameId",
-    MutationClearCurrentGameIdArgs
+  deleteClubAndAdmin: createKeyedGeneratedMutation<
+    "deleteClubAndAdmin",
+    MutationDeleteClubAndAdminArgs
   >(
     /* GraphQL */ `
-      mutation clearCurrentGameId($clubId: String!) {
-        clearCurrentGameId(clubId: $clubId) {
-          clubId
+      mutation deleteClubAndAdmin($input: DeleteClubAndAdminInput!) {
+        deleteClubAndAdmin(input: $input) {
+          status
         }
       }
     `,
-    "clearCurrentGameId",
+    "deleteClubAndAdmin",
   ),
   createClubDevice: createKeyedGeneratedMutation<
     "createClubDevice",
@@ -107,29 +116,6 @@ export const mutIdToMutGql = {
     `,
     "createClubDevice",
   ),
-  unexpectedError: createKeyedGeneratedMutation<"unexpectedError", undefined>(
-    /* GraphQL */ `
-      mutation unexpectedError {
-        unexpectedError {
-          neverGetsReturned
-        }
-      }
-    `,
-    "unexpectedError",
-  ),
-  deleteClubAndAdmin: createKeyedGeneratedMutation<
-    "deleteClubAndAdmin",
-    MutationDeleteClubAndAdminArgs
-  >(
-    /* GraphQL */ `
-      mutation deleteClubAndAdmin($input: DeleteClubAndAdminInput!) {
-        deleteClubAndAdmin(input: $input) {
-          status
-        }
-      }
-    `,
-    "deleteClubAndAdmin",
-  ),
   deleteClubDevice: createKeyedGeneratedMutation<
     "deleteClubDevice",
     MutationDeleteClubDeviceArgs
@@ -147,25 +133,6 @@ export const mutIdToMutGql = {
       }
     `,
     "deleteClubDevice",
-  ),
-  updateClubDevice: createKeyedGeneratedMutation<
-    "updateClubDevice",
-    MutationUpdateClubDeviceArgs
-  >(
-    /* GraphQL */ `
-      mutation updateClubDevice($input: UpdateClubDeviceInput!) {
-        updateClubDevice(input: $input) {
-          clubId
-          clubDeviceId
-          email
-          name
-          table
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "updateClubDevice",
   ),
   createGame: createKeyedGeneratedMutation<
     "createGame",
@@ -186,25 +153,6 @@ export const mutIdToMutGql = {
     `,
     "createGame",
   ),
-  updateGame: createKeyedGeneratedMutation<
-    "updateGame",
-    MutationUpdateGameArgs
-  >(
-    /* GraphQL */ `
-      mutation updateGame($input: UpdateGameInput!) {
-        updateGame(input: $input) {
-          clubId
-          gameId
-          movement
-          tableCount
-          roundCount
-          createdAt
-          updatedAt
-        }
-      }
-    `,
-    "updateGame",
-  ),
   deleteGame: createKeyedGeneratedMutation<
     "deleteGame",
     MutationDeleteGameArgs
@@ -223,5 +171,28 @@ export const mutIdToMutGql = {
       }
     `,
     "deleteGame",
+  ),
+  assignTable: createKeyedGeneratedMutation<
+    "assignTable",
+    MutationAssignTableArgs
+  >(
+    /* GraphQL */ `
+      mutation assignTable(
+        $clubId: String!
+        $clubDeviceId: String!
+        $tableNumber: Int!
+      ) {
+        assignTable(
+          clubId: $clubId
+          clubDeviceId: $clubDeviceId
+          tableNumber: $tableNumber
+        ) {
+          clubId
+          clubDeviceId
+          tableNumber
+        }
+      }
+    `,
+    "assignTable",
   ),
 };
