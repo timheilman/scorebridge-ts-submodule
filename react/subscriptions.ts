@@ -183,7 +183,6 @@ export interface UseSubscriptionsParams {
   clubDeviceId?: string;
   subscribeToAll: (ap: AccessParams) => void;
   fetchRecentData: (ap: AccessParams) => Promise<void>;
-  clearFetchedData: () => void;
   authMode?: GraphQLAuthMode;
 }
 export function useSubscriptions({
@@ -191,7 +190,6 @@ export function useSubscriptions({
   clubDeviceId,
   subscribeToAll,
   fetchRecentData,
-  clearFetchedData,
   authMode,
 }: UseSubscriptionsParams) {
   const dispatch = useDispatch();
@@ -236,14 +234,10 @@ export function useSubscriptions({
     });
     return () => {
       deleteAllSubs(dispatch);
-      if (clearFetchedData) {
-        clearFetchedData();
-      }
       stopListening();
     };
   }, [
     authMode,
-    clearFetchedData,
     clubDeviceId,
     clubId,
     dispatch,
