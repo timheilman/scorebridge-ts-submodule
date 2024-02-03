@@ -180,15 +180,18 @@ export const mutIdToMutGql = {
       mutation assignTable(
         $clubId: String!
         $clubDeviceId: String!
+        $gameId: String!
         $tableNumber: Int!
       ) {
         assignTable(
           clubId: $clubId
           clubDeviceId: $clubDeviceId
+          gameId: $gameId
           tableNumber: $tableNumber
         ) {
           clubId
           clubDeviceId
+          gameId
           tableNumber
         }
       }
