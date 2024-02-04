@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { Subscription } from "../graphql/appsync";
 import {
   KeyedGeneratedSubscription,
-  subIdToSubGql,
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
@@ -27,12 +26,13 @@ export type GraphQLAuthMode =
   // | "lambda"
   // | "none"
   | "userPool";
-export const pool: Record<string, { unsubscribe: () => void }> = {};
+const pool: Record<
+  string,
+  Record<SubscriptionNames, { unsubscribe: () => void }>
+> = {};
 
 export interface AccessParams {
   dispatch: Dispatch;
-  clubId: string;
-  clubDeviceId?: string;
   authMode?: GraphQLAuthMode;
 }
 
@@ -93,19 +93,37 @@ export function handleUnexpectedSubscriptionError(
   return;
 }
 
-export const deleteSub = (dispatch: Dispatch, subId: SubscriptionNames) => {
-  if (pool[subId]) {
-    pool[subId].unsubscribe();
-    delete pool[subId];
-    dispatch(setSubscriptionStatus([subId, "disconnected"]));
-    return true;
+export const deleteSub = ({
+  dispatch,
+  componentName,
+  subId,
+}: {
+  dispatch: Dispatch;
+  componentName: string;
+  subId: SubscriptionNames;
+}) => {
+  if (pool[componentName]) {
+    if (pool[componentName][subId]) {
+      pool[componentName][subId].unsubscribe();
+      delete pool[componentName][subId];
+      dispatch(setSubscriptionStatus([subId, "disconnected"]));
+      return true;
+    }
   }
 };
-export const deleteAllSubs = (dispatch: Dispatch) => {
-  Object.keys(pool).forEach((subId: string) => {
-    log("deleteAllSubs", "debug", { subId });
-    deleteSub(dispatch, subId as SubscriptionNames);
-  });
+export const deleteAllSubs = ({
+  componentName,
+  dispatch,
+}: {
+  componentName: string;
+  dispatch: Dispatch;
+}) => {
+  if (pool[componentName]) {
+    Object.keys(pool[componentName]).forEach((subId: string) => {
+      log("deleteAllSubs", "debug", { subId });
+      deleteSub({ dispatch, componentName, subId: subId as SubscriptionNames });
+    });
+  }
 };
 
 export type OutType<T> = T extends KeyedGeneratedSubscription<
@@ -143,15 +161,17 @@ export const errorCatchingSubscription = <
   query,
   variables,
   callback,
+  componentName,
 }: {
   accessParams: AccessParams;
   query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
   variables: INPUT_TYPE;
   callback: (d: OutType<typeof query>) => void;
+  componentName: string;
 }) => {
   const subId = query.__subscriptionName;
   try {
-    deleteSub(accessParams.dispatch, subId);
+    deleteSub({ dispatch: accessParams.dispatch, subId, componentName });
     log("errorCatchingSubscription", "debug", {
       subscriptionName: subId,
       ...variables,
@@ -161,7 +181,7 @@ export const errorCatchingSubscription = <
       query: query.gql,
       variables,
     });
-    pool[subId] = graphqlResponse.subscribe({
+    pool[componentName][subId] = graphqlResponse.subscribe({
       next: (gqlSubMsg) => callback(gqlSubMsg.data[subId]),
       error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
     });
@@ -179,24 +199,23 @@ export const errorCatchingSubscription = <
 };
 
 export interface UseSubscriptionsParams {
-  clubId: string;
-  clubDeviceId?: string;
-  subscribeToAll: (ap: AccessParams) => void;
-  fetchRecentData: (ap: AccessParams) => Promise<void>;
-  authMode?: GraphQLAuthMode;
+  componentName: string;
+  subscribeToAll: () => void;
+  fetchRecentData: () => Promise<void>;
 }
 export function useSubscriptions({
-  clubId,
-  clubDeviceId,
+  componentName,
   subscribeToAll,
   fetchRecentData,
-  authMode,
 }: UseSubscriptionsParams) {
   const dispatch = useDispatch();
-
+  pool[componentName] = {} as Record<
+    SubscriptionNames,
+    { unsubscribe: () => void }
+  >;
   useEffect(() => {
     let priorConnectionState: ConnectionState;
-    subscribeToAll({ dispatch, clubId, clubDeviceId, authMode });
+    subscribeToAll();
 
     const stopListening = Hub.listen<{
       event: string;
@@ -212,7 +231,7 @@ export function useSubscriptions({
           priorConnectionState !== ConnectionState.Connected &&
           payload.data.connectionState === ConnectionState.Connected
         ) {
-          void fetchRecentData({ dispatch, clubId, clubDeviceId, authMode });
+          void fetchRecentData();
           log("hub.listen.unconnectedToConnected", "debug");
           dispatch(setBornSubscriptionStatuses("successfullySubscribed"));
         } else if (
@@ -220,28 +239,23 @@ export function useSubscriptions({
           payload.data.connectionState !== ConnectionState.Connected
         ) {
           log("hub.listen.connectedToUnconnected", "debug");
-          Object.keys(subIdToSubGql).forEach((subId) => {
-            dispatch(
-              setSubscriptionStatus([
-                subId as SubscriptionNames,
-                "disconnected post-birth",
-              ]),
-            );
-          });
+          if (pool[componentName]) {
+            Object.keys(pool[componentName]).forEach((subId) => {
+              dispatch(
+                setSubscriptionStatus([
+                  subId as SubscriptionNames,
+                  "disconnected post-birth",
+                ]),
+              );
+            });
+          }
         }
         priorConnectionState = payload.data.connectionState;
       }
     });
     return () => {
-      deleteAllSubs(dispatch);
+      deleteAllSubs({ componentName, dispatch });
       stopListening();
     };
-  }, [
-    authMode,
-    clubDeviceId,
-    clubId,
-    dispatch,
-    fetchRecentData,
-    subscribeToAll,
-  ]);
+  }, [componentName, dispatch, fetchRecentData, subscribeToAll]);
 }
