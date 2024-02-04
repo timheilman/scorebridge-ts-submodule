@@ -113,7 +113,7 @@ export interface Game {
   label?: Maybe<Scalars["String"]["output"]>;
   movement: Scalars["String"]["output"];
   roundCount: Scalars["Int"]["output"];
-  tableAssignments?: Maybe<Maybe<TableAssignment>[]>;
+  tableAssignments?: Maybe<TableAssignment[]>;
   tableCount: Scalars["Int"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
 }
