@@ -217,7 +217,11 @@ const initStatuses = (subscriptionNames: SubscriptionNames[]) => {
 // TODO: turning off-and-on wifi at the tablet works to turn the icon to red, then back to green
 // however, unplugging the router turns it red but plugging it back in never brings it back to green
 // I should test this in the webapp in both ways to see if I can reproduce same behavior there
-
+// TODO: improve this API using the workaround for the absence of existential generics:
+// https://stackoverflow.com/questions/65129070/defining-an-array-of-differing-generic-types-in-typescript
+// so that we can use a builder pattern taking the componentName, authMode, and refetch function once,
+// but the subscription query, variables, and callback multiple times, storing them in an array
+// this will eliminate the need to export errorCatchingSubscription
 export function useSubscriptions({
   componentName,
   subscribeToAll,
