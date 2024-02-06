@@ -151,7 +151,7 @@ interface PagedList<T, TYPENAME> {
   items: T[];
 }
 
-export const errorCatchingSubscription = <
+const errorCatchingSubscription = <
   SUB_NAME extends SubscriptionNames,
   INPUT_TYPE,
 >({
@@ -188,12 +188,38 @@ export const errorCatchingSubscription = <
     handleUnexpectedSubscriptionError(e, accessParams.dispatch, subId);
   }
 };
+export interface SubscriptionDetail<
+  SUB_NAME extends SubscriptionNames,
+  INPUT_TYPE,
+> {
+  query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
+  variables: INPUT_TYPE;
+  callback: (
+    result: OutType<KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>>,
+  ) => void;
+}
+// This type and function may seem convoluted, but they are informed by this excellent post:
+// https://stackoverflow.com/questions/65129070/defining-an-array-of-differing-generic-types-in-typescript
+export type ExistentiallyTypedSubscription = <R>(
+  cb: <SUB_NAME extends SubscriptionNames, INPUT_TYPE>(
+    subDet: SubscriptionDetail<SUB_NAME, INPUT_TYPE>,
+  ) => R,
+) => R;
 
+// export const someInstruction = <T,>(i: Instruction<T>): SomeInstruction => cb => cb(i);
+export const existentiallyTypedSubscription =
+  <SUB_NAME extends SubscriptionNames, INPUT_TYPE>(
+    sd: SubscriptionDetail<SUB_NAME, INPUT_TYPE>,
+  ): ExistentiallyTypedSubscription =>
+  (cb) =>
+    cb(sd);
+// short alias:
+export const ets = existentiallyTypedSubscription;
 export interface UseSubscriptionsParams {
   componentName: string;
-  subscribeToAll: () => void;
+  authMode?: GraphQLAuthMode;
   fetchRecentData: () => Promise<void>;
-  subscriptionNames: SubscriptionNames[];
+  subscriptionDetails: ExistentiallyTypedSubscription[];
 }
 
 function normalizeQueryString(unnormalizedQueryString: string) {
@@ -217,26 +243,33 @@ const initStatuses = (subscriptionNames: SubscriptionNames[]) => {
 // TODO: turning off-and-on wifi at the tablet works to turn the icon to red, then back to green
 // however, unplugging the router turns it red but plugging it back in never brings it back to green
 // I should test this in the webapp in both ways to see if I can reproduce same behavior there
-// TODO: improve this API using the workaround for the absence of existential generics:
-// https://stackoverflow.com/questions/65129070/defining-an-array-of-differing-generic-types-in-typescript
-// so that we can use a builder pattern taking the componentName, authMode, and refetch function once,
-// but the subscription query, variables, and callback multiple times, storing them in an array
-// this will eliminate the need to export errorCatchingSubscription
 export function useSubscriptions({
   componentName,
-  subscribeToAll,
+  authMode = "userPool",
   fetchRecentData,
-  subscriptionNames,
+  subscriptionDetails,
 }: UseSubscriptionsParams) {
   const dispatch = useDispatch();
   pool[componentName] = {} as Record<
     SubscriptionNames,
     { unsubscribe: () => void }
   >;
-
+  const subscriptionNames = subscriptionDetails.map((ets) =>
+    ets((subDets) => subDets.query.__subscriptionName),
+  );
   statuses[componentName] = initStatuses(subscriptionNames);
   useEffect(() => {
-    subscribeToAll();
+    subscriptionDetails.forEach((ets) =>
+      ets((subDets) => {
+        errorCatchingSubscription({
+          accessParams: { dispatch, authMode },
+          query: subDets.query,
+          variables: subDets.variables,
+          callback: subDets.callback,
+          componentName,
+        });
+      }),
+    );
 
     const stopListening = Hub.listen<{
       event: string;
@@ -297,10 +330,11 @@ export function useSubscriptions({
       stopListening();
     };
   }, [
+    authMode,
     componentName,
     dispatch,
     fetchRecentData,
-    subscribeToAll,
+    subscriptionDetails,
     subscriptionNames,
   ]);
 }
