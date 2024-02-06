@@ -180,7 +180,7 @@ const errorCatchingSubscription = <
       variables,
     });
     pool[componentName][subId] = graphqlResponse.subscribe({
-      next: (gqlSubMsg) => callback(gqlSubMsg.data[subId]),
+      next: ({ data }) => callback(data[subId]),
       error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
     });
     log("errorCatchingSubscription.ok", "debug", { subId });
@@ -206,7 +206,6 @@ export type ExistentiallyTypedSubscription = <R>(
   ) => R,
 ) => R;
 
-// export const someInstruction = <T,>(i: Instruction<T>): SomeInstruction => cb => cb(i);
 export const existentiallyTypedSubscription =
   <SUB_NAME extends SubscriptionNames, INPUT_TYPE>(
     sd: SubscriptionDetail<SUB_NAME, INPUT_TYPE>,

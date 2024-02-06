@@ -92,7 +92,9 @@ type Subscription {
 
   onAssignTable(clubId: String!): TableAssignmentResult
     @aws_subscribe(mutations: ["assignTable"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub", "clubDevice"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 type ListClubDevicesOutput {
