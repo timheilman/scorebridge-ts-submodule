@@ -86,14 +86,13 @@ type Subscription {
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   onAssignTable(clubId: String!): TableAssignmentResult
     @aws_subscribe(mutations: ["assignTable"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub", "clubDevice"])
 }
 
 type ListClubDevicesOutput {
