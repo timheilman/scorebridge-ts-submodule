@@ -7,15 +7,12 @@ import { useDispatch } from "react-redux";
 import { Subscription } from "../graphql/appsync";
 import {
   KeyedGeneratedSubscription,
+  subIdToSubGql,
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import { client } from "./gqlClient";
-import {
-  setBornSubscriptionStatuses,
-  setSubscriptionBirth,
-  setSubscriptionStatus,
-} from "./subscriptionStatesSlice";
+import { setSubscriptionStatus } from "./subscriptionStatesSlice";
 
 const log = tsSubmoduleLogFn("subscriptions.");
 
@@ -30,7 +27,7 @@ const pool: Record<
   string,
   Record<SubscriptionNames, { unsubscribe: () => void }>
 > = {};
-
+const statuses: Record<string, Record<string, boolean>> = {};
 export interface AccessParams {
   dispatch: Dispatch;
   authMode?: GraphQLAuthMode;
@@ -124,6 +121,7 @@ export const deleteAllSubs = ({
       deleteSub({ dispatch, componentName, subId: subId as SubscriptionNames });
     });
   }
+  delete pool[componentName];
 };
 
 export type OutType<T> = T extends KeyedGeneratedSubscription<
@@ -186,13 +184,6 @@ export const errorCatchingSubscription = <
       error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
     });
     log("errorCatchingSubscription.ok", "debug", { subId });
-
-    accessParams.dispatch(
-      setSubscriptionStatus([subId, "successfullySubscribed"]),
-    );
-    log("errorCatchingSubscription.birth", "debug", { subId });
-
-    accessParams.dispatch(setSubscriptionBirth(subId));
   } catch (e: unknown) {
     handleUnexpectedSubscriptionError(e, accessParams.dispatch, subId);
   }
@@ -202,60 +193,110 @@ export interface UseSubscriptionsParams {
   componentName: string;
   subscribeToAll: () => void;
   fetchRecentData: () => Promise<void>;
+  subscriptionNames: SubscriptionNames[];
 }
+
+function normalizeQueryString(unnormalizedQueryString: string) {
+  return unnormalizedQueryString.replace(/\s+/g, " ").trim();
+}
+
+function subIdFromQueryString(queryString: string) {
+  return Object.entries(subIdToSubGql).find(
+    (entry) => normalizeQueryString(entry[1].gql) === queryString,
+  )![0];
+}
+const initStatuses = (subscriptionNames: SubscriptionNames[]) => {
+  return subscriptionNames.reduce(
+    (acc, name) => {
+      acc[normalizeQueryString(subIdToSubGql[name].gql)] = false;
+      return acc;
+    },
+    {} as Record<string, boolean>,
+  );
+};
+// TODO: turning off-and-on wifi at the tablet works to turn the icon to red, then back to green
+// however, unplugging the router turns it red but plugging it back in never brings it back to green
+// I should test this in the webapp in both ways to see if I can reproduce same behavior there
+
 export function useSubscriptions({
   componentName,
   subscribeToAll,
   fetchRecentData,
+  subscriptionNames,
 }: UseSubscriptionsParams) {
   const dispatch = useDispatch();
   pool[componentName] = {} as Record<
     SubscriptionNames,
     { unsubscribe: () => void }
   >;
+
+  statuses[componentName] = initStatuses(subscriptionNames);
   useEffect(() => {
-    let priorConnectionState: ConnectionState;
     subscribeToAll();
 
     const stopListening = Hub.listen<{
       event: string;
-      data: { connectionState: ConnectionState };
+      data: { query: string; connectionState: ConnectionState };
     }>("api", (data) => {
+      log("hub.listen.channelApi.callback", "debug", {
+        data,
+        dataPayloadData: data.payload.data,
+      });
       const { payload } = data;
       if (payload.event === CONNECTION_STATE_CHANGE) {
-        log("hub.listen.connectionStateChange", "debug", {
-          previous: priorConnectionState,
-          current: payload.data.connectionState,
-        });
+        const connectionState = payload.data.connectionState;
         if (
-          priorConnectionState !== ConnectionState.Connected &&
-          payload.data.connectionState === ConnectionState.Connected
+          connectionState === ConnectionState.ConnectedPendingNetwork ||
+          connectionState === ConnectionState.ConnectionDisrupted ||
+          connectionState ===
+            ConnectionState.ConnectionDisruptedPendingNetwork ||
+          connectionState === ConnectionState.Disconnected
         ) {
-          void fetchRecentData();
-          log("hub.listen.unconnectedToConnected", "debug");
-          dispatch(setBornSubscriptionStatuses("successfullySubscribed"));
-        } else if (
-          priorConnectionState === ConnectionState.Connected &&
-          payload.data.connectionState !== ConnectionState.Connected
-        ) {
-          log("hub.listen.connectedToUnconnected", "debug");
-          if (pool[componentName]) {
-            Object.keys(pool[componentName]).forEach((subId) => {
-              dispatch(
-                setSubscriptionStatus([
-                  subId as SubscriptionNames,
-                  "disconnected post-birth",
-                ]),
-              );
-            });
+          statuses[componentName] = initStatuses(subscriptionNames);
+          subscriptionNames.forEach((subId) => {
+            dispatch(setSubscriptionStatus([subId, connectionState]));
+          });
+        }
+      }
+      if (payload.event === "Subscription ack") {
+        log("hub.listen.channelApi.subscriptionCallback", "debug", {
+          payloadData: payload.data,
+        });
+        const queryString = normalizeQueryString(payload.data.query);
+        // If this copy of the listener is responsible for this update:
+        if (statuses[componentName][queryString] !== undefined) {
+          log("hub.listen.channelApi.postQueryExtraction", "debug", {
+            queryString,
+            statuses: statuses[componentName],
+          });
+          // set this subscription healthy:
+          statuses[componentName][queryString] = true;
+          const subId = subIdFromQueryString(queryString);
+          // notify redux
+          dispatch(
+            setSubscriptionStatus([
+              subId as SubscriptionNames,
+              "successfullySubscribed",
+            ]),
+          );
+          // if this was the last subscription marked healthy, (re)fetch data:
+          if (
+            Object.entries(statuses[componentName]).every((entry) => entry[1])
+          ) {
+            void fetchRecentData();
           }
         }
-        priorConnectionState = payload.data.connectionState;
       }
     });
     return () => {
       deleteAllSubs({ componentName, dispatch });
       stopListening();
     };
-  }, [componentName, dispatch, fetchRecentData, subscribeToAll]);
+  }, [
+    componentName,
+    dispatch,
+    fetchRecentData,
+    subscribeToAll,
+    subscriptionNames,
+  ]);
 }

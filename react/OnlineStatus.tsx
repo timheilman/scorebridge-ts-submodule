@@ -32,17 +32,19 @@ export default function OnlineStatus({
     subscriptionsStates: subscriptionStates,
   });
   log("subscriptionIds", "debug", { subscriptionIds });
+  const filteredStates = Object.entries(subscriptionStates).filter((arrElt) =>
+    subscriptionIds.includes(arrElt[0] as SubscriptionNames),
+  );
+  log("filteredStates", "debug", { filteredStates });
   if (
-    Object.entries(subscriptionStates)
-      .filter((arrElt) =>
-        subscriptionIds.includes(arrElt[0] as SubscriptionNames),
-      )
-      .every((arrElt) => {
-        return arrElt[1][1] === "successfullySubscribed";
-      })
+    filteredStates.every((arrElt) => {
+      return arrElt[1] === "successfullySubscribed";
+    })
   ) {
+    log("returningUpIcon", "debug");
     return <>{upIcon}</>;
   } else {
+    log("returningDownIcon", "debug");
     return <>{downIcon}</>;
   }
 }
