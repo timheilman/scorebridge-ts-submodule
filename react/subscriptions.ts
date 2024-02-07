@@ -179,6 +179,12 @@ const errorCatchingSubscription = <
       query: query.gql,
       variables,
     });
+    if (!pool[componentName]) {
+      pool[componentName] = {} as Record<
+        SubscriptionNames,
+        { unsubscribe: () => void }
+      >;
+    }
     pool[componentName][subId] = graphqlResponse.subscribe({
       next: ({ data }) => callback(data[subId]),
       error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
