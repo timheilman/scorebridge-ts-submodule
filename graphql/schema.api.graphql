@@ -18,12 +18,6 @@ type Query {
   ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  # I think ClubDevice could technically be null here...
-  getClubDevice(clubId: String!, clubDeviceId: String!): ClubDevice!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
-
   listGames(
     clubId: String!
     nextToken: String
@@ -112,7 +106,6 @@ type Club {
   name: String!
   currentGameId: String
   createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
 }
 
 type ClubDevice {
@@ -121,7 +114,6 @@ type ClubDevice {
   name: String!
   email: AWSEmail!
   createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
 }
 
 input CreateClubDeviceInput {
@@ -156,7 +148,6 @@ type Game {
   label: String
   tableAssignments: [TableAssignment!]
   createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
 }
 
 input CreateGameInput {

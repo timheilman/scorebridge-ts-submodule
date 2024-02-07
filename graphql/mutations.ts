@@ -110,7 +110,6 @@ export const mutIdToMutGql = {
           name
           email
           createdAt
-          updatedAt
         }
       }
     `,
@@ -128,7 +127,6 @@ export const mutIdToMutGql = {
           name
           email
           createdAt
-          updatedAt
         }
       }
     `,
@@ -147,7 +145,6 @@ export const mutIdToMutGql = {
           tableCount
           roundCount
           createdAt
-          updatedAt
         }
       }
     `,
@@ -166,7 +163,6 @@ export const mutIdToMutGql = {
           tableCount
           roundCount
           createdAt
-          updatedAt
         }
       }
     `,

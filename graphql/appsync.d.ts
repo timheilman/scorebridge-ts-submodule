@@ -46,7 +46,6 @@ export interface Club {
   currentGameId?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
-  updatedAt: Scalars["AWSDateTime"]["output"];
 }
 
 export interface ClubDevice {
@@ -56,7 +55,6 @@ export interface ClubDevice {
   createdAt: Scalars["AWSDateTime"]["output"];
   email: Scalars["AWSEmail"]["output"];
   name: Scalars["String"]["output"];
-  updatedAt: Scalars["AWSDateTime"]["output"];
 }
 
 export interface CreateClubDeviceInput {
@@ -115,7 +113,6 @@ export interface Game {
   roundCount: Scalars["Int"]["output"];
   tableAssignments?: Maybe<TableAssignment[]>;
   tableCount: Scalars["Int"]["output"];
-  updatedAt: Scalars["AWSDateTime"]["output"];
 }
 
 export interface ListClubDevicesOutput {
@@ -188,18 +185,12 @@ export interface MutationUpdateCurrentGameIdArgs {
 export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
-  getClubDevice: ClubDevice;
   getGame?: Maybe<Game>;
   listClubDevices: ListClubDevicesOutput;
   listGames: ListGamesOutput;
 }
 
 export interface QueryGetClubArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface QueryGetClubDeviceArgs {
-  clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
 }
 

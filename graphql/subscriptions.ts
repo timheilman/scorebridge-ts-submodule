@@ -47,7 +47,6 @@ export const subIdToSubGql = {
           tableCount
           roundCount
           createdAt
-          updatedAt
         }
       }
     `,
@@ -65,7 +64,6 @@ export const subIdToSubGql = {
           tableCount
           roundCount
           createdAt
-          updatedAt
         }
       }
     `,
