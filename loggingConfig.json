@@ -1,4 +1,6 @@
 {
   "": "debug",
-  "src.features": "debug"
+  "tsSubmodule.deleteDdbRecords": "info",
+  "tsSubmodule.subscriptions": "info",
+  "cypress.": "info"
 }
