@@ -182,6 +182,22 @@ export interface MutationUpdateCurrentGameIdArgs {
   newGameId: Scalars["String"]["input"];
 }
 
+export interface PartialGame {
+  clubId: Scalars["String"]["input"];
+  createdAt: Scalars["AWSDateTime"]["input"];
+  gameId: Scalars["String"]["input"];
+  label?: InputMaybe<Scalars["String"]["input"]>;
+  movement: Scalars["String"]["input"];
+  roundCount: Scalars["Int"]["input"];
+  tableAssignments?: InputMaybe<PartialTableAssignment[]>;
+  tableCount: Scalars["Int"]["input"];
+}
+
+export interface PartialTableAssignment {
+  clubDeviceId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
 export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
@@ -207,6 +223,7 @@ export interface QueryListClubDevicesArgs {
 
 export interface QueryListGamesArgs {
   clubId: Scalars["String"]["input"];
+  finalGameFromLastList?: InputMaybe<PartialGame>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }

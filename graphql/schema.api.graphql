@@ -22,6 +22,7 @@ type Query {
     clubId: String!
     nextToken: String
     limit: Int = 50
+    finalGameFromLastList: PartialGame
   ): ListGamesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
@@ -132,6 +133,11 @@ type TableAssignment {
   clubDeviceId: String!
 }
 
+input PartialTableAssignment {
+  tableNumber: Int!
+  clubDeviceId: String!
+}
+
 type TableAssignmentResult {
   clubId: String!
   clubDeviceId: String!
@@ -147,6 +153,17 @@ type Game {
   roundCount: Int!
   label: String
   tableAssignments: [TableAssignment!]
+  createdAt: AWSDateTime!
+}
+
+input PartialGame {
+  clubId: String!
+  gameId: String!
+  movement: String!
+  tableCount: Int!
+  roundCount: Int!
+  label: String
+  tableAssignments: [PartialTableAssignment!]
   createdAt: AWSDateTime!
 }
 
