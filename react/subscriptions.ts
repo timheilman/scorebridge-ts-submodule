@@ -1,13 +1,11 @@
-import { Dispatch } from "@reduxjs/toolkit";
 import { CONNECTION_STATE_CHANGE, ConnectionState } from "aws-amplify/api";
 import { Hub } from "aws-amplify/utils";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 
 import { Subscription } from "../graphql/appsync";
 import {
   KeyedGeneratedSubscription,
-  subIdToSubGql,
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
@@ -23,106 +21,6 @@ export type GraphQLAuthMode =
   // | "lambda"
   // | "none"
   | "userPool";
-const pool: Record<
-  string,
-  Record<SubscriptionNames, { unsubscribe: () => void }>
-> = {};
-const statuses: Record<string, Record<string, boolean>> = {};
-export interface AccessParams {
-  dispatch: Dispatch;
-  authMode?: GraphQLAuthMode;
-}
-
-export function handleAmplifySubscriptionError(
-  dispatch: Dispatch,
-  subId: SubscriptionNames,
-) {
-  log("handleAmplifySubscriptionError", "debug", { subId });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (e: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (e?.errors?.length && e.errors[0].message) {
-      log("handleAmplifySubscriptionError.message", "error", {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        message: e.errors[0].message,
-      });
-      dispatch(
-        setSubscriptionStatus([
-          subId,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          `failed post-init w/message: ${e.errors[0].message}`,
-        ]),
-      );
-      return;
-    }
-    log("handleAmplifySubscriptionError.unexpected", "error", {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      message: e,
-    });
-    dispatch(
-      setSubscriptionStatus([
-        subId,
-        `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
-      ]),
-    );
-  };
-}
-
-export function handleUnexpectedSubscriptionError(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  e: any,
-  dispatch: Dispatch,
-  subId: SubscriptionNames,
-) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  log("handleUnexpectedSubscriptionError", "error", { subId, e });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  if (e.message) {
-    dispatch(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      setSubscriptionStatus([subId, `failed at init w/message: ${e.message}`]),
-    );
-  } else {
-    dispatch(
-      setSubscriptionStatus([subId, `failed at init w/o message: ${e}`]),
-    );
-  }
-  return;
-}
-
-export const deleteSub = ({
-  dispatch,
-  componentName,
-  subId,
-}: {
-  dispatch: Dispatch;
-  componentName: string;
-  subId: SubscriptionNames;
-}) => {
-  if (pool[componentName]) {
-    if (pool[componentName][subId]) {
-      pool[componentName][subId].unsubscribe();
-      delete pool[componentName][subId];
-      dispatch(setSubscriptionStatus([subId, "disconnected"]));
-      return true;
-    }
-  }
-};
-export const deleteAllSubs = ({
-  componentName,
-  dispatch,
-}: {
-  componentName: string;
-  dispatch: Dispatch;
-}) => {
-  if (pool[componentName]) {
-    Object.keys(pool[componentName]).forEach((subId: string) => {
-      log("deleteAllSubs", "debug", { subId });
-      deleteSub({ dispatch, componentName, subId: subId as SubscriptionNames });
-    });
-  }
-  delete pool[componentName];
-};
 
 export type OutType<T> = T extends KeyedGeneratedSubscription<
   infer NAME,
@@ -151,49 +49,6 @@ interface PagedList<T, TYPENAME> {
   items: T[];
 }
 
-const errorCatchingSubscription = <
-  SUB_NAME extends SubscriptionNames,
-  INPUT_TYPE,
->({
-  accessParams,
-  query,
-  variables,
-  callback,
-  componentName,
-}: {
-  accessParams: AccessParams;
-  query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
-  variables: INPUT_TYPE;
-  callback: (d: OutType<typeof query>) => void;
-  componentName: string;
-}) => {
-  const subId = query.__subscriptionName;
-  try {
-    deleteSub({ dispatch: accessParams.dispatch, subId, componentName });
-    log("errorCatchingSubscription", "debug", {
-      subscriptionName: subId,
-      ...variables,
-    });
-    const graphqlResponse = client.graphql({
-      authMode: accessParams.authMode ?? "userPool",
-      query: query.gql,
-      variables,
-    });
-    if (!pool[componentName]) {
-      pool[componentName] = {} as Record<
-        SubscriptionNames,
-        { unsubscribe: () => void }
-      >;
-    }
-    pool[componentName][subId] = graphqlResponse.subscribe({
-      next: ({ data }) => callback(data[subId]),
-      error: handleAmplifySubscriptionError(accessParams.dispatch, subId),
-    });
-    log("errorCatchingSubscription.ok", "debug", { subId });
-  } catch (e: unknown) {
-    handleUnexpectedSubscriptionError(e, accessParams.dispatch, subId);
-  }
-};
 export interface SubscriptionDetail<
   SUB_NAME extends SubscriptionNames,
   INPUT_TYPE,
@@ -221,57 +76,132 @@ export const existentiallyTypedSubscription =
 // short alias:
 export const ets = existentiallyTypedSubscription;
 export interface UseSubscriptionsParams {
-  componentName: string;
   authMode?: GraphQLAuthMode;
   fetchRecentData: () => Promise<void>;
   subscriptionDetails: ExistentiallyTypedSubscription[];
 }
 
-function normalizeQueryString(unnormalizedQueryString: string) {
-  return unnormalizedQueryString.replace(/\s+/g, " ").trim();
-}
+type PoolType = Record<SubscriptionNames, { unsubscribe: () => void }>;
 
-function subIdFromQueryString(queryString: string) {
-  return Object.entries(subIdToSubGql).find(
-    (entry) => normalizeQueryString(entry[1].gql) === queryString,
-  )![0];
-}
-const initStatuses = (subscriptionNames: SubscriptionNames[]) => {
-  return subscriptionNames.reduce(
-    (acc, name) => {
-      acc[normalizeQueryString(subIdToSubGql[name].gql)] = false;
-      return acc;
-    },
-    {} as Record<string, boolean>,
-  );
-};
-// TODO: turning off-and-on wifi at the tablet works to turn the icon to red, then back to green
-// however, unplugging the router turns it red but plugging it back in never brings it back to green
-// I should test this in the webapp in both ways to see if I can reproduce same behavior there
 export function useSubscriptions({
-  componentName,
   authMode = "userPool",
   fetchRecentData,
   subscriptionDetails,
 }: UseSubscriptionsParams) {
+  const pool: PoolType = useMemo(() => {
+    return {} as PoolType;
+  }, []);
   const dispatch = useDispatch();
-  pool[componentName] = {} as Record<
-    SubscriptionNames,
-    { unsubscribe: () => void }
-  >;
+
   const subscriptionNames = subscriptionDetails.map((ets) =>
     ets((subDets) => subDets.query.__subscriptionName),
   );
-  statuses[componentName] = initStatuses(subscriptionNames);
   useEffect(() => {
+    const deleteSub = (subId: SubscriptionNames) => {
+      if (pool[subId]) {
+        pool[subId].unsubscribe();
+        delete pool[subId];
+        dispatch(setSubscriptionStatus([subId, "deleted"]));
+        return true;
+      }
+    };
+    const deleteAllSubs = () => {
+      Object.keys(pool).forEach((subId: string) => {
+        log("deleteAllSubs", "debug", { subId });
+        deleteSub(subId as SubscriptionNames);
+      });
+    };
+    const handleAmplifySubscriptionError = (subId: SubscriptionNames) => {
+      log("handleAmplifySubscriptionError", "debug", { subId });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (e: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (e?.errors?.length && e.errors[0].message) {
+          log("handleAmplifySubscriptionError.message", "error", {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+            message: e.errors[0].message,
+          });
+          dispatch(
+            setSubscriptionStatus([
+              subId,
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              `failed post-init w/message: ${e.errors[0].message}`,
+            ]),
+          );
+          return;
+        }
+        log("handleAmplifySubscriptionError.unexpected", "error", {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          message: e,
+        });
+        dispatch(
+          setSubscriptionStatus([
+            subId,
+            `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
+          ]),
+        );
+      };
+    };
+
+    const handleUnexpectedSubscriptionError = (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      e: any,
+      subId: SubscriptionNames,
+    ) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      log("handleUnexpectedSubscriptionError", "error", { subId, e });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (e.message) {
+        dispatch(
+          setSubscriptionStatus([
+            subId,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            `failed at init w/message: ${e.message}`,
+          ]),
+        );
+      } else {
+        dispatch(
+          setSubscriptionStatus([subId, `failed at init w/o message: ${e}`]),
+        );
+      }
+      return;
+    };
+
+    const errorCatchingSubscription = <
+      SUB_NAME extends SubscriptionNames,
+      INPUT_TYPE,
+    >({
+      query,
+      variables,
+      callback,
+    }: SubscriptionDetail<SUB_NAME, INPUT_TYPE>) => {
+      const subId = query.__subscriptionName;
+      try {
+        deleteSub(subId);
+        log("errorCatchingSubscription", "debug", {
+          subscriptionName: subId,
+          ...variables,
+        });
+        const graphqlResponse = client.graphql({
+          authMode: authMode ?? "userPool",
+          query: query.gql,
+          variables,
+        });
+        pool[subId] = graphqlResponse.subscribe({
+          next: ({ data }) => callback(data[subId]),
+          error: handleAmplifySubscriptionError(subId),
+        });
+        log("errorCatchingSubscription.ok", "debug", { subId });
+      } catch (e: unknown) {
+        handleUnexpectedSubscriptionError(e, subId);
+      }
+    };
     subscriptionDetails.forEach((ets) =>
       ets((subDets) => {
         errorCatchingSubscription({
-          accessParams: { dispatch, authMode },
           query: subDets.query,
           variables: subDets.variables,
           callback: subDets.callback,
-          componentName,
         });
       }),
     );
@@ -287,58 +217,31 @@ export function useSubscriptions({
       const { payload } = data;
       if (payload.event === CONNECTION_STATE_CHANGE) {
         const connectionState = payload.data.connectionState;
-        if (
-          connectionState === ConnectionState.ConnectedPendingNetwork ||
-          connectionState === ConnectionState.ConnectionDisrupted ||
-          connectionState ===
-            ConnectionState.ConnectionDisruptedPendingNetwork ||
-          connectionState === ConnectionState.Disconnected
-        ) {
-          statuses[componentName] = initStatuses(subscriptionNames);
+        if (connectionState === ConnectionState.Connected) {
+          subscriptionNames.forEach((subId) => {
+            dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
+          });
+          fetchRecentData().catch((e) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            log("fetchRecentData.rethrowingError", "error", { e });
+            throw e;
+          });
+        } else {
           subscriptionNames.forEach((subId) => {
             dispatch(setSubscriptionStatus([subId, connectionState]));
           });
         }
       }
-      if (payload.event === "Subscription ack") {
-        log("hub.listen.channelApi.subscriptionCallback", "debug", {
-          payloadData: payload.data,
-        });
-        const queryString = normalizeQueryString(payload.data.query);
-        // If this copy of the listener is responsible for this update:
-        if (statuses[componentName][queryString] !== undefined) {
-          log("hub.listen.channelApi.postQueryExtraction", "debug", {
-            queryString,
-            statuses: statuses[componentName],
-          });
-          // set this subscription healthy:
-          statuses[componentName][queryString] = true;
-          const subId = subIdFromQueryString(queryString);
-          // notify redux
-          dispatch(
-            setSubscriptionStatus([
-              subId as SubscriptionNames,
-              "successfullySubscribed",
-            ]),
-          );
-          // if this was the last subscription marked healthy, (re)fetch data:
-          if (
-            Object.entries(statuses[componentName]).every((entry) => entry[1])
-          ) {
-            void fetchRecentData();
-          }
-        }
-      }
     });
     return () => {
-      deleteAllSubs({ componentName, dispatch });
+      deleteAllSubs();
       stopListening();
     };
   }, [
     authMode,
-    componentName,
     dispatch,
     fetchRecentData,
+    pool,
     subscriptionDetails,
     subscriptionNames,
   ]);
