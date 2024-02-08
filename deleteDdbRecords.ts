@@ -11,14 +11,14 @@ import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("deleteDdbRecords.");
 async function queryChunk({
   awsRegion,
-  profile,
+  profile = null,
   tableName,
   keyConditionExpression,
   unmarshalledExpressionAttributeValues,
   exclusiveStartKey,
 }: {
   awsRegion: string;
-  profile: string;
+  profile: string | null;
   tableName: string;
   keyConditionExpression: string;
   unmarshalledExpressionAttributeValues: Record<string, string>;
@@ -42,13 +42,13 @@ async function queryChunk({
 
 async function batchQuery({
   awsRegion,
-  profile,
+  profile = null,
   tableName,
   keyConditionExpression,
   unmarshalledExpressionAttributeValues,
 }: {
   awsRegion: string;
-  profile: string;
+  profile: string | null;
   tableName: string;
   keyConditionExpression: string;
   unmarshalledExpressionAttributeValues: Record<string, string>;
@@ -109,12 +109,12 @@ export async function batchDeleteGames({
 
 export async function batchDeleteClubDetails({
   awsRegion,
-  profile,
+  profile = null,
   scoreBridgeTableName,
   clubId,
 }: {
   awsRegion: string;
-  profile: string;
+  profile?: string | null;
   scoreBridgeTableName: string;
   clubId: string;
 }) {
@@ -137,16 +137,16 @@ export async function batchDeleteClubDetails({
 async function batchDeleteDdbRecords({
   items,
   awsRegion,
-  profile,
+  profile = null,
   tableName,
 }: {
   items: Record<string, AttributeValue>[];
   awsRegion: string;
-  profile: string;
+  profile: string | null;
   tableName: string;
 }) {
   const chunk = <T>(arr: T[], size: number) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
       arr.slice(i * size, i * size + size),
     );
   // batch deletes have a maximum of 25 records:
