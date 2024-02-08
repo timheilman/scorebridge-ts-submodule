@@ -65,7 +65,7 @@ type Mutation {
     gameId: String!
     tableNumber: Int!
   ): TableAssignmentResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub", "clubDevice"])
 }
 
 type Subscription {
