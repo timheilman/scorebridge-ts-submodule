@@ -152,7 +152,7 @@ type Game {
   tableCount: Int!
   roundCount: Int!
   label: String
-  tableAssignments: [TableAssignment!]
+  tableAssignments: [TableAssignment!]!
   createdAt: AWSDateTime!
 }
 
@@ -163,7 +163,7 @@ input PartialGame {
   tableCount: Int!
   roundCount: Int!
   label: String
-  tableAssignments: [PartialTableAssignment!]
+  tableAssignments: [PartialTableAssignment!]!
   createdAt: AWSDateTime!
 }
 

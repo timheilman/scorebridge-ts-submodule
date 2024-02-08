@@ -111,7 +111,7 @@ export interface Game {
   label?: Maybe<Scalars["String"]["output"]>;
   movement: Scalars["String"]["output"];
   roundCount: Scalars["Int"]["output"];
-  tableAssignments?: Maybe<TableAssignment[]>;
+  tableAssignments: TableAssignment[];
   tableCount: Scalars["Int"]["output"];
 }
 
@@ -189,7 +189,7 @@ export interface PartialGame {
   label?: InputMaybe<Scalars["String"]["input"]>;
   movement: Scalars["String"]["input"];
   roundCount: Scalars["Int"]["input"];
-  tableAssignments?: InputMaybe<PartialTableAssignment[]>;
+  tableAssignments: PartialTableAssignment[];
   tableCount: Scalars["Int"]["input"];
 }
 
