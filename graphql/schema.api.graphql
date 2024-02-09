@@ -11,6 +11,7 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
+  # Generally, only getClub should be needed...
   listClubDevices(
     clubId: String!
     nextToken: String

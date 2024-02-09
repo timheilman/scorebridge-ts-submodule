@@ -34,8 +34,28 @@ export const qidToQueryGql = {
         getClub(clubId: $clubId) {
           id
           name
-          currentGameId
           createdAt
+          currentGameId
+          clubDevices {
+            clubDeviceId
+            clubId
+            createdAt
+            email
+            name
+          }
+          games {
+            clubId
+            createdAt
+            gameId
+            label
+            movement
+            roundCount
+            tableAssignments {
+              clubDeviceId
+              tableNumber
+            }
+            tableCount
+          }
         }
       }
     `,
