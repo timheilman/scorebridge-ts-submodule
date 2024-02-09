@@ -106,6 +106,7 @@ type Club {
   id: String!
   name: String!
   clubDevices: [ClubDevice!]!
+  games: [Game!]!
   currentGameId: String
   createdAt: AWSDateTime!
 }

@@ -45,6 +45,7 @@ export interface Club {
   clubDevices: ClubDevice[];
   createdAt: Scalars["AWSDateTime"]["output"];
   currentGameId?: Maybe<Scalars["String"]["output"]>;
+  games: Game[];
   id: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
 }
