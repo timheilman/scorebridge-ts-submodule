@@ -105,6 +105,7 @@ type ListGamesOutput {
 type Club {
   id: String!
   name: String!
+  clubDevices: [ClubDevice!]!
   currentGameId: String
   createdAt: AWSDateTime!
 }
