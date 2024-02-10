@@ -196,6 +196,7 @@ export interface MutationUpdateCurrentGameIdArgs {
 }
 
 export interface PartialGame {
+  boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
   createdAt: Scalars["AWSDateTime"]["input"];
   gameId: Scalars["String"]["input"];
