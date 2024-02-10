@@ -1,6 +1,7 @@
 import {
   Query,
   QueryGetClubArgs,
+  QueryGetClubWithCurrentGameArgs,
   QueryGetGameArgs,
   QueryListClubDevicesArgs,
   QueryListGamesArgs,
@@ -38,13 +39,11 @@ export const qidToQueryGql = {
           currentGameId
           clubDevices {
             clubDeviceId
-            clubId
             createdAt
             email
             name
           }
           games {
-            clubId
             createdAt
             gameId
             label
@@ -60,6 +59,33 @@ export const qidToQueryGql = {
       }
     `,
     "getClub",
+  ),
+  getClubWithCurrentGame: createKeyedGeneratedQuery<
+    "getClubWithCurrentGame",
+    QueryGetClubWithCurrentGameArgs
+  >(
+    /* GraphQL */ `
+      query getClubWithCurrentGame($clubId: String!) {
+        getClubWithCurrentGame(clubId: $clubId) {
+          id
+          name
+          createdAt
+          currentGame {
+            createdAt
+            gameId
+            label
+            movement
+            roundCount
+            tableAssignments {
+              clubDeviceId
+              tableNumber
+            }
+            tableCount
+          }
+        }
+      }
+    `,
+    "getClubWithCurrentGame",
   ),
   listClubDevices: createKeyedGeneratedQuery<
     "listClubDevices",
