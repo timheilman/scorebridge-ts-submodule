@@ -180,6 +180,7 @@ input PartialGame {
   movement: String!
   tableCount: Int!
   roundCount: Int!
+  boardsPerRound: Int!
   label: String
   tableAssignments: [PartialTableAssignment!]!
   createdAt: AWSDateTime!

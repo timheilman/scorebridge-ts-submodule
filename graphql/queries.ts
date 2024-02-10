@@ -49,6 +49,8 @@ export const qidToQueryGql = {
             label
             movement
             roundCount
+            label
+            boardsPerRound
             tableAssignments {
               clubDeviceId
               tableNumber
@@ -76,6 +78,8 @@ export const qidToQueryGql = {
             label
             movement
             roundCount
+            label
+            boardsPerRound
             tableAssignments {
               clubDeviceId
               tableNumber

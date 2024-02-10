@@ -141,9 +141,11 @@ export const mutIdToMutGql = {
         createGame(input: $input) {
           clubId
           gameId
+          label
           movement
           tableCount
           roundCount
+          boardsPerRound
           createdAt
         }
       }
@@ -159,9 +161,11 @@ export const mutIdToMutGql = {
         deleteGame(input: $input) {
           clubId
           gameId
+          label
           movement
           tableCount
           roundCount
+          boardsPerRound
           createdAt
         }
       }
