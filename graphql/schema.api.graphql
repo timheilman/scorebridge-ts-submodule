@@ -11,6 +11,11 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
+  getClubWithCurrentGame(clubId: String!): ClubWithCurrentGame
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
+
   # Generally, only getClub should be needed...
   listClubDevices(
     clubId: String!
@@ -111,6 +116,13 @@ type Club {
   clubDevices: [ClubDevice!]!
   games: [Game!]!
   currentGameId: String
+  createdAt: AWSDateTime!
+}
+
+type ClubWithCurrentGame {
+  id: String!
+  name: String!
+  currentGame: Game
   createdAt: AWSDateTime!
 }
 
