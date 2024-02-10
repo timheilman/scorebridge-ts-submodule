@@ -87,7 +87,9 @@ export interface CreateClubResponse {
 }
 
 export interface CreateGameInput {
+  boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
+  label?: InputMaybe<Scalars["String"]["input"]>;
   movement: Scalars["String"]["input"];
   roundCount: Scalars["Int"]["input"];
   tableCount: Scalars["Int"]["input"];
@@ -115,6 +117,7 @@ export interface DeleteGameInput {
 
 export interface Game {
   __typename?: "Game";
+  boardsPerRound: Scalars["Int"]["output"];
   clubId: Scalars["String"]["output"];
   createdAt: Scalars["AWSDateTime"]["output"];
   gameId: Scalars["String"]["output"];

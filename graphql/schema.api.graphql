@@ -168,6 +168,7 @@ type Game {
   movement: String!
   tableCount: Int!
   roundCount: Int!
+  boardsPerRound: Int!
   label: String
   tableAssignments: [TableAssignment!]!
   createdAt: AWSDateTime!
@@ -189,6 +190,8 @@ input CreateGameInput {
   movement: String!
   tableCount: Int!
   roundCount: Int!
+  boardsPerRound: Int!
+  label: String
 }
 
 input DeleteGameInput {
