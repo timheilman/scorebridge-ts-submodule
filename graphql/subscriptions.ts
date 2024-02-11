@@ -3,6 +3,7 @@ import {
   SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
+  SubscriptionOnUnassignTableArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
 } from "./appsync";
@@ -106,11 +107,28 @@ export const subIdToSubGql = {
       subscription OnAssignTable($clubId: String!) {
         onAssignTable(clubId: $clubId) {
           clubId
+          gameId
           clubDeviceId
           tableNumber
         }
       }
     `,
     "onAssignTable",
+  ),
+  onUnassignTable: createKeyedGeneratedSubscription<
+    "onUnassignTable",
+    SubscriptionOnUnassignTableArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUnassignTable($clubId: String!) {
+        onUnassignTable(clubId: $clubId) {
+          clubId
+          gameId
+          clubDeviceId
+          tableNumber
+        }
+      }
+    `,
+    "onUnassignTable",
   ),
 } as const;

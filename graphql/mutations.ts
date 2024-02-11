@@ -7,6 +7,7 @@ import {
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
+  MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
 } from "./appsync";
@@ -197,5 +198,31 @@ export const mutIdToMutGql = {
       }
     `,
     "assignTable",
+  ),
+  unassignTable: createKeyedGeneratedMutation<
+    "unassignTable",
+    MutationUnassignTableArgs
+  >(
+    /* GraphQL */ `
+      mutation unassignTable(
+        $clubId: String!
+        $clubDeviceId: String!
+        $gameId: String!
+        $tableNumber: Int!
+      ) {
+        unassignTable(
+          clubId: $clubId
+          clubDeviceId: $clubDeviceId
+          gameId: $gameId
+          tableNumber: $tableNumber
+        ) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+        }
+      }
+    `,
+    "unassignTable",
   ),
 };
