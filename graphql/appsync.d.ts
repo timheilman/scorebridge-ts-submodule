@@ -35,6 +35,17 @@ export interface Scalars {
   AWSURL: { input: string; output: string };
 }
 
+export interface AssignPlayerResponse {
+  __typename?: "AssignPlayerResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  directionLetter: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  playerDisplayName: Scalars["String"]["output"];
+  playerId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
 export interface ClearCurrentGameIdResponse {
   __typename?: "ClearCurrentGameIdResponse";
   clubId: Scalars["String"]["output"];
@@ -142,6 +153,7 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
+  assignPlayer: AssignPlayerResponse;
   assignTable: TableAssignmentResult;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
@@ -153,6 +165,16 @@ export interface Mutation {
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
+}
+
+export interface MutationAssignPlayerArgs {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  directionLetter: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  playerDisplayname: Scalars["String"]["input"];
+  playerId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
 }
 
 export interface MutationAssignTableArgs {
@@ -257,12 +279,17 @@ export interface QueryListGamesArgs {
 
 export interface Subscription {
   __typename?: "Subscription";
+  onAssignPlayer?: Maybe<AssignPlayerResponse>;
   onAssignTable?: Maybe<TableAssignmentResult>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
   onUnassignTable?: Maybe<TableAssignmentResult>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
+}
+
+export interface SubscriptionOnAssignPlayerArgs {
+  clubId: Scalars["String"]["input"];
 }
 
 export interface SubscriptionOnAssignTableArgs {
