@@ -197,6 +197,13 @@ type TableAssignment {
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
+  playerAssignments: [PartialPlayerAssignment!]!
+}
+
+input PartialPlayerAssignment {
+  directionLetter: String!
+  playerId: String!
+  playerDisplayName: String!
 }
 
 type TableAssignmentResult {

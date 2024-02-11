@@ -237,8 +237,15 @@ export interface PartialGame {
   tableCount: Scalars["Int"]["input"];
 }
 
+export interface PartialPlayerAssignment {
+  directionLetter: Scalars["String"]["input"];
+  playerDisplayName: Scalars["String"]["input"];
+  playerId: Scalars["String"]["input"];
+}
+
 export interface PartialTableAssignment {
   clubDeviceId: Scalars["String"]["input"];
+  playerAssignments: PartialPlayerAssignment[];
   tableNumber: Scalars["Int"]["input"];
 }
 
