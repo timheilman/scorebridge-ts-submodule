@@ -1,5 +1,6 @@
 import {
   Subscription,
+  SubscriptionOnAssignPlayerArgs,
   SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
@@ -130,5 +131,24 @@ export const subIdToSubGql = {
       }
     `,
     "onUnassignTable",
+  ),
+  onAssignPlayer: createKeyedGeneratedSubscription<
+    "onAssignPlayer",
+    SubscriptionOnAssignPlayerArgs
+  >(
+    /* GraphQL */ `
+      subscription OnAssignPlayer($clubId: String!) {
+        onAssignPlayer(clubId: $clubId) {
+          clubId
+          gameId
+          clubDeviceId
+          tableNumber
+          directionLetter
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "onAssignPlayer",
   ),
 } as const;

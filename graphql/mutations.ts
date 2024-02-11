@@ -1,5 +1,6 @@
 import {
   Mutation,
+  MutationAssignPlayerArgs,
   MutationAssignTableArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
@@ -224,5 +225,40 @@ export const mutIdToMutGql = {
       }
     `,
     "unassignTable",
+  ),
+  assignPlayer: createKeyedGeneratedMutation<
+    "assignPlayer",
+    MutationAssignPlayerArgs
+  >(
+    /* GraphQL */ `
+      mutation assignPlayer(
+        $clubId: String!
+        $clubDeviceId: String!
+        $gameId: String!
+        $tableNumber: Int!
+        $directionLetter: String!
+        $playerId: String!
+        $playerDisplayName: String!
+      ) {
+        assignPlayer(
+          clubId: $clubId
+          clubDeviceId: $clubDeviceId
+          gameId: $gameId
+          tableNumber: $tableNumber
+          directionLetter: $directionLetter
+          playerId: $playerId
+          playerDisplayName: $playerDisplayName
+        ) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          directionLetter
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "assignPlayer",
   ),
 };

@@ -29,6 +29,7 @@ const createKeyedGeneratedQuery = <NAME extends QueryNames, ARGS>(
   } as KeyedGeneratedQuery<NAME, ARGS>;
 };
 export const qidToQueryGql = {
+  // TODO: maybe get rid of tableAssignments for this query?  unsure... webapp doesn't need them yet but may want them at some point
   getClub: createKeyedGeneratedQuery<"getClub", QueryGetClubArgs>(
     /* GraphQL */ `
       query getClub($clubId: String!) {
@@ -54,6 +55,11 @@ export const qidToQueryGql = {
             tableAssignments {
               clubDeviceId
               tableNumber
+              playerAssignments {
+                directionLetter
+                playerId
+                playerDisplayName
+              }
             }
             tableCount
           }
@@ -83,6 +89,11 @@ export const qidToQueryGql = {
             tableAssignments {
               clubDeviceId
               tableNumber
+              playerAssignments {
+                directionLetter
+                playerId
+                playerDisplayName
+              }
             }
             tableCount
           }
@@ -139,6 +150,11 @@ export const qidToQueryGql = {
           tableAssignments {
             tableNumber
             clubDeviceId
+            playerAssignments {
+              directionLetter
+              playerId
+              playerDisplayName
+            }
           }
         }
       }
