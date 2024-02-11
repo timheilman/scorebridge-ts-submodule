@@ -149,6 +149,7 @@ export interface Mutation {
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
+  unassignTable: TableAssignmentResult;
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
@@ -183,6 +184,13 @@ export interface MutationDeleteClubDeviceArgs {
 
 export interface MutationDeleteGameArgs {
   input: DeleteGameInput;
+}
+
+export interface MutationUnassignTableArgs {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
 }
 
 export interface MutationUpdateClubNameArgs {
@@ -252,6 +260,7 @@ export interface Subscription {
   onAssignTable?: Maybe<TableAssignmentResult>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
+  onUnassignTable?: Maybe<TableAssignmentResult>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
 }
@@ -265,6 +274,10 @@ export interface SubscriptionOnCreateGameArgs {
 }
 
 export interface SubscriptionOnDeleteGameArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnUnassignTableArgs {
   clubId: Scalars["String"]["input"];
 }
 

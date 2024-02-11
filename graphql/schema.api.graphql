@@ -75,6 +75,16 @@ type Mutation {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
+
+  unassignTable(
+    clubId: String!
+    clubDeviceId: String!
+    gameId: String!
+    tableNumber: Int!
+  ): TableAssignmentResult!
+  @aws_cognito_user_pools(
+    cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  )
 }
 
 type Subscription {
@@ -95,6 +105,11 @@ type Subscription {
 
   onAssignTable(clubId: String!): TableAssignmentResult
     @aws_subscribe(mutations: ["assignTable"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
+  onUnassignTable(clubId: String!): TableAssignmentResult
+    @aws_subscribe(mutations: ["unassignTable"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
