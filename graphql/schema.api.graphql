@@ -182,9 +182,16 @@ input DeleteClubDeviceInput {
   clubDeviceId: String!
 }
 
+type PlayerAssignment {
+  directionLetter: String!
+  playerId: String!
+  playerDisplayName: String!
+}
+
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
+  playerAssignments: [PlayerAssignment!]!
 }
 
 input PartialTableAssignment {

@@ -242,6 +242,13 @@ export interface PartialTableAssignment {
   tableNumber: Scalars["Int"]["input"];
 }
 
+export interface PlayerAssignment {
+  __typename?: "PlayerAssignment";
+  directionLetter: Scalars["String"]["output"];
+  playerDisplayName: Scalars["String"]["output"];
+  playerId: Scalars["String"]["output"];
+}
+
 export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
@@ -319,6 +326,7 @@ export interface SubscriptionOnUpdateCurrentGameIdArgs {
 export interface TableAssignment {
   __typename?: "TableAssignment";
   clubDeviceId: Scalars["String"]["output"];
+  playerAssignments: PlayerAssignment[];
   tableNumber: Scalars["Int"]["output"];
 }
 
