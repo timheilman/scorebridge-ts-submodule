@@ -172,7 +172,7 @@ export interface MutationAssignPlayerArgs {
   clubId: Scalars["String"]["input"];
   directionLetter: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  playerDisplayname: Scalars["String"]["input"];
+  playerDisplayName: Scalars["String"]["input"];
   playerId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
