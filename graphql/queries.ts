@@ -146,6 +146,8 @@ export const qidToQueryGql = {
           tableCount
           movement
           roundCount
+          boardsPerRound
+          label
           createdAt
           tableAssignments {
             tableNumber

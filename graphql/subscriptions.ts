@@ -67,10 +67,6 @@ export const subIdToSubGql = {
       subscription OnDeleteGame($clubId: String!) {
         onDeleteGame(clubId: $clubId) {
           gameId
-          movement
-          tableCount
-          roundCount
-          createdAt
         }
       }
     `,

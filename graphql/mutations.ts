@@ -145,6 +145,11 @@ export const mutIdToMutGql = {
           gameId
           label
           movement
+          boardsPerRound
+          tableAssignments {
+            tableNumber
+            clubDeviceId
+          }
           tableCount
           roundCount
           boardsPerRound
