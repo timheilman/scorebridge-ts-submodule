@@ -48,6 +48,7 @@ export const subIdToSubGql = {
           movement
           tableCount
           roundCount
+          label
           boardsPerRound
           tableAssignments {
             tableNumber
