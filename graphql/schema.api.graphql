@@ -71,8 +71,7 @@ type Mutation {
     clubId: String!
     clubDeviceId: String!
     gameId: String!
-    tableNumber: Int!
-    # TODO: rename TableAssignmentResult to AssignTableResponse for consistency
+    tableNumber: Int! # TODO: rename TableAssignmentResult to AssignTableResponse for consistency
   ): TableAssignmentResult!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
@@ -82,8 +81,7 @@ type Mutation {
     clubId: String!
     clubDeviceId: String!
     gameId: String!
-    tableNumber: Int!
-    # TODO: scour for other reusable types like this one:
+    tableNumber: Int! # TODO: scour for other reusable types like this one:
   ): TableAssignmentResult!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
