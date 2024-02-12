@@ -7,6 +7,7 @@ import {
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 import { cachedDynamoDbClient } from "./cachedDynamoDbClient";
+import { gameSortKeyPrefix0 } from "./ddbSortkey";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("deleteDdbRecords.");
 async function queryChunk({
@@ -89,7 +90,7 @@ export async function batchDeleteGames({
     "clubId = :clubId and begins_with(sortKey, :sk)";
   const unmarshalledExpressionAttributeValues = {
     ":clubId": clubId,
-    ":sk": `GAME#`,
+    ":sk": `${gameSortKeyPrefix0}#`,
   };
   const items = await batchQuery({
     awsRegion,
