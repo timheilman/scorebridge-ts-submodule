@@ -3,5 +3,6 @@
   "tsSubmodule.deleteDdbRecords": "info",
   "tsSubmodule.subscriptions": "info",
   "tsSubmodule.OnlineStatus": "info",
-  "cypress.": "info"
+  "cypress.": "info",
+  "features.clubDeviceRegistration.clubSlice.": "info"
 }
