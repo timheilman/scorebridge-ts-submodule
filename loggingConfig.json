@@ -5,5 +5,5 @@
   "tsSubmodule.OnlineStatus": "info",
   "cypress.": "info",
   "features.clubDeviceRegistration.clubSlice.": "info",
-  "components.IconButton.rendering": "debug"
+  "components.IconButton.rendering": "info"
 }
