@@ -48,6 +48,11 @@ export const subIdToSubGql = {
           movement
           tableCount
           roundCount
+          boardsPerRound
+          tableAssignments {
+            tableNumber
+            clubDeviceId
+          }
           createdAt
         }
       }
