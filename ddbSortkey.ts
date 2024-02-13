@@ -1,4 +1,4 @@
-import { DirectionLetter } from "./graphql/appsync";
+import { DirectionLetter } from "./graphql/gqlEnums";
 
 export const clubSortKeyPrefix0 = "C";
 export const clubDeviceSortKeyPrefix0 = "D";
