@@ -257,6 +257,7 @@ type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
   playerAssignments: [PlayerAssignment!]!
+  round: Int!
 }
 
 input PartialTableAssignment {

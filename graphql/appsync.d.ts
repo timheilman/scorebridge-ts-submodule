@@ -429,6 +429,7 @@ export interface TableAssignment {
   __typename?: "TableAssignment";
   clubDeviceId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
+  round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
