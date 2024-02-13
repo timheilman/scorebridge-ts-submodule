@@ -80,7 +80,6 @@ export interface BoardResult {
   level: Scalars["Int"]["output"];
   result?: Maybe<Scalars["Int"]["output"]>;
   strain: Strain;
-  tableNumber: Scalars["Int"]["output"];
 }
 
 export interface ChangeRoundResponse {
@@ -327,7 +326,6 @@ export interface PartialBoardResult {
   level: Scalars["Int"]["input"];
   result?: InputMaybe<Scalars["Int"]["input"]>;
   strain: Strain;
-  tableNumber: Scalars["Int"]["input"];
 }
 
 export interface PartialGame {

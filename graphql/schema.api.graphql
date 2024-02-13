@@ -248,7 +248,6 @@ type PlayerAssignment {
 }
 
 type BoardResult {
-  tableNumber: Int!
   board: Int!
   level: Int!
   strain: Strain!
@@ -260,7 +259,6 @@ type BoardResult {
 }
 
 input PartialBoardResult {
-  tableNumber: Int!
   board: Int!
   level: Int!
   strain: Strain!
