@@ -134,9 +134,7 @@ type Mutation {
     tableNumber: Int!
     round: Int!
   ): ChangeRoundResponse
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "clubDevice"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   assignContract(
     clubId: String!
@@ -151,9 +149,7 @@ type Mutation {
     leadSuit: Suit!
     leadRank: String!
   ): AssignContractResponse
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "clubDevice"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   assignResult(
     clubId: String!
@@ -163,9 +159,7 @@ type Mutation {
     board: Int!
     result: Int!
   ): AssignResultResponse
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "clubDevice"]
-    )
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
 type Subscription {
@@ -265,6 +259,17 @@ type BoardResult {
   result: Int
 }
 
+input PartialBoardResult {
+  tableNumber: Int!
+  board: Int!
+  level: Int!
+  strain: Strain!
+  doubling: Doubling!
+  declarer: DirectionLetter!
+  leadRank: String!
+  leadSuit: Suit!
+  result: Int
+}
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
@@ -277,6 +282,8 @@ input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
   playerAssignments: [PartialPlayerAssignment!]!
+  round: Int
+  results: [PartialBoardResult!]!
 }
 
 input PartialPlayerAssignment {

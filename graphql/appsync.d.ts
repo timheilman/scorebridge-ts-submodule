@@ -318,6 +318,18 @@ export interface MutationUpdateCurrentGameIdArgs {
   newGameId: Scalars["String"]["input"];
 }
 
+export interface PartialBoardResult {
+  board: Scalars["Int"]["input"];
+  declarer: DirectionLetter;
+  doubling: Doubling;
+  leadRank: Scalars["String"]["input"];
+  leadSuit: Suit;
+  level: Scalars["Int"]["input"];
+  result?: InputMaybe<Scalars["Int"]["input"]>;
+  strain: Strain;
+  tableNumber: Scalars["Int"]["input"];
+}
+
 export interface PartialGame {
   boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
@@ -339,6 +351,8 @@ export interface PartialPlayerAssignment {
 export interface PartialTableAssignment {
   clubDeviceId: Scalars["String"]["input"];
   playerAssignments: PartialPlayerAssignment[];
+  results: PartialBoardResult[];
+  round?: InputMaybe<Scalars["Int"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
