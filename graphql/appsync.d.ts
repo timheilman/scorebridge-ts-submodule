@@ -35,6 +35,21 @@ export interface Scalars {
   AWSURL: { input: string; output: string };
 }
 
+export interface AssignContractResponse {
+  __typename?: "AssignContractResponse";
+  board: Scalars["Int"]["output"];
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  declarer: DirectionLetter;
+  doubling: Doubling;
+  gameId: Scalars["String"]["output"];
+  leadRank: Scalars["String"]["output"];
+  leadSuit: Suit;
+  level: Scalars["Int"]["output"];
+  strain: Strain;
+  tableNumber: Scalars["Int"]["output"];
+}
+
 export interface AssignPlayerResponse {
   __typename?: "AssignPlayerResponse";
   clubDeviceId: Scalars["String"]["output"];
@@ -43,6 +58,24 @@ export interface AssignPlayerResponse {
   gameId: Scalars["String"]["output"];
   playerDisplayName: Scalars["String"]["output"];
   playerId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
+export interface AssignResultResponse {
+  __typename?: "AssignResultResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  result: Scalars["Int"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
+export interface ChangeRoundResponse {
+  __typename?: "ChangeRoundResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -126,6 +159,19 @@ export interface DeleteGameInput {
   gameId: Scalars["String"]["input"];
 }
 
+export enum DirectionLetter {
+  E = "E",
+  N = "N",
+  S = "S",
+  W = "W",
+}
+
+export enum Doubling {
+  Double = "DOUBLE",
+  None = "NONE",
+  Redouble = "REDOUBLE",
+}
+
 export interface Game {
   __typename?: "Game";
   boardsPerRound: Scalars["Int"]["output"];
@@ -153,8 +199,11 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
+  assignContract?: Maybe<AssignContractResponse>;
   assignPlayer: AssignPlayerResponse;
+  assignResult?: Maybe<AssignResultResponse>;
   assignTable: TableAssignmentResult;
+  changeRound?: Maybe<ChangeRoundResponse>;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -167,13 +216,35 @@ export interface Mutation {
   updateCurrentGameId: UpdateCurrentGameIdResponse;
 }
 
+export interface MutationAssignContractArgs {
+  board: Scalars["Int"]["input"];
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  declarer: DirectionLetter;
+  doubling: Doubling;
+  gameId: Scalars["String"]["input"];
+  leadRank: Scalars["String"]["input"];
+  leadSuit: Suit;
+  level: Scalars["Int"]["input"];
+  strain: Strain;
+  tableNumber: Scalars["Int"]["input"];
+}
+
 export interface MutationAssignPlayerArgs {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
-  directionLetter: Scalars["String"]["input"];
+  directionLetter: DirectionLetter;
   gameId: Scalars["String"]["input"];
   playerDisplayName: Scalars["String"]["input"];
   playerId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface MutationAssignResultArgs {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  result: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -181,6 +252,14 @@ export interface MutationAssignTableArgs {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface MutationChangeRoundArgs {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -291,6 +370,14 @@ export interface QueryListGamesArgs {
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }
 
+export enum Strain {
+  C = "C",
+  D = "D",
+  H = "H",
+  Nt = "NT",
+  S = "S",
+}
+
 export interface Subscription {
   __typename?: "Subscription";
   onAssignPlayer?: Maybe<AssignPlayerResponse>;
@@ -328,6 +415,13 @@ export interface SubscriptionOnUpdateClubNameArgs {
 
 export interface SubscriptionOnUpdateCurrentGameIdArgs {
   clubId: Scalars["String"]["input"];
+}
+
+export enum Suit {
+  C = "C",
+  D = "D",
+  H = "H",
+  S = "S",
 }
 
 export interface TableAssignment {

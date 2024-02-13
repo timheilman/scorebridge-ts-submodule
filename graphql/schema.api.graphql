@@ -4,7 +4,34 @@ schema {
   subscription: Subscription
 }
 
-# ignore for now; Query simply has to be present
+enum DirectionLetter {
+  N
+  S
+  E
+  W
+}
+
+enum Strain {
+  C
+  D
+  H
+  S
+  NT
+}
+
+enum Suit {
+  C
+  D
+  H
+  S
+}
+
+enum Doubling {
+  NONE
+  DOUBLE
+  REDOUBLE
+}
+
 type Query {
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
@@ -92,12 +119,51 @@ type Mutation {
     clubDeviceId: String!
     gameId: String!
     tableNumber: Int!
-    directionLetter: String!
+    directionLetter: DirectionLetter!
     playerId: String!
     playerDisplayName: String!
   ): AssignPlayerResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
+
+  changeRound(
+    clubId: String!
+    clubDeviceId: String!
+    gameId: String!
+    tableNumber: Int!
+    round: Int!
+  ): ChangeRoundResponse
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "clubDevice"]
+    )
+
+  assignContract(
+    clubId: String!
+    clubDeviceId: String!
+    gameId: String!
+    tableNumber: Int!
+    board: Int!
+    level: Int!
+    strain: Strain!
+    declarer: DirectionLetter!
+    doubling: Doubling!
+    leadSuit: Suit!
+    leadRank: String!
+  ): AssignContractResponse
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "clubDevice"]
+    )
+
+  assignResult(
+    clubId: String!
+    clubDeviceId: String!
+    gameId: String!
+    tableNumber: Int!
+    result: Int!
+  ): AssignResultResponse
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "clubDevice"]
     )
 }
 
@@ -301,4 +367,34 @@ input DeleteClubAndAdminInput {
 
 type DeleteClubAndAdminResponse {
   status: String!
+}
+
+type ChangeRoundResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  round: Int!
+}
+
+type AssignContractResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  board: Int!
+  level: Int!
+  strain: Strain!
+  declarer: DirectionLetter!
+  doubling: Doubling!
+  leadSuit: Suit!
+  leadRank: String!
+}
+
+type AssignResultResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  result: Int!
 }
