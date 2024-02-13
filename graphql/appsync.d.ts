@@ -241,6 +241,7 @@ export interface MutationAssignPlayerArgs {
 }
 
 export interface MutationAssignResultArgs {
+  board: Scalars["Int"]["input"];
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];

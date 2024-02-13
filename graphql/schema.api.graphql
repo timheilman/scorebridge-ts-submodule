@@ -160,6 +160,7 @@ type Mutation {
     clubDeviceId: String!
     gameId: String!
     tableNumber: Int!
+    board: Int!
     result: Int!
   ): AssignResultResponse
     @aws_cognito_user_pools(
