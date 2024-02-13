@@ -2,6 +2,7 @@ import {
   Mutation,
   MutationAssignPlayerArgs,
   MutationAssignTableArgs,
+  MutationChangeRoundArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -265,5 +266,34 @@ export const mutIdToMutGql = {
       }
     `,
     "assignPlayer",
+  ),
+  changeRound: createKeyedGeneratedMutation<
+    "changeRound",
+    MutationChangeRoundArgs
+  >(
+    /* GraphQL */ `
+      mutation changeRound(
+        $clubId: String!
+        $clubDeviceId: String!
+        $gameId: String!
+        $tableNumber: Int!
+        $round: Int!
+      ) {
+        changeRound(
+          clubId: $clubId
+          clubDeviceId: $clubDeviceId
+          gameId: $gameId
+          tableNumber: $tableNumber
+          round: $round
+        ) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          round
+        }
+      }
+    `,
+    "changeRound",
   ),
 };
