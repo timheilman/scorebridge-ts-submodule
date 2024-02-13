@@ -241,7 +241,7 @@ export const mutIdToMutGql = {
         $clubDeviceId: String!
         $gameId: String!
         $tableNumber: Int!
-        $directionLetter: String!
+        $directionLetter: DirectionLetter!
         $playerId: String!
         $playerDisplayName: String!
       ) {
