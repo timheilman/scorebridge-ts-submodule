@@ -54,7 +54,7 @@ export interface AssignPlayerResponse {
   __typename?: "AssignPlayerResponse";
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
-  directionLetter: Scalars["String"]["output"];
+  directionLetter: DirectionLetter;
   gameId: Scalars["String"]["output"];
   playerDisplayName: Scalars["String"]["output"];
   playerId: Scalars["String"]["output"];
@@ -67,6 +67,19 @@ export interface AssignResultResponse {
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   result: Scalars["Int"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
+export interface BoardResult {
+  __typename?: "BoardResult";
+  board: Scalars["Int"]["output"];
+  declarer: DirectionLetter;
+  doubling: Doubling;
+  leadRank: Scalars["String"]["output"];
+  leadSuit: Suit;
+  level: Scalars["Int"]["output"];
+  result?: Maybe<Scalars["Int"]["output"]>;
+  strain: Strain;
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -318,7 +331,7 @@ export interface PartialGame {
 }
 
 export interface PartialPlayerAssignment {
-  directionLetter: Scalars["String"]["input"];
+  directionLetter: DirectionLetter;
   playerDisplayName: Scalars["String"]["input"];
   playerId: Scalars["String"]["input"];
 }
@@ -331,7 +344,7 @@ export interface PartialTableAssignment {
 
 export interface PlayerAssignment {
   __typename?: "PlayerAssignment";
-  directionLetter: Scalars["String"]["output"];
+  directionLetter: DirectionLetter;
   playerDisplayName: Scalars["String"]["output"];
   playerId: Scalars["String"]["output"];
 }
@@ -429,6 +442,7 @@ export interface TableAssignment {
   __typename?: "TableAssignment";
   clubDeviceId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
+  results: BoardResult[];
   round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }

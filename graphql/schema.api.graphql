@@ -248,9 +248,21 @@ input DeleteClubDeviceInput {
 }
 
 type PlayerAssignment {
-  directionLetter: String!
+  directionLetter: DirectionLetter!
   playerId: String!
   playerDisplayName: String!
+}
+
+type BoardResult {
+  tableNumber: Int!
+  board: Int!
+  level: Int!
+  strain: Strain!
+  doubling: Doubling!
+  declarer: DirectionLetter!
+  leadRank: String!
+  leadSuit: Suit!
+  result: Int
 }
 
 type TableAssignment {
@@ -258,6 +270,7 @@ type TableAssignment {
   clubDeviceId: String!
   playerAssignments: [PlayerAssignment!]!
   round: Int
+  results: [BoardResult!]!
 }
 
 input PartialTableAssignment {
@@ -267,7 +280,7 @@ input PartialTableAssignment {
 }
 
 input PartialPlayerAssignment {
-  directionLetter: String!
+  directionLetter: DirectionLetter!
   playerId: String!
   playerDisplayName: String!
 }
@@ -284,7 +297,7 @@ type AssignPlayerResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  directionLetter: String!
+  directionLetter: DirectionLetter!
   playerId: String!
   playerDisplayName: String!
 }
