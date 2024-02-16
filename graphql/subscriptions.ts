@@ -113,6 +113,21 @@ export const subIdToSubGql = {
           gameId
           clubDeviceId
           tableNumber
+          playerAssignments {
+            directionLetter
+            playerId
+            playerDisplayName
+          }
+          results {
+            board
+            level
+            strain
+            doubling
+            declarer
+            leadRank
+            leadSuit
+            result
+          }
         }
       }
     `,

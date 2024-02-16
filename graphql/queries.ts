@@ -60,6 +60,16 @@ export const qidToQueryGql = {
                 playerId
                 playerDisplayName
               }
+              results {
+                board
+                level
+                strain
+                doubling
+                declarer
+                leadRank
+                leadSuit
+                result
+              }
             }
             tableCount
           }
@@ -93,6 +103,16 @@ export const qidToQueryGql = {
                 directionLetter
                 playerId
                 playerDisplayName
+              }
+              results {
+                board
+                level
+                strain
+                doubling
+                declarer
+                leadRank
+                leadSuit
+                result
               }
             }
             tableCount
@@ -156,6 +176,16 @@ export const qidToQueryGql = {
               directionLetter
               playerId
               playerDisplayName
+            }
+            results {
+              board
+              level
+              strain
+              doubling
+              declarer
+              leadRank
+              leadSuit
+              result
             }
           }
         }

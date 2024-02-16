@@ -201,6 +201,21 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
+          playerAssignments {
+            directionLetter
+            playerId
+            playerDisplayName
+          }
+          results {
+            board
+            level
+            strain
+            doubling
+            declarer
+            leadRank
+            leadSuit
+            result
+          }
         }
       }
     `,
