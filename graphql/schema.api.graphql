@@ -183,7 +183,7 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
-  onUnassignTable(clubId: String!): TableAssignmentResult
+  onUnassignTable(clubId: String!): TableUnassignmentResult
     @aws_subscribe(mutations: ["unassignTable"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]

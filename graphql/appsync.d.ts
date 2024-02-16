@@ -410,7 +410,7 @@ export interface Subscription {
   onAssignTable?: Maybe<TableAssignmentResult>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
-  onUnassignTable?: Maybe<TableAssignmentResult>;
+  onUnassignTable?: Maybe<TableUnassignmentResult>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
 }
