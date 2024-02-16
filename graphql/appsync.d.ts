@@ -222,7 +222,7 @@ export interface Mutation {
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
-  unassignTable: TableAssignmentResult;
+  unassignTable: TableUnassignmentResult;
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
@@ -466,6 +466,15 @@ export interface TableAssignmentResult {
   gameId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
+  round: Scalars["Int"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
+export interface TableUnassignmentResult {
+  __typename?: "TableUnassignmentResult";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
   round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }

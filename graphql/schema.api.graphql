@@ -108,8 +108,8 @@ type Mutation {
     clubId: String!
     clubDeviceId: String!
     gameId: String!
-    tableNumber: Int! # TODO: scour for other reusable types like this one:
-  ): TableAssignmentResult!
+    tableNumber: Int!
+  ): TableUnassignmentResult!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -299,7 +299,13 @@ type TableAssignmentResult {
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
-
+type TableUnassignmentResult {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  round: Int!
+}
 type AssignPlayerResponse {
   clubId: String!
   clubDeviceId: String!
