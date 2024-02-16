@@ -466,6 +466,7 @@ export interface TableAssignmentResult {
   gameId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
+  round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
