@@ -113,6 +113,7 @@ export const subIdToSubGql = {
           gameId
           clubDeviceId
           tableNumber
+          round
           playerAssignments {
             directionLetter
             playerId

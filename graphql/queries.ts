@@ -53,6 +53,7 @@ export const qidToQueryGql = {
             label
             boardsPerRound
             tableAssignments {
+              round
               clubDeviceId
               tableNumber
               playerAssignments {
@@ -97,6 +98,7 @@ export const qidToQueryGql = {
             label
             boardsPerRound
             tableAssignments {
+              round
               clubDeviceId
               tableNumber
               playerAssignments {
@@ -170,6 +172,7 @@ export const qidToQueryGql = {
           label
           createdAt
           tableAssignments {
+            round
             tableNumber
             clubDeviceId
             playerAssignments {
@@ -177,6 +180,8 @@ export const qidToQueryGql = {
               playerId
               playerDisplayName
             }
+            # TODO: lock-in table for tablet after first contract entered
+            # TODO: everywhere results are returned, should restrict to the locked-in table for that tablet
             results {
               board
               level

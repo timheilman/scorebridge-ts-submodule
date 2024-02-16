@@ -201,6 +201,7 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
+          round
           playerAssignments {
             directionLetter
             playerId
