@@ -295,6 +295,8 @@ type TableAssignmentResult {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
+  playerAssignments: [PlayerAssignment!]!
+  results: [BoardResult!]!
 }
 
 type AssignPlayerResponse {

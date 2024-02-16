@@ -464,6 +464,8 @@ export interface TableAssignmentResult {
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
+  playerAssignments: PlayerAssignment[];
+  results: BoardResult[];
   tableNumber: Scalars["Int"]["output"];
 }
 
