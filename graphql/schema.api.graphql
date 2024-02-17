@@ -434,5 +434,6 @@ type AssignResultResponse {
   gameId: String!
   tableNumber: Int!
   type: BoardResultType!
+  board: Int!
   result: Int
 }

@@ -63,6 +63,7 @@ export interface AssignPlayerResponse {
 
 export interface AssignResultResponse {
   __typename?: "AssignResultResponse";
+  board: Scalars["Int"]["output"];
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
