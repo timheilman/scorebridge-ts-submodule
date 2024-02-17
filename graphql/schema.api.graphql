@@ -26,6 +26,22 @@ enum Suit {
   S
 }
 
+enum Rank {
+  ACE
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN
+  JACK
+  QUEEN
+  KING
+}
+
 enum Doubling {
   NONE
   DOUBLE
@@ -37,6 +53,7 @@ enum BoardResultType {
   PASSED_OUT
   NOT_BID_NOT_PLAYED
 }
+
 
 type Query {
   getClub(clubId: String!): Club
@@ -153,7 +170,7 @@ type Mutation {
     declarer: DirectionLetter!
     doubling: Doubling!
     leadSuit: Suit!
-    leadRank: String!
+    leadRank: Rank!
   ): AssignContractResponse
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
@@ -261,7 +278,7 @@ type BoardResult {
   strain: Strain
   doubling: Doubling
   declarer: DirectionLetter
-  leadRank: String
+  leadRank: Rank
   leadSuit: Suit
   result: Int
 }
@@ -272,7 +289,7 @@ input PartialBoardResult {
   strain: Strain!
   doubling: Doubling!
   declarer: DirectionLetter!
-  leadRank: String!
+  leadRank: Rank!
   leadSuit: Suit!
   result: Int
 }
@@ -425,7 +442,7 @@ type AssignContractResponse {
   declarer: DirectionLetter!
   doubling: Doubling!
   leadSuit: Suit!
-  leadRank: String!
+  leadRank: Rank!
 }
 
 type AssignResultResponse {

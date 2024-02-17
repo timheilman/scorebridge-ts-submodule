@@ -43,7 +43,7 @@ export interface AssignContractResponse {
   declarer: DirectionLetter;
   doubling: Doubling;
   gameId: Scalars["String"]["output"];
-  leadRank: Scalars["String"]["output"];
+  leadRank: Rank;
   leadSuit: Suit;
   level: Scalars["Int"]["output"];
   strain: Strain;
@@ -77,7 +77,7 @@ export interface BoardResult {
   board?: Maybe<Scalars["Int"]["output"]>;
   declarer?: Maybe<DirectionLetter>;
   doubling?: Maybe<Doubling>;
-  leadRank?: Maybe<Scalars["String"]["output"]>;
+  leadRank?: Maybe<Rank>;
   leadSuit?: Maybe<Suit>;
   level?: Maybe<Scalars["Int"]["output"]>;
   result?: Maybe<Scalars["Int"]["output"]>;
@@ -244,7 +244,7 @@ export interface MutationAssignContractArgs {
   declarer: DirectionLetter;
   doubling: Doubling;
   gameId: Scalars["String"]["input"];
-  leadRank: Scalars["String"]["input"];
+  leadRank: Rank;
   leadSuit: Suit;
   level: Scalars["Int"]["input"];
   strain: Strain;
@@ -331,7 +331,7 @@ export interface PartialBoardResult {
   board: Scalars["Int"]["input"];
   declarer: DirectionLetter;
   doubling: Doubling;
-  leadRank: Scalars["String"]["input"];
+  leadRank: Rank;
   leadSuit: Suit;
   level: Scalars["Int"]["input"];
   result?: InputMaybe<Scalars["Int"]["input"]>;
@@ -404,6 +404,22 @@ export interface QueryListGamesArgs {
   finalGameFromLastList?: InputMaybe<PartialGame>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
+}
+
+export enum Rank {
+  Ace = "ACE",
+  Eight = "EIGHT",
+  Five = "FIVE",
+  Four = "FOUR",
+  Jack = "JACK",
+  King = "KING",
+  Nine = "NINE",
+  Queen = "QUEEN",
+  Seven = "SEVEN",
+  Six = "SIX",
+  Ten = "TEN",
+  Three = "THREE",
+  Two = "TWO",
 }
 
 export enum Strain {
