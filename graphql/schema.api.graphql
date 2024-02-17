@@ -32,6 +32,12 @@ enum Doubling {
   REDOUBLE
 }
 
+enum BoardResultType {
+  PLAYED
+  PASSED_OUT
+  NOT_BID_NOT_PLAYED
+}
+
 type Query {
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
@@ -248,13 +254,14 @@ type PlayerAssignment {
 }
 
 type BoardResult {
-  board: Int!
-  level: Int!
-  strain: Strain!
-  doubling: Doubling!
-  declarer: DirectionLetter!
-  leadRank: String!
-  leadSuit: Suit!
+  type: BoardResultType!
+  board: Int
+  level: Int
+  strain: Strain
+  doubling: Doubling
+  declarer: DirectionLetter
+  leadRank: String
+  leadSuit: Suit
   result: Int
 }
 

@@ -72,14 +72,21 @@ export interface AssignResultResponse {
 
 export interface BoardResult {
   __typename?: "BoardResult";
-  board: Scalars["Int"]["output"];
-  declarer: DirectionLetter;
-  doubling: Doubling;
-  leadRank: Scalars["String"]["output"];
-  leadSuit: Suit;
-  level: Scalars["Int"]["output"];
+  board?: Maybe<Scalars["Int"]["output"]>;
+  declarer?: Maybe<DirectionLetter>;
+  doubling?: Maybe<Doubling>;
+  leadRank?: Maybe<Scalars["String"]["output"]>;
+  leadSuit?: Maybe<Suit>;
+  level?: Maybe<Scalars["Int"]["output"]>;
   result?: Maybe<Scalars["Int"]["output"]>;
-  strain: Strain;
+  strain?: Maybe<Strain>;
+  type: BoardResultType;
+}
+
+export enum BoardResultType {
+  NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
+  PassedOut = "PASSED_OUT",
+  Played = "PLAYED",
 }
 
 export interface ChangeRoundResponse {
