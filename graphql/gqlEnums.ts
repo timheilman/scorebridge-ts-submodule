@@ -28,3 +28,9 @@ export enum Suit {
   H = "H",
   S = "S",
 }
+
+export enum BoardResultType {
+  NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
+  PassedOut = "PASSED_OUT",
+  Played = "PLAYED",
+}
