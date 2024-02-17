@@ -54,7 +54,6 @@ enum BoardResultType {
   NOT_BID_NOT_PLAYED
 }
 
-
 type Query {
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(

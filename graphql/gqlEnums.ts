@@ -28,7 +28,21 @@ export enum Suit {
   H = "H",
   S = "S",
 }
-
+export enum Rank {
+  Ace = "ACE",
+  Eight = "EIGHT",
+  Five = "FIVE",
+  Four = "FOUR",
+  Jack = "JACK",
+  King = "KING",
+  Nine = "NINE",
+  Queen = "QUEEN",
+  Seven = "SEVEN",
+  Six = "SIX",
+  Ten = "TEN",
+  Three = "THREE",
+  Two = "TWO",
+}
 export enum BoardResultType {
   NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
   PassedOut = "PASSED_OUT",
