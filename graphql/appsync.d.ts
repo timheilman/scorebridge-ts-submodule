@@ -66,8 +66,9 @@ export interface AssignResultResponse {
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
-  result: Scalars["Int"]["output"];
+  result?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
+  type: BoardResultType;
 }
 
 export interface BoardResult {
@@ -264,8 +265,9 @@ export interface MutationAssignResultArgs {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  result: Scalars["Int"]["input"];
+  result?: InputMaybe<Scalars["Int"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
+  type: BoardResultType;
 }
 
 export interface MutationAssignTableArgs {

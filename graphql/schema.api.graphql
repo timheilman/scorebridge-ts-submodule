@@ -163,7 +163,8 @@ type Mutation {
     gameId: String!
     tableNumber: Int!
     board: Int!
-    result: Int!
+    type: BoardResultType!
+    result: Int
   ): AssignResultResponse
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
@@ -432,5 +433,6 @@ type AssignResultResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  result: Int!
+  type: BoardResultType!
+  result: Int
 }
