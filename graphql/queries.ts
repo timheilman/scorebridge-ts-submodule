@@ -62,6 +62,7 @@ export const qidToQueryGql = {
                 playerDisplayName
               }
               results {
+                type
                 board
                 level
                 strain
@@ -107,6 +108,7 @@ export const qidToQueryGql = {
                 playerDisplayName
               }
               results {
+                type
                 board
                 level
                 strain
@@ -183,6 +185,7 @@ export const qidToQueryGql = {
             # TODO: lock-in table for tablet after first contract entered
             # TODO: everywhere results are returned, should restrict to the locked-in table for that tablet
             results {
+              type
               board
               level
               strain
