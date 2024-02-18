@@ -93,7 +93,7 @@ export enum BoardResultType {
 
 export interface ChangeBoardResponse {
   __typename?: "ChangeBoardResponse";
-  board: Scalars["Int"]["output"];
+  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
@@ -280,7 +280,7 @@ export interface MutationAssignTableArgs {
 }
 
 export interface MutationChangeBoardArgs {
-  board: Scalars["Int"]["input"];
+  board?: InputMaybe<Scalars["Int"]["input"]>;
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
@@ -330,14 +330,15 @@ export interface MutationUpdateCurrentGameIdArgs {
 }
 
 export interface PartialBoardResult {
-  board: Scalars["Int"]["input"];
-  declarer: DirectionLetter;
-  doubling: Doubling;
-  leadRank: Rank;
-  leadSuit: Suit;
-  level: Scalars["Int"]["input"];
+  board?: InputMaybe<Scalars["Int"]["input"]>;
+  declarer?: InputMaybe<DirectionLetter>;
+  doubling?: InputMaybe<Doubling>;
+  leadRank?: InputMaybe<Rank>;
+  leadSuit?: InputMaybe<Suit>;
+  level?: InputMaybe<Scalars["Int"]["input"]>;
   result?: InputMaybe<Scalars["Int"]["input"]>;
-  strain: Strain;
+  strain?: InputMaybe<Strain>;
+  type: BoardResultType;
 }
 
 export interface PartialGame {

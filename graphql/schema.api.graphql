@@ -154,7 +154,7 @@ type Mutation {
     clubDeviceId: String!
     gameId: String!
     tableNumber: Int!
-    board: Int!
+    board: Int
     round: Int
   ): ChangeBoardResponse
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
@@ -284,13 +284,14 @@ type BoardResult {
 }
 
 input PartialBoardResult {
-  board: Int!
-  level: Int!
-  strain: Strain!
-  doubling: Doubling!
-  declarer: DirectionLetter!
-  leadRank: Rank!
-  leadSuit: Suit!
+  type: BoardResultType!
+  board: Int
+  level: Int
+  strain: Strain
+  doubling: Doubling
+  declarer: DirectionLetter
+  leadRank: Rank
+  leadSuit: Suit
   result: Int
 }
 type TableAssignment {
@@ -432,7 +433,7 @@ type ChangeBoardResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  board: Int!
+  board: Int
   round: Int
 }
 
