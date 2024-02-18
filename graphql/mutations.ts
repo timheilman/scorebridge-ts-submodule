@@ -1,5 +1,6 @@
 import {
   Mutation,
+  MutationAssignContractArgs,
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
@@ -315,6 +316,53 @@ export const mutIdToMutGql = {
       }
     `,
     "changeBoard",
+  ),
+  assignContract: createKeyedGeneratedMutation<
+    "assignContract",
+    MutationAssignContractArgs
+  >(
+    /* GraphQL */ `
+      mutation assignContract(
+        $clubId: String!
+        $clubDeviceId: String!
+        $gameId: String!
+        $tableNumber: Int!
+        $board: Int!
+        $level: Int!
+        $strain: Strain!
+        $declarer: DirectionLetter!
+        $doubling: Doubling!
+        $leadSuit: Suit!
+        $leadRank: Rank!
+      ) {
+        assignContract(
+          clubId: $clubId
+          clubDeviceId: $clubDeviceId
+          gameId: $gameId
+          tableNumber: $tableNumber
+          board: $board
+          level: $level
+          strain: $strain
+          declarer: $declarer
+          doubling: $doubling
+          leadSuit: $leadSuit
+          leadRank: $leadRank
+        ) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          board
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+        }
+      }
+    `,
+    "assignContract",
   ),
   assignResult: createKeyedGeneratedMutation<
     "assignResult",
