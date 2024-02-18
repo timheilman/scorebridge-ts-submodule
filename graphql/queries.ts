@@ -54,6 +54,7 @@ export const qidToQueryGql = {
             boardsPerRound
             tableAssignments {
               round
+              board
               clubDeviceId
               tableNumber
               playerAssignments {
@@ -100,6 +101,7 @@ export const qidToQueryGql = {
             boardsPerRound
             tableAssignments {
               round
+              board
               clubDeviceId
               tableNumber
               playerAssignments {
@@ -175,6 +177,7 @@ export const qidToQueryGql = {
           createdAt
           tableAssignments {
             round
+            board
             tableNumber
             clubDeviceId
             playerAssignments {
