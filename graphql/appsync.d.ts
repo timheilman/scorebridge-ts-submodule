@@ -97,15 +97,7 @@ export interface ChangeBoardResponse {
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
-  tableNumber: Scalars["Int"]["output"];
-}
-
-export interface ChangeRoundResponse {
-  __typename?: "ChangeRoundResponse";
-  clubDeviceId: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  gameId: Scalars["String"]["output"];
-  round: Scalars["Int"]["output"];
+  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -234,7 +226,6 @@ export interface Mutation {
   assignResult?: Maybe<AssignResultResponse>;
   assignTable: TableAssignmentResult;
   changeBoard?: Maybe<ChangeBoardResponse>;
-  changeRound?: Maybe<ChangeRoundResponse>;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -293,14 +284,7 @@ export interface MutationChangeBoardArgs {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  tableNumber: Scalars["Int"]["input"];
-}
-
-export interface MutationChangeRoundArgs {
-  clubDeviceId: Scalars["String"]["input"];
-  clubId: Scalars["String"]["input"];
-  gameId: Scalars["String"]["input"];
-  round: Scalars["Int"]["input"];
+  round?: InputMaybe<Scalars["Int"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
