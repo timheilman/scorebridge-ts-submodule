@@ -375,6 +375,7 @@ export interface PartialPlayerAssignment {
 }
 
 export interface PartialTableAssignment {
+  board?: InputMaybe<Scalars["Int"]["input"]>;
   clubDeviceId: Scalars["String"]["input"];
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
@@ -496,6 +497,7 @@ export enum Suit {
 
 export interface TableAssignment {
   __typename?: "TableAssignment";
+  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
@@ -505,6 +507,7 @@ export interface TableAssignment {
 
 export interface TableAssignmentResult {
   __typename?: "TableAssignmentResult";
+  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
@@ -516,6 +519,7 @@ export interface TableAssignmentResult {
 
 export interface TableUnassignmentResult {
   __typename?: "TableUnassignmentResult";
+  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];

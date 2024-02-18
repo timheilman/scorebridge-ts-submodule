@@ -306,6 +306,7 @@ type TableAssignment {
   clubDeviceId: String!
   playerAssignments: [PlayerAssignment!]!
   round: Int
+  board: Int
   results: [BoardResult!]!
 }
 
@@ -314,6 +315,7 @@ input PartialTableAssignment {
   clubDeviceId: String!
   playerAssignments: [PartialPlayerAssignment!]!
   round: Int
+  board: Int
   results: [PartialBoardResult!]!
 }
 
@@ -329,6 +331,7 @@ type TableAssignmentResult {
   gameId: String!
   tableNumber: Int!
   round: Int
+  board: Int
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -338,6 +341,7 @@ type TableUnassignmentResult {
   gameId: String!
   tableNumber: Int!
   round: Int
+  board: Int
 }
 type AssignPlayerResponse {
   clubId: String!
