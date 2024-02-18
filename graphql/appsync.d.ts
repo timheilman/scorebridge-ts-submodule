@@ -82,7 +82,7 @@ export interface BoardResult {
   level?: Maybe<Scalars["Int"]["output"]>;
   result?: Maybe<Scalars["Int"]["output"]>;
   strain?: Maybe<Strain>;
-  type: BoardResultType;
+  type?: Maybe<BoardResultType>;
 }
 
 export enum BoardResultType {
@@ -338,7 +338,7 @@ export interface PartialBoardResult {
   level?: InputMaybe<Scalars["Int"]["input"]>;
   result?: InputMaybe<Scalars["Int"]["input"]>;
   strain?: InputMaybe<Strain>;
-  type: BoardResultType;
+  type?: InputMaybe<BoardResultType>;
 }
 
 export interface PartialGame {
