@@ -149,6 +149,15 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
+  changeBoard(
+    clubId: String!
+    clubDeviceId: String!
+    gameId: String!
+    tableNumber: Int!
+    board: Int!
+  ): ChangeBoardResponse
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
   changeRound(
     clubId: String!
     clubDeviceId: String!
@@ -428,6 +437,14 @@ type ChangeRoundResponse {
   gameId: String!
   tableNumber: Int!
   round: Int!
+}
+
+type ChangeBoardResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  board: Int!
 }
 
 type AssignContractResponse {

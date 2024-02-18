@@ -91,6 +91,15 @@ export enum BoardResultType {
   Played = "PLAYED",
 }
 
+export interface ChangeBoardResponse {
+  __typename?: "ChangeBoardResponse";
+  board: Scalars["Int"]["output"];
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
 export interface ChangeRoundResponse {
   __typename?: "ChangeRoundResponse";
   clubDeviceId: Scalars["String"]["output"];
@@ -224,6 +233,7 @@ export interface Mutation {
   assignPlayer: AssignPlayerResponse;
   assignResult?: Maybe<AssignResultResponse>;
   assignTable: TableAssignmentResult;
+  changeBoard?: Maybe<ChangeBoardResponse>;
   changeRound?: Maybe<ChangeRoundResponse>;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
@@ -272,6 +282,14 @@ export interface MutationAssignResultArgs {
 }
 
 export interface MutationAssignTableArgs {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface MutationChangeBoardArgs {
+  board: Scalars["Int"]["input"];
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
