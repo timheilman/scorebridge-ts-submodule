@@ -1,3 +1,24 @@
+# OK I wanna redo the way this works, to accommodate growth without the need for paging
+# I want it to look like this, for absolute minimum
+# A C ClubItem
+# A   Game1Table1DetailedResults as a list
+# A   Game1Table2DetailedResults
+# A B Game1GeneralResults
+# A B Game1Table1TableAssignment, playerAssignments as a list, results bitmap
+# A B Game1Table2TableAssignment, playerAssignments as a list, results bitmap
+# A   Game2Table1DetailedResults as a list
+# A   Game2Table2DetailedResults as a list
+# A D Game2GeneralResults
+# A D Game2Table1PlayerAssignments as a list & TableAssignments as a list & results bitmap
+# A D Game2Table2PlayerAssignments as a list & TableAssignments as a list & results bitmap
+#
+# Webapp will be most likely to need to page for A+C
+# Devices will be at minimum, writing some A records but only reading B/D records
+# This comes at the cost of a single extra pipeline fn to grab C alongside the B/D's
+# Only webapp writes to Game1GeneralResults
+# Only table1's device writes its assignment, playerAssignments, results bitmap
+# Only table2's device " etc.
+# This means table-specific data will not survive table reassignment. That's OK.
 schema {
   query: Query
   mutation: Mutation
@@ -55,17 +76,25 @@ enum BoardResultType {
 }
 
 type Query {
+  # toward slimming the data fetch: this only needs
+  # A) clubItem details,
+  # B) clubDevice details,
+  # C) high-level game details
+  # does not need table assignments, player assignments, or results
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
+  # this is far more frequent, more bang for optimization buck, needs:
+  # A) clubItem details,
+  # B) Game details up to table/player assignments and a bitmap for results: boards done for this table
   getClubWithCurrentGame(clubId: String!): ClubWithCurrentGame
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  # Generally, only getClub should be needed...
+  # This can probably be deleted
   listClubDevices(
     clubId: String!
     nextToken: String
@@ -73,6 +102,7 @@ type Query {
   ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
+  # This can probably be deleted, except that it has the tooling for nextToken
   listGames(
     clubId: String!
     nextToken: String
@@ -81,6 +111,11 @@ type Query {
   ): ListGamesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
+  # This is the one that webapp will use to get everything about a game, including detailed results
+  # device also uses this when currentGame changes, but should only need tables, players, and the
+  # results bitmap, not full results
+  # It would be good to learn how to return auth errors only for detailed game results and not
+  # for the bitmap when a device requests the detailed results
   getGame(clubId: String!, gameId: String!): Game
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
@@ -187,7 +222,7 @@ type Mutation {
 }
 
 type Subscription {
-  # These next four are for web-to-device subscriptions to know when a device's current
+  # These next three are for webapp-to-device communication to know when a device's current
   # game has been updated (automatically on create, and to null on delete)
   onCreateGame(clubId: String!): Game
     @aws_subscribe(mutations: ["createGame"])
@@ -198,10 +233,14 @@ type Subscription {
   onUpdateCurrentGameId(clubId: String!): UpdateCurrentGameIdResponse
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
+  # This is for webapp-to-device communication to update the club's name
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
+  # These next two are for device-to-device communication to know which tables
+  # are still available for assignment, and when all tables have been assigned
   onAssignTable(clubId: String!): TableAssignmentResult
     @aws_subscribe(mutations: ["assignTable"])
     @aws_cognito_user_pools(
@@ -213,6 +252,8 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
+  # This is for for device-to-device communication to know player names for display
+  # after round 1
   onAssignPlayer(clubId: String!): AssignPlayerResponse
     @aws_subscribe(mutations: ["assignPlayer"])
     @aws_cognito_user_pools(
