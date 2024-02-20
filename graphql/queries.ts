@@ -1,7 +1,6 @@
 import {
   Query,
   QueryGetClubArgs,
-  QueryGetClubWithCurrentGameArgs,
   QueryGetGameArgs,
   QueryListClubDevicesArgs,
   QueryListGamesArgs,
@@ -29,7 +28,6 @@ const createKeyedGeneratedQuery = <NAME extends QueryNames, ARGS>(
   } as KeyedGeneratedQuery<NAME, ARGS>;
 };
 export const qidToQueryGql = {
-  // TODO: maybe get rid of tableAssignments for this query?  unsure... webapp doesn't need them yet but may want them at some point
   getClub: createKeyedGeneratedQuery<"getClub", QueryGetClubArgs>(
     /* GraphQL */ `
       query getClub($clubId: String!) {
@@ -38,103 +36,18 @@ export const qidToQueryGql = {
           name
           createdAt
           currentGameId
-          clubDevices {
-            clubDeviceId
-            createdAt
-            email
-            name
-          }
-          games {
-            createdAt
-            gameId
-            label
-            movement
-            roundCount
-            label
-            boardsPerRound
-            tableAssignments {
-              round
-              board
-              clubDeviceId
-              tableNumber
-              playerAssignments {
-                directionLetter
-                playerId
-                playerDisplayName
-              }
-              results {
-                type
-                board
-                level
-                strain
-                doubling
-                declarer
-                leadRank
-                leadSuit
-                result
-              }
-            }
-            tableCount
-          }
         }
       }
     `,
     "getClub",
-  ),
-  getClubWithCurrentGame: createKeyedGeneratedQuery<
-    "getClubWithCurrentGame",
-    QueryGetClubWithCurrentGameArgs
-  >(
-    /* GraphQL */ `
-      query getClubWithCurrentGame($clubId: String!) {
-        getClubWithCurrentGame(clubId: $clubId) {
-          id
-          name
-          createdAt
-          currentGame {
-            createdAt
-            gameId
-            label
-            movement
-            roundCount
-            label
-            boardsPerRound
-            tableAssignments {
-              round
-              board
-              clubDeviceId
-              tableNumber
-              playerAssignments {
-                directionLetter
-                playerId
-                playerDisplayName
-              }
-              results {
-                type
-                board
-                level
-                strain
-                doubling
-                declarer
-                leadRank
-                leadSuit
-                result
-              }
-            }
-            tableCount
-          }
-        }
-      }
-    `,
-    "getClubWithCurrentGame",
   ),
   listClubDevices: createKeyedGeneratedQuery<
     "listClubDevices",
     QueryListClubDevicesArgs
   >(
     /* GraphQL */ `
-      query listClubDevices($clubId: String!, $nextToken: String, $limit: Int) {
-        listClubDevices(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
+      query listClubDevices($input: ListClubDevicesInput!) {
+        listClubDevices(input: $input) {
           items {
             clubDeviceId
             name
@@ -147,8 +60,8 @@ export const qidToQueryGql = {
   ),
   listGames: createKeyedGeneratedQuery<"listGames", QueryListGamesArgs>(
     /* GraphQL */ `
-      query listGames($clubId: String!, $nextToken: String, $limit: Int) {
-        listGames(clubId: $clubId, nextToken: $nextToken, limit: $limit) {
+      query listGames($input: ListGamesInput!) {
+        listGames(input: $input) {
           items {
             clubId
             gameId
@@ -165,8 +78,8 @@ export const qidToQueryGql = {
   ),
   getGame: createKeyedGeneratedQuery<"getGame", QueryGetGameArgs>(
     /* GraphQL */ `
-      query getGame($clubId: String!, $gameId: String!) {
-        getGame(clubId: $clubId, gameId: $gameId) {
+      query getGame($input: GetGameInput!) {
+        getGame(input: $input) {
           clubId
           gameId
           tableCount

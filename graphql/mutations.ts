@@ -66,8 +66,8 @@ export const mutIdToMutGql = {
     MutationUpdateClubNameArgs
   >(
     /* GraphQL */ `
-      mutation updateClubName($clubId: String!, $newName: String!) {
-        updateClubName(clubId: $clubId, newName: $newName) {
+      mutation updateClubName($input: UpdateClubNameInput!) {
+        updateClubName(input: $input) {
           clubId
           newClubName
         }
@@ -81,8 +81,8 @@ export const mutIdToMutGql = {
     MutationUpdateCurrentGameIdArgs
   >(
     /* GraphQL */ `
-      mutation updateCurrentGameId($clubId: String!, $newGameId: String!) {
-        updateCurrentGameId(clubId: $clubId, newGameId: $newGameId) {
+      mutation updateCurrentGameId($input: UpdateCurrentGameIdInput!) {
+        updateCurrentGameId(input: $input) {
           clubId
           newCurrentGameId
         }
@@ -187,18 +187,8 @@ export const mutIdToMutGql = {
     MutationAssignTableArgs
   >(
     /* GraphQL */ `
-      mutation assignTable(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-      ) {
-        assignTable(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-        ) {
+      mutation assignTable($input: AssignOrUnassignTableInput!) {
+        assignTable(input: $input) {
           clubId
           clubDeviceId
           gameId
@@ -229,18 +219,8 @@ export const mutIdToMutGql = {
     MutationUnassignTableArgs
   >(
     /* GraphQL */ `
-      mutation unassignTable(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-      ) {
-        unassignTable(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-        ) {
+      mutation unassignTable($input: AssignOrUnassignTableInput!) {
+        unassignTable(input: $input) {
           clubId
           clubDeviceId
           gameId
@@ -255,24 +235,8 @@ export const mutIdToMutGql = {
     MutationAssignPlayerArgs
   >(
     /* GraphQL */ `
-      mutation assignPlayer(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-        $directionLetter: DirectionLetter!
-        $playerId: String!
-        $playerDisplayName: String!
-      ) {
-        assignPlayer(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-          directionLetter: $directionLetter
-          playerId: $playerId
-          playerDisplayName: $playerDisplayName
-        ) {
+      mutation assignPlayer($input: AssignPlayerInput!) {
+        assignPlayer(input: $input) {
           clubId
           clubDeviceId
           gameId
@@ -290,22 +254,8 @@ export const mutIdToMutGql = {
     MutationChangeBoardArgs
   >(
     /* GraphQL */ `
-      mutation changeBoard(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-        $board: Int!
-        $round: Int
-      ) {
-        changeBoard(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-          board: $board
-          round: $round
-        ) {
+      mutation changeBoard($input: ChangeBoardInput!) {
+        changeBoard(input: $input) {
           clubId
           clubDeviceId
           gameId
@@ -322,32 +272,8 @@ export const mutIdToMutGql = {
     MutationAssignContractArgs
   >(
     /* GraphQL */ `
-      mutation assignContract(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-        $board: Int!
-        $level: Int!
-        $strain: Strain!
-        $declarer: DirectionLetter!
-        $doubling: Doubling!
-        $leadSuit: Suit!
-        $leadRank: Rank!
-      ) {
-        assignContract(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-          board: $board
-          level: $level
-          strain: $strain
-          declarer: $declarer
-          doubling: $doubling
-          leadSuit: $leadSuit
-          leadRank: $leadRank
-        ) {
+      mutation assignContract($input: AssignContractInput!) {
+        assignContract(input: $input) {
           clubId
           clubDeviceId
           gameId
@@ -369,24 +295,8 @@ export const mutIdToMutGql = {
     MutationAssignResultArgs
   >(
     /* GraphQL */ `
-      mutation assignResult(
-        $clubId: String!
-        $clubDeviceId: String!
-        $gameId: String!
-        $tableNumber: Int!
-        $board: Int!
-        $type: BoardResultType!
-        $result: Int
-      ) {
-        assignResult(
-          clubId: $clubId
-          clubDeviceId: $clubDeviceId
-          gameId: $gameId
-          tableNumber: $tableNumber
-          type: $type
-          board: $board
-          result: $result
-        ) {
+      mutation assignResult($input: AssignResultInput!) {
+        assignResult(input: $input) {
           clubId
           clubDeviceId
           gameId
