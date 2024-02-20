@@ -129,13 +129,6 @@ export interface CreateClubDeviceInput {
   regToken: Scalars["String"]["input"];
 }
 
-export interface CreateClubInput {
-  newAdminEmail: Scalars["AWSEmail"]["input"];
-  newClubName: Scalars["String"]["input"];
-  recaptchaToken: Scalars["String"]["input"];
-  suppressInvitationEmail?: InputMaybe<Scalars["Boolean"]["input"]>;
-}
-
 export interface CreateClubResponse {
   __typename?: "CreateClubResponse";
   clubId: Scalars["String"]["output"];
@@ -279,7 +272,10 @@ export interface MutationChangeBoardArgs {
 }
 
 export interface MutationCreateClubArgs {
-  input: CreateClubInput;
+  newAdminEmail: Scalars["AWSEmail"]["input"];
+  newClubName: Scalars["String"]["input"];
+  recaptchaToken: Scalars["String"]["input"];
+  suppressInvitationEmail?: InputMaybe<Scalars["Boolean"]["input"]>;
 }
 
 export interface MutationCreateClubDeviceArgs {
