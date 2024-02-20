@@ -1,7 +1,7 @@
 import { DirectionLetter } from "./graphql/gqlEnums";
 
 export const clubSortKeyPrefix0 = "C";
-export const clubDeviceSortKeyPrefix0 = `${clubSortKeyPrefix0}D`;
+export const clubDeviceSortKeyPrefix0 = "D";
 export const gameSortKeyPrefix0 = "G";
 export const userSortKeyPrefix0 = "U";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
