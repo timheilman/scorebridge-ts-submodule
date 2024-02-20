@@ -74,7 +74,7 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  # This can be deleted
+  # This will need to change to handle paging
   listClubDevices(
     clubId: String!
     nextToken: String
@@ -82,7 +82,7 @@ type Query {
   ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  # This will be the only query which may page, and returns everything about all games
+  # This will need to handle paging, and returns everything about all games
   listGames(
     clubId: String!
     nextToken: String
@@ -250,7 +250,6 @@ type ListGamesOutput {
 type Club {
   id: String!
   name: String!
-  clubDevices: [ClubDevice!]!
   currentGameId: String
   createdAt: AWSDateTime!
 }

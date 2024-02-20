@@ -108,7 +108,6 @@ export interface ClearCurrentGameIdResponse {
 
 export interface Club {
   __typename?: "Club";
-  clubDevices: ClubDevice[];
   createdAt: Scalars["AWSDateTime"]["output"];
   currentGameId?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
