@@ -68,12 +68,6 @@ type Query {
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  # this will be deleted, replaced with getClub then getGame
-  getClubWithCurrentGame(clubId: String!): ClubWithCurrentGame
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
-    )
-
   # This will need to change to handle paging
   listClubDevices(
     clubId: String!
@@ -251,14 +245,6 @@ type Club {
   id: String!
   name: String!
   currentGameId: String
-  createdAt: AWSDateTime!
-}
-
-# This will be deleted, replaced with call to getClub then getGame
-type ClubWithCurrentGame {
-  id: String!
-  name: String!
-  currentGame: Game
   createdAt: AWSDateTime!
 }
 

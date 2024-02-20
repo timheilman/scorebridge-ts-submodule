@@ -123,14 +123,6 @@ export interface ClubDevice {
   name: Scalars["String"]["output"];
 }
 
-export interface ClubWithCurrentGame {
-  __typename?: "ClubWithCurrentGame";
-  createdAt: Scalars["AWSDateTime"]["output"];
-  currentGame?: Maybe<Game>;
-  id: Scalars["String"]["output"];
-  name: Scalars["String"]["output"];
-}
-
 export interface CreateClubDeviceInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
@@ -376,17 +368,12 @@ export interface PlayerAssignment {
 export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
-  getClubWithCurrentGame?: Maybe<ClubWithCurrentGame>;
   getGame?: Maybe<Game>;
   listClubDevices: ListClubDevicesOutput;
   listGames: ListGamesOutput;
 }
 
 export interface QueryGetClubArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface QueryGetClubWithCurrentGameArgs {
   clubId: Scalars["String"]["input"];
 }
 
