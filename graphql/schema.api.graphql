@@ -72,7 +72,7 @@ type Query {
   listClubDevices(
     clubId: String!
     nextToken: String
-    limit: Int = 50
+    limit: Int
   ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
