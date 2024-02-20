@@ -1,24 +1,7 @@
-# OK I wanna redo the way this works, to accommodate growth without the need for paging
-# I want it to look like this, for absolute minimum
-# A C ClubItem
-# A   Game1Table1DetailedResults as a list
-# A   Game1Table2DetailedResults
-# A B Game1GeneralResults
-# A B Game1Table1TableAssignment, playerAssignments as a list, results bitmap
-# A B Game1Table2TableAssignment, playerAssignments as a list, results bitmap
-# A   Game2Table1DetailedResults as a list
-# A   Game2Table2DetailedResults as a list
-# A D Game2GeneralResults
-# A D Game2Table1PlayerAssignments as a list & TableAssignments as a list & results bitmap
-# A D Game2Table2PlayerAssignments as a list & TableAssignments as a list & results bitmap
-#
-# Webapp will be most likely to need to page for A+C
-# Devices will be at minimum, writing some A records but only reading B/D records
-# This comes at the cost of a single extra pipeline fn to grab C alongside the B/D's
-# Only webapp writes to Game1GeneralResults
-# Only table1's device writes its assignment, playerAssignments, results bitmap
-# Only table2's device " etc.
-# This means table-specific data will not survive table reassignment. That's OK.
+# New plan:
+# we will have getClub that does not page, returns clubDevice results but no game results
+# listGames will page, returning everything for each game
+# getGame will get everything for one game, should not need to page
 schema {
   query: Query
   mutation: Mutation
@@ -79,22 +62,19 @@ type Query {
   # toward slimming the data fetch: this only needs
   # A) clubItem details,
   # B) clubDevice details,
-  # C) high-level game details
-  # does not need table assignments, player assignments, or results
+  # does not need game details, table assignments, player assignments, or results
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  # this is far more frequent, more bang for optimization buck, needs:
-  # A) clubItem details,
-  # B) Game details up to table/player assignments and a bitmap for results: boards done for this table
+  # this will be deleted, replaced with getClub then getGame
   getClubWithCurrentGame(clubId: String!): ClubWithCurrentGame
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
 
-  # This can probably be deleted
+  # This can be deleted
   listClubDevices(
     clubId: String!
     nextToken: String
@@ -102,7 +82,7 @@ type Query {
   ): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  # This can probably be deleted, except that it has the tooling for nextToken
+  # This will be the only query which may page, and returns everything about all games
   listGames(
     clubId: String!
     nextToken: String
@@ -111,11 +91,7 @@ type Query {
   ): ListGamesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  # This is the one that webapp will use to get everything about a game, including detailed results
-  # device also uses this when currentGame changes, but should only need tables, players, and the
-  # results bitmap, not full results
-  # It would be good to learn how to return auth errors only for detailed game results and not
-  # for the bitmap when a device requests the detailed results
+  # This should not need to page
   getGame(clubId: String!, gameId: String!): Game
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
@@ -275,11 +251,11 @@ type Club {
   id: String!
   name: String!
   clubDevices: [ClubDevice!]!
-  games: [Game!]!
   currentGameId: String
   createdAt: AWSDateTime!
 }
 
+# This will be deleted, replaced with call to getClub then getGame
 type ClubWithCurrentGame {
   id: String!
   name: String!
