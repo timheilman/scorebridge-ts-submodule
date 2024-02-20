@@ -85,9 +85,13 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
   updateClubName(input: UpdateClubNameInput!): UpdateClubNameResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  updateCurrentGameId(input: UpdateCurrentGameIdInput!): UpdateCurrentGameIdResponse!
+  updateCurrentGameId(
+    input: UpdateCurrentGameIdInput!
+  ): UpdateCurrentGameIdResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  deleteClubAndAdmin(input: DeleteClubAndAdminInput!): DeleteClubAndAdminResponse!
+  deleteClubAndAdmin(
+    input: DeleteClubAndAdminInput!
+  ): DeleteClubAndAdminResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
@@ -315,7 +319,8 @@ type AssignPlayerResponse {
 }
 
 input GetGameInput {
-  clubId: String!, gameId: String!
+  clubId: String!
+  gameId: String!
 }
 
 type Game {
@@ -378,7 +383,8 @@ type CreateClubResponse {
 }
 
 input UpdateClubNameInput {
-  clubId: String!, newName: String!
+  clubId: String!
+  newName: String!
 }
 
 type UpdateClubNameResponse {
