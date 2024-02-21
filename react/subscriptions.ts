@@ -22,12 +22,11 @@ export type GraphQLAuthMode =
   // | "none"
   | "userPool";
 
-export type OutType<T> = T extends KeyedGeneratedSubscription<
-  infer NAME,
-  unknown
->
-  ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
-  : never;
+// TODO: track down and fix irritating difference in eslint/prettier output across repos for this declaration:
+export type OutType<T> =
+  T extends KeyedGeneratedSubscription<infer NAME, unknown>
+    ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
+    : never;
 
 // these next three types are pulled from AWS Amplify v6 source code
 // For why these are copied-into this repo, see
@@ -35,14 +34,15 @@ export type OutType<T> = T extends KeyedGeneratedSubscription<
 type NeverEmpty<T> = {
   [K in keyof T]-?: Exclude<WithListsFixed<T[K]>, undefined | null>;
 };
-type WithListsFixed<T> = T extends PagedList<infer IT, infer NAME>
-  ? PagedList<Exclude<IT, null | undefined>, NAME>
-  : // eslint-disable-next-line @typescript-eslint/ban-types
-    T extends {}
-    ? {
-        [K in keyof T]: WithListsFixed<T[K]>;
-      }
-    : T;
+type WithListsFixed<T> =
+  T extends PagedList<infer IT, infer NAME>
+    ? PagedList<Exclude<IT, null | undefined>, NAME>
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+      T extends {}
+      ? {
+          [K in keyof T]: WithListsFixed<T[K]>;
+        }
+      : T;
 interface PagedList<T, TYPENAME> {
   __typename: TYPENAME;
   nextToken?: string | null | undefined;
