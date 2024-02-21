@@ -68,6 +68,7 @@ export const qidToQueryGql = {
             movement
             tableCount
             roundCount
+            boardsPerRound
             createdAt
           }
           nextToken
