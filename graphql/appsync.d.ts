@@ -138,6 +138,7 @@ export interface BoardResult {
   leadSuit?: Maybe<Suit>;
   level?: Maybe<Scalars["Int"]["output"]>;
   result?: Maybe<Scalars["Int"]["output"]>;
+  round?: Maybe<Scalars["Int"]["output"]>;
   strain?: Maybe<Strain>;
   type?: Maybe<BoardResultType>;
 }
@@ -376,6 +377,7 @@ export interface PartialBoardResult {
   leadSuit?: InputMaybe<Suit>;
   level?: InputMaybe<Scalars["Int"]["input"]>;
   result?: InputMaybe<Scalars["Int"]["input"]>;
+  round?: InputMaybe<Scalars["Int"]["input"]>;
   strain?: InputMaybe<Strain>;
   type?: InputMaybe<BoardResultType>;
 }
