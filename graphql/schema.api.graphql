@@ -439,6 +439,7 @@ input AssignContractInput {
   gameId: String!
   tableNumber: Int!
   board: Int!
+  round: Int!
   level: Int!
   strain: Strain!
   declarer: DirectionLetter!
@@ -453,6 +454,7 @@ type AssignContractResponse {
   gameId: String!
   tableNumber: Int!
   board: Int!
+  round: Int!
   level: Int!
   strain: Strain!
   declarer: DirectionLetter!
@@ -467,6 +469,7 @@ input AssignResultInput {
   gameId: String!
   tableNumber: Int!
   board: Int!
+  round: Int!
   type: BoardResultType!
   result: Int
 }
@@ -478,5 +481,6 @@ type AssignResultResponse {
   tableNumber: Int!
   type: BoardResultType!
   board: Int!
+  round: Int!
   result: Int
 }

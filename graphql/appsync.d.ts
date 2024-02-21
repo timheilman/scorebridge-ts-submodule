@@ -45,6 +45,7 @@ export interface AssignContractInput {
   leadRank: Rank;
   leadSuit: Suit;
   level: Scalars["Int"]["input"];
+  round: Scalars["Int"]["input"];
   strain: Strain;
   tableNumber: Scalars["Int"]["input"];
 }
@@ -60,6 +61,7 @@ export interface AssignContractResponse {
   leadRank: Rank;
   leadSuit: Suit;
   level: Scalars["Int"]["output"];
+  round: Scalars["Int"]["output"];
   strain: Strain;
   tableNumber: Scalars["Int"]["output"];
 }
@@ -98,6 +100,7 @@ export interface AssignResultInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   result?: InputMaybe<Scalars["Int"]["input"]>;
+  round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
   type: BoardResultType;
 }
@@ -109,6 +112,7 @@ export interface AssignResultResponse {
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   result?: Maybe<Scalars["Int"]["output"]>;
+  round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
   type: BoardResultType;
 }
