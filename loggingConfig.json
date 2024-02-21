@@ -1,9 +1,10 @@
 {
   "": "debug",
+  "components.IconButton.rendering": "info",
+  "cypress.": "info",
+  "features.assignContract.movementHelpers.inversePlayerNumber": "info",
+  "features.clubDeviceRegistration.clubSlice.": "info",
   "tsSubmodule.deleteDdbRecords": "info",
   "tsSubmodule.subscriptions": "info",
-  "tsSubmodule.OnlineStatus": "info",
-  "cypress.": "info",
-  "features.clubDeviceRegistration.clubSlice.": "info",
-  "components.IconButton.rendering": "info"
+  "tsSubmodule.OnlineStatus": "info"
 }
