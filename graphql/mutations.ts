@@ -279,6 +279,7 @@ export const mutIdToMutGql = {
           gameId
           tableNumber
           board
+          round
           level
           strain
           declarer
@@ -304,6 +305,7 @@ export const mutIdToMutGql = {
           type
           result
           board
+          round
         }
       }
     `,

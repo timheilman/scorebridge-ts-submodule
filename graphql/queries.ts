@@ -99,11 +99,10 @@ export const qidToQueryGql = {
               playerId
               playerDisplayName
             }
-            # TODO: lock-in table for tablet after first contract entered
-            # TODO: everywhere results are returned, should restrict to the locked-in table for that tablet
             results {
               type
               board
+              round
               level
               strain
               doubling
