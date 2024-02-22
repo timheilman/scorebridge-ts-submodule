@@ -50,22 +50,6 @@ export interface AssignContractInput {
   tableNumber: Scalars["Int"]["input"];
 }
 
-export interface AssignContractResponse {
-  __typename?: "AssignContractResponse";
-  board: Scalars["Int"]["output"];
-  clubDeviceId: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  declarer: DirectionLetter;
-  doubling: Doubling;
-  gameId: Scalars["String"]["output"];
-  leadRank: Rank;
-  leadSuit: Suit;
-  level: Scalars["Int"]["output"];
-  round: Scalars["Int"]["output"];
-  strain: Strain;
-  tableNumber: Scalars["Int"]["output"];
-}
-
 export interface AssignOrUnassignTableInput {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
@@ -102,18 +86,6 @@ export interface AssignResultInput {
   result?: InputMaybe<Scalars["Int"]["input"]>;
   round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
-  type: BoardResultType;
-}
-
-export interface AssignResultResponse {
-  __typename?: "AssignResultResponse";
-  board: Scalars["Int"]["output"];
-  clubDeviceId: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  gameId: Scalars["String"]["output"];
-  result?: Maybe<Scalars["Int"]["output"]>;
-  round: Scalars["Int"]["output"];
-  tableNumber: Scalars["Int"]["output"];
   type: BoardResultType;
 }
 
@@ -296,9 +268,9 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
-  assignContract?: Maybe<AssignContractResponse>;
+  assignContract?: Maybe<BoardResult>;
   assignPlayer: AssignPlayerResponse;
-  assignResult?: Maybe<AssignResultResponse>;
+  assignResult?: Maybe<BoardResult>;
   assignTable: AssignTableResponse;
   changeBoard?: Maybe<ChangeBoardResponse>;
   createClub: CreateClubResponse;
