@@ -103,16 +103,16 @@ export interface AssignTableResponse {
 
 export interface BoardResult {
   __typename?: "BoardResult";
-  board?: Maybe<Scalars["Int"]["output"]>;
+  board: Scalars["Int"]["output"];
   declarer?: Maybe<DirectionLetter>;
   doubling?: Maybe<Doubling>;
   leadRank?: Maybe<Rank>;
   leadSuit?: Maybe<Suit>;
   level?: Maybe<Scalars["Int"]["output"]>;
   result?: Maybe<Scalars["Int"]["output"]>;
-  round?: Maybe<Scalars["Int"]["output"]>;
+  round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
-  type?: Maybe<BoardResultType>;
+  type: BoardResultType;
 }
 
 export enum BoardResultType {
@@ -342,16 +342,16 @@ export interface MutationUpdateCurrentGameIdArgs {
 }
 
 export interface PartialBoardResult {
-  board?: InputMaybe<Scalars["Int"]["input"]>;
+  board: Scalars["Int"]["input"];
   declarer?: InputMaybe<DirectionLetter>;
   doubling?: InputMaybe<Doubling>;
   leadRank?: InputMaybe<Rank>;
   leadSuit?: InputMaybe<Suit>;
   level?: InputMaybe<Scalars["Int"]["input"]>;
   result?: InputMaybe<Scalars["Int"]["input"]>;
-  round?: InputMaybe<Scalars["Int"]["input"]>;
+  round: Scalars["Int"]["input"];
   strain?: InputMaybe<Strain>;
-  type?: InputMaybe<BoardResultType>;
+  type: BoardResultType;
 }
 
 export interface PartialGame {

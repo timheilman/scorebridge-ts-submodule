@@ -225,9 +225,9 @@ type PlayerAssignment {
 }
 
 type BoardResult {
-  type: BoardResultType
-  board: Int
-  round: Int
+  type: BoardResultType!
+  board: Int!
+  round: Int!
   level: Int
   strain: Strain
   doubling: Doubling
@@ -238,9 +238,9 @@ type BoardResult {
 }
 
 input PartialBoardResult {
-  type: BoardResultType
-  board: Int
-  round: Int
+  type: BoardResultType!
+  board: Int!
+  round: Int!
   level: Int
   strain: Strain
   doubling: Doubling
