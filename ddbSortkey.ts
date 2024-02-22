@@ -68,7 +68,7 @@ export const gameIdFromSortKey = (sortKey: string) => {
       error: `Not a correct sortKey; ${sortKey} has no hashes.`,
     };
   }
-  return { result: theSplit[1] };
+  return { result: theSplit[1], error: "" };
 };
 
 export const tableNumberFromSortKey = (sortKey: string) => {
