@@ -49,6 +49,7 @@ export const directionLetterFromSortKey = (sortKey: string) => {
   }
   return {
     result: DirectionLetter[directionString as keyof typeof DirectionLetter],
+    error: "",
   };
 };
 
