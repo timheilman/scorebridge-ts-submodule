@@ -274,12 +274,9 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation assignContract($input: AssignContractInput!) {
         assignContract(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
           board
           round
+          type
           level
           strain
           declarer
@@ -298,14 +295,16 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation assignResult($input: AssignResultInput!) {
         assignResult(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-          type
-          result
           board
           round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+          result
         }
       }
     `,
