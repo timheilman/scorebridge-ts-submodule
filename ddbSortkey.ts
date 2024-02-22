@@ -113,3 +113,29 @@ export const boardFromSortKey = (sortKey: string) => {
     result: +theSplit[4],
   };
 };
+
+export const roundFromSortKey = (sortKey: string) => {
+  if (!sortKey.startsWith(gameSortKeyPrefix0)) {
+    return {
+      error: `Not a correct sortKey; ${sortKey} did not start with ${gameSortKeyPrefix0}`,
+      result: 0,
+    };
+  }
+  const theSplit = sortKey.split("#");
+  // G, gameId, tableNumber, R, boardNumber, roundNumber
+  if (theSplit.length < 6) {
+    return {
+      error: `Not a correct sortKey; ${sortKey} has under five hashes.`,
+      result: 0,
+    };
+  }
+  if (theSplit[3] !== resultSortKeyPrefix3) {
+    return {
+      error: `Not a correct sortKey; ${sortKey[3]} is not resultSortKeyPrefix3: ${resultSortKeyPrefix3}`,
+      result: 0,
+    };
+  }
+  return {
+    result: +theSplit[5],
+  };
+};
