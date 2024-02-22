@@ -70,6 +70,29 @@ export const qidToQueryGql = {
             roundCount
             boardsPerRound
             createdAt
+            tableAssignments {
+              tableNumber
+              clubDeviceId
+              round
+              board
+              playerAssignments {
+                directionLetter
+                playerId
+                playerDisplayName
+              }
+              results {
+                type
+                board
+                round
+                level
+                strain
+                doubling
+                declarer
+                leadRank
+                leadSuit
+                result
+              }
+            }
           }
           nextToken
         }
