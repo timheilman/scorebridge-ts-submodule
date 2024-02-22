@@ -86,7 +86,7 @@ export const tableNumberFromSortKey = (sortKey: string) => {
       error: `Not a correct sortKey; ${sortKey} has < 2 hashes.`,
     };
   }
-  return { result: +theSplit[2] };
+  return { result: +theSplit[2], error: "" };
 };
 
 export const boardFromSortKey = (sortKey: string) => {
