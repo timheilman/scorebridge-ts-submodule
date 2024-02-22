@@ -22,7 +22,7 @@ export const clubDeviceIdFromSortKey = (sortKey: string) => {
       result: "",
     };
   }
-  return { result: theSplit[1] };
+  return { result: theSplit[1], error: "" };
 };
 
 export const directionLetterFromSortKey = (sortKey: string) => {
