@@ -112,6 +112,7 @@ export const boardFromSortKey = (sortKey: string) => {
   }
   return {
     result: +theSplit[4],
+    error: "",
   };
 };
 
@@ -138,5 +139,6 @@ export const roundFromSortKey = (sortKey: string) => {
   }
   return {
     result: +theSplit[5],
+    error: "",
   };
 };
