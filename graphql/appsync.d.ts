@@ -279,6 +279,7 @@ export interface Mutation {
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
+  unassignContract?: Maybe<BoardResult>;
   unassignTable: UnassignTableResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
@@ -327,6 +328,10 @@ export interface MutationDeleteClubDeviceArgs {
 
 export interface MutationDeleteGameArgs {
   input: DeleteGameInput;
+}
+
+export interface MutationUnassignContractArgs {
+  input: UnassignContractInput;
 }
 
 export interface MutationUnassignTableArgs {
@@ -490,6 +495,15 @@ export interface TableAssignment {
   results: BoardResult[];
   round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
+}
+
+export interface UnassignContractInput {
+  board: Scalars["Int"]["input"];
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  round: Scalars["Int"]["input"];
+  tableNumber: Scalars["Int"]["input"];
 }
 
 export interface UnassignTableResponse {

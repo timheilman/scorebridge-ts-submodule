@@ -124,6 +124,8 @@ type Mutation {
 
   assignContract(input: AssignContractInput!): BoardResult
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  unassignContract(input: UnassignContractInput!): BoardResult
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   assignResult(input: AssignResultInput!): BoardResult
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
@@ -448,6 +450,15 @@ input AssignContractInput {
   doubling: Doubling!
   leadSuit: Suit!
   leadRank: Rank!
+}
+
+input UnassignContractInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  board: Int!
+  round: Int!
 }
 
 input AssignResultInput {
