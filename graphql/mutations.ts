@@ -310,4 +310,26 @@ export const mutIdToMutGql = {
     `,
     "assignResult",
   ),
+  unassignContract: createKeyedGeneratedMutation<
+    "unassignContract",
+    MutationAssignResultArgs
+  >(
+    /* GraphQL */ `
+      mutation unassignContract($input: UnassignContractInput!) {
+        unassignContract(input: $input) {
+          board
+          round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+          result
+        }
+      }
+    `,
+    "unassignContract",
+  ),
 };
