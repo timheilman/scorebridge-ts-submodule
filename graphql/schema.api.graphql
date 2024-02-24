@@ -451,8 +451,6 @@ input AssignBoardToBidInput {
   tableNumber: Int!
   board: Int!
   round: Int!
-  leadSuit: Suit!
-  leadRank: Rank!
 }
 
 input UnassignContractInput {

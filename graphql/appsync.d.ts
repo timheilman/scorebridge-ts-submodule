@@ -40,8 +40,6 @@ export interface AssignBoardToBidInput {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  leadRank: Rank;
-  leadSuit: Suit;
   round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
