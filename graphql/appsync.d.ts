@@ -134,12 +134,9 @@ export interface BoardResult {
 }
 
 export enum BoardResultType {
-  InitialLeadAssigned = "INITIAL_LEAD_ASSIGNED",
-  LevelStrainDoublingDeclarerAssigned = "LEVEL_STRAIN_DOUBLING_DECLARER_ASSIGNED",
   NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
   PassedOut = "PASSED_OUT",
-  ResultAssigned = "RESULT_ASSIGNED",
-  SelectedToBid = "SELECTED_TO_BID",
+  Played = "PLAYED",
 }
 
 export interface ClearCurrentGameIdResponse {
