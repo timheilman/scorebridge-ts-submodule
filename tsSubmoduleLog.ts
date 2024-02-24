@@ -74,12 +74,9 @@ function localCurrentConfig() {
   // VITE guess removed since it also breaks expo
   return currentConfig(undefined);
 }
-
+const config = localCurrentConfig();
 export function tsSubmoduleLogFn(
   catPrefix: string,
 ): (catSuffix: string, logLevel: LogLevel, ...addlParams: unknown[]) => void {
-  return withConfigProvideLogFn(
-    localCurrentConfig(),
-    getPrintFn,
-  )(`tsSubmodule.${catPrefix}`);
+  return withConfigProvideLogFn(config, getPrintFn)(`tsSubmodule.${catPrefix}`);
 }

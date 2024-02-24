@@ -11,6 +11,7 @@ import {
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
+  MutationUnassignContractArgs,
   MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
@@ -312,7 +313,7 @@ export const mutIdToMutGql = {
   ),
   unassignContract: createKeyedGeneratedMutation<
     "unassignContract",
-    MutationAssignResultArgs
+    MutationUnassignContractArgs
   >(
     /* GraphQL */ `
       mutation unassignContract($input: UnassignContractInput!) {
