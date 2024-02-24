@@ -1,4 +1,4 @@
-import { DirectionLetter } from "./graphql/gqlEnums";
+import { DirectionLetter } from "./graphql/appsync";
 
 export const clubSortKeyPrefix0 = "C";
 export const clubDeviceSortKeyPrefix0 = "D";
@@ -25,11 +25,13 @@ export const clubDeviceIdFromSortKey = (sortKey: string) => {
   return { result: theSplit[1], error: "" };
 };
 
-export const directionLetterFromSortKey = (sortKey: string) => {
+export const directionLetterFromSortKey = (
+  sortKey: string,
+): { error: string; result: DirectionLetter } => {
   if (!sortKey.startsWith(gameSortKeyPrefix0)) {
     return {
       error: `Not a correct sortKey; ${sortKey} did not start with ${gameSortKeyPrefix0}`,
-      result: DirectionLetter.N,
+      result: "N" as const,
     };
   }
   const theSplit = sortKey.split("#");
@@ -37,18 +39,18 @@ export const directionLetterFromSortKey = (sortKey: string) => {
   if (theSplit.length < 4) {
     return {
       error: `Not a correct sortKey; ${sortKey} has under three hashes.`,
-      result: DirectionLetter.N,
+      result: "N" as const,
     };
   }
   const directionString = theSplit[3];
   if (!["N", "S", "E", "W"].includes(directionString)) {
     return {
       error: `Not a correct sortKey; ${directionString} is not a direction.`,
-      result: DirectionLetter.N,
+      result: "N" as const,
     };
   }
   return {
-    result: DirectionLetter[directionString as keyof typeof DirectionLetter],
+    result: directionString as DirectionLetter,
     error: "",
   };
 };
