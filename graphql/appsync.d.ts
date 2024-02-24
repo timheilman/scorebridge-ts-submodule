@@ -35,6 +35,17 @@ export interface Scalars {
   AWSURL: { input: string; output: string };
 }
 
+export interface AssignBoardToBidInput {
+  board: Scalars["Int"]["input"];
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  leadRank: Rank;
+  leadSuit: Suit;
+  round: Scalars["Int"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
 export interface AssignContractInput {
   board: Scalars["Int"]["input"];
   clubDeviceId: Scalars["String"]["input"];
@@ -47,6 +58,17 @@ export interface AssignContractInput {
   level: Scalars["Int"]["input"];
   round: Scalars["Int"]["input"];
   strain: Strain;
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface AssignInitialLeadInput {
+  board: Scalars["Int"]["input"];
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  leadRank: Rank;
+  leadSuit: Suit;
+  round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -250,9 +272,11 @@ export interface ListGamesOutput {
 
 export interface Mutation {
   __typename?: "Mutation";
-  assignContract?: Maybe<BoardResult>;
+  assignBoardToBid: BoardResult;
+  assignContract: BoardResult;
+  assignInitialLead: BoardResult;
   assignPlayer: AssignPlayerResponse;
-  assignResult?: Maybe<BoardResult>;
+  assignResult: BoardResult;
   assignTable: AssignTableResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
@@ -260,15 +284,25 @@ export interface Mutation {
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
-  unassignContract?: Maybe<BoardResult>;
+  unassignBoardToBid: BoardResult;
+  unassignContract: BoardResult;
+  unassignInitialLead: BoardResult;
   unassignTable: UnassignTableResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
 }
 
+export interface MutationAssignBoardToBidArgs {
+  input: AssignBoardToBidInput;
+}
+
 export interface MutationAssignContractArgs {
   input: AssignContractInput;
+}
+
+export interface MutationAssignInitialLeadArgs {
+  input: AssignInitialLeadInput;
 }
 
 export interface MutationAssignPlayerArgs {
@@ -307,7 +341,15 @@ export interface MutationDeleteGameArgs {
   input: DeleteGameInput;
 }
 
+export interface MutationUnassignBoardToBidArgs {
+  input: UnassignContractInput;
+}
+
 export interface MutationUnassignContractArgs {
+  input: UnassignContractInput;
+}
+
+export interface MutationUnassignInitialLeadArgs {
   input: UnassignContractInput;
 }
 

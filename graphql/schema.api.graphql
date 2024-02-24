@@ -122,12 +122,19 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  assignContract(input: AssignContractInput!): BoardResult
+  assignBoardToBid(input: AssignBoardToBidInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  unassignContract(input: UnassignContractInput!): BoardResult
+  unassignBoardToBid(input: UnassignContractInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-
-  assignResult(input: AssignResultInput!): BoardResult
+  assignContract(input: AssignContractInput!): BoardResult!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  unassignContract(input: UnassignContractInput!): BoardResult!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  assignInitialLead(input: AssignInitialLeadInput!): BoardResult!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  unassignInitialLead(input: UnassignContractInput!): BoardResult!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  assignResult(input: AssignResultInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
@@ -422,6 +429,28 @@ input AssignContractInput {
   strain: Strain!
   declarer: DirectionLetter!
   doubling: Doubling!
+  leadSuit: Suit!
+  leadRank: Rank!
+}
+
+input AssignInitialLeadInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  board: Int!
+  round: Int!
+  leadSuit: Suit!
+  leadRank: Rank!
+}
+
+input AssignBoardToBidInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  board: Int!
+  round: Int!
   leadSuit: Suit!
   leadRank: Rank!
 }
