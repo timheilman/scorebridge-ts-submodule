@@ -131,11 +131,7 @@ export interface BoardResult {
   type: BoardResultType;
 }
 
-export enum BoardResultType {
-  NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
-  PassedOut = "PASSED_OUT",
-  Played = "PLAYED",
-}
+export type BoardResultType = "NOT_BID_NOT_PLAYED" | "PASSED_OUT" | "PLAYED";
 
 export interface ClearCurrentGameIdResponse {
   __typename?: "ClearCurrentGameIdResponse";
@@ -207,18 +203,9 @@ export interface DeleteGameInput {
   gameId: Scalars["String"]["input"];
 }
 
-export enum DirectionLetter {
-  E = "E",
-  N = "N",
-  S = "S",
-  W = "W",
-}
+export type DirectionLetter = "E" | "N" | "S" | "W";
 
-export enum Doubling {
-  Double = "DOUBLE",
-  None = "NONE",
-  Redouble = "REDOUBLE",
-}
+export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 
 export interface Game {
   __typename?: "Game";
@@ -427,29 +414,22 @@ export interface QueryListGamesArgs {
   input: ListGamesInput;
 }
 
-export enum Rank {
-  Ace = "ACE",
-  Eight = "EIGHT",
-  Five = "FIVE",
-  Four = "FOUR",
-  Jack = "JACK",
-  King = "KING",
-  Nine = "NINE",
-  Queen = "QUEEN",
-  Seven = "SEVEN",
-  Six = "SIX",
-  Ten = "TEN",
-  Three = "THREE",
-  Two = "TWO",
-}
+export type Rank =
+  | "ACE"
+  | "EIGHT"
+  | "FIVE"
+  | "FOUR"
+  | "JACK"
+  | "KING"
+  | "NINE"
+  | "QUEEN"
+  | "SEVEN"
+  | "SIX"
+  | "TEN"
+  | "THREE"
+  | "TWO";
 
-export enum Strain {
-  C = "C",
-  D = "D",
-  H = "H",
-  Nt = "NT",
-  S = "S",
-}
+export type Strain = "C" | "D" | "H" | "NT" | "S";
 
 export interface Subscription {
   __typename?: "Subscription";
@@ -490,12 +470,7 @@ export interface SubscriptionOnUpdateCurrentGameIdArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export enum Suit {
-  C = "C",
-  D = "D",
-  H = "H",
-  S = "S",
-}
+export type Suit = "C" | "D" | "H" | "S";
 
 export interface TableAssignment {
   __typename?: "TableAssignment";
