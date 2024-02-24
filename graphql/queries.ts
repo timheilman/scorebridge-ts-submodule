@@ -73,8 +73,6 @@ export const qidToQueryGql = {
             tableAssignments {
               tableNumber
               clubDeviceId
-              round
-              board
               playerAssignments {
                 directionLetter
                 playerId
@@ -113,8 +111,6 @@ export const qidToQueryGql = {
           label
           createdAt
           tableAssignments {
-            round
-            board
             tableNumber
             clubDeviceId
             playerAssignments {

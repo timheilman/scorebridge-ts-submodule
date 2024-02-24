@@ -4,7 +4,6 @@ import {
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
-  MutationChangeBoardArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -194,7 +193,6 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
-          round
           playerAssignments {
             directionLetter
             playerId
@@ -202,6 +200,7 @@ export const mutIdToMutGql = {
           }
           results {
             board
+            round
             level
             strain
             doubling
@@ -249,24 +248,6 @@ export const mutIdToMutGql = {
       }
     `,
     "assignPlayer",
-  ),
-  changeBoard: createKeyedGeneratedMutation<
-    "changeBoard",
-    MutationChangeBoardArgs
-  >(
-    /* GraphQL */ `
-      mutation changeBoard($input: ChangeBoardInput!) {
-        changeBoard(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-          board
-          round
-        }
-      }
-    `,
-    "changeBoard",
   ),
   assignContract: createKeyedGeneratedMutation<
     "assignContract",

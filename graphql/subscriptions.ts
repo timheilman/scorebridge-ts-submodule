@@ -113,8 +113,6 @@ export const subIdToSubGql = {
           gameId
           clubDeviceId
           tableNumber
-          round
-          board
           playerAssignments {
             directionLetter
             playerId
@@ -122,6 +120,7 @@ export const subIdToSubGql = {
           }
           results {
             board
+            round
             level
             strain
             doubling
