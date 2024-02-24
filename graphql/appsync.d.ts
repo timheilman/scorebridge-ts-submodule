@@ -91,7 +91,6 @@ export interface AssignResultInput {
 
 export interface AssignTableResponse {
   __typename?: "AssignTableResponse";
-  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
@@ -118,23 +117,6 @@ export enum BoardResultType {
   NotBidNotPlayed = "NOT_BID_NOT_PLAYED",
   PassedOut = "PASSED_OUT",
   Played = "PLAYED",
-}
-
-export interface ChangeBoardInput {
-  board: Scalars["Int"]["input"];
-  clubDeviceId: Scalars["String"]["input"];
-  clubId: Scalars["String"]["input"];
-  gameId: Scalars["String"]["input"];
-  tableNumber: Scalars["Int"]["input"];
-}
-
-export interface ChangeBoardResponse {
-  __typename?: "ChangeBoardResponse";
-  board: Scalars["Int"]["output"];
-  clubDeviceId: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  gameId: Scalars["String"]["output"];
-  tableNumber: Scalars["Int"]["output"];
 }
 
 export interface ClearCurrentGameIdResponse {
@@ -269,7 +251,6 @@ export interface Mutation {
   assignPlayer: AssignPlayerResponse;
   assignResult?: Maybe<BoardResult>;
   assignTable: AssignTableResponse;
-  changeBoard?: Maybe<ChangeBoardResponse>;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -297,10 +278,6 @@ export interface MutationAssignResultArgs {
 
 export interface MutationAssignTableArgs {
   input: AssignOrUnassignTableInput;
-}
-
-export interface MutationChangeBoardArgs {
-  input: ChangeBoardInput;
 }
 
 export interface MutationCreateClubArgs {
@@ -375,7 +352,6 @@ export interface PartialPlayerAssignment {
 }
 
 export interface PartialTableAssignment {
-  board?: InputMaybe<Scalars["Int"]["input"]>;
   clubDeviceId: Scalars["String"]["input"];
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
@@ -485,7 +461,6 @@ export enum Suit {
 
 export interface TableAssignment {
   __typename?: "TableAssignment";
-  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
@@ -503,7 +478,6 @@ export interface UnassignContractInput {
 
 export interface UnassignTableResponse {
   __typename?: "UnassignTableResponse";
-  board?: Maybe<Scalars["Int"]["output"]>;
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];

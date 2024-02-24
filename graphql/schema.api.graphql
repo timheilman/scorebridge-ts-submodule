@@ -119,9 +119,6 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  changeBoard(input: ChangeBoardInput!): ChangeBoardResponse
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-
   assignContract(input: AssignContractInput!): BoardResult
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   unassignContract(input: UnassignContractInput!): BoardResult
@@ -255,7 +252,6 @@ type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
   playerAssignments: [PlayerAssignment!]!
-  board: Int
   results: [BoardResult!]!
 }
 
@@ -263,7 +259,6 @@ input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
   playerAssignments: [PartialPlayerAssignment!]!
-  board: Int
   results: [PartialBoardResult!]!
 }
 
@@ -285,7 +280,6 @@ type AssignTableResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  board: Int
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -295,7 +289,6 @@ type UnassignTableResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  board: Int
 }
 
 input AssignPlayerInput {
@@ -413,22 +406,6 @@ input DeleteClubAndAdminInput {
 
 type DeleteClubAndAdminResponse {
   status: String!
-}
-
-input ChangeBoardInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-}
-
-type ChangeBoardResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
 }
 
 input AssignContractInput {
