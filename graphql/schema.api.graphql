@@ -420,8 +420,7 @@ input ChangeBoardInput {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  board: Int
-  round: Int
+  board: Int!
 }
 
 type ChangeBoardResponse {
@@ -429,8 +428,7 @@ type ChangeBoardResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  board: Int
-  round: Int
+  board: Int!
 }
 
 input AssignContractInput {

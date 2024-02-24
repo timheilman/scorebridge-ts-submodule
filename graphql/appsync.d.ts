@@ -121,21 +121,19 @@ export enum BoardResultType {
 }
 
 export interface ChangeBoardInput {
-  board?: InputMaybe<Scalars["Int"]["input"]>;
+  board: Scalars["Int"]["input"];
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  round?: InputMaybe<Scalars["Int"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
 export interface ChangeBoardResponse {
   __typename?: "ChangeBoardResponse";
-  board?: Maybe<Scalars["Int"]["output"]>;
+  board: Scalars["Int"]["output"];
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
-  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
