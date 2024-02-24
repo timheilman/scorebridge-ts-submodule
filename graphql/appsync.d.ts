@@ -51,8 +51,6 @@ export interface AssignContractInput {
   declarer: DirectionLetter;
   doubling: Doubling;
   gameId: Scalars["String"]["input"];
-  leadRank: Rank;
-  leadSuit: Suit;
   level: Scalars["Int"]["input"];
   round: Scalars["Int"]["input"];
   strain: Strain;

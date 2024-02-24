@@ -426,8 +426,6 @@ input AssignContractInput {
   strain: Strain!
   declarer: DirectionLetter!
   doubling: Doubling!
-  leadSuit: Suit!
-  leadRank: Rank!
 }
 
 input AssignInitialLeadInput {
