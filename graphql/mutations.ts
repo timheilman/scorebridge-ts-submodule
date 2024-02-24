@@ -1,6 +1,8 @@
 import {
   Mutation,
+  MutationAssignBoardToBidArgs,
   MutationAssignContractArgs,
+  MutationAssignInitialLeadArgs,
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
@@ -10,7 +12,9 @@ import {
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
+  MutationUnassignBoardToBidArgs,
   MutationUnassignContractArgs,
+  MutationUnassignInitialLeadArgs,
   MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
@@ -249,6 +253,48 @@ export const mutIdToMutGql = {
     `,
     "assignPlayer",
   ),
+  assignBoardToBid: createKeyedGeneratedMutation<
+    "assignBoardToBid",
+    MutationAssignBoardToBidArgs
+  >(
+    /* GraphQL */ `
+      mutation assignBoardToBid($input: AssignBoardToBidInput!) {
+        assignBoardToBid(input: $input) {
+          board
+          round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+        }
+      }
+    `,
+    "assignBoardToBid",
+  ),
+  unassignBoardToBid: createKeyedGeneratedMutation<
+    "unassignBoardToBid",
+    MutationUnassignBoardToBidArgs
+  >(
+    /* GraphQL */ `
+      mutation unassignBoardToBid($input: UnassignContractInput!) {
+        unassignBoardToBid(input: $input) {
+          board
+          round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+        }
+      }
+    `,
+    "unassignBoardToBid",
+  ),
   assignContract: createKeyedGeneratedMutation<
     "assignContract",
     MutationAssignContractArgs
@@ -313,5 +359,47 @@ export const mutIdToMutGql = {
       }
     `,
     "unassignContract",
+  ),
+  assignInitialLead: createKeyedGeneratedMutation<
+    "assignInitialLead",
+    MutationAssignInitialLeadArgs
+  >(
+    /* GraphQL */ `
+      mutation assignInitialLead($input: AssignInitialLeadInput!) {
+        assignInitialLead(input: $input) {
+          board
+          round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+        }
+      }
+    `,
+    "assignInitialLead",
+  ),
+  unassignInitialLead: createKeyedGeneratedMutation<
+    "unassignInitialLead",
+    MutationUnassignInitialLeadArgs
+  >(
+    /* GraphQL */ `
+      mutation unassignInitialLead($input: UnassignContractInput!) {
+        unassignInitialLead(input: $input) {
+          board
+          round
+          type
+          level
+          strain
+          declarer
+          doubling
+          leadSuit
+          leadRank
+        }
+      }
+    `,
+    "unassignInitialLead",
   ),
 };
