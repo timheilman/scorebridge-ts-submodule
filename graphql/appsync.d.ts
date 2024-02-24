@@ -97,7 +97,6 @@ export interface AssignTableResponse {
   gameId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
-  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -510,7 +509,6 @@ export interface UnassignTableResponse {
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
-  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 

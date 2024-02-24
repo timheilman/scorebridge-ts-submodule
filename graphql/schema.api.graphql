@@ -285,7 +285,6 @@ type AssignTableResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  round: Int
   board: Int
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
@@ -296,7 +295,6 @@ type UnassignTableResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  round: Int
   board: Int
 }
 
