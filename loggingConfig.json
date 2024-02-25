@@ -1,10 +1,13 @@
 {
   "": "debug",
-  "components.IconButton.rendering": "info",
+  "components.ButtonIcon.rendered": "info",
   "cypress.": "info",
-  "features.assignContract.movementHelpers.inversePlayerNumber": "info",
-  "features.clubDeviceRegistration.clubSlice.": "info",
+  "features.assignBoardResult.movementHelpers.inversePlayerNumber": "info",
+  "features.assignBoardResult.movementHowell": "info",
+  "features.assignLevelStrainDoublingDeclarer.SelectDoublingDirection": "info",
+  "features.clubDeviceInit.clubSlice": "info",
   "tsSubmodule.deleteDdbRecords": "info",
   "tsSubmodule.subscriptions": "info",
-  "tsSubmodule.OnlineStatus": "info"
+  "tsSubmodule.OnlineStatus": "info",
+  "utils.hooks.useCurrentRoundBoardResults.useAppSelector": "info"
 }
