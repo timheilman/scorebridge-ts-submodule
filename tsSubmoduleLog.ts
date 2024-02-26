@@ -39,10 +39,7 @@ function localCurrentConfig() {
   try {
     process;
   } catch (e) {
-    if (
-      e instanceof ReferenceError &&
-      e?.message === "process is not defined"
-    ) {
+    if (e instanceof ReferenceError) {
       foundProcess = false;
     } else {
       throw e;
