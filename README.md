@@ -24,8 +24,6 @@ In Portland, Oregon, USA there is a [duplicate bridge](https://en.wikipedia.org/
 
 Presently we use Google sheets and extensive macros that Zack has written in them to score the games. However, it is awkward and error-prone using Google Sheets to enter player identities and scores so I undertook this project to make things easier and less error-prone.
 
-As of December 2, 2023, this project is very much a work-in-progress; it is not yet capable of doing what it intends, which is to replace the Google Sheets and macros. Someday I hope it will be.
-
 ### The Four Code Repositories
 
 The project is in four parts:
