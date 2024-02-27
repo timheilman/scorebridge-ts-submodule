@@ -107,6 +107,12 @@ export interface AssignResultInput {
   type: BoardResultType;
 }
 
+export interface AssignResultResponse {
+  __typename?: "AssignResultResponse";
+  boardResult: BoardResult;
+  tableNumber: Scalars["Int"]["output"];
+}
+
 export interface AssignTableResponse {
   __typename?: "AssignTableResponse";
   clubDeviceId: Scalars["String"]["output"];
@@ -256,7 +262,7 @@ export interface Mutation {
   assignContract: BoardResult;
   assignInitialLead: BoardResult;
   assignPlayer: AssignPlayerResponse;
-  assignResult: BoardResult;
+  assignResult: AssignResultResponse;
   assignTable: AssignTableResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;

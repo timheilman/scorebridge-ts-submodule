@@ -131,7 +131,7 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   unassignInitialLead(input: UnassignContractInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  assignResult(input: AssignResultInput!): BoardResult!
+  assignResult(input: AssignResultInput!): AssignResultResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
@@ -420,6 +420,11 @@ input DeleteClubAndAdminInput {
 
 type DeleteClubAndAdminResponse {
   status: String!
+}
+
+type AssignResultResponse {
+  tableNumber: Int!
+  boardResult: BoardResult!
 }
 
 input AssignContractInput {
