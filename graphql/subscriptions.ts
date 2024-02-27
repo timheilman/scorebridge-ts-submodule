@@ -1,6 +1,7 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
+  SubscriptionOnAssignResultArgs,
   SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnDeleteGameArgs,
@@ -168,5 +169,29 @@ export const subIdToSubGql = {
       }
     `,
     "onAssignPlayer",
+  ),
+  onAssignResult: createKeyedGeneratedSubscription<
+    "onAssignResult",
+    SubscriptionOnAssignResultArgs
+  >(
+    /* GraphQL */ `
+      subscription OnAssignResult($clubId: String!) {
+        onAssignResult(clubId: $clubId) {
+          tableNumber
+          boardResult {
+            board
+            round
+            level
+            strain
+            doubling
+            declarer
+            leadRank
+            leadSuit
+            result
+          }
+        }
+      }
+    `,
+    "onAssignResult",
   ),
 } as const;

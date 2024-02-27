@@ -323,16 +323,19 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation assignResult($input: AssignResultInput!) {
         assignResult(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-          result
+          tableNumber
+          boardResult {
+            board
+            round
+            type
+            level
+            strain
+            declarer
+            doubling
+            leadSuit
+            leadRank
+            result
+          }
         }
       }
     `,
