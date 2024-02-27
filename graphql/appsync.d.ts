@@ -434,6 +434,7 @@ export type Strain = "C" | "D" | "H" | "NT" | "S";
 export interface Subscription {
   __typename?: "Subscription";
   onAssignPlayer?: Maybe<AssignPlayerResponse>;
+  onAssignResult?: Maybe<BoardResult>;
   onAssignTable?: Maybe<AssignTableResponse>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;
@@ -443,6 +444,10 @@ export interface Subscription {
 }
 
 export interface SubscriptionOnAssignPlayerArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnAssignResultArgs {
   clubId: Scalars["String"]["input"];
 }
 
