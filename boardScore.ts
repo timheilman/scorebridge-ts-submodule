@@ -1,4 +1,12 @@
-import { DirectionLetter, Doubling, Strain } from "./graphql/appsync";
+import { isVulnerable } from "../features/assignBoardResult/movementHelpers";
+import {
+  BoardResult,
+  DirectionLetter,
+  Doubling,
+  Strain,
+} from "./graphql/appsync";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+const log = tsSubmoduleLogFn("boardScore");
 
 export interface BoardScoreParams {
   declarer: DirectionLetter;
@@ -104,4 +112,34 @@ export const boardScore = (params: BoardScoreParams) => {
     return -scoreNorthSouth;
   }
   return scoreNorthSouth;
+};
+
+export const boardScoreFromBoardResult = (boardResult: BoardResult) => {
+  if (boardResult.type === "NOT_BID_NOT_PLAYED") {
+    return null;
+  }
+  if (boardResult.type === "PASSED_OUT") {
+    return 0;
+  }
+  if (
+    !boardResult.declarer ||
+    !boardResult.result ||
+    !boardResult.doubling ||
+    !boardResult.level ||
+    !boardResult.strain
+  ) {
+    log("boardResultForNotYetCompletedPlayedBoard", "debug", { boardResult });
+    return;
+  }
+  return boardScore({
+    declarer: boardResult.declarer,
+    boardResult: boardResult.result,
+    doubling: boardResult.doubling,
+    level: boardResult.level,
+    strain: boardResult.strain,
+    vulnerable: isVulnerable({
+      board: boardResult.board,
+      direction: boardResult.declarer,
+    }),
+  });
 };
