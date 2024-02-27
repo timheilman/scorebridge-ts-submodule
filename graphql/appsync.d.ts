@@ -440,7 +440,7 @@ export type Strain = "C" | "D" | "H" | "NT" | "S";
 export interface Subscription {
   __typename?: "Subscription";
   onAssignPlayer?: Maybe<AssignPlayerResponse>;
-  onAssignResult?: Maybe<BoardResult>;
+  onAssignResult?: Maybe<AssignResultResponse>;
   onAssignTable?: Maybe<AssignTableResponse>;
   onCreateGame?: Maybe<Game>;
   onDeleteGame?: Maybe<Game>;

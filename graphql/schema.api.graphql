@@ -175,7 +175,7 @@ type Subscription {
     )
 
   # This is for for device-to-device and device-to-webapp communication to grab results
-  onAssignResult(clubId: String!): BoardResult
+  onAssignResult(clubId: String!): AssignResultResponse
   @aws_subscribe(mutations: ["assignResult"])
   @aws_cognito_user_pools(
     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
