@@ -1,22 +1,13 @@
 import {
-  boardGroupHowell,
-  playerNumberHowell,
-} from "../features/assignBoardResult/movementHowell";
-import {
-  boardGroupMitchell,
-  playerNumberMitchell,
-} from "../features/assignBoardResult/movementMitchell";
-import {
-  boardGroupRainbow,
-  playerNumberRainbow,
-} from "../features/assignBoardResult/movementRainbow";
-import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
-} from "../utils/boardGroups";
-import { logFn } from "../utils/logging";
+} from "./boardGroups";
 import { DirectionLetter } from "./graphql/appsync";
-const log = logFn("features.assignBoardResult.movementHelpers.");
+import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
+import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
+import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+const log = tsSubmoduleLogFn("features.assignBoardResult.movementHelpers.");
 export interface BoardGroupProps {
   tableCount: number;
   table: number;
