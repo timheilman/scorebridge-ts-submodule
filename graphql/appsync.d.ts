@@ -110,6 +110,7 @@ export interface AssignResultInput {
 export interface AssignResultResponse {
   __typename?: "AssignResultResponse";
   boardResult: BoardResult;
+  clubId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 

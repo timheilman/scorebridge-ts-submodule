@@ -423,6 +423,7 @@ type DeleteClubAndAdminResponse {
 }
 
 type AssignResultResponse {
+  clubId: String!
   tableNumber: Int!
   boardResult: BoardResult!
 }
