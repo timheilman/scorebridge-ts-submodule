@@ -1,10 +1,10 @@
-import { isVulnerable } from "../features/assignBoardResult/movementHelpers";
 import {
   BoardResult,
   DirectionLetter,
   Doubling,
   Strain,
 } from "./graphql/appsync";
+import { isVulnerable } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("boardScore");
 

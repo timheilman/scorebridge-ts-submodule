@@ -1,9 +1,6 @@
-import {
-  whereWasI,
-  withEachPlayer,
-} from "../features/assignBoardResult/movementHelpers";
 import { boardScoreFromBoardResult } from "./boardScore";
 import { BoardResult } from "./graphql/appsync";
+import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("features.gameOver.test.");
 
