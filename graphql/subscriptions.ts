@@ -180,6 +180,7 @@ export const subIdToSubGql = {
           clubId
           tableNumber
           boardResult {
+            type
             board
             round
             level
