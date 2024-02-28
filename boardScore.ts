@@ -115,6 +115,10 @@ export const boardScore = (params: BoardScoreParams) => {
 };
 
 export const boardScoreFromBoardResult = (boardResult: BoardResult) => {
+  if (boardResult?.type === undefined) {
+    log("boardResultNotYetBid", "debug", { boardResult });
+    return;
+  }
   if (boardResult.type === "NOT_BID_NOT_PLAYED") {
     return null;
   }
