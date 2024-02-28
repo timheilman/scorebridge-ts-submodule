@@ -27,7 +27,7 @@ function boardGroupMitchellOdd(props: BoardGroupProps) {
   return ((roundLessOne + tableLessOne) % tableCount) + 1;
 }
 
-function boardGroupMitchellEven(props: BoardGroupProps) {
+function boardGroupMitchellEven(props: BoardGroupProps): number {
   const { table, tableCount } = props;
   if (table === 1) {
     // table 2 always shares boards with table 1 in even mitchell:
