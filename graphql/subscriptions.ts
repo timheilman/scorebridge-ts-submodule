@@ -177,6 +177,7 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnAssignResult($clubId: String!) {
         onAssignResult(clubId: $clubId) {
+          clubId
           tableNumber
           boardResult {
             board
