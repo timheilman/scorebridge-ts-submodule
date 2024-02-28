@@ -114,7 +114,13 @@ export const boardScore = (params: BoardScoreParams) => {
   return scoreNorthSouth;
 };
 
-export const boardScoreFromBoardResult = (boardResult: BoardResult) => {
+export const boardScoreFromBoardResult = ({
+  boardResult,
+  direction,
+}: {
+  boardResult: BoardResult;
+  direction: DirectionLetter;
+}) => {
   if (boardResult?.type === undefined) {
     log("boardResultNotYetBid", "debug", { boardResult });
     return;
@@ -135,15 +141,20 @@ export const boardScoreFromBoardResult = (boardResult: BoardResult) => {
     log("boardResultForNotYetCompletedPlayedBoard", "debug", { boardResult });
     return;
   }
-  return boardScore({
-    declarer: boardResult.declarer,
-    boardResult: boardResult.result,
-    doubling: boardResult.doubling,
-    level: boardResult.level,
-    strain: boardResult.strain,
-    vulnerable: isVulnerable({
-      board: boardResult.board,
-      direction: boardResult.declarer,
-    }),
-  });
+  const whichWay = direction === "N" || direction === "S" ? 1 : -1;
+
+  return (
+    whichWay *
+    boardScore({
+      declarer: boardResult.declarer,
+      boardResult: boardResult.result,
+      doubling: boardResult.doubling,
+      level: boardResult.level,
+      strain: boardResult.strain,
+      vulnerable: isVulnerable({
+        board: boardResult.board,
+        direction: boardResult.declarer,
+      }),
+    })
+  );
 };

@@ -1,11 +1,11 @@
-// import { logFn } from "../../utils/logging";
 import {
   whereWasI,
   withEachPlayer,
 } from "../features/assignBoardResult/movementHelpers";
 import { boardScoreFromBoardResult } from "./boardScore";
 import { BoardResult } from "./graphql/appsync";
-// const log = logFn("features.gameOver.test.");
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+const log = tsSubmoduleLogFn("features.gameOver.test.");
 
 interface TrueOpponentsParams {
   roundCount: number;
@@ -71,23 +71,34 @@ export const matchPointsScore = (params: {
   boardResults: Record<string, Omit<Omit<BoardResult, "board">, "round">>;
 }) => {
   const { board, boardResults } = params;
-  const { tableNumber: playerTable, round: playerRound } = whereWasI(params)!;
+  const {
+    tableNumber: playerTable,
+    round: playerRound,
+    direction: playerDir,
+  } = whereWasI(params)!;
   const whereOpponentsWere = trueOpponents(params).map(
     (o) => whereWasI({ ...params, playerNumber: o })!,
   );
   const myScore = boardScoreFromBoardResult({
-    board,
-    round: playerRound,
-    ...boardResults[`${playerTable}_${board}_${playerRound}`],
+    boardResult: {
+      board,
+      round: playerRound,
+      ...boardResults[`${playerTable}_${board}_${playerRound}`],
+    },
+    direction: playerDir,
   });
   if (!myScore) {
+    log("myScoreUndefined", "debug");
     return myScore;
   }
   const opponentsScores = whereOpponentsWere.reduce((acc, opponent) => {
     const otherResult = boardScoreFromBoardResult({
-      board,
-      round: opponent.round,
-      ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
+      boardResult: {
+        board,
+        round: opponent.round,
+        ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
+      },
+      direction: opponent.direction,
     });
     if (otherResult !== null && otherResult !== undefined) {
       acc.push(otherResult);
