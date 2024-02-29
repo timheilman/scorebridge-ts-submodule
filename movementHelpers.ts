@@ -39,14 +39,28 @@ export const movementMethods = (movement: string) => {
   throw new Error(`Unrecognized movement: ${movement}`);
 };
 
-// not too bad to just linear search:
-export const inversePlayerNumber = (props: {
+const ipnMemo = {} as Record<
+  string,
+  { direction: DirectionLetter; table: number }
+>;
+
+interface InversePlayerNumberParams {
   tableCount: number;
   playerNumber: number;
-  playerNumberMethod: (props: PlayerNumberProps) => number;
+  movement: string;
   round?: number;
-}) => {
-  const { tableCount, playerNumber, playerNumberMethod, round = 1 } = props;
+}
+const inversePlayerNumberMemoKey = (props: InversePlayerNumberParams) => {
+  const { tableCount, playerNumber, movement, round = 1 } = props;
+  return `${movement}_${tableCount}_${playerNumber}_${round}`;
+};
+export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
+  const myMemoKey = inversePlayerNumberMemoKey(props);
+  if (ipnMemo[myMemoKey]) {
+    return ipnMemo[myMemoKey];
+  }
+  const { tableCount, playerNumber, movement, round = 1 } = props;
+
   const directions = ["N", "S", "E", "W"] as const;
   for (const direction of directions) {
     for (let table = 1; table <= tableCount; table++) {
@@ -56,8 +70,8 @@ export const inversePlayerNumber = (props: {
         playerNumber,
       });
       if (
-        playerNumberMethod({
-          round: round,
+        movementMethods(movement).playerNumberMethod({
+          round,
           tableCount,
           direction,
           table,
@@ -68,7 +82,8 @@ export const inversePlayerNumber = (props: {
           table,
           playerNumber,
         });
-        return { direction, table };
+        ipnMemo[myMemoKey] = { direction, table };
+        return ipnMemo[myMemoKey];
       }
     }
   }
@@ -147,19 +162,39 @@ interface WhereWasIParams {
   boardsPerRound: number;
   movement: string;
 }
-
-export const whereWasI = ({
-  board,
-  playerNumber,
-  tableCount,
-  roundCount,
-  movement,
-  boardsPerRound,
-}: WhereWasIParams) => {
+const whereWasIMemo = {} as Record<
+  string,
+  { tableNumber: number; direction: DirectionLetter; round: number }
+>;
+const whereWasIMemoKey = (props: WhereWasIParams) => {
+  const {
+    movement,
+    tableCount,
+    roundCount,
+    boardsPerRound,
+    playerNumber,
+    board,
+  } = props;
+  return `${movement}_${tableCount}_${roundCount}_${boardsPerRound}_${playerNumber}_${board}`;
+};
+export const whereWasI = (params: WhereWasIParams) => {
+  const myMemoKey = whereWasIMemoKey(params);
+  const memoHit = whereWasIMemo[myMemoKey];
+  if (memoHit) {
+    return memoHit;
+  }
+  const {
+    board,
+    playerNumber,
+    tableCount,
+    roundCount,
+    movement,
+    boardsPerRound,
+  } = params;
   for (let round = 1; round <= roundCount; round++) {
     const { direction, table } = inversePlayerNumber({
       tableCount,
-      playerNumberMethod: movementMethods(movement).playerNumberMethod,
+      movement,
       playerNumber,
       round,
     });
@@ -171,7 +206,8 @@ export const whereWasI = ({
     const start = startingBoardForBoardGroup({ boardGroup, boardsPerRound });
     const end = endingBoardForBoardGroup({ boardGroup, boardsPerRound });
     if (board >= start && board <= end) {
-      return { direction, tableNumber: table, round };
+      whereWasIMemo[myMemoKey] = { direction, tableNumber: table, round };
+      return whereWasIMemo[myMemoKey];
     }
   }
 };
