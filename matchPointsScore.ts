@@ -67,7 +67,7 @@ export const matchPointsScore = (params: {
   movement: string;
   boardResults: Record<string, Omit<Omit<BoardResult, "board">, "round">>;
 }) => {
-  const { board, boardResults } = params;
+  const { board, boardResults, playerNumber } = params;
   const {
     tableNumber: playerTable,
     round: playerRound,
@@ -85,7 +85,10 @@ export const matchPointsScore = (params: {
     direction: playerDir,
   });
   if (!myScore) {
-    log("myScoreUndefined", "debug");
+    log(
+      "myScoreUndefined",
+      playerNumber === 1 && board === 1 ? "info" : "debug",
+    );
     return myScore;
   }
   const opponentsScores = whereOpponentsWere.reduce((acc, opponent) => {

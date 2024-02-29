@@ -9,5 +9,7 @@
   "tsSubmodule.deleteDdbRecords": "info",
   "tsSubmodule.subscriptions": "info",
   "tsSubmodule.OnlineStatus": "info",
+  "tsSubmodule.features.gameOver.test.myScoreUndefined": "info",
+  "tsSubmodule.boardScoreboardResultNotYetBid": "info",
   "utils.hooks.useCurrentRoundBoardResults.useAppSelector": "info"
 }
