@@ -426,6 +426,7 @@ type AssignResultResponse {
   clubId: String!
   tableNumber: Int!
   boardResult: BoardResult!
+  gameId: String!
 }
 
 input AssignContractInput {
