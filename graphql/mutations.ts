@@ -325,6 +325,7 @@ export const mutIdToMutGql = {
         assignResult(input: $input) {
           clubId
           tableNumber
+          gameId
           boardResult {
             board
             round

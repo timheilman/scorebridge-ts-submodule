@@ -179,6 +179,7 @@ export const subIdToSubGql = {
         onAssignResult(clubId: $clubId) {
           clubId
           tableNumber
+          gameId
           boardResult {
             type
             board
