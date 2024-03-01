@@ -97,15 +97,12 @@ export const inverseBoardGroup = (props: {
   round: number;
 }) => {
   const { tableCount, boardGroup, boardGroupMethod, round } = props;
-  return Array.from({ length: tableCount }, (_, i) => i + 1).reduce(
-    (acc, table) => {
-      if (boardGroupMethod({ tableCount, table, round }) === boardGroup) {
-        acc.push(table);
-      }
-      return acc;
-    },
-    [] as number[],
-  );
+  return withEachTable({ tableCount }).reduce((acc, table) => {
+    if (boardGroupMethod({ tableCount, table, round }) === boardGroup) {
+      acc.push(table);
+    }
+    return acc;
+  }, [] as number[]);
 };
 
 export const isVulnerable = ({
@@ -224,4 +221,8 @@ export const withEachBoard = ({
 
 export const withEachPlayer = ({ tableCount }: { tableCount: number }) => {
   return Array.from({ length: tableCount * 4 }, (_, i) => i + 1);
+};
+
+export const withEachTable = ({ tableCount }: { tableCount: number }) => {
+  return Array.from({ length: tableCount }, (_, i) => i + 1);
 };
