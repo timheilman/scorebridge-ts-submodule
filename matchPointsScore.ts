@@ -65,7 +65,7 @@ export const matchPointsScore = (params: {
   tableCount: number;
   board: number;
   movement: string;
-  boardResults: Record<string, Omit<Omit<BoardResult, "board">, "round">>;
+  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
 }) => {
   const { board, boardResults, playerNumber } = params;
   const {
