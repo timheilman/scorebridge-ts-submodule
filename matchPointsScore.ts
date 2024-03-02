@@ -84,7 +84,7 @@ export const matchPointsScore = (params: {
     },
     direction: playerDir,
   });
-  if (!myScore) {
+  if (myScore === null || myScore === undefined) {
     log(
       "myScoreUndefined",
       playerNumber === 1 && board === 1 ? "info" : "debug",
@@ -108,5 +108,7 @@ export const matchPointsScore = (params: {
   if (opponentsScores.length === 0) {
     return;
   }
+  // log("mpScoreCalc", "debug", { board, myScore, opponentsScores });
+
   return mpScoreCalc({ myScore, opponentsScores });
 };
