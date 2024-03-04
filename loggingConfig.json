@@ -11,6 +11,7 @@
   "tsSubmodule.OnlineStatus": "info",
   "tsSubmodule.features.assignBoardResult": "info",
   "tsSubmodule.features.gameOver.test.myScoreUndefined": "info",
+  "tsSubmodule.features.gameOver.test.neuberg": "info",
   "tsSubmodule.boardScoreboardResultNotYetBid": "info",
   "utils.hooks.useCurrentRoundBoardResults.useAppSelector": "info"
 }

@@ -40,22 +40,52 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
   }, [] as number[]);
 };
 
-export const mpScoreCalc = ({
+const unscaledMatchPoints = ({
   myScore,
   opponentsScores,
 }: {
   myScore: number;
   opponentsScores: number[];
 }) => {
-  return (
-    opponentsScores.reduce((acc, opponentScore) => {
-      return (
-        acc + (opponentScore === myScore ? 1 : opponentScore < myScore ? 2 : 0)
-      );
-    }, 0) /
-    opponentsScores.length /
-    2
-  );
+  return opponentsScores.reduce((acc, opponentScore) => {
+    return (
+      acc + (opponentScore === myScore ? 1 : opponentScore < myScore ? 2 : 0)
+    );
+  }, 0);
+};
+
+// for per-board results only, if tracking Zack's spreadsheet exactly:
+export const mpScoreCalcStraight = (params: {
+  myScore: number;
+  opponentsScores: number[];
+}) => {
+  return unscaledMatchPoints(params) / params.opponentsScores.length / 2;
+};
+
+export const mpScoreCalcNeuberg = ({
+  myScore,
+  opponentsScores,
+  skippedBoardCount,
+}: {
+  myScore: number;
+  opponentsScores: number[];
+  skippedBoardCount: number;
+}) => {
+  const matchPointsAsThoughZeroUnplayed = unscaledMatchPoints({
+    myScore,
+    opponentsScores,
+  });
+  const fullBoardCount = opponentsScores.length + skippedBoardCount + 1;
+  const neuberg =
+    (matchPointsAsThoughZeroUnplayed * fullBoardCount + skippedBoardCount) /
+    (opponentsScores.length + 1);
+  log(`neuberg`, "debug", {
+    M: matchPointsAsThoughZeroUnplayed,
+    E: fullBoardCount,
+    A: opponentsScores.length + 1,
+    N: neuberg,
+  });
+  return neuberg / (fullBoardCount - 1) / 2;
 };
 
 export const matchPointsScore = (params: {
@@ -109,6 +139,7 @@ export const matchPointsScore = (params: {
     return;
   }
   // log("mpScoreCalc", "debug", { board, myScore, opponentsScores });
+  const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
 
-  return mpScoreCalc({ myScore, opponentsScores });
+  return mpScoreCalcNeuberg({ myScore, opponentsScores, skippedBoardCount });
 };
