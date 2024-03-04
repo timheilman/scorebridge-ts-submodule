@@ -2,6 +2,7 @@ import { boardScoreFromBoardResult } from "./boardScore";
 import { BoardResult } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+
 const log = tsSubmoduleLogFn("features.gameOver.test.");
 
 interface TrueOpponentsParams {
@@ -40,7 +41,7 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
   }, [] as number[]);
 };
 
-const unscaledMatchPoints = ({
+export const mpScoreCalcWeighted = ({
   myScore,
   opponentsScores,
 }: {
@@ -54,14 +55,6 @@ const unscaledMatchPoints = ({
   }, 0);
 };
 
-// for per-board results only, if tracking Zack's spreadsheet exactly:
-export const mpScoreCalcStraight = (params: {
-  myScore: number;
-  opponentsScores: number[];
-}) => {
-  return unscaledMatchPoints(params) / params.opponentsScores.length / 2;
-};
-
 export const mpScoreCalcNeuberg = ({
   myScore,
   opponentsScores,
@@ -71,7 +64,7 @@ export const mpScoreCalcNeuberg = ({
   opponentsScores: number[];
   skippedBoardCount: number;
 }) => {
-  const matchPointsAsThoughZeroUnplayed = unscaledMatchPoints({
+  const matchPointsAsThoughZeroUnplayed = mpScoreCalcWeighted({
     myScore,
     opponentsScores,
   });
@@ -85,7 +78,7 @@ export const mpScoreCalcNeuberg = ({
     A: opponentsScores.length + 1,
     N: neuberg,
   });
-  return neuberg / (fullBoardCount - 1) / 2;
+  return neuberg;
 };
 
 export const matchPointsScore = (params: {
@@ -96,8 +89,9 @@ export const matchPointsScore = (params: {
   board: number;
   movement: string;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+  neuberg: boolean;
 }) => {
-  const { board, boardResults, playerNumber } = params;
+  const { board, boardResults, playerNumber, neuberg } = params;
   const {
     tableNumber: playerTable,
     round: playerRound,
@@ -141,5 +135,10 @@ export const matchPointsScore = (params: {
   // log("mpScoreCalc", "debug", { board, myScore, opponentsScores });
   const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
 
-  return mpScoreCalcNeuberg({ myScore, opponentsScores, skippedBoardCount });
+  return {
+    mp: neuberg
+      ? mpScoreCalcNeuberg({ myScore, opponentsScores, skippedBoardCount })
+      : mpScoreCalcWeighted({ myScore, opponentsScores }),
+    opponentScoreCount: opponentsScores.length,
+  };
 };
