@@ -1,7 +1,3 @@
-# New plan:
-# we will have getClub that does not page, returns clubDevice results but no game results
-# listGames will page, returning everything for each game
-# getGame will get everything for one game, should not need to page
 schema {
   query: Query
   mutation: Mutation
@@ -75,7 +71,13 @@ type Query {
     @aws_cognito_user_pools(
       cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
     )
+
+  listPlayers(input: ListPlayersInput!): ListPlayersOutput!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+    )
 }
+
 type Mutation {
   unexpectedError: UnexpectedErrorResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
@@ -133,6 +135,13 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   assignResult(input: AssignResultInput!): AssignResultResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
+  createPlayer(input: CreatePlayerInput!): Player!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  updatePlayer(input: UpdatePlayerInput!): Player!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  deletePlayer(input: DeletePlayerInput!): Player!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 }
 
 type Subscription {
@@ -180,6 +189,16 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
+
+  onCreatePlayer(clubId: String!): Player
+    @aws_subscribe(mutations: ["createPlayer"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  onUpdatePlayer(clubId: String!): Player
+    @aws_subscribe(mutations: ["deleteGame"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  onDeletePlayer(clubId: String!): Player
+    @aws_subscribe(mutations: ["deletePlayer"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
 input ListClubDevicesInput {
@@ -200,8 +219,19 @@ input ListGamesInput {
   finalGameFromLastList: PartialGame
 }
 
+input ListPlayersInput {
+  clubId: String!
+  nextToken: String
+  limit: Int = 50
+}
+
 type ListGamesOutput {
   items: [Game]!
+  nextToken: String
+}
+
+type ListPlayersOutput {
+  items: [Player]!
   nextToken: String
 }
 
@@ -342,6 +372,12 @@ type Game {
   createdAt: AWSDateTime!
 }
 
+type Player {
+  clubId: String!
+  playerId: String!
+  playerDisplayName: String!
+}
+
 input PartialGame {
   clubId: String!
   gameId: String!
@@ -363,9 +399,26 @@ input CreateGameInput {
   label: String
 }
 
+input CreatePlayerInput {
+  clubId: String!
+  playerId: String
+  playerDisplayName: String!
+}
+
 input DeleteGameInput {
   clubId: String!
   gameId: String!
+}
+
+input DeletePlayerInput {
+  clubId: String!
+  playerId: String!
+}
+
+input UpdatePlayerInput {
+  clubId: String!
+  playerId: String!
+  playerDisplayName: String!
 }
 
 type UnexpectedErrorResponse {
