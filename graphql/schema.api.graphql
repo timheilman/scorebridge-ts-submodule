@@ -194,7 +194,7 @@ type Subscription {
     @aws_subscribe(mutations: ["createPlayer"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onUpdatePlayer(clubId: String!): Player
-    @aws_subscribe(mutations: ["deleteGame"])
+    @aws_subscribe(mutations: ["updatePlayer"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onDeletePlayer(clubId: String!): Player
     @aws_subscribe(mutations: ["deletePlayer"])
