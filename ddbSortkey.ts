@@ -6,6 +6,7 @@ export const gameSortKeyPrefix0 = "G";
 export const userSortKeyPrefix0 = "U";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
 export const resultSortKeyPrefix3 = "R";
+export const playerSortKeyPrefix0 = "P";
 
 export const clubDeviceIdFromSortKey = (sortKey: string) => {
   if (!sortKey.startsWith(clubDeviceSortKeyPrefix0)) {
@@ -71,6 +72,25 @@ export const gameIdFromSortKey = (sortKey: string) => {
     };
   }
   return { result: theSplit[1], error: "" };
+};
+
+export const playerIdFromSortKey = (sortKey: string) => {
+  if (!sortKey.startsWith(playerSortKeyPrefix0)) {
+    return {
+      result: "",
+      error: `Not a correct sortKey; ${sortKey} did not start with ${playerSortKeyPrefix0}`,
+    };
+  }
+  const theSplit = sortKey.split("#");
+  // P, playerId
+  if (theSplit.length < 2) {
+    return {
+      result: "",
+      error: `Not a correct sortKey; ${sortKey} has no hashes.`,
+    };
+  }
+  // playerIds can (and do) contain hash (#), so must rejoin them:
+  return { result: theSplit.slice(1, theSplit.length).join("#"), error: "" };
 };
 
 export const tableNumberFromSortKey = (sortKey: string) => {
