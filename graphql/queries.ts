@@ -4,6 +4,7 @@ import {
   QueryGetGameArgs,
   QueryListClubDevicesArgs,
   QueryListGamesArgs,
+  QueryListPlayersArgs,
 } from "./appsync";
 
 type GeneratedQuery<InputType, OutputType> = string & {
@@ -97,6 +98,21 @@ export const qidToQueryGql = {
       }
     `,
     "listGames",
+  ),
+  listPlayers: createKeyedGeneratedQuery<"listPlayers", QueryListPlayersArgs>(
+    /* GraphQL */ `
+      query listPlayers($input: ListPlayersInput!) {
+        listPlayers(input: $input) {
+          items {
+            clubId
+            playerId
+            playerDisplayName
+          }
+          nextToken
+        }
+      }
+    `,
+    "listPlayers",
   ),
   getGame: createKeyedGeneratedQuery<"getGame", QueryGetGameArgs>(
     /* GraphQL */ `

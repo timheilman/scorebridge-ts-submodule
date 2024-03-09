@@ -4,10 +4,13 @@ import {
   SubscriptionOnAssignResultArgs,
   SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
+  SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
+  SubscriptionOnDeletePlayerArgs,
   SubscriptionOnUnassignTableArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
+  SubscriptionOnUpdatePlayerArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {
@@ -196,5 +199,46 @@ export const subIdToSubGql = {
       }
     `,
     "onAssignResult",
+  ),
+  onCreatePlayer: createKeyedGeneratedSubscription<
+    "onCreatePlayer",
+    SubscriptionOnCreatePlayerArgs
+  >(
+    /* GraphQL */ `
+      subscription OnCreatePlayer($clubId: String!) {
+        onCreatePlayer(clubId: $clubId) {
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "onCreatePlayer",
+  ),
+  onUpdatePlayer: createKeyedGeneratedSubscription<
+    "onUpdatePlayer",
+    SubscriptionOnUpdatePlayerArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUpdatePlayer($clubId: String!) {
+        onUpdatePlayer(clubId: $clubId) {
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "onUpdatePlayer",
+  ),
+  onDeletePlayer: createKeyedGeneratedSubscription<
+    "onDeletePlayer",
+    SubscriptionOnDeletePlayerArgs
+  >(
+    /* GraphQL */ `
+      subscription OnDeletePlayer($clubId: String!) {
+        onDeletePlayer(clubId: $clubId) {
+          playerId
+        }
+      }
+    `,
+    "onDeletePlayer",
   ),
 } as const;

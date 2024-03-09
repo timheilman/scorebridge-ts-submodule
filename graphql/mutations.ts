@@ -9,15 +9,18 @@ import {
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
+  MutationCreatePlayerArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
+  MutationDeletePlayerArgs,
   MutationUnassignBoardToBidArgs,
   MutationUnassignContractArgs,
   MutationUnassignInitialLeadArgs,
   MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
+  MutationUpdatePlayerArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
@@ -185,6 +188,51 @@ export const mutIdToMutGql = {
       }
     `,
     "deleteGame",
+  ),
+  createPlayer: createKeyedGeneratedMutation<
+    "createPlayer",
+    MutationCreatePlayerArgs
+  >(
+    /* GraphQL */ `
+      mutation createPlayer($input: CreatePlayerInput!) {
+        createPlayer(input: $input) {
+          clubId
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "createPlayer",
+  ),
+  updatePlayer: createKeyedGeneratedMutation<
+    "updatePlayer",
+    MutationUpdatePlayerArgs
+  >(
+    /* GraphQL */ `
+      mutation updatePlayer($input: UpdatePlayerInput!) {
+        updatePlayer(input: $input) {
+          clubId
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "updatePlayer",
+  ),
+  deletePlayer: createKeyedGeneratedMutation<
+    "deletePlayer",
+    MutationDeletePlayerArgs
+  >(
+    /* GraphQL */ `
+      mutation deletePlayer($input: DeletePlayerInput!) {
+        deletePlayer(input: $input) {
+          clubId
+          playerId
+          playerDisplayName
+        }
+      }
+    `,
+    "deletePlayer",
   ),
   assignTable: createKeyedGeneratedMutation<
     "assignTable",
