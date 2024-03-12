@@ -1,7 +1,7 @@
 import { client } from "./react/gqlClient";
 
 export interface RetryingGqlPromiseParams<T> {
-  inFlightFn: () => void;
+  inFlightFn?: () => void;
   gqlPromiseFn: () => Promise<T>;
   successFn: (t: T) => void;
   maxRetries?: number;
