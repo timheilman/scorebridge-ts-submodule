@@ -2,7 +2,6 @@ import { client } from "./react/gqlClient";
 
 export interface RetryingGqlPromiseParams<T> {
   gqlPromiseFn: () => Promise<T>;
-  successFn?: (t: T) => void;
   maxRetries?: number;
   initialDelayMs?: number;
   retry?: number;
@@ -10,11 +9,9 @@ export interface RetryingGqlPromiseParams<T> {
 
 export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
-) => {
+): Promise<T> => {
   const {
     gqlPromiseFn,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
-    successFn = (t) => {},
     maxRetries = 5,
     initialDelayMs = 5000,
     retry = 0,
@@ -32,10 +29,10 @@ export const retryOnTimeoutGqlPromise = async <T>(
   try {
     const result = await gqlPromise;
     clearTimeout(cancellationTimeout);
-    successFn(result);
+    return result;
   } catch (e) {
     if (client.isCancelError(e)) {
-      void retryOnTimeoutGqlPromise({ ...params, retry: retry + 1 });
+      return await retryOnTimeoutGqlPromise({ ...params, retry: retry + 1 });
     } else {
       throw e;
     }
