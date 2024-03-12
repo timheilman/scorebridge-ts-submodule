@@ -1,7 +1,6 @@
 import { client } from "./react/gqlClient";
 
 export interface RetryingGqlPromiseParams<T> {
-  inFlightFn?: () => void;
   gqlPromiseFn: () => Promise<T>;
   successFn: (t: T) => void;
   maxRetries?: number;
@@ -13,15 +12,12 @@ export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
 ) => {
   const {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    inFlightFn = () => {},
     gqlPromiseFn,
     successFn,
     maxRetries = 5,
     initialDelayMs = 5000,
     retry = 0,
   } = params;
-  inFlightFn();
   if (retry >= maxRetries) {
     throw new Error(`Failed after ${maxRetries} retries.`);
   }
