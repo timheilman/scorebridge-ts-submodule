@@ -13,7 +13,8 @@ export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
 ) => {
   const {
-    inFlightFn,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    inFlightFn = () => {},
     gqlPromiseFn,
     successFn,
     maxRetries = 5,
