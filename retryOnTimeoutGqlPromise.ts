@@ -1,3 +1,4 @@
+import { GqlTimeoutAfterRetriesError } from "./GqlTimeoutAfterRetriesError";
 import { client } from "./react/gqlClient";
 
 export interface RetryingGqlPromiseParams<T> {
@@ -12,12 +13,14 @@ export const retryOnTimeoutGqlPromise = async <T>(
 ): Promise<T> => {
   const {
     gqlPromiseFn,
-    maxRetries = 5,
+    maxRetries = 2,
     initialDelayMs = 5000,
     retry = 0,
   } = params;
   if (retry >= maxRetries) {
-    throw new Error(`Failed after ${maxRetries} retries.`);
+    throw new GqlTimeoutAfterRetriesError(
+      `Failed after ${maxRetries} retries.`,
+    );
   }
   const gqlPromise = gqlPromiseFn();
   const cancellationTimeout = setTimeout(
