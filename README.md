@@ -13,6 +13,8 @@
     - [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
     - [scorebridge-cloud informing webapp and device of env-specific values](#scorebridge-cloud-informing-webapp-and-device-of-env-specific-values)
   - [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
+- [RELEASE NOTES](#release-notes)
+  - [1.0.0, Version Code 12](#100-version-code-12)
 
 <!-- TOC end -->
 
@@ -125,3 +127,13 @@ The app should launch and run.
 ### This submodule should be an NPM package
 
 Ideally this submodule would be an NPM package. However, at this stage in development this repo is still so volatile that the overhead of publishing and consuming an NPM package is not worth it. When the repo stabilizes, it should be converted to an NPM package.
+
+## RELEASE NOTES
+
+### 1.0.0, Version Code 12
+
+- fix: do not auto-advance from (nor prohibit moving back to) the player assignment screen once all four players have been assigned when some other table has already entered a level, strain, doubling, and declarer, skipped a board, or passed out a board
+  - for example, when the ghost players at a sit-out table in a half-table game have already skipped a board before players at another table have entered their names
+- fix: when two tablets select the same table, only let one of them "win", forcing the other back to the table selection screen
+- fix: if somehow two tablets wind up with the same table selected, allow either of them to unassign their table (if available), with the result that both tablets get unassigned from that table
+- refactor: improve robustness and simplicity by using an object rather than array to track on each tablet which tables have been assigned on any (other) tablet
