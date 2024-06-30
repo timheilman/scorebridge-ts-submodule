@@ -22,7 +22,6 @@ export type GraphQLAuthMode =
   // | "none"
   | "userPool";
 
-// TODO: track down and fix irritating difference in eslint/prettier output across repos for this declaration:
 export type OutType<T> =
   T extends KeyedGeneratedSubscription<infer NAME, unknown>
     ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
