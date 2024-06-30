@@ -454,12 +454,12 @@ type UpdateClubNameResponse {
 
 input UpdateCurrentGameIdInput {
   clubId: String!
-  newGameId: String!
+  newGameId: String
 }
 
 type UpdateCurrentGameIdResponse {
   clubId: String!
-  newCurrentGameId: String!
+  newCurrentGameId: String
 }
 
 type ClearCurrentGameIdResponse {

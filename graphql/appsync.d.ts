@@ -593,13 +593,13 @@ export interface UpdateClubNameResponse {
 
 export interface UpdateCurrentGameIdInput {
   clubId: Scalars["String"]["input"];
-  newGameId: Scalars["String"]["input"];
+  newGameId?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface UpdateCurrentGameIdResponse {
   __typename?: "UpdateCurrentGameIdResponse";
   clubId: Scalars["String"]["output"];
-  newCurrentGameId: Scalars["String"]["output"];
+  newCurrentGameId?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface UpdatePlayerInput {
