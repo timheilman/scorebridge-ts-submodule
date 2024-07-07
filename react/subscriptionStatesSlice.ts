@@ -16,20 +16,26 @@ export const subscriptionStatesSlice = createSlice({
   name: "subscriptionStates",
   initialState,
   reducers: {
+    setSubscriptionStatusIfInitSucceeded: (
+      state,
+      action: PayloadAction<[SubscriptionNames, string]>,
+    ) => {
+      if (state[action.payload[0]].startsWith("failed at init")) {
+        return;
+      }
+      state[action.payload[0]] = action.payload[1];
+    },
     setSubscriptionStatus: (
       state,
       action: PayloadAction<[SubscriptionNames, string]>,
     ) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state[action.payload[0]] = action.payload[1];
     },
   },
 });
 
-export const { setSubscriptionStatus } = subscriptionStatesSlice.actions;
+export const { setSubscriptionStatus, setSubscriptionStatusIfInitSucceeded } =
+  subscriptionStatesSlice.actions;
 
 export const selectSubscriptionStateById =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -10,7 +10,10 @@ import {
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import { client } from "./gqlClient";
-import { setSubscriptionStatus } from "./subscriptionStatesSlice";
+import {
+  setSubscriptionStatus,
+  setSubscriptionStatusIfInitSucceeded,
+} from "./subscriptionStatesSlice";
 
 const log = tsSubmoduleLogFn("subscriptions.");
 
@@ -100,7 +103,7 @@ export function useSubscriptions({
       if (pool[subId]) {
         pool[subId].unsubscribe();
         delete pool[subId];
-        dispatch(setSubscriptionStatus([subId, "deleted"]));
+        dispatch(setSubscriptionStatusIfInitSucceeded([subId, "deleted"]));
         return true;
       }
     };
@@ -122,7 +125,7 @@ export function useSubscriptions({
             subId,
           });
           dispatch(
-            setSubscriptionStatus([
+            setSubscriptionStatusIfInitSucceeded([
               subId,
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               `failed post-init w/message: ${e.errors[0].message}`,
@@ -135,7 +138,7 @@ export function useSubscriptions({
           message: e,
         });
         dispatch(
-          setSubscriptionStatus([
+          setSubscriptionStatusIfInitSucceeded([
             subId,
             `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
           ]),
@@ -155,12 +158,14 @@ export function useSubscriptions({
         dispatch(
           setSubscriptionStatus([
             subId,
+            // must keep "failed at init" prefix; see setSubscriptionStatusIfInitSucceeded
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             `failed at init w/message: ${e.message}`,
           ]),
         );
       } else {
         dispatch(
+          // must keep "failed at init" prefix; see setSubscriptionStatusIfInitSucceeded
           setSubscriptionStatus([subId, `failed at init w/o message: ${e}`]),
         );
       }
@@ -218,9 +223,13 @@ export function useSubscriptions({
       if (payload.event === CONNECTION_STATE_CHANGE) {
         const connectionState = payload.data.connectionState;
         if (connectionState === ConnectionState.Connected) {
-          // TODO: this is setting errored-out-on-birth subscriptions to connected :(
           subscriptionNames.forEach((subId) => {
-            dispatch(setSubscriptionStatus([subId, "successfullySubscribed"]));
+            dispatch(
+              setSubscriptionStatusIfInitSucceeded([
+                subId,
+                "successfullySubscribed",
+              ]),
+            );
           });
           fetchRecentData().catch((e) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -229,7 +238,9 @@ export function useSubscriptions({
           });
         } else {
           subscriptionNames.forEach((subId) => {
-            dispatch(setSubscriptionStatus([subId, connectionState]));
+            dispatch(
+              setSubscriptionStatusIfInitSucceeded([subId, connectionState]),
+            );
           });
         }
       }
