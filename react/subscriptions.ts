@@ -11,8 +11,10 @@ import {
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import { client } from "./gqlClient";
 import {
-  setSubscriptionStatus,
-  setSubscriptionStatusIfInitSucceeded,
+  clearSubscriptionState,
+  setConnectionAttempted,
+  setMostRecentSubscriptionError,
+  setSubscriptionsConnectionState,
 } from "./subscriptionStatesSlice";
 
 const log = tsSubmoduleLogFn("subscriptions.");
@@ -98,12 +100,15 @@ export function useSubscriptions({
   const subscriptionNames = subscriptionDetails.map((ets) =>
     ets((subDets) => subDets.query.__subscriptionName),
   );
+  log("useSubscriptions.mounting", "debug", {
+    subscriptionNames: JSON.stringify(subscriptionNames),
+  });
   useEffect(() => {
     const deleteSub = (subId: SubscriptionNames) => {
       if (pool[subId]) {
         pool[subId].unsubscribe();
         delete pool[subId];
-        dispatch(setSubscriptionStatusIfInitSucceeded([subId, "deleted"]));
+        dispatch(clearSubscriptionState(subId));
         return true;
       }
     };
@@ -125,7 +130,7 @@ export function useSubscriptions({
             subId,
           });
           dispatch(
-            setSubscriptionStatusIfInitSucceeded([
+            setMostRecentSubscriptionError([
               subId,
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               `failed post-init w/message: ${e.errors[0].message}`,
@@ -138,7 +143,7 @@ export function useSubscriptions({
           message: e,
         });
         dispatch(
-          setSubscriptionStatusIfInitSucceeded([
+          setMostRecentSubscriptionError([
             subId,
             `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
           ]),
@@ -156,17 +161,18 @@ export function useSubscriptions({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (e.message) {
         dispatch(
-          setSubscriptionStatus([
+          setMostRecentSubscriptionError([
             subId,
-            // must keep "failed at init" prefix; see setSubscriptionStatusIfInitSucceeded
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             `failed at init w/message: ${e.message}`,
           ]),
         );
       } else {
         dispatch(
-          // must keep "failed at init" prefix; see setSubscriptionStatusIfInitSucceeded
-          setSubscriptionStatus([subId, `failed at init w/o message: ${e}`]),
+          setMostRecentSubscriptionError([
+            subId,
+            `failed at init w/o message: ${e}`,
+          ]),
         );
       }
       return;
@@ -196,6 +202,7 @@ export function useSubscriptions({
           next: ({ data }) => callback(data[subId]),
           error: handleAmplifySubscriptionError(subId),
         });
+        dispatch(setConnectionAttempted(subId));
         log("errorCatchingSubscription.ok", "debug", { subId });
       } catch (e: unknown) {
         handleUnexpectedSubscriptionError(e, subId);
@@ -222,30 +229,24 @@ export function useSubscriptions({
       const { payload } = data;
       if (payload.event === CONNECTION_STATE_CHANGE) {
         const connectionState = payload.data.connectionState;
+        log("hub.listen.channelApi.callback.connectionStateChange", "debug", {
+          newConnectionState: connectionState,
+          subscriptionNames: JSON.stringify(subscriptionNames),
+        });
+        dispatch(setSubscriptionsConnectionState(connectionState));
         if (connectionState === ConnectionState.Connected) {
-          subscriptionNames.forEach((subId) => {
-            dispatch(
-              setSubscriptionStatusIfInitSucceeded([
-                subId,
-                "successfullySubscribed",
-              ]),
-            );
-          });
           fetchRecentData().catch((e) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             log("fetchRecentData.rethrowingError", "error", { e });
             throw e;
           });
-        } else {
-          subscriptionNames.forEach((subId) => {
-            dispatch(
-              setSubscriptionStatusIfInitSucceeded([subId, connectionState]),
-            );
-          });
         }
       }
     });
     return () => {
+      log("useSubscriptions.useEffect.unmounting", "debug", {
+        subscriptionNames: JSON.stringify(subscriptionNames),
+      });
       deleteAllSubs();
       stopListening();
     };

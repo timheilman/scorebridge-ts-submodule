@@ -8,7 +8,7 @@
   "features.clubDeviceInit.clubSlice": "info",
   "features.gameResults.RankedPlayerPercentages.nsSum": "info",
   "tsSubmodule.deleteDdbRecords": "info",
-  "tsSubmodule.subscriptions": "info",
+  "tsSubmodule.subscriptions": "debug",
   "tsSubmodule.OnlineStatus": "info",
   "tsSubmodule.features.assignBoardResult": "info",
   "tsSubmodule.features.gameOver.test.myScoreUndefined": "info",

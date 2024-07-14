@@ -1,10 +1,12 @@
+import { ConnectionState } from "aws-amplify/api";
 import { JSX } from "react";
 import { useSelector } from "react-redux";
 
 import { SubscriptionNames } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 import {
-  selectSubscriptionStates,
+  selectAllConnected,
+  selectSubscriptionsConnectionState,
   SubscriptionStateType,
 } from "./subscriptionStatesSlice";
 
@@ -21,26 +23,24 @@ export default function OnlineStatus({
   upIcon,
   downIcon,
 }: OnlineStatusProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const subscriptionStates: SubscriptionStateType = useSelector(
-    selectSubscriptionStates,
+  const mostRecentSubscriptionErrors: SubscriptionStateType["connected"] =
+    useSelector(selectAllConnected);
+  const subscriptionConnectionState: ConnectionState = useSelector(
+    selectSubscriptionsConnectionState,
   );
   // SCOR-105: this couldn't be tested using a development build, because
   // interrupting wifi also interrupts the connection with expo server.
   // tested instead with a preview build
   log("subscriptionStates", "debug", {
-    subscriptionsStates: subscriptionStates,
+    mostRecentSubscriptionErrors,
+    subscriptionConnectionState,
   });
   log("subscriptionIds", "debug", { subscriptionIds });
-  const filteredStates = Object.entries(subscriptionStates).filter((arrElt) =>
-    subscriptionIds.includes(arrElt[0] as SubscriptionNames),
+  const filteredStates = Object.entries(mostRecentSubscriptionErrors).filter(
+    (arrElt) => subscriptionIds.includes(arrElt[0] as SubscriptionNames),
   );
   log("filteredStates", "debug", { filteredStates });
-  if (
-    filteredStates.every((arrElt) => {
-      return arrElt[1] === "successfullySubscribed";
-    })
-  ) {
+  if (filteredStates.every((arrElt) => arrElt)) {
     log("returningUpIcon", "debug");
     return <>{upIcon}</>;
   } else {
