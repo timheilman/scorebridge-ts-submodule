@@ -35,18 +35,32 @@ export type OutType<T> =
 // these next three types are pulled from AWS Amplify v6 source code
 // For why these are copied-into this repo, see
 // https://stackoverflow.com/questions/77783165/how-do-i-write-a-type-safe-function-signature-accepting-the-callback-function-fo
+/**
+ * Returns an updated response type to always return a value.
+ */
 type NeverEmpty<T> = {
   [K in keyof T]-?: Exclude<WithListsFixed<T[K]>, undefined | null>;
 };
+/**
+ * Recursively looks through a result type and removes nulls and
+ * and undefined from `PagedList` types.
+ *
+ * Although a graphql response might contain empty values in an
+ * array, this will only be the case when we also have errors,
+ * which will then be *thrown*.
+ */
 type WithListsFixed<T> =
   T extends PagedList<infer IT, infer NAME>
     ? PagedList<Exclude<IT, null | undefined>, NAME>
-    : // eslint-disable-next-line @typescript-eslint/ban-types
-      T extends {}
+    : T extends Record<string, unknown>
       ? {
           [K in keyof T]: WithListsFixed<T[K]>;
         }
       : T;
+/**
+ * Describes a paged list result from AppSync, which can either
+ * live at the top query or property (e.g., related model) level.
+ */
 interface PagedList<T, TYPENAME> {
   __typename: TYPENAME;
   nextToken?: string | null | undefined;
