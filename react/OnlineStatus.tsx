@@ -23,7 +23,7 @@ export default function OnlineStatus({
   upIcon,
   downIcon,
 }: OnlineStatusProps) {
-  const mostRecentSubscriptionErrors: SubscriptionStateType["connected"] =
+  const allConnected: SubscriptionStateType["connected"] =
     useSelector(selectAllConnected);
   const subscriptionConnectionState: ConnectionState = useSelector(
     selectSubscriptionsConnectionState,
@@ -32,15 +32,15 @@ export default function OnlineStatus({
   // interrupting wifi also interrupts the connection with expo server.
   // tested instead with a preview build
   log("subscriptionStates", "debug", {
-    mostRecentSubscriptionErrors,
+    allConnected,
     subscriptionConnectionState,
   });
   log("subscriptionIds", "debug", { subscriptionIds });
-  const filteredStates = Object.entries(mostRecentSubscriptionErrors).filter(
-    (arrElt) => subscriptionIds.includes(arrElt[0] as SubscriptionNames),
+  const filteredStates = Object.entries(allConnected).filter((arrElt) =>
+    subscriptionIds.includes(arrElt[0] as SubscriptionNames),
   );
   log("filteredStates", "debug", { filteredStates });
-  if (filteredStates.every((arrElt) => arrElt)) {
+  if (filteredStates.every((arrElt) => arrElt[1])) {
     log("returningUpIcon", "debug");
     return <>{upIcon}</>;
   } else {
