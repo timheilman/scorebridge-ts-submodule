@@ -11,7 +11,7 @@ export const effectiveTable = ({
   const roundLessOneModThree = (round - 1) % 3;
   if (roundLessOneModThree !== 0) {
     throw new Error(
-      "Only intended for use with roundLesOneModThree === 0 invocations",
+      "Only intended for use with roundLessOneModThree === 0 invocations",
     );
   }
   if (direction === "N") {
