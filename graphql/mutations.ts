@@ -158,6 +158,7 @@ export const mutIdToMutGql = {
           boardsPerRound
           tableAssignments {
             tableNumber
+            confirmed
             clubDeviceId
           }
           tableCount
@@ -245,6 +246,7 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
+          confirmed
           playerAssignments {
             directionLetter
             playerId

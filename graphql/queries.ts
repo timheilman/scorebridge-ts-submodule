@@ -73,6 +73,7 @@ export const qidToQueryGql = {
             createdAt
             tableAssignments {
               tableNumber
+              confirmed
               clubDeviceId
               playerAssignments {
                 directionLetter
@@ -128,6 +129,7 @@ export const qidToQueryGql = {
           createdAt
           tableAssignments {
             tableNumber
+            confirmed
             clubDeviceId
             playerAssignments {
               directionLetter
