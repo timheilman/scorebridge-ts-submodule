@@ -6,6 +6,7 @@ import {
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
+  MutationConfirmTableAssignmentArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -270,7 +271,7 @@ export const mutIdToMutGql = {
   ),
   confirmTableAssignment: createKeyedGeneratedMutation<
     "confirmTableAssignment",
-    MutationAssignTableArgs
+    MutationConfirmTableAssignmentArgs
   >(
     /* GraphQL */ `
       mutation confirmTableAssignment($input: AssignOrUnassignTableInput!) {
