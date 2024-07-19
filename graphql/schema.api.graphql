@@ -295,6 +295,7 @@ input PartialBoardResult {
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
+  confirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -302,6 +303,7 @@ type TableAssignment {
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
+  confirmed: Boolean
   playerAssignments: [PartialPlayerAssignment!]!
   results: [PartialBoardResult!]!
 }
@@ -324,6 +326,7 @@ type AssignTableResponse {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
+  confirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
