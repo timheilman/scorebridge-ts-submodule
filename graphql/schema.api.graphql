@@ -110,6 +110,12 @@ type Mutation {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
+  confirmTableAssignment(
+    input: AssignOrUnassignTableInput!
+  ): AssignTableResponse!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 
   unassignTable(input: AssignOrUnassignTableInput!): UnassignTableResponse!
     @aws_cognito_user_pools(

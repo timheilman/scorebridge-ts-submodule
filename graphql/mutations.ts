@@ -268,6 +268,39 @@ export const mutIdToMutGql = {
     `,
     "assignTable",
   ),
+  confirmTableAssignment: createKeyedGeneratedMutation<
+    "confirmTableAssignment",
+    MutationAssignTableArgs
+  >(
+    /* GraphQL */ `
+      mutation confirmTableAssignment($input: AssignOrUnassignTableInput!) {
+        confirmTableAssignment(input: $input) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          confirmed
+          playerAssignments {
+            directionLetter
+            playerId
+            playerDisplayName
+          }
+          results {
+            board
+            round
+            level
+            strain
+            doubling
+            declarer
+            leadRank
+            leadSuit
+            result
+          }
+        }
+      }
+    `,
+    "confirmTableAssignment",
+  ),
   unassignTable: createKeyedGeneratedMutation<
     "unassignTable",
     MutationUnassignTableArgs

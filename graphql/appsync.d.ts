@@ -290,6 +290,7 @@ export interface Mutation {
   assignPlayer: AssignPlayerResponse;
   assignResult: AssignResultResponse;
   assignTable: AssignTableResponse;
+  confirmTableAssignment: AssignTableResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -329,6 +330,10 @@ export interface MutationAssignResultArgs {
 }
 
 export interface MutationAssignTableArgs {
+  input: AssignOrUnassignTableInput;
+}
+
+export interface MutationConfirmTableAssignmentArgs {
   input: AssignOrUnassignTableInput;
 }
 
