@@ -164,6 +164,15 @@ export interface ClubDevice {
   name: Scalars["String"]["output"];
 }
 
+export interface ConfirmTableAssignmentResponse {
+  __typename?: "ConfirmTableAssignmentResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  confirmed: Scalars["Boolean"]["output"];
+  gameId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
+
 export interface CreateClubDeviceInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
@@ -290,7 +299,7 @@ export interface Mutation {
   assignPlayer: AssignPlayerResponse;
   assignResult: AssignResultResponse;
   assignTable: AssignTableResponse;
-  confirmTableAssignment: AssignTableResponse;
+  confirmTableAssignment: ConfirmTableAssignmentResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;

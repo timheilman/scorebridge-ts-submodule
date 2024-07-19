@@ -280,22 +280,6 @@ export const mutIdToMutGql = {
           gameId
           tableNumber
           confirmed
-          playerAssignments {
-            directionLetter
-            playerId
-            playerDisplayName
-          }
-          results {
-            board
-            round
-            level
-            strain
-            doubling
-            declarer
-            leadRank
-            leadSuit
-            result
-          }
         }
       }
     `,

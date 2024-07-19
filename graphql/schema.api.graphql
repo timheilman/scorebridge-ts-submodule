@@ -112,7 +112,7 @@ type Mutation {
     )
   confirmTableAssignment(
     input: AssignOrUnassignTableInput!
-  ): AssignTableResponse!
+  ): ConfirmTableAssignmentResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -325,6 +325,14 @@ input AssignOrUnassignTableInput {
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
+}
+
+type ConfirmTableAssignmentResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  confirmed: Boolean!
 }
 
 type AssignTableResponse {
