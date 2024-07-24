@@ -137,7 +137,7 @@ export interface BoardResult {
   result?: Maybe<Scalars["Int"]["output"]>;
   round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
-  type: BoardResultType;
+  type?: Maybe<BoardResultType>;
 }
 
 export type BoardResultType = "NOT_BID_NOT_PLAYED" | "PASSED_OUT" | "PLAYED";
@@ -412,7 +412,7 @@ export interface PartialBoardResult {
   result?: InputMaybe<Scalars["Int"]["input"]>;
   round: Scalars["Int"]["input"];
   strain?: InputMaybe<Strain>;
-  type: BoardResultType;
+  type?: InputMaybe<BoardResultType>;
 }
 
 export interface PartialGame {
