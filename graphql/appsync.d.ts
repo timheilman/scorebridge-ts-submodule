@@ -541,10 +541,12 @@ export interface Subscription {
   onCreatePlayer?: Maybe<Player>;
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
+  onSetRound?: Maybe<SetRoundResponse>;
   onUnassignTable?: Maybe<UnassignTableResponse>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdatePlayer?: Maybe<Player>;
+  onUpsertBoardResult?: Maybe<BoardResult>;
 }
 
 export interface SubscriptionOnAssignPlayerArgs {
@@ -575,6 +577,10 @@ export interface SubscriptionOnDeletePlayerArgs {
   clubId: Scalars["String"]["input"];
 }
 
+export interface SubscriptionOnSetRoundArgs {
+  clubId: Scalars["String"]["input"];
+}
+
 export interface SubscriptionOnUnassignTableArgs {
   clubId: Scalars["String"]["input"];
 }
@@ -588,6 +594,10 @@ export interface SubscriptionOnUpdateCurrentGameIdArgs {
 }
 
 export interface SubscriptionOnUpdatePlayerArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnUpsertBoardResultArgs {
   clubId: Scalars["String"]["input"];
 }
 

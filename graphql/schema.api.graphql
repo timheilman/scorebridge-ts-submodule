@@ -197,11 +197,21 @@ type Subscription {
     )
 
   # This is for for device-to-device and device-to-webapp communication to grab results
+  # deprecated; need onUpsertBoardResult instead
   onAssignResult(clubId: String!): AssignResultResponse
     @aws_subscribe(mutations: ["assignResult"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
+  onUpsertBoardResult(clubId: String!): BoardResult
+    @aws_subscribe(mutations: ["upsertBoardResult"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
+  # for shits and giggles; maybe webapp wants to get current round updates
+  onSetRound(clubId: String!): SetRoundResponse
+    @aws_subscribe(mutations: ["setRound"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 
   onCreatePlayer(clubId: String!): Player
     @aws_subscribe(mutations: ["createPlayer"])
