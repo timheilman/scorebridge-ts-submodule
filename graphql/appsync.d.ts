@@ -316,6 +316,7 @@ export interface Mutation {
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
   updatePlayer: Player;
+  upsertBoardResult: BoardResult;
 }
 
 export interface MutationAssignBoardToBidArgs {
@@ -404,6 +405,10 @@ export interface MutationUpdateCurrentGameIdArgs {
 
 export interface MutationUpdatePlayerArgs {
   input: UpdatePlayerInput;
+}
+
+export interface MutationUpsertBoardResultArgs {
+  input: PartialBoardResult;
 }
 
 export interface PartialBoardResult {

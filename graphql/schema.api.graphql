@@ -127,6 +127,8 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
+  # deprecated; what the hell was I thinking?
+  # All of these can be collapsed to a single upsertBoardResult mutation...
   assignBoardToBid(input: AssignBoardToBidInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   unassignBoardToBid(input: UnassignContractInput!): BoardResult!
@@ -140,6 +142,9 @@ type Mutation {
   unassignInitialLead(input: UnassignContractInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   assignResult(input: AssignResultInput!): AssignResultResponse!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
+  upsertBoardResult(input: PartialBoardResult!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   createPlayer(input: CreatePlayerInput!): Player!
