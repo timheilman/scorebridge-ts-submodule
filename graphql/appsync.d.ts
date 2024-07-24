@@ -119,10 +119,10 @@ export interface AssignTableResponse {
   __typename?: "AssignTableResponse";
   clubDeviceId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
-  confirmed?: Maybe<Scalars["Boolean"]["output"]>;
   gameId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
+  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -162,15 +162,6 @@ export interface ClubDevice {
   createdAt: Scalars["AWSDateTime"]["output"];
   email: Scalars["AWSEmail"]["output"];
   name: Scalars["String"]["output"];
-}
-
-export interface ConfirmTableAssignmentResponse {
-  __typename?: "ConfirmTableAssignmentResponse";
-  clubDeviceId: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  confirmed: Scalars["Boolean"]["output"];
-  gameId: Scalars["String"]["output"];
-  tableNumber: Scalars["Int"]["output"];
 }
 
 export interface CreateClubDeviceInput {
@@ -299,7 +290,6 @@ export interface Mutation {
   assignPlayer: AssignPlayerResponse;
   assignResult: AssignResultResponse;
   assignTable: AssignTableResponse;
-  confirmTableAssignment: ConfirmTableAssignmentResponse;
   createClub: CreateClubResponse;
   createClubDevice: ClubDevice;
   createGame: Game;
@@ -341,10 +331,6 @@ export interface MutationAssignResultArgs {
 }
 
 export interface MutationAssignTableArgs {
-  input: AssignOrUnassignTableInput;
-}
-
-export interface MutationConfirmTableAssignmentArgs {
   input: AssignOrUnassignTableInput;
 }
 
@@ -449,9 +435,9 @@ export interface PartialPlayerAssignment {
 
 export interface PartialTableAssignment {
   clubDeviceId: Scalars["String"]["input"];
-  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
+  round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -606,9 +592,9 @@ export type Suit = "C" | "D" | "H" | "S";
 export interface TableAssignment {
   __typename?: "TableAssignment";
   clubDeviceId: Scalars["String"]["output"];
-  confirmed?: Maybe<Scalars["Boolean"]["output"]>;
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
+  round: Scalars["Int"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 

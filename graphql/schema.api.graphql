@@ -110,12 +110,6 @@ type Mutation {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
-  confirmTableAssignment(
-    input: AssignOrUnassignTableInput!
-  ): ConfirmTableAssignmentResponse!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
 
   unassignTable(input: AssignOrUnassignTableInput!): UnassignTableResponse!
     @aws_cognito_user_pools(
@@ -343,7 +337,7 @@ type SetRoundResponse {
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
-  confirmed: Boolean
+  round: Int!
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -351,7 +345,7 @@ type TableAssignment {
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
-  confirmed: Boolean
+  round: Int!
   playerAssignments: [PartialPlayerAssignment!]!
   results: [PartialBoardResult!]!
 }
@@ -369,20 +363,12 @@ input AssignOrUnassignTableInput {
   tableNumber: Int!
 }
 
-type ConfirmTableAssignmentResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  confirmed: Boolean!
-}
-
 type AssignTableResponse {
   clubId: String!
   clubDeviceId: String!
   gameId: String!
   tableNumber: Int!
-  confirmed: Boolean
+  round: Int
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
