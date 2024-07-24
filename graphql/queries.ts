@@ -73,6 +73,7 @@ export const qidToQueryGql = {
             createdAt
             tableAssignments {
               tableNumber
+              confirmed
               round
               clubDeviceId
               playerAssignments {
@@ -129,6 +130,7 @@ export const qidToQueryGql = {
           createdAt
           tableAssignments {
             tableNumber
+            confirmed
             round
             clubDeviceId
             playerAssignments {

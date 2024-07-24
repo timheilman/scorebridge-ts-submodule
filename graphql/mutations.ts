@@ -6,6 +6,7 @@ import {
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
+  MutationConfirmTableAssignmentArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -159,6 +160,7 @@ export const mutIdToMutGql = {
           boardsPerRound
           tableAssignments {
             tableNumber
+            confirmed
             round
             clubDeviceId
           }
@@ -247,6 +249,7 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
+          confirmed
           round
           playerAssignments {
             directionLetter
@@ -268,6 +271,23 @@ export const mutIdToMutGql = {
       }
     `,
     "assignTable",
+  ),
+  confirmTableAssignment: createKeyedGeneratedMutation<
+    "confirmTableAssignment",
+    MutationConfirmTableAssignmentArgs
+  >(
+    /* GraphQL */ `
+      mutation confirmTableAssignment($input: AssignOrUnassignTableInput!) {
+        confirmTableAssignment(input: $input) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          confirmed
+        }
+      }
+    `,
+    "confirmTableAssignment",
   ),
   setRound: createKeyedGeneratedMutation<"setRound", MutationSetRoundArgs>(
     /* GraphQL */ `
