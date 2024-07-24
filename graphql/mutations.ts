@@ -23,6 +23,7 @@ import {
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
   MutationUpdatePlayerArgs,
+  MutationUpsertBoardResultArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
@@ -430,10 +431,10 @@ export const mutIdToMutGql = {
   ),
   upsertBoardResult: createKeyedGeneratedMutation<
     "upsertBoardResult",
-    MutationAssignResultArgs
+    MutationUpsertBoardResultArgs
   >(
     /* GraphQL */ `
-      mutation upsertBoardResult($input: AssignResultInput!) {
+      mutation upsertBoardResult($input: UpsertBoardResultInput!) {
         upsertBoardResult(input: $input) {
           clubId
           tableNumber
