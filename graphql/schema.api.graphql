@@ -198,7 +198,7 @@ type Subscription {
     )
 
   # This is for for device-to-device and device-to-webapp communication to grab results
-  # deprecated; need onUpsertBoardResult instead
+  # deprecated; use onUpsertBoardResult instead
   onAssignResult(clubId: String!): AssignResultResponse
     @aws_subscribe(mutations: ["assignResult"])
     @aws_cognito_user_pools(
