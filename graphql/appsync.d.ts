@@ -546,7 +546,7 @@ export interface Subscription {
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdatePlayer?: Maybe<Player>;
-  onUpsertBoardResult?: Maybe<BoardResult>;
+  onUpsertBoardResult?: Maybe<AssignResultResponse>;
 }
 
 export interface SubscriptionOnAssignPlayerArgs {

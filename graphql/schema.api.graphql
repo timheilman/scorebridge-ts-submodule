@@ -203,7 +203,7 @@ type Subscription {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
-  onUpsertBoardResult(clubId: String!): BoardResult
+  onUpsertBoardResult(clubId: String!): AssignResultResponse
     @aws_subscribe(mutations: ["upsertBoardResult"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
