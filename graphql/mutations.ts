@@ -6,7 +6,6 @@ import {
   MutationAssignPlayerArgs,
   MutationAssignResultArgs,
   MutationAssignTableArgs,
-  MutationConfirmTableAssignmentArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -15,6 +14,7 @@ import {
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
+  MutationSetRoundArgs,
   MutationUnassignBoardToBidArgs,
   MutationUnassignContractArgs,
   MutationUnassignInitialLeadArgs,
@@ -159,7 +159,7 @@ export const mutIdToMutGql = {
           boardsPerRound
           tableAssignments {
             tableNumber
-            confirmed
+            round
             clubDeviceId
           }
           tableCount
@@ -247,7 +247,7 @@ export const mutIdToMutGql = {
           clubDeviceId
           gameId
           tableNumber
-          confirmed
+          round
           playerAssignments {
             directionLetter
             playerId
@@ -269,22 +269,19 @@ export const mutIdToMutGql = {
     `,
     "assignTable",
   ),
-  confirmTableAssignment: createKeyedGeneratedMutation<
-    "confirmTableAssignment",
-    MutationConfirmTableAssignmentArgs
-  >(
+  setRound: createKeyedGeneratedMutation<"setRound", MutationSetRoundArgs>(
     /* GraphQL */ `
-      mutation confirmTableAssignment($input: AssignOrUnassignTableInput!) {
-        confirmTableAssignment(input: $input) {
+      mutation setRound($input: SetRoundInput!) {
+        setRound(input: $input) {
           clubId
           clubDeviceId
           gameId
           tableNumber
-          confirmed
+          round
         }
       }
     `,
-    "confirmTableAssignment",
+    "setRound",
   ),
   unassignTable: createKeyedGeneratedMutation<
     "unassignTable",
@@ -410,6 +407,33 @@ export const mutIdToMutGql = {
       }
     `,
     "assignResult",
+  ),
+  upsertBoardResult: createKeyedGeneratedMutation<
+    "upsertBoardResult",
+    MutationAssignResultArgs
+  >(
+    /* GraphQL */ `
+      mutation upsertBoardResult($input: AssignResultInput!) {
+        upsertBoardResult(input: $input) {
+          clubId
+          tableNumber
+          gameId
+          boardResult {
+            board
+            round
+            type
+            level
+            strain
+            declarer
+            doubling
+            leadSuit
+            leadRank
+            result
+          }
+        }
+      }
+    `,
+    "upsertBoardResult",
   ),
   unassignContract: createKeyedGeneratedMutation<
     "unassignContract",
