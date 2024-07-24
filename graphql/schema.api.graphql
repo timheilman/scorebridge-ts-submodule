@@ -144,7 +144,9 @@ type Mutation {
   assignResult(input: AssignResultInput!): AssignResultResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  upsertBoardResult(input: PartialBoardResult!): BoardResult!
+  upsertBoardResult(input: UpsertBoardResultInput!): BoardResult!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  setRound(input: SetRoundInput!): SetRoundResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   createPlayer(input: CreatePlayerInput!): Player!
@@ -303,6 +305,31 @@ input PartialBoardResult {
   leadSuit: Suit
   result: Int
 }
+
+input UpsertBoardResultInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  partialBoardResult: PartialBoardResult!
+}
+
+input SetRoundInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  round: Int!
+}
+
+type SetRoundResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+  round: Int!
+}
+
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!

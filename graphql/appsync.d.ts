@@ -308,6 +308,7 @@ export interface Mutation {
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
   deletePlayer: Player;
+  setRound: SetRoundResponse;
   unassignBoardToBid: BoardResult;
   unassignContract: BoardResult;
   unassignInitialLead: BoardResult;
@@ -379,6 +380,10 @@ export interface MutationDeletePlayerArgs {
   input: DeletePlayerInput;
 }
 
+export interface MutationSetRoundArgs {
+  input: SetRoundInput;
+}
+
 export interface MutationUnassignBoardToBidArgs {
   input: UnassignContractInput;
 }
@@ -408,7 +413,7 @@ export interface MutationUpdatePlayerArgs {
 }
 
 export interface MutationUpsertBoardResultArgs {
-  input: PartialBoardResult;
+  input: UpsertBoardResultInput;
 }
 
 export interface PartialBoardResult {
@@ -507,6 +512,23 @@ export type Rank =
   | "TEN"
   | "THREE"
   | "TWO";
+
+export interface SetRoundInput {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  round: Scalars["Int"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface SetRoundResponse {
+  __typename?: "SetRoundResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  round: Scalars["Int"]["output"];
+  tableNumber: Scalars["Int"]["output"];
+}
 
 export type Strain = "C" | "D" | "H" | "NT" | "S";
 
@@ -628,4 +650,12 @@ export interface UpdatePlayerInput {
   clubId: Scalars["String"]["input"];
   playerDisplayName: Scalars["String"]["input"];
   playerId: Scalars["String"]["input"];
+}
+
+export interface UpsertBoardResultInput {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  partialBoardResult: PartialBoardResult;
+  tableNumber: Scalars["Int"]["input"];
 }
