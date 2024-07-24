@@ -339,7 +339,7 @@ type SetRoundResponse {
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
-  round: Int!
+  round: Int
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -347,7 +347,7 @@ type TableAssignment {
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
-  round: Int!
+  round: Int
   playerAssignments: [PartialPlayerAssignment!]!
   results: [PartialBoardResult!]!
 }

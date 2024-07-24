@@ -437,7 +437,7 @@ export interface PartialTableAssignment {
   clubDeviceId: Scalars["String"]["input"];
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
-  round: Scalars["Int"]["input"];
+  round?: InputMaybe<Scalars["Int"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -594,7 +594,7 @@ export interface TableAssignment {
   clubDeviceId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
-  round: Scalars["Int"]["output"];
+  round?: Maybe<Scalars["Int"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
