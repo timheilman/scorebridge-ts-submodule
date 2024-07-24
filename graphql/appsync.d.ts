@@ -317,7 +317,7 @@ export interface Mutation {
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
   updatePlayer: Player;
-  upsertBoardResult: BoardResult;
+  upsertBoardResult: AssignResultResponse;
 }
 
 export interface MutationAssignBoardToBidArgs {
