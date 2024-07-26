@@ -1,3 +1,4 @@
+import { allDirections } from "./allDirections";
 import { DirectionLetter } from "./graphql/appsync";
 
 export const clubSortKeyPrefix0 = "C";
@@ -44,7 +45,7 @@ export const directionLetterFromSortKey = (
     };
   }
   const directionString = theSplit[3];
-  if (!["N", "S", "E", "W"].includes(directionString)) {
+  if (!allDirections.includes(directionString as DirectionLetter)) {
     return {
       error: `Not a correct sortKey; ${directionString} is not a direction.`,
       result: "N" as const,

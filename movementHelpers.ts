@@ -1,3 +1,4 @@
+import { allDirections } from "./allDirections";
 import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
@@ -54,6 +55,7 @@ const inversePlayerNumberMemoKey = (props: InversePlayerNumberParams) => {
   const { tableCount, playerNumber, movement, round = 1 } = props;
   return `${movement}_${tableCount}_${playerNumber}_${round}`;
 };
+
 export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
   const myMemoKey = inversePlayerNumberMemoKey(props);
   if (ipnMemo[myMemoKey]) {
@@ -61,8 +63,7 @@ export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
   }
   const { tableCount, playerNumber, movement, round = 1 } = props;
 
-  const directions = ["N", "S", "E", "W"] as const;
-  for (const direction of directions) {
+  for (const direction of allDirections) {
     for (let table = 1; table <= tableCount; table++) {
       log("inversePlayerNumber.checking", "debug", {
         direction,
