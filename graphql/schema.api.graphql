@@ -202,7 +202,7 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
   onUnassignPlayers(clubId: String!): UnassignPlayersResponse
-    @aws_subscribe(mutations: ["onUnassignPlayers"])
+    @aws_subscribe(mutations: ["unassignPlayers"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
