@@ -313,6 +313,7 @@ export interface Mutation {
   unassignBoardToBid: BoardResult;
   unassignContract: BoardResult;
   unassignInitialLead: BoardResult;
+  unassignPlayers: UnassignPlayersResponse;
   unassignTable: UnassignTableResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateClubName: UpdateClubNameResponse;
@@ -395,6 +396,10 @@ export interface MutationUnassignContractArgs {
 
 export interface MutationUnassignInitialLeadArgs {
   input: UnassignContractInput;
+}
+
+export interface MutationUnassignPlayersArgs {
+  input: UnassignPlayersInput;
 }
 
 export interface MutationUnassignTableArgs {
@@ -621,6 +626,21 @@ export interface UnassignContractInput {
   gameId: Scalars["String"]["input"];
   round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
+}
+
+export interface UnassignPlayersInput {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  gameId: Scalars["String"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface UnassignPlayersResponse {
+  __typename?: "UnassignPlayersResponse";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
+  tableNumber: Scalars["Int"]["output"];
 }
 
 export interface UnassignTableResponse {

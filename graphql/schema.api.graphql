@@ -126,6 +126,11 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
+  unassignPlayers(input: UnassignPlayersInput!): UnassignPlayersResponse!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
+
   # deprecated; what the hell was I thinking?
   # All of these can be collapsed to a single upsertBoardResult mutation...
   assignBoardToBid(input: AssignBoardToBidInput!): BoardResult!
@@ -407,6 +412,13 @@ input AssignPlayerInput {
   playerDisplayName: String!
 }
 
+input UnassignPlayersInput {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
+}
+
 type AssignPlayerResponse {
   clubId: String!
   clubDeviceId: String!
@@ -415,6 +427,13 @@ type AssignPlayerResponse {
   directionLetter: DirectionLetter!
   playerId: String!
   playerDisplayName: String!
+}
+
+type UnassignPlayersResponse {
+  clubId: String!
+  clubDeviceId: String!
+  gameId: String!
+  tableNumber: Int!
 }
 
 input GetGameInput {
