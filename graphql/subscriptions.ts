@@ -7,6 +7,7 @@ import {
   SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeletePlayerArgs,
+  SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUnassignTableArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
@@ -173,6 +174,22 @@ export const subIdToSubGql = {
       }
     `,
     "onAssignPlayer",
+  ),
+  onUnassignPlayers: createKeyedGeneratedSubscription<
+    "onUnassignPlayers",
+    SubscriptionOnUnassignPlayersArgs
+  >(
+    /* GraphQL */ `
+      subscription OnUnassignPlayers($clubId: String!) {
+        onUnassignPlayers(clubId: $clubId) {
+          clubId
+          gameId
+          clubDeviceId
+          tableNumber
+        }
+      }
+    `,
+    "onUnassignPlayers",
   ),
   // Deprecated; use onUpsertBoardResult
   onAssignResult: createKeyedGeneratedSubscription<
