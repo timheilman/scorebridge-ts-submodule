@@ -548,6 +548,7 @@ export interface Subscription {
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
   onSetRound?: Maybe<SetRoundResponse>;
+  onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUnassignTable?: Maybe<UnassignTableResponse>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
@@ -584,6 +585,10 @@ export interface SubscriptionOnDeletePlayerArgs {
 }
 
 export interface SubscriptionOnSetRoundArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnUnassignPlayersArgs {
   clubId: Scalars["String"]["input"];
 }
 
