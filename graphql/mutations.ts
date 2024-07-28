@@ -19,6 +19,7 @@ import {
   MutationUnassignBoardToBidArgs,
   MutationUnassignContractArgs,
   MutationUnassignInitialLeadArgs,
+  MutationUnassignPlayersArgs,
   MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
@@ -338,6 +339,22 @@ export const mutIdToMutGql = {
       }
     `,
     "assignPlayer",
+  ),
+  unassignPlayers: createKeyedGeneratedMutation<
+    "unassignPlayers",
+    MutationUnassignPlayersArgs
+  >(
+    /* GraphQL */ `
+      mutation unassignPlayers($input: UnassignPlayersInput!) {
+        unassignPlayers(input: $input) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+        }
+      }
+    `,
+    "unassignPlayers",
   ),
   assignBoardToBid: createKeyedGeneratedMutation<
     "assignBoardToBid",
