@@ -31,15 +31,18 @@ const average = (
     ns: nsSum / (nums.length * (tableCount - 1)) / 2,
   };
 };
-export const Leaderboard = ({
+export const useLeaderboardResults = ({
   game,
   boardResults,
   playerNumberToName,
 }: {
-  game: Omit<Game, "tableAssignments">;
+  game: Omit<Game, "tableAssignments"> | undefined;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
   playerNumberToName: Record<number, string | undefined> | undefined;
 }) => {
+  if (!game) {
+    return {};
+  }
   const playerNames = playerNumberToName ?? {};
   const tableCount = game.tableCount;
   const getPlayerNumberToBoardToMatchPointOpponentCountPairs = () => {
@@ -117,28 +120,10 @@ export const Leaderboard = ({
         return [playerName, e[1]];
       });
   };
-  if (game.movement !== "mitchell") {
-    const individualScoresSorted = sortScores(playerNumberToAveragePct) as [
-      string | undefined,
-      { mp: number; ns: number },
-    ][];
-    return (
-      <>
-        <div>Player results:</div>
-        <pre>
-          {individualScoresSorted.map(([name, score]) => {
-            return (
-              <div key={name} style={{ display: "flex", maxWidth: "25em" }}>
-                <span style={{ flex: 1 }}>{name}:</span>{" "}
-                <span style={{ flex: 1 }}>{score.mp}%</span>
-                <span style={{ flex: 1 }}> ({score.ns}% neuberg)</span>
-              </div>
-            );
-          })}
-        </pre>
-      </>
-    );
-  }
+  const individualScoresSorted = sortScores(playerNumberToAveragePct) as [
+    string | undefined,
+    { mp: number; ns: number },
+  ][];
 
   const filterToDirs = (dir1: DirectionLetter, dir2: DirectionLetter) => {
     return Object.fromEntries(
@@ -162,33 +147,5 @@ export const Leaderboard = ({
     string | undefined,
     { mp: number; ns: number },
   ][];
-  return (
-    <>
-      <div>Player results:</div>
-      <span>
-        <pre>
-          N/S
-          {nsScoresSorted.map(([name, score]) => {
-            return (
-              <div key={name}>
-                {name}: {score.mp}%
-              </div>
-            );
-          })}
-        </pre>
-      </span>
-      <span>
-        <pre>
-          E/W
-          {ewScoresSorted.map(([name, score]) => {
-            return (
-              <div key={name}>
-                {name}: {score.mp}%
-              </div>
-            );
-          })}
-        </pre>
-      </span>
-    </>
-  );
+  return { individualScoresSorted, nsScoresSorted, ewScoresSorted };
 };
