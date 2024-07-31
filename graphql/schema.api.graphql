@@ -341,6 +341,7 @@ input SetRoundInput {
   gameId: String!
   tableNumber: Int!
   round: Int!
+  roundWelcomeConfirmed: Boolean!
 }
 
 type SetRoundResponse {
@@ -349,6 +350,7 @@ type SetRoundResponse {
   gameId: String!
   tableNumber: Int!
   round: Int!
+  roundWelcomeConfirmed: Boolean!
 }
 
 type TableAssignment {
@@ -356,6 +358,7 @@ type TableAssignment {
   clubDeviceId: String!
   confirmed: Boolean
   round: Int
+  roundWelcomeConfirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }
@@ -364,6 +367,7 @@ input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
   round: Int
+  roundWelcomeConfirmed: Boolean
   playerAssignments: [PartialPlayerAssignment!]!
   results: [PartialBoardResult!]!
 }
@@ -396,6 +400,7 @@ type AssignTableResponse {
   tableNumber: Int!
   confirmed: Boolean
   round: Int
+  roundWelcomeConfirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResult!]!
 }

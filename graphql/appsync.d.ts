@@ -124,6 +124,7 @@ export interface AssignTableResponse {
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
   round?: Maybe<Scalars["Int"]["output"]>;
+  roundWelcomeConfirmed?: Maybe<Scalars["Boolean"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -458,6 +459,7 @@ export interface PartialTableAssignment {
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
   round?: InputMaybe<Scalars["Int"]["input"]>;
+  roundWelcomeConfirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -524,6 +526,7 @@ export interface SetRoundInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   round: Scalars["Int"]["input"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -533,6 +536,7 @@ export interface SetRoundResponse {
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   round: Scalars["Int"]["output"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -621,6 +625,7 @@ export interface TableAssignment {
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];
   round?: Maybe<Scalars["Int"]["output"]>;
+  roundWelcomeConfirmed?: Maybe<Scalars["Boolean"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
