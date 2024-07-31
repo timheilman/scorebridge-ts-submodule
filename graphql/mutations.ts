@@ -164,6 +164,7 @@ export const mutIdToMutGql = {
             tableNumber
             confirmed
             round
+            roundWelcomeConfirmed
             clubDeviceId
           }
           tableCount
@@ -253,6 +254,7 @@ export const mutIdToMutGql = {
           tableNumber
           confirmed
           round
+          roundWelcomeConfirmed
           playerAssignments {
             directionLetter
             playerId
@@ -300,6 +302,7 @@ export const mutIdToMutGql = {
           gameId
           tableNumber
           round
+          roundWelcomeConfirmed
         }
       }
     `,

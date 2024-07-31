@@ -75,6 +75,7 @@ export const qidToQueryGql = {
               tableNumber
               confirmed
               round
+              roundWelcomeConfirmed
               clubDeviceId
               playerAssignments {
                 directionLetter
@@ -132,6 +133,7 @@ export const qidToQueryGql = {
             tableNumber
             confirmed
             round
+            roundWelcomeConfirmed
             clubDeviceId
             playerAssignments {
               directionLetter
