@@ -130,6 +130,23 @@ Ideally this submodule would be an NPM package. However, at this stage in develo
 
 ## RELEASE NOTES
 
+### 1.1.2, Version Code 15
+
+Fixes:
+- Absence of translations in app
+- Failure at device registration "App UserPool Not Configured"
+
+### 1.1.1, Version Code 14
+
+Major redesign.
+- Portrait or landscape orientation now supported
+- Introduces a bottom navigation bar
+- Board data can be revised at any time during a round
+- Heavier reliance upon icons, almost all text removed
+- Board and player assignments now require confirmation
+- Intra-round screens (contract, initial lead, result) collapsed to one (boards)
+- Inter-round screens expanded to three (board rotation warning, round review, round welcome)
+
 ### 1.0.0, Version Code 12
 
 - fix: do not auto-advance from (nor prohibit moving back to) the player assignment screen once all four players have been assigned when some other table has already entered a level, strain, doubling, and declarer, skipped a board, or passed out a board
