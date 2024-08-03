@@ -139,6 +139,9 @@ Fixes:
 ### 1.1.1, Version Code 14
 
 Major redesign.
+
+BREAKING CHANGE: support for Android 5 (API level 22) and below has been dropped.  Only Android 6+ (API level 23) and above is supported.  This represents 98.5% of Android devices in use.
+
 - Portrait or landscape orientation now supported
 - Introduces a bottom navigation bar
 - Board data can be revised at any time during a round
