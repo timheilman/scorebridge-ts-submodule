@@ -2,6 +2,7 @@ import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups";
+export { allDirections } from "./allDirections";
 import { DirectionLetter } from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
@@ -36,7 +37,6 @@ export const allRanks = [
   "KING",
   "ACE",
 ] as const;
-export const allDirections = ["N", "W", "E", "S"] as const;
 
 export const possibleResults = (level: number) => {
   // at one-level, if opponents make all 13 tricks, that's down seven:
