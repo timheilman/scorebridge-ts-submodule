@@ -130,6 +130,7 @@ export const boardScoreFromBoardResult = ({
     return;
   }
   if (boardResult.type === "NOT_BID_NOT_PLAYED") {
+    // deprecated
     return null;
   }
   if (boardResult.type === "PASSED_OUT") {

@@ -49,6 +49,7 @@ enum Doubling {
   REDOUBLE
 }
 
+# BoardResultType.NOT_BID_NOT_PLAYED is deprecated; use null instead
 enum BoardResultType {
   PLAYED
   PASSED_OUT
@@ -623,6 +624,6 @@ input AssignResultInput {
   tableNumber: Int!
   board: Int!
   round: Int!
-  type: BoardResultType!
+  type: BoardResultType
   result: Int
 }

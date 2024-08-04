@@ -104,7 +104,7 @@ export interface AssignResultInput {
   result?: InputMaybe<Scalars["Int"]["input"]>;
   round: Scalars["Int"]["input"];
   tableNumber: Scalars["Int"]["input"];
-  type: BoardResultType;
+  type?: InputMaybe<BoardResultType>;
 }
 
 export interface AssignResultResponse {
