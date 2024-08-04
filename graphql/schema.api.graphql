@@ -43,7 +43,7 @@ enum Rank {
 }
 
 enum Doubling {
-  NONE
+  NONE # deprecated; use null instead
   DOUBLE
   REDOUBLE
 }
@@ -583,7 +583,7 @@ input AssignContractInput {
   level: Int!
   strain: Strain!
   declarer: DirectionLetter!
-  doubling: Doubling!
+  doubling: Doubling
 }
 
 input AssignInitialLeadInput {

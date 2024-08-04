@@ -13,7 +13,7 @@ export interface BoardScoreParams {
   level: number;
   strain: Strain;
   vulnerable: boolean;
-  doubling: Doubling;
+  doubling?: Doubling;
   boardResult: number;
 }
 
@@ -23,7 +23,11 @@ function pointsPerOddContractTrickBeyondOne(strain: Strain) {
 
 const contractPoints = ({ strain, doubling, level }: BoardScoreParams) => {
   const doublingFactor =
-    doubling === "NONE" ? 1 : doubling === "REDOUBLE" ? 4 : 2;
+    doubling === "NONE" /* deprecated */ || !doubling
+      ? 1
+      : doubling === "REDOUBLE"
+        ? 4
+        : 2;
   const noTrumpFirstTrickExtra = strain === "NT" ? 10 : 0;
   const toReturn =
     (pointsPerOddContractTrickBeyondOne(strain) * level +

@@ -49,7 +49,7 @@ export interface AssignContractInput {
   clubDeviceId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   declarer: DirectionLetter;
-  doubling: Doubling;
+  doubling?: InputMaybe<Doubling>;
   gameId: Scalars["String"]["input"];
   level: Scalars["Int"]["input"];
   round: Scalars["Int"]["input"];
