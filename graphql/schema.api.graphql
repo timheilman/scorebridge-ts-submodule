@@ -151,7 +151,9 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   upsertBoardResult(input: UpsertBoardResultInput!): AssignResultResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   setRound(input: SetRoundInput!): SetRoundResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
