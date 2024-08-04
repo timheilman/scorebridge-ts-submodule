@@ -287,4 +287,22 @@ export const subIdToSubGql = {
     `,
     "onDeletePlayer",
   ),
+  onSetRound: createKeyedGeneratedSubscription<
+    "onSetRound",
+    SubscriptionOnDeletePlayerArgs
+  >(
+    /* GraphQL */ `
+      subscription OnSetRound($clubId: String!) {
+        onSetRound(clubId: $clubId) {
+          clubId
+          clubDeviceId
+          gameId
+          tableNumber
+          round
+          roundWelcomeConfirmed
+        }
+      }
+    `,
+    "onSetRound",
+  ),
 } as const;
