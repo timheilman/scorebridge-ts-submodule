@@ -1,8 +1,8 @@
+import { allDirections } from "./allDirections";
 import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups";
-export { allDirections } from "./allDirections";
 import { DirectionLetter } from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
