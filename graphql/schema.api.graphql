@@ -42,8 +42,9 @@ enum Rank {
   KING
 }
 
+# Doubling.NONE is deprecated; use null instead
 enum Doubling {
-  NONE # deprecated; use null instead
+  NONE
   DOUBLE
   REDOUBLE
 }
