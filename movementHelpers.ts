@@ -227,3 +227,49 @@ export const withEachPlayer = ({ tableCount }: { tableCount: number }) => {
 export const withEachTable = ({ tableCount }: { tableCount: number }) => {
   return Array.from({ length: tableCount }, (_, i) => i + 1);
 };
+
+export const tableRoundPairsForBoard = ({
+  board,
+  movement,
+  tableCount,
+  boardsPerRound,
+  roundCount,
+}: {
+  board: number;
+  movement: string;
+  tableCount: number;
+  boardsPerRound: number;
+  roundCount: number;
+}) => {
+  const boardGroupMethod = movementMethods(movement).boardGroupMethod;
+  return withEachTable({ tableCount }).reduce(
+    (acc, table) => {
+      return [
+        ...acc,
+        ...Array.from({ length: roundCount }, (_, i) => i + 1).reduce(
+          (acc, round) => {
+            const boardGroup = boardGroupMethod({
+              tableCount,
+              table,
+              round,
+            });
+            const start = startingBoardForBoardGroup({
+              boardGroup,
+              boardsPerRound,
+            });
+            const end = endingBoardForBoardGroup({
+              boardGroup,
+              boardsPerRound,
+            });
+            if (board <= end && board >= start) {
+              acc.push({ table, round });
+            }
+            return acc;
+          },
+          [] as { table: number; round: number }[],
+        ),
+      ];
+    },
+    [] as { table: number; round: number }[],
+  );
+};
