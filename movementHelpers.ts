@@ -1,4 +1,3 @@
-import { allDirections } from "./allDirections";
 import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
@@ -17,6 +16,48 @@ export interface BoardGroupProps {
 export interface PlayerNumberProps extends BoardGroupProps {
   direction: DirectionLetter;
 }
+
+
+export const allLevels = Array.from({ length: 7 }, (_, i) => i + 1);
+export const allSuits = ["C", "D", "H", "S"] as const;
+export const allStrains = [...allSuits, "NT"] as const;
+export const allRanks = [
+  "TWO",
+  "THREE",
+  "FOUR",
+  "FIVE",
+  "SIX",
+  "SEVEN",
+  "EIGHT",
+  "NINE",
+  "TEN",
+  "JACK",
+  "QUEEN",
+  "KING",
+  "ACE",
+] as const;
+export const allDirections = ["N", "W", "E", "S"] as const;
+
+export const possibleResults = (level: number) => {
+  // at one-level, if opponents make all 13 tricks, that's down seven:
+  // one-level: [-7, -6, ..., -1, 1, 2, 3, 4, 5, 6, 7]
+  // two-level: [-8, -7, ..., -1, 2, 3, 4, 5, 6, 7]
+  // three-level: [-9, ..., -1, 3, 4, ..., 7]
+  // four-level: [-10, ..., -1, 4, ..., 7]
+  const downLeftEndpoint = -6 - level;
+  const downRightEndpoint = -1;
+  const madeLeftEndpoint = level;
+  const madeRightEndpoint = 7;
+  return [
+    ...Array.from({ length: 13 }, (_, i) => -(i + 1)).reverse(),
+    ...Array.from({ length: 7 }, (_, i) => i + 1),
+  ].filter(
+    (i) =>
+      (i >= downLeftEndpoint && i <= downRightEndpoint) ||
+      (i >= madeLeftEndpoint && i <= madeRightEndpoint),
+  );
+};
+
 
 export const movementMethods = (movement: string) => {
   if (movement === "rainbow") {
