@@ -1,6 +1,6 @@
-export const shallowEqualWithNull = <T>(
-  obj1: Record<string, T>,
-  obj2: Record<string, T>,
+export const shallowEqualWithNull = <T extends Record<string, unknown>>(
+  obj1: T,
+  obj2: T,
 ) => {
   const keys = [...new Set([...Object.keys(obj1), ...Object.keys(obj2)])];
 
