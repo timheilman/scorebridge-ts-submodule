@@ -75,7 +75,7 @@ const slamBonus = ({ level, vulnerable }: BoardScoreParams) => {
 const insultBonus = ({ doubling }: BoardScoreParams) => {
   if (doubling === "NONE" /* deprecated */ || !doubling) {
     return 0;
-  };
+  }
 
   return doubling === "DOUBLE" ? 50 : 100;
 };
@@ -127,13 +127,11 @@ export const boardScoreFromBoardResult = ({
   boardResult: BoardResult;
   direction: DirectionLetter;
 }) => {
-  if (boardResult?.type === undefined) {
-    log("boardResultNotYetBid", "debug", { boardResult });
+  if (
+    !boardResult?.type ||
+    boardResult.type === "NOT_BID_NOT_PLAYED" /* deprecated */
+  ) {
     return;
-  }
-  if (boardResult.type === "NOT_BID_NOT_PLAYED") {
-    // deprecated
-    return null;
   }
   if (boardResult.type === "PASSED_OUT") {
     return 0;
