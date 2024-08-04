@@ -42,7 +42,7 @@ const overtrickCount = ({ level, boardResult }: BoardScoreParams) => {
 
 const overtrickPoints = (params: BoardScoreParams) => {
   const { doubling, strain, vulnerable } = params;
-  if (doubling === "NONE") {
+  if (doubling === "NONE" /* deprecated */ || !doubling) {
     return pointsPerOddContractTrickBeyondOne(strain) * overtrickCount(params);
   }
   const doubleFactor = doubling === "DOUBLE" ? 1 : 2;
@@ -73,7 +73,9 @@ const slamBonus = ({ level, vulnerable }: BoardScoreParams) => {
 };
 
 const insultBonus = ({ doubling }: BoardScoreParams) => {
-  if (doubling === "NONE") return 0;
+  if (doubling === "NONE" /* deprecated */ || !doubling) {
+    return 0;
+  };
 
   return doubling === "DOUBLE" ? 50 : 100;
 };
@@ -84,7 +86,7 @@ const penaltyPoints = ({
   boardResult,
 }: BoardScoreParams) => {
   const undertricks = Math.abs(boardResult);
-  if (doubling === "NONE") {
+  if (doubling === "NONE" /* deprecated */ || !doubling) {
     const vulnerableFactor = vulnerable ? 2 : 1;
     return -undertricks * 50 * vulnerableFactor;
   }
