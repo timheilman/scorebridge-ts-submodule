@@ -3,7 +3,7 @@ import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups";
-import { DirectionLetter } from "./graphql/appsync";
+import { DirectionLetter, PlayerAssignment } from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
 import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
@@ -17,7 +17,6 @@ export interface BoardGroupProps {
 export interface PlayerNumberProps extends BoardGroupProps {
   direction: DirectionLetter;
 }
-
 
 export const allLevels = Array.from({ length: 7 }, (_, i) => i + 1);
 export const allSuits = ["C", "D", "H", "S"] as const;
@@ -57,7 +56,6 @@ export const possibleResults = (level: number) => {
       (i >= madeLeftEndpoint && i <= madeRightEndpoint),
   );
 };
-
 
 export const movementMethods = (movement: string) => {
   if (movement === "rainbow") {
@@ -313,4 +311,42 @@ export const tableRoundPairsForBoard = ({
     },
     [] as { table: number; round: number }[],
   );
+};
+
+export const tableRoundDirectionToPlayerName = ({
+  movement,
+  tableCount,
+  playerAssignments,
+}: {
+  movement: string;
+  tableCount: number;
+  // key is "<tableNumber>_<directionLetter>"
+  playerAssignments: Record<string, Omit<PlayerAssignment, "directionLetter">>;
+}) => {
+  const { playerNumberMethod } = movementMethods(movement);
+  return ({
+    direction,
+    tableNumber,
+    round,
+  }: {
+    direction: DirectionLetter;
+    tableNumber: number;
+    round: number;
+  }) => {
+    const props = {
+      direction,
+      tableCount,
+      table: tableNumber,
+      round,
+    };
+    const playerNumber = playerNumberMethod(props);
+    const { direction: originalDirection, table: originalTable } =
+      inversePlayerNumber({
+        tableCount,
+        playerNumber,
+        movement,
+      });
+    return playerAssignments[`${originalTable}_${originalDirection}`]
+      ?.playerDisplayName;
+  };
 };
