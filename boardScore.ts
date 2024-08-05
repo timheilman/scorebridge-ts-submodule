@@ -139,7 +139,6 @@ export const boardScoreFromBoardResult = ({
   if (
     !boardResult.declarer ||
     !boardResult.result ||
-    !boardResult.doubling ||
     !boardResult.level ||
     !boardResult.strain
   ) {
