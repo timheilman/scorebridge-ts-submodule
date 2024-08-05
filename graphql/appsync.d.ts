@@ -98,7 +98,7 @@ export interface AssignPlayerResponse {
 
 export interface AssignResultInput {
   board: Scalars["Int"]["input"];
-  clubDeviceId: Scalars["String"]["input"];
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   result?: InputMaybe<Scalars["Int"]["input"]>;

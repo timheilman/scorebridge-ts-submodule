@@ -148,7 +148,9 @@ type Mutation {
   unassignInitialLead(input: UnassignContractInput!): BoardResult!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   assignResult(input: AssignResultInput!): AssignResultResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 
   upsertBoardResult(input: UpsertBoardResultInput!): AssignResultResponse!
     @aws_cognito_user_pools(
@@ -621,7 +623,7 @@ input UnassignContractInput {
 
 input AssignResultInput {
   clubId: String!
-  clubDeviceId: String!
+  clubDeviceId: String
   gameId: String!
   tableNumber: Int!
   board: Int!
