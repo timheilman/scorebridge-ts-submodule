@@ -13,7 +13,7 @@ export interface BoardScoreParams {
   level: number;
   strain: Strain;
   vulnerable: boolean;
-  doubling?: Doubling;
+  doubling?: Doubling | null;
   boardResult: number;
 }
 
