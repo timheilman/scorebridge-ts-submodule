@@ -9,7 +9,7 @@ import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("react.Leaderboard.");
 
-const allBoardsAllRoundsScore = (
+const allBoardsAllRoundsPartnershipScore = (
   scores: BoardAllRoundsScore[],
   tableCount: number,
 ) => {
@@ -43,6 +43,36 @@ interface PlayerAllBoardsScore {
   neubergPct: number;
 }
 type PlayerNameAllBoardsScorePair = [string | undefined, PlayerAllBoardsScore];
+const getPlayerNumberToBoardToBoardAllRoundsScoreForPartnership = ({
+  game,
+  boardResults,
+}: {
+  game: Omit<Game, "tableAssignments">;
+  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+}) => {
+  return withEachPlayer(game).reduce(
+    (playerAcc, playerNumber) => {
+      playerAcc[playerNumber] = withEachBoard(game).reduce(
+        (acc, board) => {
+          const thisBoardScore = matchPointsScore({
+            ...game,
+            playerNumber,
+            board,
+            boardResults,
+          });
+          if (thisBoardScore !== undefined && thisBoardScore !== null) {
+            acc[board] = thisBoardScore;
+          }
+          return acc;
+        },
+        {} as Record<number, BoardAllRoundsScore>,
+      );
+      return playerAcc;
+    },
+    {} as Record<number, Record<number, BoardAllRoundsScore>>,
+  );
+};
+
 export const useLeaderboardResults = ({
   game,
   boardResults,
@@ -53,9 +83,9 @@ export const useLeaderboardResults = ({
   playerNumberToName: Record<number, string | undefined> | undefined;
 }):
   | {
-      individualScoresSorted: PlayerNameAllBoardsScorePair[];
-      nsScoresSorted: PlayerNameAllBoardsScorePair[];
-      ewScoresSorted: PlayerNameAllBoardsScorePair[];
+      partnershipScoresSortedAll: PlayerNameAllBoardsScorePair[];
+      partnershipScoresSortedNs: PlayerNameAllBoardsScorePair[];
+      partnershipScoresSortedEw: PlayerNameAllBoardsScorePair[];
     }
   | undefined => {
   if (!game) {
@@ -63,48 +93,28 @@ export const useLeaderboardResults = ({
   }
   const playerNames = playerNumberToName ?? {};
   const tableCount = game.tableCount;
-  const getPlayerNumberToBoardToBoardAllRoundsScore = () => {
-    return withEachPlayer(game).reduce(
-      (playerAcc, playerNumber) => {
-        playerAcc[playerNumber] = withEachBoard(game).reduce(
-          (acc, board) => {
-            const thisBoardScore = matchPointsScore({
-              ...game,
-              playerNumber,
-              board,
-              boardResults,
-            });
-            if (thisBoardScore !== undefined && thisBoardScore !== null) {
-              acc[board] = thisBoardScore;
-            }
-            return acc;
-          },
-          {} as Record<number, BoardAllRoundsScore>,
-        );
-        return playerAcc;
-      },
-      {} as Record<number, Record<number, BoardAllRoundsScore>>,
-    );
-  };
 
   const playerNumberToBoardToBoardAllRoundsScore =
-    getPlayerNumberToBoardToBoardAllRoundsScore();
+    getPlayerNumberToBoardToBoardAllRoundsScoreForPartnership({
+      game,
+      boardResults,
+    });
   const playerNumberToAllBoardsScorePct = Object.keys(
     playerNumberToBoardToBoardAllRoundsScore,
   ).reduce(
     (acc, playerNumber) => {
-      const individualScore = allBoardsAllRoundsScore(
+      const partnershipScore = allBoardsAllRoundsPartnershipScore(
         Object.values(playerNumberToBoardToBoardAllRoundsScore[+playerNumber]),
         tableCount,
       );
-      if (individualScore !== undefined && individualScore !== null) {
+      if (partnershipScore !== undefined && partnershipScore !== null) {
         acc[+playerNumber] = {
           matchPointPct:
             Math.round(
-              individualScore.allBoardsScoreDecimalMatchPoints * 1000,
+              partnershipScore.allBoardsScoreDecimalMatchPoints * 1000,
             ) / 10,
           neubergPct:
-            Math.round(individualScore.allBoardsScoreDecimalNeuberg * 1000) /
+            Math.round(partnershipScore.allBoardsScoreDecimalNeuberg * 1000) /
             10,
         };
       }
@@ -152,5 +162,9 @@ export const useLeaderboardResults = ({
 
   const nsScoresSorted = sortScores(filterToDirs("N", "S"));
   const ewScoresSorted = sortScores(filterToDirs("E", "W"));
-  return { individualScoresSorted, nsScoresSorted, ewScoresSorted };
+  return {
+    partnershipScoresSortedAll: individualScoresSorted,
+    partnershipScoresSortedNs: nsScoresSorted,
+    partnershipScoresSortedEw: ewScoresSorted,
+  };
 };
