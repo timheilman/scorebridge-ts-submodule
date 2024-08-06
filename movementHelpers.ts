@@ -350,3 +350,20 @@ export const tableRoundDirectionToPlayerName = ({
       ?.playerDisplayName;
   };
 };
+
+export const oppositeDir = (dir: DirectionLetter) => {
+  if (dir === "N") {
+    return "S";
+  }
+  if (dir === "S") {
+    return "N";
+  }
+  if (dir === "E") {
+    return "W";
+  }
+  if (dir === "W") {
+    return "E";
+  }
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  throw new Error(`Unrecognized direction: ${dir}`);
+};

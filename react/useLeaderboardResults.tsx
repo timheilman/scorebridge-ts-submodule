@@ -2,6 +2,8 @@ import { BoardResult, DirectionLetter, Game } from "../graphql/appsync";
 import { BoardAllRoundsScore, matchPointsScore } from "../matchPointsScore";
 import {
   inversePlayerNumber,
+  oppositeDir,
+  whereWasI,
   withEachBoard,
   withEachPlayer,
 } from "../movementHelpers";
@@ -9,7 +11,7 @@ import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("react.Leaderboard.");
 
-const allBoardsAllRoundsPartnershipScore = (
+const allBoardsAllRoundsScore = (
   scores: BoardAllRoundsScore[],
   tableCount: number,
 ) => {
@@ -38,110 +40,172 @@ const allBoardsAllRoundsPartnershipScore = (
       nsSum / (scores.length * (tableCount - 1)) / 2,
   };
 };
-interface PlayerAllBoardsScore {
+export interface PlayerAllBoardsScore {
   matchPointPct: number;
   neubergPct: number;
 }
-type PlayerNameAllBoardsScorePair = [string | undefined, PlayerAllBoardsScore];
-const getPlayerNumberToBoardAllRoundsScoreListForPartnership = ({
+export interface BothScoresPct {
+  partnership: PlayerAllBoardsScore;
+  individual: PlayerAllBoardsScore;
+}
+
+export type AllPlayerFinalScores = Record<number, BothScoresPct>;
+
+const roleForPlayerOnBoard = ({
+  playerNumber,
+  board,
+  boardResults,
+  game,
+}: {
+  playerNumber: number;
+  board: number;
+  // key is "<tableNumber>_<board>_<round>"
+  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+  game: Omit<Game, "tableAssignments">;
+}): "Declarer" | "Defender" | "Dummy" | undefined => {
+  const whereIWas = whereWasI({
+    playerNumber,
+    board,
+    ...game,
+  });
+  if (!whereIWas) {
+    throw new Error("expected to find where I was");
+  }
+  const { direction, tableNumber, round } = whereIWas;
+  const boardResult = boardResults[`${tableNumber}_${board}_${round}`];
+  if (!boardResult) {
+    return;
+  }
+  if (!boardResult.declarer) {
+    return;
+  }
+  if (boardResult.declarer === direction) {
+    return "Declarer";
+  }
+  if (oppositeDir(boardResult.declarer) === direction) {
+    return "Dummy";
+  }
+  return "Defender";
+};
+const getPlayerNumberToBoardAllRoundsScoreList = ({
   game,
   boardResults,
 }: {
   game: Omit<Game, "tableAssignments">;
+  // key is "<tableNumber>_<board>_<round>"
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
 }) => {
   return withEachPlayer(game).reduce(
     (playerAcc, playerNumber) => {
-      playerAcc[playerNumber] = withEachBoard(game).reduce((acc, board) => {
-        const thisBoardScore = matchPointsScore({
-          ...game,
-          playerNumber,
-          board,
-          boardResults,
-        });
-        if (thisBoardScore !== undefined && thisBoardScore !== null) {
-          acc.push(thisBoardScore);
-        }
-        return acc;
-      }, [] as BoardAllRoundsScore[]);
+      playerAcc[playerNumber] = withEachBoard(game).reduce(
+        (acc, board) => {
+          const thisBoardScore = matchPointsScore({
+            ...game,
+            playerNumber,
+            board,
+            boardResults,
+          });
+          if (thisBoardScore !== undefined && thisBoardScore !== null) {
+            acc.partnership.push(thisBoardScore);
+            const role = roleForPlayerOnBoard({
+              playerNumber,
+              board,
+              boardResults,
+              game,
+            });
+            if (role === "Defender") {
+              acc.individual.push(thisBoardScore);
+            } else if (role === "Declarer") {
+              acc.individual.push(thisBoardScore);
+              acc.individual.push(thisBoardScore);
+            }
+          }
+          return acc;
+        },
+        {
+          partnership: [] as BoardAllRoundsScore[],
+          individual: [] as BoardAllRoundsScore[],
+        },
+      );
       return playerAcc;
     },
-    {} as Record<number, BoardAllRoundsScore[]>,
+    {} as Record<
+      number,
+      { partnership: BoardAllRoundsScore[]; individual: BoardAllRoundsScore[] }
+    >,
   );
 };
+
+const pctThreeSigDig = (n: number) => Math.round(n * 1000) / 10;
 
 export const useLeaderboardResults = ({
   game,
   boardResults,
-  playerNumberToName,
 }: {
   game: Omit<Game, "tableAssignments"> | undefined;
+  // key is "<tableNumber>_<board>_<round>"
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
-  playerNumberToName: Record<number, string | undefined> | undefined;
 }):
   | {
-      partnershipScoresSortedAll: PlayerNameAllBoardsScorePair[];
-      partnershipScoresSortedNs: PlayerNameAllBoardsScorePair[];
-      partnershipScoresSortedEw: PlayerNameAllBoardsScorePair[];
+      partnershipScoresAll: Record<number, BothScoresPct>;
+      partnershipScoresNs: Record<number, BothScoresPct>;
+      partnershipScoresEw: Record<number, BothScoresPct>;
     }
   | undefined => {
   if (!game) {
     return;
   }
-  const playerNames = playerNumberToName ?? {};
   const tableCount = game.tableCount;
 
-  const playerNumberToBoardToBoardAllRoundsScore =
-    getPlayerNumberToBoardAllRoundsScoreListForPartnership({
+  const playerNumberToBoardAllRoundsScoreList =
+    getPlayerNumberToBoardAllRoundsScoreList({
       game,
       boardResults,
     });
   const playerNumberToAllBoardsScorePct = Object.keys(
-    playerNumberToBoardToBoardAllRoundsScore,
+    playerNumberToBoardAllRoundsScoreList,
   ).reduce(
     (acc, playerNumber) => {
-      const partnershipScore = allBoardsAllRoundsPartnershipScore(
-        playerNumberToBoardToBoardAllRoundsScore[+playerNumber],
+      const partnershipScore = allBoardsAllRoundsScore(
+        playerNumberToBoardAllRoundsScoreList[+playerNumber].partnership,
+        tableCount,
+      );
+      const indivScore = allBoardsAllRoundsScore(
+        playerNumberToBoardAllRoundsScoreList[+playerNumber].individual,
         tableCount,
       );
       if (partnershipScore !== undefined && partnershipScore !== null) {
-        acc[+playerNumber] = {
-          matchPointPct:
-            Math.round(
-              partnershipScore.allBoardsScoreDecimalMatchPoints * 1000,
-            ) / 10,
-          neubergPct:
-            Math.round(partnershipScore.allBoardsScoreDecimalNeuberg * 1000) /
-            10,
+        acc[+playerNumber].partnership = {
+          matchPointPct: pctThreeSigDig(
+            partnershipScore.allBoardsScoreDecimalMatchPoints,
+          ),
+          neubergPct: pctThreeSigDig(
+            partnershipScore.allBoardsScoreDecimalNeuberg,
+          ),
         };
       }
+      if (indivScore !== undefined && indivScore !== null) {
+        acc[+playerNumber].individual = {
+          matchPointPct: pctThreeSigDig(
+            indivScore.allBoardsScoreDecimalMatchPoints,
+          ),
+          neubergPct: pctThreeSigDig(indivScore.allBoardsScoreDecimalNeuberg),
+        };
+      }
+
       return acc;
     },
-    {} as Record<number, { matchPointPct: number; neubergPct: number }>,
+    {} as Record<
+      number,
+      {
+        partnership: { matchPointPct: number; neubergPct: number };
+        individual: { matchPointPct: number; neubergPct: number };
+      }
+    >,
   );
   log("playerNumberToAveragePct", "debug", {
     playerNumberToAllBoardsMatchPointScorePct: playerNumberToAllBoardsScorePct,
   });
-  const sortScores = (
-    playerNumStringToScore: Record<
-      string,
-      { matchPointPct: number; neubergPct: number }
-    >,
-  ): PlayerNameAllBoardsScorePair[] => {
-    return Object.entries(playerNumStringToScore)
-      .sort((a, b) =>
-        a[1].matchPointPct > b[1].matchPointPct
-          ? -1
-          : a[1].matchPointPct === b[1].matchPointPct
-            ? 0
-            : 1,
-      )
-      .map((e) => {
-        const playerName = playerNames[+e[0]];
-        return [playerName, e[1]] as const;
-      });
-  };
-  const individualScoresSorted = sortScores(playerNumberToAllBoardsScorePct);
 
   const filterToDirs = (dir1: DirectionLetter, dir2: DirectionLetter) => {
     return Object.fromEntries(
@@ -157,11 +221,9 @@ export const useLeaderboardResults = ({
     );
   };
 
-  const nsScoresSorted = sortScores(filterToDirs("N", "S"));
-  const ewScoresSorted = sortScores(filterToDirs("E", "W"));
   return {
-    partnershipScoresSortedAll: individualScoresSorted,
-    partnershipScoresSortedNs: nsScoresSorted,
-    partnershipScoresSortedEw: ewScoresSorted,
+    partnershipScoresAll: playerNumberToAllBoardsScorePct,
+    partnershipScoresNs: filterToDirs("N", "S"),
+    partnershipScoresEw: filterToDirs("E", "W"),
   };
 };
