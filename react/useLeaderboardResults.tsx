@@ -9,38 +9,37 @@ import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("react.Leaderboard.");
 
-const average = (
-  nums: {
-    boardMatchPointsScored: number;
-    boardMatchPointsScoredNeuberg: number;
-    opponentScoreCount: number;
-  }[],
-  tableCount: number,
-) => {
-  const withoutNullsUndefineds = nums.filter(
+const average = (scores: BoardMatchPointsScore[], tableCount: number) => {
+  const withoutNullsUndefineds = scores.filter(
     (n) => n !== null && n !== undefined,
   );
   if (withoutNullsUndefineds.length === 0) {
     return undefined;
   }
   const mpSum = withoutNullsUndefineds.reduce(
-    (acc, mp) => acc + mp.boardMatchPointsScored,
+    (acc, score) => acc + score.boardMatchPointsScored,
     0,
   );
-  const ocSum = withoutNullsUndefineds.reduce(
-    (acc, mp) => acc + mp.opponentScoreCount,
+  const oscSum = withoutNullsUndefineds.reduce(
+    (acc, score) => acc + score.opponentScoreCount,
     0,
   );
   const nsSum = withoutNullsUndefineds.reduce(
-    (acc, mp) => acc + mp.boardMatchPointsScoredNeuberg,
+    (acc, score) => acc + score.boardMatchPointsScoredNeuberg,
     0,
   );
-  log("nsSum", "debug", { nums, nsSum });
+  log("nsSum", "debug", { scores, nsSum });
   return {
-    mp: mpSum / ocSum / 2,
-    ns: nsSum / (nums.length * (tableCount - 1)) / 2,
+    allBoardsMatchPointScore: mpSum / oscSum / 2,
+    allBoardsMatchPointScoreNeuberg:
+      nsSum / (scores.length * (tableCount - 1)) / 2,
   };
 };
+interface PlayerAllBoardsScore {
+  matchPointPct: number;
+  neubergPct: number;
+}
+type PlayerNameAllBoardsScorePair = [string | undefined, PlayerAllBoardsScore];
 export const useLeaderboardResults = ({
   game,
   boardResults,
@@ -49,9 +48,15 @@ export const useLeaderboardResults = ({
   game: Omit<Game, "tableAssignments"> | undefined;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
   playerNumberToName: Record<number, string | undefined> | undefined;
-}) => {
+}):
+  | {
+      individualScoresSorted: PlayerNameAllBoardsScorePair[];
+      nsScoresSorted: PlayerNameAllBoardsScorePair[];
+      ewScoresSorted: PlayerNameAllBoardsScorePair[];
+    }
+  | undefined => {
   if (!game) {
-    return {};
+    return;
   }
   const playerNames = playerNumberToName ?? {};
   const tableCount = game.tableCount;
@@ -79,45 +84,58 @@ export const useLeaderboardResults = ({
     );
   };
 
-  const playerNumberToBoardToMatchPoints =
+  const playerNumberToBoardToBoardMatchPoints =
     getPlayerNumberToBoardToBoardMatchPointsScore();
-  const playerNumberToAveragePct = Object.keys(
-    playerNumberToBoardToMatchPoints,
+  const playerNumberToAllBoardsMatchPointScorePct = Object.keys(
+    playerNumberToBoardToBoardMatchPoints,
   ).reduce(
     (acc, playerNumber) => {
       const individualScore = average(
-        Object.values(playerNumberToBoardToMatchPoints[+playerNumber]),
+        Object.values(playerNumberToBoardToBoardMatchPoints[+playerNumber]),
         tableCount,
       );
       if (individualScore !== undefined && individualScore !== null) {
         acc[+playerNumber] = {
-          mp: Math.round(individualScore.mp * 1000) / 10,
-          ns: Math.round(individualScore.ns * 1000) / 10,
+          matchPointPct:
+            Math.round(individualScore.allBoardsMatchPointScore * 1000) / 10,
+          neubergPct:
+            Math.round(individualScore.allBoardsMatchPointScoreNeuberg * 1000) /
+            10,
         };
       }
       return acc;
     },
-    {} as Record<number, { mp: number; ns: number }>,
+    {} as Record<number, { matchPointPct: number; neubergPct: number }>,
   );
-  log("playerNumberToAveragePct", "debug", { playerNumberToAveragePct });
+  log("playerNumberToAveragePct", "debug", {
+    playerNumberToAllBoardsMatchPointScorePct,
+  });
   const sortScores = (
-    playerNumStringToScore: Record<string, { mp: number; ns: number }>,
-  ) => {
+    playerNumStringToScore: Record<
+      string,
+      { matchPointPct: number; neubergPct: number }
+    >,
+  ): PlayerNameAllBoardsScorePair[] => {
     return Object.entries(playerNumStringToScore)
-      .sort((a, b) => (a[1].mp > b[1].mp ? -1 : a[1].mp === b[1].mp ? 0 : 1))
+      .sort((a, b) =>
+        a[1].matchPointPct > b[1].matchPointPct
+          ? -1
+          : a[1].matchPointPct === b[1].matchPointPct
+            ? 0
+            : 1,
+      )
       .map((e) => {
         const playerName = playerNames[+e[0]];
-        return [playerName, e[1]];
+        return [playerName, e[1]] as const;
       });
   };
-  const individualScoresSorted = sortScores(playerNumberToAveragePct) as [
-    string | undefined,
-    { mp: number; ns: number },
-  ][];
+  const individualScoresSorted = sortScores(
+    playerNumberToAllBoardsMatchPointScorePct,
+  );
 
   const filterToDirs = (dir1: DirectionLetter, dir2: DirectionLetter) => {
     return Object.fromEntries(
-      Object.entries(playerNumberToAveragePct).filter((e) => {
+      Object.entries(playerNumberToAllBoardsMatchPointScorePct).filter((e) => {
         const { direction } = inversePlayerNumber({
           ...game,
           playerNumber: +e[0],
@@ -129,13 +147,7 @@ export const useLeaderboardResults = ({
     );
   };
 
-  const nsScoresSorted = sortScores(filterToDirs("N", "S")) as [
-    string | undefined,
-    { mp: number; ns: number },
-  ][];
-  const ewScoresSorted = sortScores(filterToDirs("E", "W")) as [
-    string | undefined,
-    { mp: number; ns: number },
-  ][];
+  const nsScoresSorted = sortScores(filterToDirs("N", "S"));
+  const ewScoresSorted = sortScores(filterToDirs("E", "W"));
   return { individualScoresSorted, nsScoresSorted, ewScoresSorted };
 };

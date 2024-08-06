@@ -105,7 +105,9 @@ const penaltyPoints = ({
   );
 };
 
-export const boardScore = (params: BoardScoreParams) => {
+export const biddingBoxScoreForNsDefinitelyPlayed = (
+  params: BoardScoreParams,
+) => {
   const scoreNorthSouth =
     params.boardResult > 0
       ? contractPoints(params) +
@@ -120,7 +122,7 @@ export const boardScore = (params: BoardScoreParams) => {
   return scoreNorthSouth;
 };
 
-export const boardScoreFromBoardResult = ({
+export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult,
   direction,
 }: {
@@ -149,7 +151,7 @@ export const boardScoreFromBoardResult = ({
 
   return (
     whichWay *
-    boardScore({
+    biddingBoxScoreForNsDefinitelyPlayed({
       declarer: boardResult.declarer,
       boardResult: boardResult.result,
       doubling: boardResult.doubling,

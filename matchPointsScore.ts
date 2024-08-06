@@ -1,4 +1,4 @@
-import { boardScoreFromBoardResult } from "./boardScore";
+import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
 import { BoardResult } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
@@ -41,7 +41,7 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
   }, [] as number[]);
 };
 
-export const mpScoreCalcWeighted = ({
+export const singleBoardScoreCalcMatchPoints = ({
   myScore,
   opponentsScores,
 }: {
@@ -55,7 +55,7 @@ export const mpScoreCalcWeighted = ({
   }, 0);
 };
 
-export const mpScoreCalcNeuberg = ({
+export const singleBoardScoreCalcNeuberg = ({
   myScore,
   opponentsScores,
   skippedBoardCount,
@@ -64,7 +64,7 @@ export const mpScoreCalcNeuberg = ({
   opponentsScores: number[];
   skippedBoardCount: number;
 }) => {
-  const matchPointsAsThoughZeroUnplayed = mpScoreCalcWeighted({
+  const matchPointsAsThoughZeroUnplayed = singleBoardScoreCalcMatchPoints({
     myScore,
     opponentsScores,
   });
@@ -105,7 +105,7 @@ export const matchPointsScore = (params: {
   const whereOpponentsWere = trueOpponents(params).map(
     (o) => whereWasI({ ...params, playerNumber: o })!,
   );
-  const myScore = boardScoreFromBoardResult({
+  const myScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
     boardResult: {
       board,
       round: playerRound,
@@ -121,7 +121,7 @@ export const matchPointsScore = (params: {
     return myScore;
   }
   const opponentsScores = whereOpponentsWere.reduce((acc, opponent) => {
-    const otherResult = boardScoreFromBoardResult({
+    const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
       boardResult: {
         board,
         round: opponent.round,
@@ -141,12 +141,15 @@ export const matchPointsScore = (params: {
   const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
 
   return {
-    boardMatchPointsScoredNeuberg: mpScoreCalcNeuberg({
+    boardMatchPointsScoredNeuberg: singleBoardScoreCalcNeuberg({
       myScore,
       opponentsScores,
       skippedBoardCount,
     }),
-    boardMatchPointsScored: mpScoreCalcWeighted({ myScore, opponentsScores }),
+    boardMatchPointsScored: singleBoardScoreCalcMatchPoints({
+      myScore,
+      opponentsScores,
+    }),
     opponentScoreCount: opponentsScores.length,
   };
 };
