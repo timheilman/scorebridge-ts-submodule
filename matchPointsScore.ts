@@ -81,6 +81,12 @@ export const mpScoreCalcNeuberg = ({
   return neuberg;
 };
 
+export interface BoardMatchPointsScore {
+  boardMatchPointsScoredNeuberg: number;
+  boardMatchPointsScored: number;
+  opponentScoreCount: number;
+}
+
 export const matchPointsScore = (params: {
   roundCount: number;
   boardsPerRound: number;
@@ -89,9 +95,8 @@ export const matchPointsScore = (params: {
   board: number;
   movement: string;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
-  neuberg: boolean;
-}) => {
-  const { board, boardResults, playerNumber, neuberg } = params;
+}): BoardMatchPointsScore | null | undefined => {
+  const { board, boardResults, playerNumber } = params;
   const {
     tableNumber: playerTable,
     round: playerRound,
@@ -136,9 +141,12 @@ export const matchPointsScore = (params: {
   const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
 
   return {
-    boardMatchPointsScored: neuberg
-      ? mpScoreCalcNeuberg({ myScore, opponentsScores, skippedBoardCount })
-      : mpScoreCalcWeighted({ myScore, opponentsScores }),
+    boardMatchPointsScoredNeuberg: mpScoreCalcNeuberg({
+      myScore,
+      opponentsScores,
+      skippedBoardCount,
+    }),
+    boardMatchPointsScored: mpScoreCalcWeighted({ myScore, opponentsScores }),
     opponentScoreCount: opponentsScores.length,
   };
 };

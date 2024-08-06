@@ -1,5 +1,5 @@
 import { BoardResult, DirectionLetter, Game } from "../graphql/appsync";
-import { matchPointsScore } from "../matchPointsScore";
+import { BoardMatchPointsScore, matchPointsScore } from "../matchPointsScore";
 import {
   inversePlayerNumber,
   withEachBoard,
@@ -55,64 +55,32 @@ export const useLeaderboardResults = ({
   }
   const playerNames = playerNumberToName ?? {};
   const tableCount = game.tableCount;
-  const getPlayerNumberToBoardToMatchPointOpponentCountPairs = () => {
+  const getPlayerNumberToBoardToBoardMatchPointsScore = () => {
     return withEachPlayer(game).reduce(
       (playerAcc, playerNumber) => {
         playerAcc[playerNumber] = withEachBoard(game).reduce(
           (acc, board) => {
-            const matchpointOpponentCountPair = matchPointsScore({
+            const thisBoardScore = matchPointsScore({
               ...game,
               playerNumber,
               board,
               boardResults,
-              neuberg: false,
             });
-            const neubergPair = matchPointsScore({
-              ...game,
-              playerNumber,
-              board,
-              boardResults,
-              neuberg: true,
-            });
-            if (
-              matchpointOpponentCountPair !== undefined &&
-              matchpointOpponentCountPair !== null
-            ) {
-              acc[board] = {
-                ...matchpointOpponentCountPair,
-                boardMatchPointsScoredNeuberg:
-                  neubergPair!.boardMatchPointsScored,
-              };
+            if (thisBoardScore !== undefined && thisBoardScore !== null) {
+              acc[board] = thisBoardScore;
             }
             return acc;
           },
-          {} as Record<
-            number,
-            {
-              boardMatchPointsScored: number;
-              boardMatchPointsScoredNeuberg: number;
-              opponentScoreCount: number;
-            }
-          >,
+          {} as Record<number, BoardMatchPointsScore>,
         );
         return playerAcc;
       },
-      {} as Record<
-        number,
-        Record<
-          number,
-          {
-            boardMatchPointsScored: number;
-            boardMatchPointsScoredNeuberg: number;
-            opponentScoreCount: number;
-          }
-        >
-      >,
+      {} as Record<number, Record<number, BoardMatchPointsScore>>,
     );
   };
 
   const playerNumberToBoardToMatchPoints =
-    getPlayerNumberToBoardToMatchPointOpponentCountPairs();
+    getPlayerNumberToBoardToBoardMatchPointsScore();
   const playerNumberToAveragePct = Object.keys(
     playerNumberToBoardToMatchPoints,
   ).reduce(
