@@ -42,48 +42,54 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
 };
 
 export const singleBoardScoreCalcMatchPoints = ({
-  myScore,
-  opponentsScores,
+  myBiddingBoxScore,
+  opponentsBiddingBoxScores,
 }: {
-  myScore: number;
-  opponentsScores: number[];
+  myBiddingBoxScore: number;
+  opponentsBiddingBoxScores: number[];
 }) => {
-  return opponentsScores.reduce((acc, opponentScore) => {
+  return opponentsBiddingBoxScores.reduce((acc, opponentScore) => {
     return (
-      acc + (opponentScore === myScore ? 1 : opponentScore < myScore ? 2 : 0)
+      acc +
+      (opponentScore === myBiddingBoxScore
+        ? 1
+        : opponentScore < myBiddingBoxScore
+          ? 2
+          : 0)
     );
   }, 0);
 };
 
 export const singleBoardScoreCalcNeuberg = ({
-  myScore,
-  opponentsScores,
+  myBiddingBoxScore,
+  opponentsBiddingBoxScores,
   skippedBoardCount,
 }: {
-  myScore: number;
-  opponentsScores: number[];
+  myBiddingBoxScore: number;
+  opponentsBiddingBoxScores: number[];
   skippedBoardCount: number;
 }) => {
   const matchPointsAsThoughZeroUnplayed = singleBoardScoreCalcMatchPoints({
-    myScore,
-    opponentsScores,
+    myBiddingBoxScore,
+    opponentsBiddingBoxScores: opponentsBiddingBoxScores,
   });
-  const fullBoardCount = opponentsScores.length + skippedBoardCount + 1;
+  const fullBoardCount =
+    opponentsBiddingBoxScores.length + skippedBoardCount + 1;
   const neuberg =
     (matchPointsAsThoughZeroUnplayed * fullBoardCount + skippedBoardCount) /
-    (opponentsScores.length + 1);
+    (opponentsBiddingBoxScores.length + 1);
   log(`neuberg`, "debug", {
     M: matchPointsAsThoughZeroUnplayed,
     E: fullBoardCount,
-    A: opponentsScores.length + 1,
+    A: opponentsBiddingBoxScores.length + 1,
     N: neuberg,
   });
   return neuberg;
 };
 
-export interface BoardMatchPointsScore {
-  boardMatchPointsScoredNeuberg: number;
-  boardMatchPointsScored: number;
+export interface BoardAllRoundsScore {
+  boardAllRoundsScoreNeuberg: number;
+  boardAllRoundsScoreMatchPoints: number;
   opponentScoreCount: number;
 }
 
@@ -95,7 +101,7 @@ export const matchPointsScore = (params: {
   board: number;
   movement: string;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
-}): BoardMatchPointsScore | null | undefined => {
+}): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults, playerNumber } = params;
   const {
     tableNumber: playerTable,
@@ -105,7 +111,7 @@ export const matchPointsScore = (params: {
   const whereOpponentsWere = trueOpponents(params).map(
     (o) => whereWasI({ ...params, playerNumber: o })!,
   );
-  const myScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
+  const myBiddingBoxScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
     boardResult: {
       board,
       round: playerRound,
@@ -113,43 +119,47 @@ export const matchPointsScore = (params: {
     },
     direction: playerDir,
   });
-  if (myScore === null || myScore === undefined) {
+  if (myBiddingBoxScore === null || myBiddingBoxScore === undefined) {
     log(
-      "myScoreUndefined",
+      "myBiddingBoxScoreUndefined",
       playerNumber === 1 && board === 1 ? "info" : "debug",
     );
-    return myScore;
+    return myBiddingBoxScore;
   }
-  const opponentsScores = whereOpponentsWere.reduce((acc, opponent) => {
-    const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
-      boardResult: {
-        board,
-        round: opponent.round,
-        ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
-      },
-      direction: opponent.direction,
-    });
-    if (otherResult !== null && otherResult !== undefined) {
-      acc.push(otherResult);
-    }
-    return acc;
-  }, [] as number[]);
-  if (opponentsScores.length === 0) {
+  const opponentsBiddingBoxScores = whereOpponentsWere.reduce(
+    (acc, opponent) => {
+      const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
+        boardResult: {
+          board,
+          round: opponent.round,
+          ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
+        },
+        direction: opponent.direction,
+      });
+      if (otherResult !== null && otherResult !== undefined) {
+        acc.push(otherResult);
+      }
+      return acc;
+    },
+    [] as number[],
+  );
+  if (opponentsBiddingBoxScores.length === 0) {
     return;
   }
   // log("mpScoreCalc", "debug", { board, myScore, opponentsScores });
-  const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
+  const skippedBoardCount =
+    whereOpponentsWere.length - opponentsBiddingBoxScores.length;
 
   return {
-    boardMatchPointsScoredNeuberg: singleBoardScoreCalcNeuberg({
-      myScore,
-      opponentsScores,
+    boardAllRoundsScoreNeuberg: singleBoardScoreCalcNeuberg({
+      myBiddingBoxScore,
+      opponentsBiddingBoxScores,
       skippedBoardCount,
     }),
-    boardMatchPointsScored: singleBoardScoreCalcMatchPoints({
-      myScore,
-      opponentsScores,
+    boardAllRoundsScoreMatchPoints: singleBoardScoreCalcMatchPoints({
+      myBiddingBoxScore,
+      opponentsBiddingBoxScores,
     }),
-    opponentScoreCount: opponentsScores.length,
+    opponentScoreCount: opponentsBiddingBoxScores.length,
   };
 };
