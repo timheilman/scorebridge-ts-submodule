@@ -12,7 +12,7 @@ const log = tsSubmoduleLogFn("react.Leaderboard.");
 const average = (
   nums: {
     boardMatchPointsScored: number;
-    ns: number;
+    boardMatchPointsScoredNeuberg: number;
     opponentScoreCount: number;
   }[],
   tableCount: number,
@@ -31,7 +31,10 @@ const average = (
     (acc, mp) => acc + mp.opponentScoreCount,
     0,
   );
-  const nsSum = withoutNullsUndefineds.reduce((acc, mp) => acc + mp.ns, 0);
+  const nsSum = withoutNullsUndefineds.reduce(
+    (acc, mp) => acc + mp.boardMatchPointsScoredNeuberg,
+    0,
+  );
   log("nsSum", "debug", { nums, nsSum });
   return {
     mp: mpSum / ocSum / 2,
@@ -77,7 +80,8 @@ export const useLeaderboardResults = ({
             ) {
               acc[board] = {
                 ...matchpointOpponentCountPair,
-                ns: neubergPair!.boardMatchPointsScored,
+                boardMatchPointsScoredNeuberg:
+                  neubergPair!.boardMatchPointsScored,
               };
             }
             return acc;
@@ -86,7 +90,7 @@ export const useLeaderboardResults = ({
             number,
             {
               boardMatchPointsScored: number;
-              ns: number;
+              boardMatchPointsScoredNeuberg: number;
               opponentScoreCount: number;
             }
           >,
@@ -99,7 +103,7 @@ export const useLeaderboardResults = ({
           number,
           {
             boardMatchPointsScored: number;
-            ns: number;
+            boardMatchPointsScoredNeuberg: number;
             opponentScoreCount: number;
           }
         >
