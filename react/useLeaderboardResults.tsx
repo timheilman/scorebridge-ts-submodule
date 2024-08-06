@@ -175,21 +175,23 @@ export const useLeaderboardResults = ({
         tableCount,
       );
       if (partnershipScore !== undefined && partnershipScore !== null) {
-        acc[+playerNumber].partnership = {
-          matchPointPct: pctThreeSigDig(
-            partnershipScore.allBoardsScoreDecimalMatchPoints,
-          ),
-          neubergPct: pctThreeSigDig(
-            partnershipScore.allBoardsScoreDecimalNeuberg,
-          ),
-        };
-      }
-      if (indivScore !== undefined && indivScore !== null) {
-        acc[+playerNumber].individual = {
-          matchPointPct: pctThreeSigDig(
-            indivScore.allBoardsScoreDecimalMatchPoints,
-          ),
-          neubergPct: pctThreeSigDig(indivScore.allBoardsScoreDecimalNeuberg),
+        acc[+playerNumber] = {
+          partnership: {
+            matchPointPct: pctThreeSigDig(
+              partnershipScore.allBoardsScoreDecimalMatchPoints,
+            ),
+            neubergPct: pctThreeSigDig(
+              partnershipScore.allBoardsScoreDecimalNeuberg,
+            ),
+          },
+          individual: {
+            matchPointPct: indivScore
+              ? pctThreeSigDig(indivScore.allBoardsScoreDecimalMatchPoints)
+              : 0,
+            neubergPct: indivScore
+              ? pctThreeSigDig(indivScore.allBoardsScoreDecimalNeuberg)
+              : 0,
+          },
         };
       }
 

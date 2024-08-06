@@ -24,12 +24,12 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
   // log("whereWasI", "debug", { whereWasIResult });
   return withEachPlayer(params).reduce((acc, otherPlayer) => {
     const whereWasHe = whereWasI({ ...params, playerNumber: otherPlayer })!;
+    // log("whereWasHe", "debug", { otherPlayer, whereWasHe });
     const {
       tableNumber: otherTable,
       direction: otherDir,
       round: otherRound,
     } = whereWasHe;
-    // log("whereWasHe", "debug", { otherPlayer, whereWasHe });
     if (otherTable === playerTable && playerRound === otherRound) {
       return acc;
     }
