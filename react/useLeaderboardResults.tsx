@@ -10,7 +10,11 @@ import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 const log = tsSubmoduleLogFn("react.Leaderboard.");
 
 const average = (
-  nums: { mp: number; ns: number; opponentScoreCount: number }[],
+  nums: {
+    boardMatchPointsScored: number;
+    ns: number;
+    opponentScoreCount: number;
+  }[],
   tableCount: number,
 ) => {
   const withoutNullsUndefineds = nums.filter(
@@ -19,7 +23,10 @@ const average = (
   if (withoutNullsUndefineds.length === 0) {
     return undefined;
   }
-  const mpSum = withoutNullsUndefineds.reduce((acc, mp) => acc + mp.mp, 0);
+  const mpSum = withoutNullsUndefineds.reduce(
+    (acc, mp) => acc + mp.boardMatchPointsScored,
+    0,
+  );
   const ocSum = withoutNullsUndefineds.reduce(
     (acc, mp) => acc + mp.opponentScoreCount,
     0,
@@ -70,21 +77,32 @@ export const useLeaderboardResults = ({
             ) {
               acc[board] = {
                 ...matchpointOpponentCountPair,
-                ns: neubergPair!.mp,
+                ns: neubergPair!.boardMatchPointsScored,
               };
             }
             return acc;
           },
           {} as Record<
             number,
-            { mp: number; ns: number; opponentScoreCount: number }
+            {
+              boardMatchPointsScored: number;
+              ns: number;
+              opponentScoreCount: number;
+            }
           >,
         );
         return playerAcc;
       },
       {} as Record<
         number,
-        Record<number, { mp: number; ns: number; opponentScoreCount: number }>
+        Record<
+          number,
+          {
+            boardMatchPointsScored: number;
+            ns: number;
+            opponentScoreCount: number;
+          }
+        >
       >,
     );
   };

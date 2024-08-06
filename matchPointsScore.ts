@@ -136,7 +136,7 @@ export const matchPointsScore = (params: {
   const skippedBoardCount = whereOpponentsWere.length - opponentsScores.length;
 
   return {
-    mp: neuberg
+    boardMatchPointsScored: neuberg
       ? mpScoreCalcNeuberg({ myScore, opponentsScores, skippedBoardCount })
       : mpScoreCalcWeighted({ myScore, opponentsScores }),
     opponentScoreCount: opponentsScores.length,
