@@ -43,7 +43,7 @@ interface PlayerAllBoardsScore {
   neubergPct: number;
 }
 type PlayerNameAllBoardsScorePair = [string | undefined, PlayerAllBoardsScore];
-const getPlayerNumberToBoardToBoardAllRoundsScoreForPartnership = ({
+const getPlayerNumberToBoardAllRoundsScoreListForPartnership = ({
   game,
   boardResults,
 }: {
@@ -52,24 +52,21 @@ const getPlayerNumberToBoardToBoardAllRoundsScoreForPartnership = ({
 }) => {
   return withEachPlayer(game).reduce(
     (playerAcc, playerNumber) => {
-      playerAcc[playerNumber] = withEachBoard(game).reduce(
-        (acc, board) => {
-          const thisBoardScore = matchPointsScore({
-            ...game,
-            playerNumber,
-            board,
-            boardResults,
-          });
-          if (thisBoardScore !== undefined && thisBoardScore !== null) {
-            acc[board] = thisBoardScore;
-          }
-          return acc;
-        },
-        {} as Record<number, BoardAllRoundsScore>,
-      );
+      playerAcc[playerNumber] = withEachBoard(game).reduce((acc, board) => {
+        const thisBoardScore = matchPointsScore({
+          ...game,
+          playerNumber,
+          board,
+          boardResults,
+        });
+        if (thisBoardScore !== undefined && thisBoardScore !== null) {
+          acc.push(thisBoardScore);
+        }
+        return acc;
+      }, [] as BoardAllRoundsScore[]);
       return playerAcc;
     },
-    {} as Record<number, Record<number, BoardAllRoundsScore>>,
+    {} as Record<number, BoardAllRoundsScore[]>,
   );
 };
 
@@ -95,7 +92,7 @@ export const useLeaderboardResults = ({
   const tableCount = game.tableCount;
 
   const playerNumberToBoardToBoardAllRoundsScore =
-    getPlayerNumberToBoardToBoardAllRoundsScoreForPartnership({
+    getPlayerNumberToBoardAllRoundsScoreListForPartnership({
       game,
       boardResults,
     });
@@ -104,7 +101,7 @@ export const useLeaderboardResults = ({
   ).reduce(
     (acc, playerNumber) => {
       const partnershipScore = allBoardsAllRoundsPartnershipScore(
-        Object.values(playerNumberToBoardToBoardAllRoundsScore[+playerNumber]),
+        playerNumberToBoardToBoardAllRoundsScore[+playerNumber],
         tableCount,
       );
       if (partnershipScore !== undefined && partnershipScore !== null) {
