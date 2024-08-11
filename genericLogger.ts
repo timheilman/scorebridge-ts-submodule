@@ -107,11 +107,11 @@ export const getPrintFn = (...addlParams: unknown[]) => {
     );
   };
 };
-console.log(
-  `Loaded-for-default filesystem logging config:\n${JSON.stringify(
-    fileLoggingConfig,
-  )}`,
-);
+// console.log(
+//   `Loaded-for-default filesystem logging config:\n${JSON.stringify(
+//     fileLoggingConfig,
+//   )}`,
+// );
 
 export function currentConfig(envConfigStr: string | undefined) {
   if (envConfigStr) {
