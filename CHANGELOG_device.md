@@ -4,28 +4,26 @@ All notable changes to this project will be documented in this file. See [commit
 
 ## [1.2.0](https://github.com/timheilman/scorebridge-device/compare/v1.1.2...v1.2.0) (2024-08-06)
 
-
 ### Features
 
-* add BoardCard.tsx, title each card ([4c179d6](https://github.com/timheilman/scorebridge-device/commit/4c179d6d7ea96093affd47a683dfa3e84c5ac656))
-* add common button border to BoardSummaries on RoundConfrimBody ([4e3c6c5](https://github.com/timheilman/scorebridge-device/commit/4e3c6c5196c3d73a998c588adbad57547d82d095))
-* small margin for board cards ([25a1a42](https://github.com/timheilman/scorebridge-device/commit/25a1a42fc35434511d277dc22d6eacf22680eb51))
-* use outline icons for low-emphasis ([135247e](https://github.com/timheilman/scorebridge-device/commit/135247eaea98f65c4414bc428740c5f80790ba26))
-* use round transitioning icon for RoundConfirm screen ([7cbc7ea](https://github.com/timheilman/scorebridge-device/commit/7cbc7ead20f9c708e85f54c0c098bd9141d8e8f4))
-
+- add BoardCard.tsx, title each card ([4c179d6](https://github.com/timheilman/scorebridge-device/commit/4c179d6d7ea96093affd47a683dfa3e84c5ac656))
+- add common button border to BoardSummaries on RoundConfrimBody ([4e3c6c5](https://github.com/timheilman/scorebridge-device/commit/4e3c6c5196c3d73a998c588adbad57547d82d095))
+- small margin for board cards ([25a1a42](https://github.com/timheilman/scorebridge-device/commit/25a1a42fc35434511d277dc22d6eacf22680eb51))
+- use outline icons for low-emphasis ([135247e](https://github.com/timheilman/scorebridge-device/commit/135247eaea98f65c4414bc428740c5f80790ba26))
+- use round transitioning icon for RoundConfirm screen ([7cbc7ea](https://github.com/timheilman/scorebridge-device/commit/7cbc7ead20f9c708e85f54c0c098bd9141d8e8f4))
 
 ### Bug Fixes
 
-* allow old clients to receive subscr notifications from new ones even if not doubled ([482c7b2](https://github.com/timheilman/scorebridge-device/commit/482c7b2bf5eb2a728e1caf1433a082d7072a1027))
-* another crash at startup ([656bc80](https://github.com/timheilman/scorebridge-device/commit/656bc8052caa6b65fdc55803b5558e7689b177cb))
-* another startup crash, from <number> && <Component>, resulting in 0 rendering outside Text comp ([787cee5](https://github.com/timheilman/scorebridge-device/commit/787cee5414a579179d73531574b4b5bd562465ad))
-* crash at startup when using a rainbow movement ([9207549](https://github.com/timheilman/scorebridge-device/commit/920754907bbe235522a0525c3114ff3428a71a8d))
-* icons disappearance, and build: add scripts for local builds of android ([29b395c](https://github.com/timheilman/scorebridge-device/commit/29b395c3e65267acfb19363e459cc8d96ecaca03))
-* scor-191 fix typing for shallowEqualWithNull ([ece3fa4](https://github.com/timheilman/scorebridge-device/commit/ece3fa450c65973aa5db6df7e069ecc56362a357))
-* scor-241 center cloud sync icon, some other issues w/scor-244 and doubling deprecation ([c1a8add](https://github.com/timheilman/scorebridge-device/commit/c1a8add4783238027efaf3e8aae3400d677fca52))
-* scor-244 reinstate assignResult and onAssignResult for subscription backward-compat ([02a30ed](https://github.com/timheilman/scorebridge-device/commit/02a30ed31158bba484e5e0d31af3e9f94f349b97))
-* scor-247 auto-sized board icon fix ([ed6d56c](https://github.com/timheilman/scorebridge-device/commit/ed6d56c60f1cb70253d8d705c07a0e98da4e8ea9))
-* some BoardTab toggle buttons were not properly disabled while selected ([4c2bb65](https://github.com/timheilman/scorebridge-device/commit/4c2bb65fb764abc250c92c2a5b3bc0a8c9ad5363))
+- allow old clients to receive subscr notifications from new ones even if not doubled ([482c7b2](https://github.com/timheilman/scorebridge-device/commit/482c7b2bf5eb2a728e1caf1433a082d7072a1027))
+- another crash at startup ([656bc80](https://github.com/timheilman/scorebridge-device/commit/656bc8052caa6b65fdc55803b5558e7689b177cb))
+- another startup crash, from <number> && <Component>, resulting in 0 rendering outside Text comp ([787cee5](https://github.com/timheilman/scorebridge-device/commit/787cee5414a579179d73531574b4b5bd562465ad))
+- crash at startup when using a rainbow movement ([9207549](https://github.com/timheilman/scorebridge-device/commit/920754907bbe235522a0525c3114ff3428a71a8d))
+- icons disappearance, and build: add scripts for local builds of android ([29b395c](https://github.com/timheilman/scorebridge-device/commit/29b395c3e65267acfb19363e459cc8d96ecaca03))
+- scor-191 fix typing for shallowEqualWithNull ([ece3fa4](https://github.com/timheilman/scorebridge-device/commit/ece3fa450c65973aa5db6df7e069ecc56362a357))
+- scor-241 center cloud sync icon, some other issues w/scor-244 and doubling deprecation ([c1a8add](https://github.com/timheilman/scorebridge-device/commit/c1a8add4783238027efaf3e8aae3400d677fca52))
+- scor-244 reinstate assignResult and onAssignResult for subscription backward-compat ([02a30ed](https://github.com/timheilman/scorebridge-device/commit/02a30ed31158bba484e5e0d31af3e9f94f349b97))
+- scor-247 auto-sized board icon fix ([ed6d56c](https://github.com/timheilman/scorebridge-device/commit/ed6d56c60f1cb70253d8d705c07a0e98da4e8ea9))
+- some BoardTab toggle buttons were not properly disabled while selected ([4c2bb65](https://github.com/timheilman/scorebridge-device/commit/4c2bb65fb764abc250c92c2a5b3bc0a8c9ad5363))
 
 ## [1.1.2](https://github.com/timheilman/scorebridge-device/compare/v1.1.1...v1.1.2) (2024-08-03)
 
