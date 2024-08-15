@@ -102,7 +102,7 @@ export const matchPointsScore = (params: {
   movement: string;
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
 }): BoardAllRoundsScore | null | undefined => {
-  const { board, boardResults, playerNumber } = params;
+  const { board, boardResults } = params;
   const {
     tableNumber: playerTable,
     round: playerRound,

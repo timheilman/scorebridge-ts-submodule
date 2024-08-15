@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.1](https://github.com/timheilman/scorebridge-device/compare/v1.3.0...v1.3.1) (2024-08-15)
+
+### Bug Fixes
+
+- scor-259 most-recently-played board % scores not displayed at round confirm screen ([6c002a3](https://github.com/timheilman/scorebridge-device/commit/6c002a3841c6c3554b0cdd7221251af3d03b8500))
+
+## [1.3.0](https://github.com/timheilman/scorebridge-device/compare/v1.2.0...v1.3.0) (2024-08-14)
+
+### Features
+
+- player selection: turn off autocomplete and sort the filtered roster ([f7a3c9e](https://github.com/timheilman/scorebridge-device/commit/f7a3c9eb772d7bc9132190e0658a72db1a0e690f))
+
+### Bug Fixes
+
+- crash from null doubling value ([a5c2868](https://github.com/timheilman/scorebridge-device/commit/a5c28689e50f28608cc894b34eff5dd8c193a6a6))
+- scor-157 iOS splashscreen never hid, update maestro flow tho it does not catch ([3ffab1b](https://github.com/timheilman/scorebridge-device/commit/3ffab1b93588f27b5db67027bc333c52cb056dce))
+- scor-249 final round confirmation shows roundCount + 1 rather than a game over icon ([0c314c7](https://github.com/timheilman/scorebridge-device/commit/0c314c7af1f50b88280d06994f64431553337754))
+- scor-255 old clients need correct board result subscr notifications even if outcome set early ([0988915](https://github.com/timheilman/scorebridge-device/commit/0988915e47ee89ffb27ec0fe47079395fcd1287a))
+- scor-257 stop type===PLAYED interfering with board result equality and staying on cloud sync ([8d9ff00](https://github.com/timheilman/scorebridge-device/commit/8d9ff00170630a22f4213a15a37da87f37b40201))
+- scor-258 do not crash at player confirmation tab if not-all players have been specified ([4afdd9b](https://github.com/timheilman/scorebridge-device/commit/4afdd9bd8c575d857898b1aebd39b4eb3e64926f))
+
 ## [1.2.0](https://github.com/timheilman/scorebridge-device/compare/v1.1.2...v1.2.0) (2024-08-06)
 
 ### Features
