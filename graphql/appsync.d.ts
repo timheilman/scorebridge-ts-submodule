@@ -456,6 +456,7 @@ export interface PartialPlayerAssignment {
 
 export interface PartialTableAssignment {
   clubDeviceId: Scalars["String"]["input"];
+  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
   round?: InputMaybe<Scalars["Int"]["input"]>;

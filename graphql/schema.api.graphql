@@ -372,6 +372,7 @@ type TableAssignment {
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String!
+  confirmed: Boolean
   round: Int
   roundWelcomeConfirmed: Boolean
   playerAssignments: [PartialPlayerAssignment!]!
