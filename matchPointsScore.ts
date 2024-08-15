@@ -119,11 +119,10 @@ export const matchPointsScore = (params: {
     direction: playerDir,
   });
   if (myBiddingBoxScore === null || myBiddingBoxScore === undefined) {
-    log(
-      "myBiddingBoxScoreUndefined",
-      playerNumber === 1 && board === 1 ? "info" : "debug",
-    );
+    log("myBiddingBoxScoreUndefined", "debug");
     return myBiddingBoxScore;
+  } else {
+    log("myBiddingBoxScoreNotNullNotUndefined", "debug", { myBiddingBoxScore });
   }
   const opponentsBiddingBoxScores = whereOpponentsWere.reduce(
     (acc, opponent) => {
@@ -134,6 +133,10 @@ export const matchPointsScore = (params: {
         },
         direction: opponent.direction,
       });
+      log("opponentsBiddingBoxScore", "debug", {
+        index: `${opponent.tableNumber}_${board}_${opponent.round}`,
+        otherResult,
+      });
       if (otherResult !== null && otherResult !== undefined) {
         acc.push(otherResult);
       }
@@ -141,6 +144,7 @@ export const matchPointsScore = (params: {
     },
     [] as number[],
   );
+  log("opponentsBiddingBoxScores", "debug", { opponentsBiddingBoxScores });
   if (opponentsBiddingBoxScores.length === 0) {
     return;
   }

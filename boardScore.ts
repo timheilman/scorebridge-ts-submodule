@@ -132,10 +132,7 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   if (!boardResult) {
     return;
   }
-  if (
-    !boardResult?.type ||
-    boardResult.type === "NOT_BID_NOT_PLAYED" /* deprecated */
-  ) {
+  if (boardResult.type === "NOT_BID_NOT_PLAYED" /* deprecated */) {
     return;
   }
   if (boardResult.type === "PASSED_OUT") {
