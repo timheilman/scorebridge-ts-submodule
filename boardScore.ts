@@ -126,9 +126,12 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult,
   direction,
 }: {
-  boardResult: BoardResult;
+  boardResult?: Omit<BoardResult, "round"> | null;
   direction: DirectionLetter;
 }) => {
+  if (!boardResult) {
+    return;
+  }
   if (
     !boardResult?.type ||
     boardResult.type === "NOT_BID_NOT_PLAYED" /* deprecated */

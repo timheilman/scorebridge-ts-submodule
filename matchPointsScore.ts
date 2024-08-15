@@ -3,7 +3,7 @@ import { BoardResult } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
-const log = tsSubmoduleLogFn("features.gameOver.test.");
+const log = tsSubmoduleLogFn("matchPointsScore.");
 
 interface TrueOpponentsParams {
   roundCount: number;
@@ -114,7 +114,6 @@ export const matchPointsScore = (params: {
   const myBiddingBoxScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
     boardResult: {
       board,
-      round: playerRound,
       ...boardResults[`${playerTable}_${board}_${playerRound}`],
     },
     direction: playerDir,
@@ -131,7 +130,6 @@ export const matchPointsScore = (params: {
       const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
         boardResult: {
           board,
-          round: opponent.round,
           ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
         },
         direction: opponent.direction,
