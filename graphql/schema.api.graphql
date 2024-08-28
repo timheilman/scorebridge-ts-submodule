@@ -255,14 +255,14 @@ type ListClubDevicesOutput {
 input ListGamesInput {
   clubId: String!
   nextToken: String
-  limit: Int = 50
+  limit: Int
   finalGameFromLastList: PartialGame
 }
 
 input ListPlayersInput {
   clubId: String!
   nextToken: String
-  limit: Int = 50
+  limit: Int
 }
 
 type ListGamesOutput {
