@@ -247,6 +247,7 @@ export const whereWasI = (params: WhereWasIParams) => {
       return whereWasIMemo[myMemoKey];
     }
   }
+  return null;
 };
 
 export const withEachBoard = ({
