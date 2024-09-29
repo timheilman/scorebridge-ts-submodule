@@ -455,7 +455,7 @@ export interface PartialPlayerAssignment {
 }
 
 export interface PartialTableAssignment {
-  clubDeviceId: Scalars["String"]["input"];
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   playerAssignments: PartialPlayerAssignment[];
   results: PartialBoardResult[];
@@ -621,7 +621,7 @@ export type Suit = "C" | "D" | "H" | "S";
 
 export interface TableAssignment {
   __typename?: "TableAssignment";
-  clubDeviceId: Scalars["String"]["output"];
+  clubDeviceId?: Maybe<Scalars["String"]["output"]>;
   confirmed?: Maybe<Scalars["Boolean"]["output"]>;
   playerAssignments: PlayerAssignment[];
   results: BoardResult[];

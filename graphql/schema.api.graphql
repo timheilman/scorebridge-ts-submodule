@@ -361,7 +361,7 @@ type SetRoundResponse {
 
 type TableAssignment {
   tableNumber: Int!
-  clubDeviceId: String!
+  clubDeviceId: String
   confirmed: Boolean
   round: Int
   roundWelcomeConfirmed: Boolean
@@ -371,7 +371,7 @@ type TableAssignment {
 
 input PartialTableAssignment {
   tableNumber: Int!
-  clubDeviceId: String!
+  clubDeviceId: String
   confirmed: Boolean
   round: Int
   roundWelcomeConfirmed: Boolean
