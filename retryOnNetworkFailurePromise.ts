@@ -1,3 +1,6 @@
+// import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+
+// const log = tsSubmoduleLogFn("retryOnNetworkFailurePromise.");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const loosyGoosyIsNetworkError = (error: any) => {
   if (

@@ -1,5 +1,5 @@
 import { GqlTimeoutAfterRetriesError } from "./GqlTimeoutAfterRetriesError";
-import { client } from "./react/gqlClient";
+import { getClient } from "./react/gqlClient";
 
 export interface RetryingGqlPromiseParams<T> {
   gqlPromiseFn: () => Promise<T>;
@@ -25,7 +25,7 @@ export const retryOnTimeoutGqlPromise = async <T>(
   const gqlPromise = gqlPromiseFn();
   const cancellationTimeout = setTimeout(
     () => {
-      client.cancel(gqlPromise);
+      getClient().cancel(gqlPromise);
     },
     initialDelayMs * Math.pow(2, retry),
   );
@@ -34,7 +34,7 @@ export const retryOnTimeoutGqlPromise = async <T>(
     clearTimeout(cancellationTimeout);
     return result;
   } catch (e) {
-    if (client.isCancelError(e)) {
+    if (getClient().isCancelError(e)) {
       return await retryOnTimeoutGqlPromise({ ...params, retry: retry + 1 });
     } else {
       throw e;
