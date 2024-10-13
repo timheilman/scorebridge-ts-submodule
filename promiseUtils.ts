@@ -65,7 +65,7 @@ export const expBackoffPromise = async <T>(
   const {
     promiseFn,
     shouldRejectNotRetry = () => false,
-    maxTries = 6,
+    maxTries = 3,
     initialDelayMs = 1000,
     maxDelayMs = 16000,
     tryCount = 1,
