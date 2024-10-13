@@ -1,5 +1,7 @@
 import { GqlTimeoutAfterRetriesError } from "./GqlTimeoutAfterRetriesError";
-import { client } from "./react/gqlClient";
+import { getClient } from "./react/gqlClient";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+const log = tsSubmoduleLogFn("promiseUtils.");
 
 export const delayedStartPromise = <T>({
   promiseFn,
@@ -8,6 +10,10 @@ export const delayedStartPromise = <T>({
   promiseFn: () => Promise<T>;
   delayMs: number;
 }) => {
+  log("delayedStartPromise", "debug", { delayMs });
+  if (delayMs <= 0) {
+    return promiseFn();
+  }
   return new Promise<T>((resolve, reject) => {
     setTimeout(() => {
       promiseFn().then(resolve, reject);
@@ -25,10 +31,15 @@ export const cancelAfterMsPromise = async <T>({
   maxWaitMs: number;
 }) => {
   const promise = promiseFn();
+  log("cancelAfterMsPromise", "debug", { now: Date.now(), maxWaitMs });
   const cancellationTimeout = setTimeout(cancelAfterWaitFn, maxWaitMs, promise);
   try {
     return await promise;
   } finally {
+    log("cancelAfterMsPromise.finally", "debug", {
+      now: Date.now(),
+      maxWaitMs,
+    });
     clearTimeout(cancellationTimeout);
   }
 };
@@ -48,6 +59,7 @@ export const expBackoffRetryPromise = async <T>(params: {
     shouldRejectNotRetry = () => false,
     maxRetries = 2,
     initialDelayMs = 1000,
+    maxDelayMs = 16000,
     retryCount = 0,
     rejectWithWhenShouldntRetry = (e: unknown) => e,
     rejectWithAfterMaxRetries = (e: unknown) => e,
@@ -57,21 +69,67 @@ export const expBackoffRetryPromise = async <T>(params: {
     return await promise;
   } catch (innerRejection) {
     if (retryCount >= maxRetries) {
+      log("expBackoffRetryPromise.rejectWithAfterMaxRetries", "debug", {
+        params,
+        innerRejection,
+      });
       throw rejectWithAfterMaxRetries(innerRejection);
     }
     if (shouldRejectNotRetry(innerRejection)) {
       throw rejectWithWhenShouldntRetry(innerRejection);
     } else {
+      log("Retrying after error", "debug", { params });
       return delayedStartPromise({
         promiseFn: () =>
           expBackoffRetryPromise({
             ...params,
             retryCount: retryCount + 1,
           }),
-        delayMs: initialDelayMs * Math.pow(2, retryCount),
+        delayMs: Math.min(initialDelayMs * Math.pow(2, retryCount), maxDelayMs),
       });
     }
   }
+};
+
+export interface RetryOnNonresponsivePromiseParams<T> {
+  promiseFn: () => Promise<T>;
+  cancelAfterWaitFn: (innerPromise: Promise<T>) => void;
+  isCancelError: (innerRejection: unknown) => boolean;
+  maxRetries?: number;
+  initialDelayMs?: number;
+  maxDelayMs?: number;
+  rejectWithWhenShouldntRetry?: (innerRejection: unknown) => unknown;
+  rejectWithAfterMaxRetries?: (innerRejection: unknown) => unknown;
+}
+
+export const retryOnNonresponsivePromise = async <T>({
+  promiseFn,
+  cancelAfterWaitFn,
+  isCancelError,
+  maxRetries,
+  initialDelayMs = 1000,
+  maxDelayMs = 16000,
+  rejectWithWhenShouldntRetry = (e) => e,
+  rejectWithAfterMaxRetries = (e) => e,
+}: RetryOnNonresponsivePromiseParams<T>): Promise<T> => {
+  return expBackoffRetryPromise({
+    promiseFn: (retryCount: number) => {
+      return cancelAfterMsPromise({
+        promiseFn,
+        maxWaitMs: Math.min(
+          initialDelayMs * Math.pow(2, retryCount),
+          maxDelayMs,
+        ),
+        cancelAfterWaitFn,
+      });
+    },
+    shouldRejectNotRetry: (innerRejection) => !isCancelError(innerRejection),
+    maxRetries,
+    initialDelayMs: 0, // delay in this case is handled by cancelAfterMsPromise
+    maxDelayMs: 0, // delay in this case is handled by cancelAfterMsPromise
+    rejectWithWhenShouldntRetry,
+    rejectWithAfterMaxRetries,
+  });
 };
 
 export interface RetryingGqlPromiseParams<T> {
@@ -83,30 +141,16 @@ export interface RetryingGqlPromiseParams<T> {
 export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
 ): Promise<T> => {
-  const {
-    gqlPromiseFn,
-    maxRetries = 2,
-    initialWaitMs = 5000,
-    retryCount = 0,
-  } = params;
-  return expBackoffRetryPromise({
-    promiseFn: (retryCount: number) => {
-      return cancelAfterMsPromise({
-        promiseFn: gqlPromiseFn,
-        cancelAfterWaitFn: (p) => {
-          client.cancel(p);
-        },
-        maxWaitMs: initialWaitMs * Math.pow(2, retryCount),
-      });
-    },
-    shouldRejectNotRetry: (e) => !client.isCancelError(e),
-    maxRetries,
-    initialDelayMs: 0, // no delays between attempts, failsAfterMs used instead
-    retryCount,
-    rejectWithAfterMaxRetries: (innerRejection: unknown) => {
+  const { gqlPromiseFn } = params;
+  return retryOnNonresponsivePromise({
+    ...params,
+    promiseFn: gqlPromiseFn,
+    cancelAfterWaitFn: (p) => getClient().cancel(p),
+    isCancelError: (e) => getClient().isCancelError(e),
+    rejectWithAfterMaxRetries: (innerRejection) => {
       const innerError = innerRejection as Error;
-      return new GqlTimeoutAfterRetriesError(
-        `Failed after ${params.maxRetries} retries; most recent failure: ${innerError.message ? innerError.message : "(unknown)"}.`,
+      new GqlTimeoutAfterRetriesError(
+        `Failed after ${params.maxRetries} retries. Latest error: ${innerError.message ? innerError.message : "(unknown)"}`,
       );
     },
   });
