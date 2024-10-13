@@ -1,4 +1,4 @@
-import { retryOnTimeoutGqlPromise } from "../retryOnTimeoutGqlPromise";
+import { retryOnTimeoutGqlPromise } from "../promiseUtils";
 
 export const messageErroringGql = async <T>(gqlPromiseFn: () => Promise<T>) => {
   try {
