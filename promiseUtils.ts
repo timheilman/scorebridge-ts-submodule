@@ -158,7 +158,7 @@ export const retryOnTimeoutGqlPromise = async <T>(
     rejectWithAfterMaxTries: (innerRejection) => {
       const innerError = innerRejection as Error;
       new GqlTimeoutAfterRetriesError(
-        `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : "(unknown)"}`,
+        `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : (innerRejection as string)}`,
       );
     },
     ...params,
