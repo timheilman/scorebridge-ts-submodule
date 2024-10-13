@@ -1,4 +1,3 @@
 import { generateClient } from "aws-amplify/api";
-export const client = generateClient();
-export const getClient = () => client;
+export const client = generateClient<Record<string, unknown>>();
 export type NetworkRequestStatus = "idle" | "inFlight" | "succeeded" | "failed";

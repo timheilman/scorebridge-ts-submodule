@@ -1,15 +1,17 @@
 import { GqlTimeoutAfterRetriesError } from "./GqlTimeoutAfterRetriesError";
-import { getClient } from "./react/gqlClient";
+import { client } from "./react/gqlClient";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("promiseUtils.");
+
+interface DelayedStartPromiseParams<T> {
+  promiseFn: () => Promise<T>;
+  delayMs: number;
+}
 
 export const delayedStartPromise = <T>({
   promiseFn,
   delayMs,
-}: {
-  promiseFn: () => Promise<T>;
-  delayMs: number;
-}) => {
+}: DelayedStartPromiseParams<T>) => {
   log("delayedStartPromise", "debug", { delayMs });
   if (delayMs <= 0) {
     return promiseFn();
@@ -21,59 +23,65 @@ export const delayedStartPromise = <T>({
   });
 };
 
+interface CancelAfterMsPromiseParams<T> {
+  promiseFn: () => Promise<T>;
+  cancelAfterWaitFn: (t: Promise<T>) => void;
+  waitMs: number;
+}
+
 export const cancelAfterMsPromise = async <T>({
   promiseFn,
   cancelAfterWaitFn,
-  maxWaitMs,
-}: {
-  promiseFn: () => Promise<T>;
-  cancelAfterWaitFn: (t: Promise<T>) => void;
-  maxWaitMs: number;
-}) => {
+  waitMs,
+}: CancelAfterMsPromiseParams<T>) => {
   const promise = promiseFn();
-  log("cancelAfterMsPromise", "debug", { now: Date.now(), maxWaitMs });
-  const cancellationTimeout = setTimeout(cancelAfterWaitFn, maxWaitMs, promise);
+  log("cancelAfterMsPromise", "debug", { now: Date.now(), waitMs });
+  const cancellationTimeout = setTimeout(cancelAfterWaitFn, waitMs, promise);
   try {
     return await promise;
   } finally {
     log("cancelAfterMsPromise.finally", "debug", {
       now: Date.now(),
-      maxWaitMs,
+      waitMs,
     });
     clearTimeout(cancellationTimeout);
   }
 };
 
-export const expBackoffRetryPromise = async <T>(params: {
-  promiseFn: (retryCount: number) => Promise<T>;
+interface ExpBackoffPromiseParams<T> {
+  promiseFn: (tryCount: number) => Promise<T>;
   shouldRejectNotRetry?: (innerRejection: unknown) => boolean;
-  maxRetries?: number;
+  maxTries?: number;
   initialDelayMs?: number;
   maxDelayMs?: number;
-  retryCount?: number;
+  tryCount?: number;
   rejectWithWhenShouldntRetry?: (innerRejection: unknown) => unknown;
-  rejectWithAfterMaxRetries?: (innerRejection: unknown) => unknown;
-}): Promise<T> => {
+  rejectWithAfterMaxTries?: (innerRejection: unknown) => unknown;
+}
+
+export const expBackoffPromise = async <T>(
+  params: ExpBackoffPromiseParams<T>,
+): Promise<T> => {
   const {
     promiseFn,
     shouldRejectNotRetry = () => false,
-    maxRetries = 2,
+    maxTries = 6,
     initialDelayMs = 1000,
     maxDelayMs = 16000,
-    retryCount = 0,
+    tryCount = 1,
     rejectWithWhenShouldntRetry = (e: unknown) => e,
-    rejectWithAfterMaxRetries = (e: unknown) => e,
+    rejectWithAfterMaxTries = (e: unknown) => e,
   } = params;
-  const promise = promiseFn(retryCount);
+  const promise = promiseFn(tryCount);
   try {
     return await promise;
   } catch (innerRejection) {
-    if (retryCount >= maxRetries) {
+    if (tryCount >= maxTries) {
       log("expBackoffRetryPromise.rejectWithAfterMaxRetries", "debug", {
         params,
         innerRejection,
       });
-      throw rejectWithAfterMaxRetries(innerRejection);
+      throw rejectWithAfterMaxTries(innerRejection);
     }
     if (shouldRejectNotRetry(innerRejection)) {
       throw rejectWithWhenShouldntRetry(innerRejection);
@@ -81,78 +89,79 @@ export const expBackoffRetryPromise = async <T>(params: {
       log("Retrying after error", "debug", { params });
       return delayedStartPromise({
         promiseFn: () =>
-          expBackoffRetryPromise({
+          expBackoffPromise({
             ...params,
-            retryCount: retryCount + 1,
+            tryCount: tryCount + 1,
           }),
-        delayMs: Math.min(initialDelayMs * Math.pow(2, retryCount), maxDelayMs),
+        delayMs: Math.min(
+          initialDelayMs * Math.pow(2, tryCount - 1),
+          maxDelayMs,
+        ),
       });
     }
   }
 };
 
-export interface RetryOnNonresponsivePromiseParams<T> {
-  promiseFn: () => Promise<T>;
-  cancelAfterWaitFn: (innerPromise: Promise<T>) => void;
-  isCancelError: (innerRejection: unknown) => boolean;
-  maxRetries?: number;
-  initialDelayMs?: number;
-  maxDelayMs?: number;
-  rejectWithWhenShouldntRetry?: (innerRejection: unknown) => unknown;
-  rejectWithAfterMaxRetries?: (innerRejection: unknown) => unknown;
-}
+export type RetryOnNonresponsivePromiseParams<T> = Omit<
+  ExpBackoffPromiseParams<T>,
+  "shouldRejectNotRetry" | "initialDelayMs" | "maxDelayMs" | "promiseFn"
+> &
+  Omit<CancelAfterMsPromiseParams<T>, "waitMs"> & {
+    isCancelError: (innerRejection: unknown) => boolean;
+    initialWaitMs?: number;
+    maxWaitMs?: number;
+  };
 
-export const retryOnNonresponsivePromise = async <T>({
-  promiseFn,
-  cancelAfterWaitFn,
-  isCancelError,
-  maxRetries,
-  initialDelayMs = 1000,
-  maxDelayMs = 16000,
-  rejectWithWhenShouldntRetry = (e) => e,
-  rejectWithAfterMaxRetries = (e) => e,
-}: RetryOnNonresponsivePromiseParams<T>): Promise<T> => {
-  return expBackoffRetryPromise({
-    promiseFn: (retryCount: number) => {
+export const retryOnNonresponsivePromise = async <T>(
+  props: RetryOnNonresponsivePromiseParams<T>,
+): Promise<T> => {
+  const {
+    promiseFn,
+    cancelAfterWaitFn,
+    isCancelError,
+    initialWaitMs = 1000,
+    maxWaitMs = 16000,
+    ...remainingProps
+  } = props;
+  return expBackoffPromise({
+    promiseFn: (tryCount: number) => {
       return cancelAfterMsPromise({
         promiseFn,
-        maxWaitMs: Math.min(
-          initialDelayMs * Math.pow(2, retryCount),
-          maxDelayMs,
-        ),
+        waitMs: Math.min(initialWaitMs * Math.pow(2, tryCount - 1), maxWaitMs),
         cancelAfterWaitFn,
       });
     },
     shouldRejectNotRetry: (innerRejection) => !isCancelError(innerRejection),
-    maxRetries,
-    initialDelayMs: 0, // delay in this case is handled by cancelAfterMsPromise
-    maxDelayMs: 0, // delay in this case is handled by cancelAfterMsPromise
-    rejectWithWhenShouldntRetry,
-    rejectWithAfterMaxRetries,
+    initialDelayMs: 0, // wait in this case, not delay
+    maxDelayMs: 0, // wait in this case, not delay
+    ...remainingProps,
   });
 };
 
-export interface RetryingGqlPromiseParams<T> {
+export type RetryingGqlPromiseParams<T> = Omit<
+  RetryOnNonresponsivePromiseParams<T>,
+  | "promiseFn"
+  | "cancelAfterWaitFn"
+  | "isCancelError"
+  | "rejectWithAfterMaxRetries"
+> & {
   gqlPromiseFn: () => Promise<T>;
-  maxRetries?: number;
-  initialWaitMs?: number;
-  retryCount?: number;
-}
+};
 export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
 ): Promise<T> => {
-  const { gqlPromiseFn } = params;
+  const { gqlPromiseFn, maxTries } = params;
   return retryOnNonresponsivePromise({
-    ...params,
     promiseFn: gqlPromiseFn,
-    cancelAfterWaitFn: (p) => getClient().cancel(p),
-    isCancelError: (e) => getClient().isCancelError(e),
-    rejectWithAfterMaxRetries: (innerRejection) => {
+    cancelAfterWaitFn: (p) => client.cancel(p),
+    isCancelError: (e) => client.isCancelError(e),
+    rejectWithAfterMaxTries: (innerRejection) => {
       const innerError = innerRejection as Error;
       new GqlTimeoutAfterRetriesError(
-        `Failed after ${params.maxRetries} retries. Latest error: ${innerError.message ? innerError.message : "(unknown)"}`,
+        `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : "(unknown)"}`,
       );
     },
+    ...params,
   });
 };
 
@@ -184,17 +193,15 @@ const loosyGoosyIsNetworkError = (error: any) => {
   );
 };
 
-export function retryOnNetworkFailurePromise<T>(
-  promiseFunction: () => Promise<T>,
-  maxRetries = 5,
-  initialDelay = 1000,
-  maxDelay = 16000,
-): Promise<T> {
-  return expBackoffRetryPromise({
-    promiseFn: promiseFunction,
+export type RetryOnNetworkFailurePromiseParams<T> = Omit<
+  ExpBackoffPromiseParams<T>,
+  "shouldRejectNotRetry"
+>;
+
+export const retryOnNetworkFailurePromise = <T>(
+  props: RetryOnNetworkFailurePromiseParams<T>,
+): Promise<T> =>
+  expBackoffPromise({
+    ...props,
     shouldRejectNotRetry: (e) => !loosyGoosyIsNetworkError(e),
-    maxRetries,
-    initialDelayMs: initialDelay,
-    maxDelayMs: maxDelay,
   });
-}
