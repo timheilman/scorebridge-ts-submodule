@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.4.0](https://github.com/timheilman/scorebridge-device/compare/v1.3.1...v1.4.0) (2024-10-19)
+
+
+### Features
+
+* change app name-under-icon to DevBF4Clubs / BFridge4Clubs ([afe1472](https://github.com/timheilman/scorebridge-device/commit/afe1472e8fd3fe719bc3d8d324a07cf320859b65))
+* scor-273 remove not useful rotation confirmation screen ([#3](https://github.com/timheilman/scorebridge-device/issues/3)) ([590bfcf](https://github.com/timheilman/scorebridge-device/commit/590bfcfafe121af7f77981e6c1a0be911e31e9e9))
+
+
+### Bug Fixes
+
+* scor-267 replacement tablet should resume at current state for table ([#2](https://github.com/timheilman/scorebridge-device/issues/2)) ([de0f9bc](https://github.com/timheilman/scorebridge-device/commit/de0f9bc473fc9c786fc15f7452c4f5ad3c1b99bc))
+* scor-268 best guess fix to: tablet loses federated jwt must be reregistered ([#4](https://github.com/timheilman/scorebridge-device/issues/4)) ([4b3cee8](https://github.com/timheilman/scorebridge-device/commit/4b3cee8925d62d2705276596150e2e07b4a49c82))
+* scor-271 development build crash on expo-dev-client < 4.0.25 ([8892b76](https://github.com/timheilman/scorebridge-device/commit/8892b76e531541cff7bfa0ec063961c47e11bf15))
+
 ## [1.3.1](https://github.com/timheilman/scorebridge-device/compare/v1.3.0...v1.3.1) (2024-08-15)
 
 ### Bug Fixes
