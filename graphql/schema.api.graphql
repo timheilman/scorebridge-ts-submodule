@@ -340,7 +340,7 @@ input UpsertBoardResultInput {
   tableNumber: Int!
   partialBoardResult: PartialBoardResult!
 }
-
+# scor-260
 input SetRoundInput {
   clubId: String!
   clubDeviceId: String!
@@ -349,7 +349,7 @@ input SetRoundInput {
   round: Int!
   roundWelcomeConfirmed: Boolean!
 }
-
+# scor-260
 type SetRoundResponse {
   clubId: String!
   clubDeviceId: String!
@@ -359,6 +359,7 @@ type SetRoundResponse {
   roundWelcomeConfirmed: Boolean!
 }
 
+# scor-260
 type TableAssignment {
   tableNumber: Int!
   clubDeviceId: String
@@ -369,6 +370,7 @@ type TableAssignment {
   results: [BoardResult!]!
 }
 
+# scor-260
 input PartialTableAssignment {
   tableNumber: Int!
   clubDeviceId: String
@@ -400,6 +402,7 @@ type ConfirmTableAssignmentResponse {
   confirmed: Boolean!
 }
 
+# scor-260
 type AssignTableResponse {
   clubId: String!
   clubDeviceId: String!

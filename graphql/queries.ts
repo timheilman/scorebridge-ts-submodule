@@ -60,6 +60,7 @@ export const qidToQueryGql = {
     "listClubDevices",
   ),
   listGames: createKeyedGeneratedQuery<"listGames", QueryListGamesArgs>(
+    // scor-260
     /* GraphQL */ `
       query listGames($input: ListGamesInput!) {
         listGames(input: $input) {
@@ -119,6 +120,7 @@ export const qidToQueryGql = {
     "listPlayers",
   ),
   getGame: createKeyedGeneratedQuery<"getGame", QueryGetGameArgs>(
+    // scor-260
     /* GraphQL */ `
       query getGame($input: GetGameInput!) {
         getGame(input: $input) {
