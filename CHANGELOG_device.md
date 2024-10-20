@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.5.0](https://github.com/timheilman/scorebridge-device/compare/v1.4.0...v1.5.0) (2024-10-20)
+
+### Features
+
+- scor-268 better in-app error reporting ([#5](https://github.com/timheilman/scorebridge-device/issues/5)) ([63c7ee8](https://github.com/timheilman/scorebridge-device/commit/63c7ee8e8f1b24114ff6433bb8c46d5013de1f23))
+
 ## [1.4.0](https://github.com/timheilman/scorebridge-device/compare/v1.3.1...v1.4.0) (2024-10-19)
 
 ### Features
