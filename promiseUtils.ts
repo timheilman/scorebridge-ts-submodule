@@ -161,6 +161,7 @@ export const retryOnTimeoutGqlPromise = async <T>(
         `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : (innerRejection as string)}`,
       );
     },
+    initialWaitMs: 3000,
     ...params,
   });
 };
