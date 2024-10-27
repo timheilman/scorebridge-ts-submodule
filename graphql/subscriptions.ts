@@ -112,7 +112,6 @@ export const subIdToSubGql = {
     "onAssignTable",
     SubscriptionOnAssignTableArgs
   >(
-    // scor-260
     /* GraphQL */ `
       subscription OnAssignTable($clubId: String!) {
         onAssignTable(clubId: $clubId) {
@@ -295,7 +294,6 @@ export const subIdToSubGql = {
     "onSetRound",
     SubscriptionOnDeletePlayerArgs
   >(
-    // scor-260
     /* GraphQL */ `
       subscription OnSetRound($clubId: String!) {
         onSetRound(clubId: $clubId) {

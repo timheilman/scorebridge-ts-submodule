@@ -152,7 +152,6 @@ export const mutIdToMutGql = {
     "createGame",
     MutationCreateGameArgs
   >(
-    // scor-260
     /* GraphQL */ `
       mutation createGame($input: CreateGameInput!) {
         createGame(input: $input) {
@@ -246,7 +245,6 @@ export const mutIdToMutGql = {
     "assignTable",
     MutationAssignTableArgs
   >(
-    // scor-260
     /* GraphQL */ `
       mutation assignTable($input: AssignOrUnassignTableInput!) {
         assignTable(input: $input) {
@@ -296,7 +294,6 @@ export const mutIdToMutGql = {
     "confirmTableAssignment",
   ),
   setRound: createKeyedGeneratedMutation<"setRound", MutationSetRoundArgs>(
-    // scor-260
     /* GraphQL */ `
       mutation setRound($input: SetRoundInput!) {
         setRound(input: $input) {
