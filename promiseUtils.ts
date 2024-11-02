@@ -3,6 +3,9 @@ import { client } from "./react/gqlClient";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("promiseUtils.");
 
+const initialWaitBeforeKillAndRetryMs = 5000;
+const maxWaitBeforeKillAndRetryMs = 60000;
+
 interface DelayedStartPromiseParams<T> {
   promiseFn: () => Promise<T>;
   delayMs: number;
@@ -119,8 +122,8 @@ export const retryOnNonresponsivePromise = async <T>(
     promiseFn,
     cancelAfterWaitFn,
     isCancelError,
-    initialWaitMs = 1000,
-    maxWaitMs = 16000,
+    initialWaitMs = initialWaitBeforeKillAndRetryMs,
+    maxWaitMs = maxWaitBeforeKillAndRetryMs,
     ...remainingProps
   } = props;
   return expBackoffPromise({
@@ -161,7 +164,6 @@ export const retryOnTimeoutGqlPromise = async <T>(
         `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : (innerRejection as string)}`,
       );
     },
-    initialWaitMs: 3000,
     ...params,
   });
 };
