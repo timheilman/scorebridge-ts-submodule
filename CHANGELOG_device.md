@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.6.0](https://github.com/timheilman/scorebridge-device/compare/v1.5.0...v1.6.0) (2024-11-04)
+
+### Features
+
+- scor-260 choose starting board from round welcome screen ([#7](https://github.com/timheilman/scorebridge-device/issues/7)) ([ee15ddf](https://github.com/timheilman/scorebridge-device/commit/ee15ddf739a87cf6b7201e46f56131bab880bc4e))
+- scor-274 colorize made and down icons, to reduce down-1-instead-of-made-1 errors ([#8](https://github.com/timheilman/scorebridge-device/issues/8)) ([5c34098](https://github.com/timheilman/scorebridge-device/commit/5c340980fe51af60e47e93ad8aca6d2cafb2f750))
+- scor-285 improve design of player assignment screens ([#10](https://github.com/timheilman/scorebridge-device/issues/10)) ([ca2b63f](https://github.com/timheilman/scorebridge-device/commit/ca2b63f64b6477ed7d4b5e296c7fdd8226f0c2c8))
+
+### Bug Fixes
+
+- scor-275 do not get stuck on round 0 welcome screen ([#6](https://github.com/timheilman/scorebridge-device/issues/6)) ([7ac3438](https://github.com/timheilman/scorebridge-device/commit/7ac34389daa9000c5e58d58fe03736b8eab82a1a))
+
 ## [1.5.0](https://github.com/timheilman/scorebridge-device/compare/v1.4.0...v1.5.0) (2024-10-20)
 
 ### Features
