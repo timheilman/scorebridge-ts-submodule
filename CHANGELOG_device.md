@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.7.1](https://github.com/timheilman/scorebridge-device/compare/v1.7.0...v1.7.1) (2024-11-11)
+
+### Bug Fixes
+
+- scor-292 intermittent player name filter not clearing upon tab switch ([#14](https://github.com/timheilman/scorebridge-device/issues/14)) ([bc51af5](https://github.com/timheilman/scorebridge-device/commit/bc51af5cf51176e48542067c8d6e3fea5aec2059))
+
+## [1.7.0](https://github.com/timheilman/scorebridge-device/compare/v1.6.0...v1.7.0) (2024-11-10)
+
+### Features
+
+- scor-288 add additional textual guidance throughout app ([#13](https://github.com/timheilman/scorebridge-device/issues/13)) ([1d73bee](https://github.com/timheilman/scorebridge-device/commit/1d73beed449afdd9e5278dcdd21f3276a155e1f8))
+
+### Bug Fixes
+
+- scor-292 player assignment left column S & E swap not showing ([#12](https://github.com/timheilman/scorebridge-device/issues/12)) ([ff6d1d9](https://github.com/timheilman/scorebridge-device/commit/ff6d1d9717f35f2263cf0d1eb3ed997efaed9470))
+
 ## [1.6.0](https://github.com/timheilman/scorebridge-device/compare/v1.5.0...v1.6.0) (2024-11-04)
 
 ### Features
