@@ -157,7 +157,7 @@ export const retryOnTimeoutGqlPromise = async <T>(
   return retryOnNonresponsivePromise({
     promiseFn: gqlPromiseFn,
     cancelAfterWaitFn: (p) => client.cancel(p),
-    isCancelError: (e) => client.isCancelError(e),
+    isCancelError: (e) => client && client.isCancelError(e),
     rejectWithAfterMaxTries: (innerRejection) => {
       const innerError = innerRejection as Error;
       return new GqlTimeoutAfterRetriesError(
