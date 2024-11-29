@@ -8,7 +8,7 @@ import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
 import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
-const log = tsSubmoduleLogFn("features.assignBoardResult.movementHelpers.");
+const log = tsSubmoduleLogFn("movementHelpers.");
 export interface BoardGroupProps {
   tableCount: number;
   table: number;

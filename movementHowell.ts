@@ -1,6 +1,6 @@
 import { BoardGroupProps, PlayerNumberProps } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
-const log = tsSubmoduleLogFn("features.assignBoardResult.movementHowell.");
+const log = tsSubmoduleLogFn("movementHowell.");
 export const playerNumberHowell = (props: PlayerNumberProps): number => {
   const { tableCount } = props;
   if (tableCount === 3) {
