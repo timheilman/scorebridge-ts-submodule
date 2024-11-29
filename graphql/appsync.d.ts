@@ -43,7 +43,7 @@ export interface AssignOrUnassignTableInput {
 }
 
 export interface AssignPlayerInput {
-  clubDeviceId: Scalars["String"]["input"];
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
   directionLetter: DirectionLetter;
   gameId: Scalars["String"]["input"];
@@ -539,7 +539,7 @@ export interface TableAssignment {
 }
 
 export interface UnassignPlayersInput {
-  clubDeviceId: Scalars["String"]["input"];
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
