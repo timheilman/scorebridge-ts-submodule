@@ -128,26 +128,7 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  # deprecated; what the hell was I thinking?
-  # All of these can be collapsed to a single upsertBoardResult mutation...
-  assignBoardToBid(input: AssignBoardToBidInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  unassignBoardToBid(input: UnassignContractInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  assignContract(input: AssignContractInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  unassignContract(input: UnassignContractInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  assignInitialLead(input: AssignInitialLeadInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  unassignInitialLead(input: UnassignContractInput!): BoardResult!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  assignResult(input: AssignResultInput!): AssignResultResponse!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
-
-  upsertBoardResult(input: UpsertBoardResultInput!): AssignResultResponse!
+  upsertBoardResult(input: UpsertBoardResultInput!): UpsertBoardResultResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -208,14 +189,7 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  # This is for for device-to-device and device-to-webapp communication to grab results
-  # deprecated; use onUpsertBoardResult instead
-  onAssignResult(clubId: String!): AssignResultResponse
-    @aws_subscribe(mutations: ["assignResult"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
-  onUpsertBoardResult(clubId: String!): AssignResultResponse
+  onUpsertBoardResult(clubId: String!): UpsertBoardResultResponse
     @aws_subscribe(mutations: ["upsertBoardResult"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
@@ -568,62 +542,9 @@ type DeleteClubAndAdminResponse {
   status: String!
 }
 
-type AssignResultResponse {
+type UpsertBoardResultResponse {
   clubId: String!
   tableNumber: Int!
   boardResult: BoardResult!
   gameId: String!
-}
-
-input AssignContractInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-  round: Int!
-  level: Int!
-  strain: Strain!
-  declarer: DirectionLetter!
-  doubling: Doubling
-}
-
-input AssignInitialLeadInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-  round: Int!
-  leadSuit: Suit!
-  leadRank: Rank!
-}
-
-input AssignBoardToBidInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-  round: Int!
-}
-
-input UnassignContractInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-  round: Int!
-}
-
-input AssignResultInput {
-  clubId: String!
-  clubDeviceId: String
-  gameId: String!
-  tableNumber: Int!
-  board: Int!
-  round: Int!
-  type: BoardResultType
-  result: Int
 }

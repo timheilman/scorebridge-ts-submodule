@@ -1,3 +1,4 @@
+import { boardResultEffectivelyNull } from "./areBoardResultsEquivalent";
 import {
   BoardResult,
   DirectionLetter,
@@ -22,12 +23,7 @@ function pointsPerOddContractTrickBeyondOne(strain: Strain) {
 }
 
 const contractPoints = ({ strain, doubling, level }: BoardScoreParams) => {
-  const doublingFactor =
-    doubling === "NONE" /* deprecated */ || !doubling
-      ? 1
-      : doubling === "REDOUBLE"
-        ? 4
-        : 2;
+  const doublingFactor = !doubling ? 1 : doubling === "REDOUBLE" ? 4 : 2;
   const noTrumpFirstTrickExtra = strain === "NT" ? 10 : 0;
   const toReturn =
     (pointsPerOddContractTrickBeyondOne(strain) * level +
@@ -42,7 +38,7 @@ const overtrickCount = ({ level, boardResult }: BoardScoreParams) => {
 
 const overtrickPoints = (params: BoardScoreParams) => {
   const { doubling, strain, vulnerable } = params;
-  if (doubling === "NONE" /* deprecated */ || !doubling) {
+  if (!doubling) {
     return pointsPerOddContractTrickBeyondOne(strain) * overtrickCount(params);
   }
   const doubleFactor = doubling === "DOUBLE" ? 1 : 2;
@@ -73,7 +69,7 @@ const slamBonus = ({ level, vulnerable }: BoardScoreParams) => {
 };
 
 const insultBonus = ({ doubling }: BoardScoreParams) => {
-  if (doubling === "NONE" /* deprecated */ || !doubling) {
+  if (!doubling) {
     return 0;
   }
 
@@ -86,7 +82,7 @@ const penaltyPoints = ({
   boardResult,
 }: BoardScoreParams) => {
   const undertricks = Math.abs(boardResult);
-  if (doubling === "NONE" /* deprecated */ || !doubling) {
+  if (!doubling) {
     const vulnerableFactor = vulnerable ? 2 : 1;
     return -undertricks * 50 * vulnerableFactor;
   }
@@ -129,10 +125,7 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult?: Omit<BoardResult, "round"> | null;
   direction: DirectionLetter;
 }) => {
-  if (!boardResult) {
-    return;
-  }
-  if (boardResult.type === "NOT_BID_NOT_PLAYED" /* deprecated */) {
+  if (!boardResult || boardResultEffectivelyNull(boardResult)) {
     return;
   }
   if (boardResult.type === "PASSED_OUT") {

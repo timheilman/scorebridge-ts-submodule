@@ -1,10 +1,6 @@
 import {
   Mutation,
-  MutationAssignBoardToBidArgs,
-  MutationAssignContractArgs,
-  MutationAssignInitialLeadArgs,
   MutationAssignPlayerArgs,
-  MutationAssignResultArgs,
   MutationAssignTableArgs,
   MutationConfirmTableAssignmentArgs,
   MutationCreateClubArgs,
@@ -16,9 +12,6 @@ import {
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
   MutationSetRoundArgs,
-  MutationUnassignBoardToBidArgs,
-  MutationUnassignContractArgs,
-  MutationUnassignInitialLeadArgs,
   MutationUnassignPlayersArgs,
   MutationUnassignTableArgs,
   MutationUpdateClubNameArgs,
@@ -359,96 +352,6 @@ export const mutIdToMutGql = {
     `,
     "unassignPlayers",
   ),
-  assignBoardToBid: createKeyedGeneratedMutation<
-    "assignBoardToBid",
-    MutationAssignBoardToBidArgs
-  >(
-    /* GraphQL */ `
-      mutation assignBoardToBid($input: AssignBoardToBidInput!) {
-        assignBoardToBid(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-        }
-      }
-    `,
-    "assignBoardToBid",
-  ),
-  unassignBoardToBid: createKeyedGeneratedMutation<
-    "unassignBoardToBid",
-    MutationUnassignBoardToBidArgs
-  >(
-    /* GraphQL */ `
-      mutation unassignBoardToBid($input: UnassignContractInput!) {
-        unassignBoardToBid(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-        }
-      }
-    `,
-    "unassignBoardToBid",
-  ),
-  assignContract: createKeyedGeneratedMutation<
-    "assignContract",
-    MutationAssignContractArgs
-  >(
-    /* GraphQL */ `
-      mutation assignContract($input: AssignContractInput!) {
-        assignContract(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-        }
-      }
-    `,
-    "assignContract",
-  ),
-  assignResult: createKeyedGeneratedMutation<
-    "assignResult",
-    MutationAssignResultArgs
-  >(
-    /* GraphQL */ `
-      mutation assignResult($input: AssignResultInput!) {
-        assignResult(input: $input) {
-          clubId
-          tableNumber
-          gameId
-          boardResult {
-            board
-            round
-            type
-            level
-            strain
-            declarer
-            doubling
-            leadSuit
-            leadRank
-            result
-          }
-        }
-      }
-    `,
-    "assignResult",
-  ),
   upsertBoardResult: createKeyedGeneratedMutation<
     "upsertBoardResult",
     MutationUpsertBoardResultArgs
@@ -475,69 +378,5 @@ export const mutIdToMutGql = {
       }
     `,
     "upsertBoardResult",
-  ),
-  unassignContract: createKeyedGeneratedMutation<
-    "unassignContract",
-    MutationUnassignContractArgs
-  >(
-    /* GraphQL */ `
-      mutation unassignContract($input: UnassignContractInput!) {
-        unassignContract(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-          result
-        }
-      }
-    `,
-    "unassignContract",
-  ),
-  assignInitialLead: createKeyedGeneratedMutation<
-    "assignInitialLead",
-    MutationAssignInitialLeadArgs
-  >(
-    /* GraphQL */ `
-      mutation assignInitialLead($input: AssignInitialLeadInput!) {
-        assignInitialLead(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-        }
-      }
-    `,
-    "assignInitialLead",
-  ),
-  unassignInitialLead: createKeyedGeneratedMutation<
-    "unassignInitialLead",
-    MutationUnassignInitialLeadArgs
-  >(
-    /* GraphQL */ `
-      mutation unassignInitialLead($input: UnassignContractInput!) {
-        unassignInitialLead(input: $input) {
-          board
-          round
-          type
-          level
-          strain
-          declarer
-          doubling
-          leadSuit
-          leadRank
-        }
-      }
-    `,
-    "unassignInitialLead",
   ),
 };

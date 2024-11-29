@@ -1,11 +1,9 @@
 import { BoardResult, Doubling } from "./graphql/appsync";
 
-const effectivelyNull = (br: Omit<BoardResult, "round" | "board">) => {
+export const boardResultEffectivelyNull = (
+  br?: Omit<BoardResult, "round" | "board"> | null,
+) => {
   if (br === null || br === undefined) {
-    return true;
-  }
-  if (br.type === "NOT_BID_NOT_PLAYED") {
-    // deprecated
     return true;
   }
   if (
@@ -15,12 +13,12 @@ const effectivelyNull = (br: Omit<BoardResult, "round" | "board">) => {
     !br.leadRank &&
     !br.leadSuit &&
     !br.result &&
-    (!br.doubling || br.doubling === "NONE") // deprecated
+    !br.doubling
   ) {
     return true;
   }
-  // type of either PASSED_OUT is not effectively null
-  // type of PLAYED, undefined, or null depends on last condtional
+  // br.type of PASSED_OUT is not effectively null
+  // br.type of null or undefined means depend on the other fields
   return false;
 };
 
@@ -39,8 +37,8 @@ const coalesceDoublingEq = (
   item2: Doubling | null | undefined,
 ) => {
   if (
-    (item1 === null || item1 === undefined || item1 === "NONE") &&
-    (item2 === null || item2 === undefined || item2 === "NONE")
+    (item1 === null || item1 === undefined) &&
+    (item2 === null || item2 === undefined)
   ) {
     return true;
   }
@@ -51,14 +49,14 @@ export const areBoardResultsEquivalent = (
   br1: Omit<BoardResult, "round" | "board">,
   br2: Omit<BoardResult, "round" | "board">,
 ) => {
-  if (effectivelyNull(br1) && effectivelyNull(br2)) {
+  if (boardResultEffectivelyNull(br1) && boardResultEffectivelyNull(br2)) {
     return true;
   }
-  if (effectivelyNull(br1) || effectivelyNull(br2)) {
+  if (boardResultEffectivelyNull(br1) || boardResultEffectivelyNull(br2)) {
     return false;
   }
   // from here, we know that neither br1 nor br2 is effectively null,
-  // which covers NOT_BID_NOT_PLAYED
+  // meaning not bid, not played
   if (br1.type === "PASSED_OUT" && br1.type === "PASSED_OUT") {
     return true;
   }

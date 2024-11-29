@@ -1,7 +1,6 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
-  SubscriptionOnAssignResultArgs,
   SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnCreatePlayerArgs,
@@ -193,34 +192,6 @@ export const subIdToSubGql = {
       }
     `,
     "onUnassignPlayers",
-  ),
-  // Deprecated; use onUpsertBoardResult
-  onAssignResult: createKeyedGeneratedSubscription<
-    "onAssignResult",
-    SubscriptionOnAssignResultArgs
-  >(
-    /* GraphQL */ `
-      subscription OnAssignResult($clubId: String!) {
-        onAssignResult(clubId: $clubId) {
-          clubId
-          tableNumber
-          gameId
-          boardResult {
-            type
-            board
-            round
-            level
-            strain
-            doubling
-            declarer
-            leadRank
-            leadSuit
-            result
-          }
-        }
-      }
-    `,
-    "onAssignResult",
   ),
   onUpsertBoardResult: createKeyedGeneratedSubscription<
     "onUpsertBoardResult",
