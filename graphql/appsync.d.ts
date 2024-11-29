@@ -142,7 +142,7 @@ export interface BoardResult {
   type?: Maybe<BoardResultType>;
 }
 
-export type BoardResultType = "NOT_BID_NOT_PLAYED" | "PASSED_OUT" | "PLAYED";
+export type BoardResultType = "PASSED_OUT";
 
 export interface ClearCurrentGameIdResponse {
   __typename?: "ClearCurrentGameIdResponse";
@@ -236,7 +236,7 @@ export interface DeletePlayerInput {
 
 export type DirectionLetter = "E" | "N" | "S" | "W";
 
-export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
+export type Doubling = "DOUBLE" | "REDOUBLE";
 
 export interface Game {
   __typename?: "Game";

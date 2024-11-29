@@ -42,18 +42,13 @@ enum Rank {
   KING
 }
 
-# Doubling.NONE is deprecated; use null instead
 enum Doubling {
-  NONE
   DOUBLE
   REDOUBLE
 }
 
-# BoardResultType.NOT_BID_NOT_PLAYED is deprecated; use null instead
 enum BoardResultType {
-  PLAYED
   PASSED_OUT
-  NOT_BID_NOT_PLAYED
 }
 
 type Query {
@@ -340,6 +335,7 @@ input UpsertBoardResultInput {
   tableNumber: Int!
   partialBoardResult: PartialBoardResult!
 }
+
 input SetRoundInput {
   clubId: String!
   clubDeviceId: String!
@@ -348,6 +344,7 @@ input SetRoundInput {
   round: Int!
   roundWelcomeConfirmed: Boolean!
 }
+
 type SetRoundResponse {
   clubId: String!
   clubDeviceId: String!
