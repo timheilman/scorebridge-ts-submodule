@@ -407,7 +407,7 @@ input UnassignPlayersInput {
 
 type AssignPlayerResponse {
   clubId: String!
-  clubDeviceId: String!
+  clubDeviceId: String
   gameId: String!
   tableNumber: Int!
   directionLetter: DirectionLetter!
@@ -417,7 +417,7 @@ type AssignPlayerResponse {
 
 type UnassignPlayersResponse {
   clubId: String!
-  clubDeviceId: String!
+  clubDeviceId: String
   gameId: String!
   tableNumber: Int!
 }

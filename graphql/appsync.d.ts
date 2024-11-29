@@ -54,7 +54,7 @@ export interface AssignPlayerInput {
 
 export interface AssignPlayerResponse {
   __typename?: "AssignPlayerResponse";
-  clubDeviceId: Scalars["String"]["output"];
+  clubDeviceId?: Maybe<Scalars["String"]["output"]>;
   clubId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
   gameId: Scalars["String"]["output"];
@@ -547,7 +547,7 @@ export interface UnassignPlayersInput {
 
 export interface UnassignPlayersResponse {
   __typename?: "UnassignPlayersResponse";
-  clubDeviceId: Scalars["String"]["output"];
+  clubDeviceId?: Maybe<Scalars["String"]["output"]>;
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
