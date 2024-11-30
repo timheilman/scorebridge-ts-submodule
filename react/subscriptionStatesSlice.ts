@@ -11,7 +11,7 @@ export interface SubscriptionStateType {
   connectionState: ConnectionState;
 }
 
-const initialState: SubscriptionStateType = {
+export const initialState: SubscriptionStateType = {
   mostRecentErrors: Object.keys(subIdToSubGql).reduce(
     (acc, subId: string) => {
       acc[subId as SubscriptionNames] = null;
