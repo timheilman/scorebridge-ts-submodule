@@ -1,5 +1,5 @@
-import { allDirections } from "./allDirections";
 import { DirectionLetter } from "./graphql/appsync";
+import { allDirections } from "./movementHelpers";
 
 export const clubSortKeyPrefix0 = "C";
 export const clubDeviceSortKeyPrefix0 = "D";

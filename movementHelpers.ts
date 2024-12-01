@@ -1,9 +1,13 @@
-import { allDirections } from "./allDirections";
 import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups";
-import { DirectionLetter, PlayerAssignment } from "./graphql/appsync";
+import {
+  DirectionLetter,
+  PlayerAssignment,
+  Rank,
+  Strain,
+} from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
 import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
@@ -36,7 +40,82 @@ export const allRanks = [
   "KING",
   "ACE",
 ] as const;
-
+export const allDirections = ["N", "W", "E", "S"] as const;
+export const englishDirection = (direction: DirectionLetter) => {
+  switch (direction) {
+    case "N":
+      return "North";
+    case "W":
+      return "West";
+    case "E":
+      return "East";
+    case "S":
+      return "South";
+    default:
+      return "Unknown";
+  }
+};
+export const englishStrain = (strain: Strain) => {
+  switch (strain) {
+    case "C":
+      return "Clubs";
+    case "D":
+      return "Diamonds";
+    case "H":
+      return "Hearts";
+    case "S":
+      return "Spades";
+    case "NT":
+      return "No Trump";
+    default:
+      return "Unknown";
+  }
+};
+export const isRankNumeric = (rank: Rank) => {
+  return (
+    rank === "TWO" ||
+    rank === "THREE" ||
+    rank === "FOUR" ||
+    rank === "FIVE" ||
+    rank === "SIX" ||
+    rank === "SEVEN" ||
+    rank === "EIGHT" ||
+    rank === "NINE" ||
+    rank === "TEN"
+  );
+};
+export const englishOrArabicNumeralsRank = (rank: Rank) => {
+  switch (rank) {
+    case "TWO":
+      return "2";
+    case "THREE":
+      return "3";
+    case "FOUR":
+      return "4";
+    case "FIVE":
+      return "5";
+    case "SIX":
+      return "6";
+    case "SEVEN":
+      return "7";
+    case "EIGHT":
+      return "8";
+    case "NINE":
+      return "9";
+    case "TEN":
+      return "10";
+    case "JACK":
+      return "Jack";
+    case "QUEEN":
+      return "Queen";
+    case "KING":
+      return "King";
+    case "ACE":
+      return "Ace";
+    default:
+      return "Unknown";
+  }
+};
 export const possibleResults = (level: number) => {
   // at one-level, if opponents make all 13 tricks, that's down seven:
   // one-level: [-7, -6, ..., -1, 1, 2, 3, 4, 5, 6, 7]
