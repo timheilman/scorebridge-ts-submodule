@@ -55,16 +55,16 @@ export const englishDirection = (direction: DirectionLetter) => {
       return "Unknown";
   }
 };
-export const englishStrain = (strain: Strain) => {
+export const englishStrainSingular = (strain: Strain) => {
   switch (strain) {
     case "C":
-      return "Clubs";
+      return "Club";
     case "D":
-      return "Diamonds";
+      return "Diamond";
     case "H":
-      return "Hearts";
+      return "Heart";
     case "S":
-      return "Spades";
+      return "Spade";
     case "NT":
       return "No Trump";
     default:
