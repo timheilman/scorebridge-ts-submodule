@@ -1,5 +1,3 @@
-import { GqlTimeoutAfterRetriesError } from "./GqlTimeoutAfterRetriesError";
-import { client } from "./react/gqlClient";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("promiseUtils.");
 
@@ -150,42 +148,21 @@ export type RetryingGqlPromiseParams<T> = Omit<
 > & {
   gqlPromiseFn: () => Promise<T>;
 };
-export const retryOnTimeoutGqlPromise = async <T>(
-  params: RetryingGqlPromiseParams<T>,
-): Promise<T> => {
-  const { gqlPromiseFn, maxTries } = params;
-  return retryOnNonresponsivePromise({
-    promiseFn: gqlPromiseFn,
-    cancelAfterWaitFn: (p) => client.cancel(p),
-    isCancelError: (e) => client && client.isCancelError(e),
-    rejectWithAfterMaxTries: (innerRejection) => {
-      const innerError = innerRejection as Error;
-      return new GqlTimeoutAfterRetriesError(
-        `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : (innerRejection as string)}`,
-      );
-    },
-    ...params,
-  });
-};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const loosyGoosyIsNetworkError = (error: any) => {
+const loosyGoosyIsNetworkError = (error: {
+  message?: string;
+  toString?: () => string;
+}) => {
   if (
-     
     error?.message?.includes &&
-     
     (error.message.includes("Network Error") ||
-       
       error.message.includes("ERR_NAME_NOT_RESOLVED"))
   ) {
     return true;
   }
   if (
-     
     error?.toString &&
-     
     (error.toString().includes("Network Error") ||
-       
       error.toString().includes("ERR_NAME_NOT_RESOLVED"))
   ) {
     return true;
@@ -206,5 +183,6 @@ export const retryOnNetworkFailurePromise = <T>(
 ): Promise<T> =>
   expBackoffPromise({
     ...props,
-    shouldRejectNotRetry: (e) => !loosyGoosyIsNetworkError(e),
+    shouldRejectNotRetry: (e) =>
+      !loosyGoosyIsNetworkError(e as { message?: string }),
   });

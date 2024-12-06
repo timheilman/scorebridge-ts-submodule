@@ -444,6 +444,7 @@ export const oppositeDir = (dir: DirectionLetter) => {
   if (dir === "W") {
     return "E";
   }
-   
+
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   throw new Error(`Unrecognized direction: ${dir}`);
 };
