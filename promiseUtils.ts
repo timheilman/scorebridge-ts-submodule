@@ -171,21 +171,21 @@ export const retryOnTimeoutGqlPromise = async <T>(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const loosyGoosyIsNetworkError = (error: any) => {
   if (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+     
     error?.message?.includes &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+     
     (error.message.includes("Network Error") ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+       
       error.message.includes("ERR_NAME_NOT_RESOLVED"))
   ) {
     return true;
   }
   if (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+     
     error?.toString &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+     
     (error.toString().includes("Network Error") ||
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+       
       error.toString().includes("ERR_NAME_NOT_RESOLVED"))
   ) {
     return true;

@@ -37,6 +37,7 @@ function localCurrentConfig() {
   const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
   let foundProcess = true;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     process;
   } catch (e) {
     if (e instanceof ReferenceError) {

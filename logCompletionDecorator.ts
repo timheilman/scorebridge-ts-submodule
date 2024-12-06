@@ -56,7 +56,7 @@ export const errorSwallowingLogCompletionDecoratorFactory = <LOG_LEVEL_TYPE>(
         errLevel,
         ...addlArgs,
       );
-    } catch (e: unknown) {
+    } catch {
       // deliberately swallowed
       return Promise.resolve();
     }

@@ -118,7 +118,7 @@ export function currentConfig(envConfigStr: string | undefined) {
     let envConfigObj;
     try {
       envConfigObj = JSON.parse(envConfigStr) as LoggingConfig;
-    } catch (e) {
+    } catch {
       console.error(
         "Unable to parse logging config from env var, falling back to file.",
       );

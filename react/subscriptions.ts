@@ -136,24 +136,24 @@ export function useSubscriptions({
       log("handleAmplifySubscriptionError", "debug", { subId });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (e: any) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+         
         if (e?.errors?.length && e.errors[0].message) {
           log("handleAmplifySubscriptionError.message", "error", {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+             
             message: e.errors[0].message,
             subId,
           });
           dispatch(
             setMostRecentSubscriptionError([
               subId,
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+               
               `failed post-init w/message: ${e.errors[0].message}`,
             ]),
           );
           return;
         }
         log("handleAmplifySubscriptionError.unexpected", "error", {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+           
           message: e,
         });
         dispatch(
@@ -170,14 +170,14 @@ export function useSubscriptions({
       e: any,
       subId: SubscriptionNames,
     ) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+       
       log("handleUnexpectedSubscriptionError", "error", { subId, e });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+       
       if (e.message) {
         dispatch(
           setMostRecentSubscriptionError([
             subId,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+             
             `failed at init w/message: ${e.message}`,
           ]),
         );
@@ -250,7 +250,7 @@ export function useSubscriptions({
         dispatch(setSubscriptionsConnectionState(connectionState));
         if (connectionState === ConnectionState.Connected) {
           fetchRecentData().catch((e) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+             
             log("fetchRecentData.rethrowingError", "error", { e });
             throw e;
           });
