@@ -1,10 +1,10 @@
 import { BoardResult, Doubling } from "./graphql/appsync";
 
-export const boardResultEffectivelyNull = (
+export const maybeConvertResultToFalsy = (
   br?: Omit<BoardResult, "round" | "board"> | null,
 ) => {
   if (br === null || br === undefined) {
-    return true;
+    return br;
   }
   if (
     !br.level &&
@@ -13,13 +13,14 @@ export const boardResultEffectivelyNull = (
     !br.leadRank &&
     !br.leadSuit &&
     !br.result &&
+    !br.type &&
     !br.doubling
   ) {
-    return true;
+    return null;
   }
   // br.type of PASSED_OUT is not effectively null
   // br.type of null or undefined means depend on the other fields
-  return false;
+  return br;
 };
 
 const coalesceEq = (item1: unknown, item2: unknown) => {
@@ -46,31 +47,33 @@ const coalesceDoublingEq = (
 };
 
 export const areBoardResultsEquivalent = (
-  br1: Omit<BoardResult, "round" | "board">,
-  br2: Omit<BoardResult, "round" | "board">,
+  br1?: Omit<BoardResult, "round" | "board"> | null,
+  br2?: Omit<BoardResult, "round" | "board"> | null,
 ) => {
-  if (boardResultEffectivelyNull(br1) && boardResultEffectivelyNull(br2)) {
+  const solidBr1 = maybeConvertResultToFalsy(br1);
+  const solidBr2 = maybeConvertResultToFalsy(br2);
+  if (!solidBr1 && !solidBr2) {
     return true;
   }
-  if (boardResultEffectivelyNull(br1) || boardResultEffectivelyNull(br2)) {
+  if (!solidBr1 || !solidBr2) {
     return false;
   }
   // from here, we know that neither br1 nor br2 is effectively null,
   // meaning not bid, not played
-  if (br1.type === "PASSED_OUT" && br1.type === "PASSED_OUT") {
+  if (solidBr1.type === "PASSED_OUT" && solidBr2.type === "PASSED_OUT") {
     return true;
   }
   // type is fully handled.  Now let's handle doubling:
-  if (!coalesceDoublingEq(br1.doubling, br2.doubling)) {
+  if (!coalesceDoublingEq(solidBr1.doubling, solidBr2.doubling)) {
     return false;
   }
   // doubling is fully handled.  Now the easy ones:
   return (
-    coalesceEq(br1.level, br2.level) &&
-    coalesceEq(br1.strain, br2.strain) &&
-    coalesceEq(br1.declarer, br2.declarer) &&
-    coalesceEq(br1.leadRank, br2.leadRank) &&
-    coalesceEq(br1.leadSuit, br2.leadSuit) &&
-    coalesceEq(br1.result, br2.result)
+    coalesceEq(solidBr1.level, solidBr2.level) &&
+    coalesceEq(solidBr1.strain, solidBr2.strain) &&
+    coalesceEq(solidBr1.declarer, solidBr2.declarer) &&
+    coalesceEq(solidBr1.leadRank, solidBr2.leadRank) &&
+    coalesceEq(solidBr1.leadSuit, solidBr2.leadSuit) &&
+    coalesceEq(solidBr1.result, solidBr2.result)
   );
 };

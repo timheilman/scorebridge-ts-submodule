@@ -1,4 +1,4 @@
-import { boardResultEffectivelyNull } from "./areBoardResultsEquivalent";
+import { maybeConvertResultToFalsy } from "./areBoardResultsEquivalent";
 import {
   BoardResult,
   DirectionLetter,
@@ -125,7 +125,7 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult?: Omit<BoardResult, "round"> | null;
   direction: DirectionLetter;
 }) => {
-  if (!boardResult || boardResultEffectivelyNull(boardResult)) {
+  if (!boardResult || !maybeConvertResultToFalsy(boardResult)) {
     return;
   }
   if (boardResult.type === "PASSED_OUT") {
