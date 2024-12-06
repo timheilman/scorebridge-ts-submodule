@@ -17,7 +17,7 @@ export const delayedStartPromise = <T>({
   if (delayMs <= 0) {
     return promiseFn();
   }
-  return new Promise<T>((resolve, reject) => {
+  return new Promise<T>((resolve, reject: (reason: unknown) => void) => {
     setTimeout(() => {
       promiseFn().then(resolve, reject);
     }, delayMs);
@@ -154,14 +154,14 @@ const loosyGoosyIsNetworkError = (error: {
   toString?: () => string;
 }) => {
   if (
-    error?.message?.includes &&
+    error.message?.includes &&
     (error.message.includes("Network Error") ||
       error.message.includes("ERR_NAME_NOT_RESOLVED"))
   ) {
     return true;
   }
   if (
-    error?.toString &&
+    error.toString &&
     (error.toString().includes("Network Error") ||
       error.toString().includes("ERR_NAME_NOT_RESOLVED"))
   ) {

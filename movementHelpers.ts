@@ -158,9 +158,8 @@ export const movementMethods = (movement: string) => {
   throw new Error(`Unrecognized movement: ${movement}`);
 };
 
-const ipnMemo = {} as Record<
-  string,
-  { direction: DirectionLetter; table: number }
+const ipnMemo = {} as Partial<
+  Record<string, { direction: DirectionLetter; table: number }>
 >;
 
 interface InversePlayerNumberParams {
@@ -171,7 +170,7 @@ interface InversePlayerNumberParams {
 }
 const inversePlayerNumberMemoKey = (props: InversePlayerNumberParams) => {
   const { tableCount, playerNumber, movement, round = 1 } = props;
-  return `${movement}_${tableCount}_${playerNumber}_${round}`;
+  return `${movement}_${tableCount.toString()}_${playerNumber.toString()}_${round.toString()}`;
 };
 
 export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
@@ -206,7 +205,7 @@ export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
       }
     }
   }
-  throw new Error(`No player number ${playerNumber} found`);
+  throw new Error(`No player number ${playerNumber.toString()} found`);
 };
 
 export const inverseBoardGroup = (props: {
@@ -216,12 +215,12 @@ export const inverseBoardGroup = (props: {
   round: number;
 }) => {
   const { tableCount, boardGroup, boardGroupMethod, round } = props;
-  return withEachTable({ tableCount }).reduce((acc, table) => {
+  return withEachTable({ tableCount }).reduce<number[]>((acc, table) => {
     if (boardGroupMethod({ tableCount, table, round }) === boardGroup) {
       acc.push(table);
     }
     return acc;
-  }, [] as number[]);
+  }, []);
 };
 
 export const isVulnerable = ({
@@ -278,9 +277,11 @@ interface WhereWasIParams {
   boardsPerRound: number;
   movement: string;
 }
-const whereWasIMemo = {} as Record<
-  string,
-  { tableNumber: number; direction: DirectionLetter; round: number }
+const whereWasIMemo = {} as Partial<
+  Record<
+    string,
+    { tableNumber: number; direction: DirectionLetter; round: number }
+  >
 >;
 const whereWasIMemoKey = (props: WhereWasIParams) => {
   const {
@@ -291,7 +292,7 @@ const whereWasIMemoKey = (props: WhereWasIParams) => {
     playerNumber,
     board,
   } = props;
-  return `${movement}_${tableCount}_${roundCount}_${boardsPerRound}_${playerNumber}_${board}`;
+  return `${movement}_${tableCount.toString()}_${roundCount.toString()}_${boardsPerRound.toString()}_${playerNumber.toString()}_${board.toString()}`;
 };
 export const whereWasI = (params: WhereWasIParams) => {
   const myMemoKey = whereWasIMemoKey(params);
@@ -361,36 +362,34 @@ export const tableRoundPairsForBoard = ({
   roundCount: number;
 }) => {
   const boardGroupMethod = movementMethods(movement).boardGroupMethod;
-  return withEachTable({ tableCount }).reduce(
-    (acc, table) => {
-      return [
-        ...acc,
-        ...Array.from({ length: roundCount }, (_, i) => i + 1).reduce(
-          (acc, round) => {
-            const boardGroup = boardGroupMethod({
-              tableCount,
-              table,
-              round,
-            });
-            const start = startingBoardForBoardGroup({
-              boardGroup,
-              boardsPerRound,
-            });
-            const end = endingBoardForBoardGroup({
-              boardGroup,
-              boardsPerRound,
-            });
-            if (board <= end && board >= start) {
-              acc.push({ table, round });
-            }
-            return acc;
-          },
-          [] as { table: number; round: number }[],
-        ),
-      ];
-    },
-    [] as { table: number; round: number }[],
-  );
+  return withEachTable({ tableCount }).reduce<
+    { table: number; round: number }[]
+  >((acc, table) => {
+    return [
+      ...acc,
+      ...Array.from({ length: roundCount }, (_, i) => i + 1).reduce<
+        { table: number; round: number }[]
+      >((acc, round) => {
+        const boardGroup = boardGroupMethod({
+          tableCount,
+          table,
+          round,
+        });
+        const start = startingBoardForBoardGroup({
+          boardGroup,
+          boardsPerRound,
+        });
+        const end = endingBoardForBoardGroup({
+          boardGroup,
+          boardsPerRound,
+        });
+        if (board <= end && board >= start) {
+          acc.push({ table, round });
+        }
+        return acc;
+      }, []),
+    ];
+  }, []);
 };
 
 export const tableRoundDirectionToPlayerName = ({
@@ -426,8 +425,8 @@ export const tableRoundDirectionToPlayerName = ({
         playerNumber,
         movement,
       });
-    return playerAssignments[`${originalTable}_${originalDirection}`]
-      ?.playerDisplayName;
+    return playerAssignments[`${originalTable.toString()}_${originalDirection}`]
+      .playerDisplayName;
   };
 };
 
@@ -441,10 +440,7 @@ export const oppositeDir = (dir: DirectionLetter) => {
   if (dir === "E") {
     return "W";
   }
-  if (dir === "W") {
-    return "E";
-  }
-
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  throw new Error(`Unrecognized direction: ${dir}`);
+  // if (dir === "W") {
+  return "E";
+  // }
 };

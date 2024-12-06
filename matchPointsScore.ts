@@ -15,15 +15,21 @@ interface TrueOpponentsParams {
 }
 
 export const trueOpponents = (params: TrueOpponentsParams) => {
-  const whereWasIResult = whereWasI(params)!;
+  const whereWasIResult = whereWasI(params);
+  if (!whereWasIResult) {
+    throw new Error("expected to know where I was");
+  }
   const {
     tableNumber: playerTable,
     direction: playerDir,
     round: playerRound,
   } = whereWasIResult;
   // log("whereWasI", "debug", { whereWasIResult });
-  return withEachPlayer(params).reduce((acc, otherPlayer) => {
-    const whereWasHe = whereWasI({ ...params, playerNumber: otherPlayer })!;
+  return withEachPlayer(params).reduce<number[]>((acc, otherPlayer) => {
+    const whereWasHe = whereWasI({ ...params, playerNumber: otherPlayer });
+    if (!whereWasHe) {
+      throw new Error("expected to know where he was");
+    }
     // log("whereWasHe", "debug", { otherPlayer, whereWasHe });
     const {
       tableNumber: otherTable,
@@ -38,7 +44,7 @@ export const trueOpponents = (params: TrueOpponentsParams) => {
     }
     acc.push(otherPlayer);
     return acc;
-  }, [] as number[]);
+  }, []);
 };
 
 export const singleBoardScoreCalcMatchPoints = ({
@@ -103,46 +109,58 @@ export const matchPointsScore = (params: {
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;
+  const whereIWas = whereWasI(params);
+  if (!whereIWas) {
+    throw new Error("expected to know where I was");
+  }
   const {
     tableNumber: playerTable,
     round: playerRound,
     direction: playerDir,
-  } = whereWasI(params)!;
-  const whereOpponentsWere = trueOpponents(params).map(
-    (o) => whereWasI({ ...params, playerNumber: o })!,
-  );
+  } = whereIWas;
+  const whereOpponentsWere = trueOpponents(params).map((o) => {
+    const whereOpponentWas = whereWasI({ ...params, playerNumber: o });
+    if (!whereOpponentWas) {
+      throw new Error("expected to know where opponent was");
+    }
+    return whereOpponentWas;
+  });
   const myBiddingBoxScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
     boardResult: {
       board,
-      ...boardResults[`${playerTable}_${board}_${playerRound}`],
+      ...boardResults[
+        `${playerTable.toString()}_${board.toString()}_${playerRound.toString()}`
+      ],
     },
     direction: playerDir,
   });
-  if (myBiddingBoxScore === null || myBiddingBoxScore === undefined) {
+  if (myBiddingBoxScore === undefined) {
     log("myBiddingBoxScoreUndefined", "debug");
     return myBiddingBoxScore;
   } else {
-    log("myBiddingBoxScoreNotNullNotUndefined", "debug", { myBiddingBoxScore });
+    log("myBiddingBoxScoreNotUndefined", "debug", { myBiddingBoxScore });
   }
-  const opponentsBiddingBoxScores = whereOpponentsWere.reduce(
+  const opponentsBiddingBoxScores = whereOpponentsWere.reduce<number[]>(
     (acc, opponent) => {
       const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
         boardResult: {
           board,
-          ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
+          ...boardResults[
+            `${opponent.tableNumber.toString()}_${board.toString()}_${opponent.round.toString()}`
+          ],
         },
         direction: opponent.direction,
       });
       log("opponentsBiddingBoxScore", "debug", {
-        index: `${opponent.tableNumber}_${board}_${opponent.round}`,
+        index: `${opponent.tableNumber.toString()}_${board.toString()}_${opponent.round.toString()}`,
         otherResult,
       });
-      if (otherResult !== null && otherResult !== undefined) {
+      if (otherResult !== undefined) {
         acc.push(otherResult);
       }
       return acc;
     },
-    [] as number[],
+    [],
   );
   log("opponentsBiddingBoxScores", "debug", { opponentsBiddingBoxScores });
   if (opponentsBiddingBoxScores.length === 0) {

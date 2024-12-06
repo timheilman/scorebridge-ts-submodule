@@ -136,24 +136,21 @@ export function useSubscriptions({
       log("handleAmplifySubscriptionError", "debug", { subId });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (e: any) => {
-         
         if (e?.errors?.length && e.errors[0].message) {
           log("handleAmplifySubscriptionError.message", "error", {
-             
             message: e.errors[0].message,
             subId,
           });
           dispatch(
             setMostRecentSubscriptionError([
               subId,
-               
+
               `failed post-init w/message: ${e.errors[0].message}`,
             ]),
           );
           return;
         }
         log("handleAmplifySubscriptionError.unexpected", "error", {
-           
           message: e,
         });
         dispatch(
@@ -170,14 +167,13 @@ export function useSubscriptions({
       e: any,
       subId: SubscriptionNames,
     ) => {
-       
       log("handleUnexpectedSubscriptionError", "error", { subId, e });
-       
+
       if (e.message) {
         dispatch(
           setMostRecentSubscriptionError([
             subId,
-             
+
             `failed at init w/message: ${e.message}`,
           ]),
         );
@@ -250,7 +246,6 @@ export function useSubscriptions({
         dispatch(setSubscriptionsConnectionState(connectionState));
         if (connectionState === ConnectionState.Connected) {
           fetchRecentData().catch((e) => {
-             
             log("fetchRecentData.rethrowingError", "error", { e });
             throw e;
           });

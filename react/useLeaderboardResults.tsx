@@ -129,9 +129,14 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
       );
       return playerAcc;
     },
-    {} as Record<
-      number,
-      { partnership: BoardAllRoundsScore[]; individual: BoardAllRoundsScore[] }
+    {} as Partial<
+      Record<
+        number,
+        {
+          partnership: BoardAllRoundsScore[];
+          individual: BoardAllRoundsScore[];
+        }
+      >
     >,
   );
 };
@@ -166,12 +171,19 @@ export const useLeaderboardResults = ({
     playerNumberToBoardAllRoundsScoreList,
   ).reduce(
     (acc, playerNumber) => {
+      const boardAllRoundsScoreList =
+        playerNumberToBoardAllRoundsScoreList[+playerNumber];
+      if (!boardAllRoundsScoreList) {
+        throw new Error(
+          `Expected boardAllRoundsScoreList for player number, ${playerNumber}`,
+        );
+      }
       const partnershipScore = allBoardsAllRoundsScore(
-        playerNumberToBoardAllRoundsScoreList[+playerNumber].partnership,
+        boardAllRoundsScoreList.partnership,
         tableCount,
       );
       const indivScore = allBoardsAllRoundsScore(
-        playerNumberToBoardAllRoundsScoreList[+playerNumber].individual,
+        boardAllRoundsScoreList.individual,
         tableCount,
       );
       if (partnershipScore !== undefined && partnershipScore !== null) {
@@ -197,12 +209,14 @@ export const useLeaderboardResults = ({
 
       return acc;
     },
-    {} as Record<
-      number,
-      {
-        partnership: { matchPointPct: number; neubergPct: number };
-        individual: { matchPointPct: number; neubergPct: number };
-      }
+    {} as Partial<
+      Record<
+        number,
+        {
+          partnership: { matchPointPct: number; neubergPct: number };
+          individual: { matchPointPct: number; neubergPct: number };
+        }
+      >
     >,
   );
   log("playerNumberToAveragePct", "debug", {

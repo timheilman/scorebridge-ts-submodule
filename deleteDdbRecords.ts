@@ -66,7 +66,10 @@ async function batchQuery({
       exclusiveStartKey: lastEvaluatedKey,
     });
     log("batchQuery.doWhile", "debug", { items, results });
-    results.Items!.forEach((item) => {
+    if (!results.Items) {
+      throw new Error("expected results.Items");
+    }
+    results.Items.forEach((item) => {
       items.push(item);
     });
     log("batchQuery.postItemsForeachPush", "debug", { items });
@@ -154,25 +157,24 @@ async function batchDeleteDdbRecords({
   const chunks = chunk(items, 25);
   const promises: Promise<unknown>[] = [];
   chunks.forEach((chunk) => {
-    const requestItems = chunk.reduce(
-      (requestItems, marshalledItem) => {
-        const item = unmarshall(marshalledItem) as {
-          clubId: string;
-          sortKey: string;
-        };
-        requestItems.push({
-          DeleteRequest: {
-            Key: marshall({
-              clubId: item.clubId,
-              sortKey: item.sortKey,
-            }),
-          },
-        });
+    const requestItems = chunk.reduce<
+      { DeleteRequest: { Key: Record<string, AttributeValue> } }[]
+    >((requestItems, marshalledItem) => {
+      const item = unmarshall(marshalledItem) as {
+        clubId: string;
+        sortKey: string;
+      };
+      requestItems.push({
+        DeleteRequest: {
+          Key: marshall({
+            clubId: item.clubId,
+            sortKey: item.sortKey,
+          }),
+        },
+      });
 
-        return requestItems;
-      },
-      [] as { DeleteRequest: { Key: Record<string, AttributeValue> } }[],
-    );
+      return requestItems;
+    }, []);
     promises.push(
       cachedDynamoDbClient(awsRegion, profile).send(
         new BatchWriteItemCommand({

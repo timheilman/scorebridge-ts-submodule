@@ -15,7 +15,9 @@ export const playerNumberHowell = (props: PlayerNumberProps): number => {
   if (tableCount === 6) {
     return playerNumberHowell6(props);
   }
-  throw new Error(`${tableCount}-table Howell movement is not implemented`);
+  throw new Error(
+    `${tableCount.toString()}-table Howell movement is not implemented`,
+  );
 };
 
 interface WhoFollowsHowell {
@@ -34,9 +36,6 @@ const whoFollowsHowell = ({ playerNumber, tableCount }: WhoFollowsHowell) => {
 const playerNumberHowell3 = (props: PlayerNumberProps): number => {
   log("playerNumberHowell3", "debug", { props });
   const { round, direction, table } = props;
-  if (direction === null) {
-    throw new Error("Why is direction null?");
-  }
   if (round <= 1) {
     if (direction === "N") {
       if (table === 1) {
@@ -53,15 +52,15 @@ const playerNumberHowell3 = (props: PlayerNumberProps): number => {
     if (direction === "W") {
       return playerNumberHowell3({ ...props, direction: "E" }) + 1;
     }
-    if (direction === "E") {
-      if (table === 1) {
-        return 1;
-      }
-      if (table === 2) {
-        return 7;
-      }
-      return 3;
+    // if (direction === "E") {
+    if (table === 1) {
+      return 1;
     }
+    if (table === 2) {
+      return 7;
+    }
+    return 3;
+    // }
   }
   return whoFollowsHowell({
     ...props,
@@ -89,18 +88,18 @@ const playerNumberHowell4 = (props: PlayerNumberProps): number => {
     if (direction === "W") {
       return playerNumberHowell4({ ...props, direction: "E" }) + 1;
     }
-    if (direction === "E") {
-      if (table === 1) {
-        return 1;
-      }
-      if (table === 2) {
-        return 5;
-      }
-      if (table === 3) {
-        return 3;
-      }
-      return 9;
+    // if (direction === "E") {
+    if (table === 1) {
+      return 1;
     }
+    if (table === 2) {
+      return 5;
+    }
+    if (table === 3) {
+      return 3;
+    }
+    return 9;
+    // }
   }
   return whoFollowsHowell({
     ...props,
@@ -131,21 +130,21 @@ const playerNumberHowell5 = (props: PlayerNumberProps): number => {
     if (direction === "W") {
       return playerNumberHowell5({ ...props, direction: "E" }) + 1;
     }
-    if (direction === "E") {
-      if (table === 1) {
-        return 5;
-      }
-      if (table === 2) {
-        return 3;
-      }
-      if (table === 3) {
-        return 1;
-      }
-      if (table === 4) {
-        return 15;
-      }
-      return 11;
+    // if (direction === "E") {
+    if (table === 1) {
+      return 5;
     }
+    if (table === 2) {
+      return 3;
+    }
+    if (table === 3) {
+      return 1;
+    }
+    if (table === 4) {
+      return 15;
+    }
+    return 11;
+    // }
   }
   return whoFollowsHowell({
     ...props,
@@ -179,24 +178,24 @@ const playerNumberHowell6 = (props: PlayerNumberProps): number => {
     if (direction === "W") {
       return playerNumberHowell6({ ...props, direction: "E" }) + 1;
     }
-    if (direction === "E") {
-      if (table === 1) {
-        return 9;
-      }
-      if (table === 2) {
-        return 3;
-      }
-      if (table === 3) {
-        return 19;
-      }
-      if (table === 4) {
-        return 7;
-      }
-      if (table === 5) {
-        return 1;
-      }
-      return 11;
+    // if (direction === "E") {
+    if (table === 1) {
+      return 9;
     }
+    if (table === 2) {
+      return 3;
+    }
+    if (table === 3) {
+      return 19;
+    }
+    if (table === 4) {
+      return 7;
+    }
+    if (table === 5) {
+      return 1;
+    }
+    return 11;
+    // }
   }
   return whoFollowsHowell({
     ...props,
@@ -218,7 +217,9 @@ export const boardGroupHowell = (props: BoardGroupProps): number => {
   if (tableCount === 6) {
     return boardGroupHowell6(props);
   }
-  throw new Error(`${tableCount}-table Howell movement is not implemented`);
+  throw new Error(
+    `${tableCount.toString()}-table Howell movement is not implemented`,
+  );
 };
 
 export const boardGroupHowell3 = (props: BoardGroupProps): number => {

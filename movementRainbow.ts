@@ -142,6 +142,7 @@ const whoFollowsRainbowTwoTable = (playerNumber: number) => {
   if (playerNumber === 8) {
     return 4;
   }
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   throw new Error(`invalid playerNumber: ${playerNumber}`);
 };
 const playerNumberRainbowTwoTable = ({
@@ -164,9 +165,9 @@ const playerNumberRainbowTwoTable = ({
       if (direction === "S") {
         return 5;
       }
-      if (direction === "E") {
-        return 7;
-      }
+      // if (direction === "E") {
+      return 7;
+      // }
     } else {
       return playerNumberRainbowTwoTable({ table: 1, direction, round }) + 1;
     }
