@@ -1,5 +1,5 @@
-import { retryOnTimeoutGqlPromise } from "../promiseUtils";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
+import { retryOnTimeoutGqlPromise } from "./reactPromiseUtils";
 const log = tsSubmoduleLogFn("messageErroringGql.");
 export const messageErroringGql = async <T>(gqlPromiseFn: () => Promise<T>) => {
   try {
