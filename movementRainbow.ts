@@ -142,8 +142,8 @@ const whoFollowsRainbowTwoTable = (playerNumber: number) => {
   if (playerNumber === 8) {
     return 4;
   }
-   
-  throw new Error(`invalid playerNumber: ${playerNumber}`);
+
+  throw new Error(`invalid playerNumber: ${playerNumber.toString()}`);
 };
 const playerNumberRainbowTwoTable = ({
   round,
