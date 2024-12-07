@@ -12,27 +12,24 @@ export interface SubscriptionStateType {
 }
 
 export const initialState: SubscriptionStateType = {
-  mostRecentErrors: Object.keys(subIdToSubGql).reduce(
-    (acc, subId: string) => {
-      acc[subId as SubscriptionNames] = null;
-      return acc;
-    },
-    {} as SubscriptionStateType["mostRecentErrors"],
-  ),
-  connectionAttempted: Object.keys(subIdToSubGql).reduce(
-    (acc, subId: string) => {
-      acc[subId as SubscriptionNames] = false;
-      return acc;
-    },
-    {} as SubscriptionStateType["connectionAttempted"],
-  ),
-  connected: Object.keys(subIdToSubGql).reduce(
-    (acc, subId: string) => {
-      acc[subId as SubscriptionNames] = false;
-      return acc;
-    },
-    {} as SubscriptionStateType["connected"],
-  ),
+  mostRecentErrors: Object.keys(subIdToSubGql).reduce<
+    SubscriptionStateType["mostRecentErrors"]
+  >((acc, subId: string) => {
+    acc[subId as SubscriptionNames] = null;
+    return acc;
+  }, {}),
+  connectionAttempted: Object.keys(subIdToSubGql).reduce<
+    SubscriptionStateType["connectionAttempted"]
+  >((acc, subId: string) => {
+    acc[subId as SubscriptionNames] = false;
+    return acc;
+  }, {}),
+  connected: Object.keys(subIdToSubGql).reduce<
+    SubscriptionStateType["connected"]
+  >((acc, subId: string) => {
+    acc[subId as SubscriptionNames] = false;
+    return acc;
+  }, {}),
   connectionState: ConnectionState.Disconnected,
 };
 

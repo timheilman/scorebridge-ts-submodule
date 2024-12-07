@@ -95,48 +95,47 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
   // key is "<tableNumber>_<board>_<round>"
   boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
 }) => {
-  return withEachPlayer(game).reduce(
-    (playerAcc, playerNumber) => {
-      playerAcc[playerNumber] = withEachBoard(game).reduce(
-        (acc, board) => {
-          const thisBoardScore = matchPointsScore({
-            ...game,
-            playerNumber,
-            board,
-            boardResults,
-          });
-          if (thisBoardScore !== undefined && thisBoardScore !== null) {
-            acc.partnership.push(thisBoardScore);
-            const role = roleForPlayerOnBoard({
-              playerNumber,
-              board,
-              boardResults,
-              game,
-            });
-            if (role === "Defender") {
-              acc.individual.push(thisBoardScore);
-            } else if (role === "Declarer") {
-              acc.individual.push(thisBoardScore);
-              acc.individual.push(thisBoardScore);
-            }
-          }
-          return acc;
-        },
-        {
-          partnership: [] as BoardAllRoundsScore[],
-          individual: [] as BoardAllRoundsScore[],
-        },
-      );
-      return playerAcc;
-    },
-    {} as Record<
+  return withEachPlayer(game).reduce<
+    Record<
       number,
       {
         partnership: BoardAllRoundsScore[];
         individual: BoardAllRoundsScore[];
       }
-    >,
-  );
+    >
+  >((playerAcc, playerNumber) => {
+    playerAcc[playerNumber] = withEachBoard(game).reduce(
+      (acc, board) => {
+        const thisBoardScore = matchPointsScore({
+          ...game,
+          playerNumber,
+          board,
+          boardResults,
+        });
+        if (thisBoardScore !== undefined && thisBoardScore !== null) {
+          acc.partnership.push(thisBoardScore);
+          const role = roleForPlayerOnBoard({
+            playerNumber,
+            board,
+            boardResults,
+            game,
+          });
+          if (role === "Defender") {
+            acc.individual.push(thisBoardScore);
+          } else if (role === "Declarer") {
+            acc.individual.push(thisBoardScore);
+            acc.individual.push(thisBoardScore);
+          }
+        }
+        return acc;
+      },
+      {
+        partnership: [] as BoardAllRoundsScore[],
+        individual: [] as BoardAllRoundsScore[],
+      },
+    );
+    return playerAcc;
+  }, {});
 };
 
 const pctThreeSigDig = (n: number) => Math.round(n * 1000) / 10;
@@ -167,54 +166,53 @@ export const useLeaderboardResults = ({
     });
   const playerNumberToAllBoardsScorePct = Object.keys(
     playerNumberToBoardAllRoundsScoreList,
-  ).reduce(
-    (acc, playerNumber) => {
-      const boardAllRoundsScoreList =
-        playerNumberToBoardAllRoundsScoreList[+playerNumber];
-      if (!boardAllRoundsScoreList) {
-        throw new Error(
-          `Expected boardAllRoundsScoreList for player number, ${playerNumber}`,
-        );
-      }
-      const partnershipScore = allBoardsAllRoundsScore(
-        boardAllRoundsScoreList.partnership,
-        tableCount,
-      );
-      const indivScore = allBoardsAllRoundsScore(
-        boardAllRoundsScoreList.individual,
-        tableCount,
-      );
-      if (partnershipScore !== undefined && partnershipScore !== null) {
-        acc[+playerNumber] = {
-          partnership: {
-            matchPointPct: pctThreeSigDig(
-              partnershipScore.allBoardsScoreDecimalMatchPoints,
-            ),
-            neubergPct: pctThreeSigDig(
-              partnershipScore.allBoardsScoreDecimalNeuberg,
-            ),
-          },
-          individual: {
-            matchPointPct: indivScore
-              ? pctThreeSigDig(indivScore.allBoardsScoreDecimalMatchPoints)
-              : 0,
-            neubergPct: indivScore
-              ? pctThreeSigDig(indivScore.allBoardsScoreDecimalNeuberg)
-              : 0,
-          },
-        };
-      }
-
-      return acc;
-    },
-    {} as Record<
+  ).reduce<
+    Record<
       number,
       {
         partnership: { matchPointPct: number; neubergPct: number };
         individual: { matchPointPct: number; neubergPct: number };
       }
-    >,
-  );
+    >
+  >((acc, playerNumber) => {
+    const boardAllRoundsScoreList =
+      playerNumberToBoardAllRoundsScoreList[+playerNumber];
+    if (!boardAllRoundsScoreList) {
+      throw new Error(
+        `Expected boardAllRoundsScoreList for player number, ${playerNumber}`,
+      );
+    }
+    const partnershipScore = allBoardsAllRoundsScore(
+      boardAllRoundsScoreList.partnership,
+      tableCount,
+    );
+    const indivScore = allBoardsAllRoundsScore(
+      boardAllRoundsScoreList.individual,
+      tableCount,
+    );
+    if (partnershipScore !== undefined && partnershipScore !== null) {
+      acc[+playerNumber] = {
+        partnership: {
+          matchPointPct: pctThreeSigDig(
+            partnershipScore.allBoardsScoreDecimalMatchPoints,
+          ),
+          neubergPct: pctThreeSigDig(
+            partnershipScore.allBoardsScoreDecimalNeuberg,
+          ),
+        },
+        individual: {
+          matchPointPct: indivScore
+            ? pctThreeSigDig(indivScore.allBoardsScoreDecimalMatchPoints)
+            : 0,
+          neubergPct: indivScore
+            ? pctThreeSigDig(indivScore.allBoardsScoreDecimalNeuberg)
+            : 0,
+        },
+      };
+    }
+
+    return acc;
+  }, {});
   log("playerNumberToAveragePct", "debug", {
     playerNumberToAllBoardsMatchPointScorePct: playerNumberToAllBoardsScorePct,
   });

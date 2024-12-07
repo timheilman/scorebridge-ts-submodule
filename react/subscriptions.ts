@@ -209,7 +209,9 @@ export function useSubscriptions({
           variables,
         });
         pool[subId] = graphqlResponse.subscribe({
-          next: ({ data }) => callback(data[subId]),
+          next: ({ data }) => {
+            callback(data[subId]);
+          },
           error: handleAmplifySubscriptionError(subId),
         });
         dispatch(setConnectionAttempted(subId));
@@ -218,15 +220,15 @@ export function useSubscriptions({
         handleUnexpectedSubscriptionError(e, subId);
       }
     };
-    subscriptionDetails.forEach((ets) =>
+    subscriptionDetails.forEach((ets) => {
       ets((subDets) => {
         errorCatchingSubscription({
           query: subDets.query,
           variables: subDets.variables,
           callback: subDets.callback,
         });
-      }),
-    );
+      });
+    });
 
     const stopListening = Hub.listen<{
       event: string;
