@@ -11,8 +11,8 @@ export function cachedAwsSdkV3Client<T>(
   klass: AwsClientConstructor<T>,
   awsRegion: string,
   profile: string | null,
-  profileDict: Partial<Record<string, Record<string, T>>>,
-  envDict: Partial<Record<string, T>>,
+  profileDict: Record<string, Record<string, T> | undefined>,
+  envDict: Record<string, T>,
 ) {
   if (profile) {
     if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {

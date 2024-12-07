@@ -129,14 +129,12 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
       );
       return playerAcc;
     },
-    {} as Partial<
-      Record<
-        number,
-        {
-          partnership: BoardAllRoundsScore[];
-          individual: BoardAllRoundsScore[];
-        }
-      >
+    {} as Record<
+      number,
+      {
+        partnership: BoardAllRoundsScore[];
+        individual: BoardAllRoundsScore[];
+      }
     >,
   );
 };
@@ -209,14 +207,12 @@ export const useLeaderboardResults = ({
 
       return acc;
     },
-    {} as Partial<
-      Record<
-        number,
-        {
-          partnership: { matchPointPct: number; neubergPct: number };
-          individual: { matchPointPct: number; neubergPct: number };
-        }
-      >
+    {} as Record<
+      number,
+      {
+        partnership: { matchPointPct: number; neubergPct: number };
+        individual: { matchPointPct: number; neubergPct: number };
+      }
     >,
   );
   log("playerNumberToAveragePct", "debug", {

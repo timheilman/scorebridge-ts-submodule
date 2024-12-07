@@ -140,8 +140,9 @@ export const movementMethods = (movement: string) => {
   throw new Error(`Unrecognized movement: ${movement}`);
 };
 
-const ipnMemo = {} as Partial<
-  Record<string, { direction: DirectionLetter; table: number }>
+const ipnMemo = {} as Record<
+  string,
+  { direction: DirectionLetter; table: number } | undefined
 >;
 
 interface InversePlayerNumberParams {
@@ -259,11 +260,9 @@ interface WhereWasIParams {
   boardsPerRound: number;
   movement: string;
 }
-const whereWasIMemo = {} as Partial<
-  Record<
-    string,
-    { tableNumber: number; direction: DirectionLetter; round: number }
-  >
+const whereWasIMemo = {} as Record<
+  string,
+  { tableNumber: number; direction: DirectionLetter; round: number } | undefined
 >;
 const whereWasIMemoKey = (props: WhereWasIParams) => {
   const {
