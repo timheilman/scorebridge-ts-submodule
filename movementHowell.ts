@@ -15,9 +15,7 @@ export const playerNumberHowell = (props: PlayerNumberProps): number => {
   if (tableCount === 6) {
     return playerNumberHowell6(props);
   }
-  throw new Error(
-    `${tableCount.toString()}-table Howell movement is not implemented`,
-  );
+  throw new Error(`${tableCount}-table Howell movement is not implemented`);
 };
 
 interface WhoFollowsHowell {
@@ -217,9 +215,7 @@ export const boardGroupHowell = (props: BoardGroupProps): number => {
   if (tableCount === 6) {
     return boardGroupHowell6(props);
   }
-  throw new Error(
-    `${tableCount.toString()}-table Howell movement is not implemented`,
-  );
+  throw new Error(`${tableCount}-table Howell movement is not implemented`);
 };
 
 export const boardGroupHowell3 = (props: BoardGroupProps): number => {

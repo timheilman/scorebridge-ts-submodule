@@ -143,7 +143,7 @@ const whoFollowsRainbowTwoTable = (playerNumber: number) => {
     return 4;
   }
 
-  throw new Error(`invalid playerNumber: ${playerNumber.toString()}`);
+  throw new Error(`invalid playerNumber: ${playerNumber}`);
 };
 const playerNumberRainbowTwoTable = ({
   round,

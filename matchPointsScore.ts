@@ -128,9 +128,7 @@ export const matchPointsScore = (params: {
   const myBiddingBoxScore = biddingBoxScoreForPartnershipRegardlessOfPlayed({
     boardResult: {
       board,
-      ...boardResults[
-        `${playerTable.toString()}_${board.toString()}_${playerRound.toString()}`
-      ],
+      ...boardResults[`${playerTable}_${board}_${playerRound}`],
     },
     direction: playerDir,
   });
@@ -145,14 +143,12 @@ export const matchPointsScore = (params: {
       const otherResult = biddingBoxScoreForPartnershipRegardlessOfPlayed({
         boardResult: {
           board,
-          ...boardResults[
-            `${opponent.tableNumber.toString()}_${board.toString()}_${opponent.round.toString()}`
-          ],
+          ...boardResults[`${opponent.tableNumber}_${board}_${opponent.round}`],
         },
         direction: opponent.direction,
       });
       log("opponentsBiddingBoxScore", "debug", {
-        index: `${opponent.tableNumber.toString()}_${board.toString()}_${opponent.round.toString()}`,
+        index: `${opponent.tableNumber}_${board}_${opponent.round}`,
         otherResult,
       });
       if (otherResult !== undefined) {

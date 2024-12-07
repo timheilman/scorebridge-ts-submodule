@@ -72,8 +72,7 @@ const roleForPlayerOnBoard = ({
     throw new Error("expected to find where I was");
   }
   const { direction, tableNumber, round } = whereIWas;
-  const boardResult =
-    boardResults[`${tableNumber.toString()}_${board}_${round}`];
+  const boardResult = boardResults[`${tableNumber}_${board}_${round}`];
   if (!boardResult) {
     return;
   }

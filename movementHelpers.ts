@@ -152,7 +152,7 @@ interface InversePlayerNumberParams {
 }
 const inversePlayerNumberMemoKey = (props: InversePlayerNumberParams) => {
   const { tableCount, playerNumber, movement, round = 1 } = props;
-  return `${movement}_${tableCount.toString()}_${playerNumber.toString()}_${round.toString()}`;
+  return `${movement}_${tableCount}_${playerNumber}_${round}`;
 };
 
 export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
@@ -187,7 +187,7 @@ export const inversePlayerNumber = (props: InversePlayerNumberParams) => {
       }
     }
   }
-  throw new Error(`No player number ${playerNumber.toString()} found`);
+  throw new Error(`No player number ${playerNumber} found`);
 };
 
 export const inverseBoardGroup = (props: {
@@ -274,7 +274,7 @@ const whereWasIMemoKey = (props: WhereWasIParams) => {
     playerNumber,
     board,
   } = props;
-  return `${movement}_${tableCount.toString()}_${roundCount.toString()}_${boardsPerRound.toString()}_${playerNumber.toString()}_${board.toString()}`;
+  return `${movement}_${tableCount}_${roundCount}_${boardsPerRound}_${playerNumber}_${board}`;
 };
 export const whereWasI = (params: WhereWasIParams) => {
   const myMemoKey = whereWasIMemoKey(params);
@@ -407,7 +407,7 @@ export const tableRoundDirectionToPlayerName = ({
         playerNumber,
         movement,
       });
-    return playerAssignments[`${originalTable.toString()}_${originalDirection}`]
+    return playerAssignments[`${originalTable}_${originalDirection}`]
       .playerDisplayName;
   };
 };
