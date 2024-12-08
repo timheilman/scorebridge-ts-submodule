@@ -12,7 +12,7 @@ import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
 const log = tsSubmoduleLogFn("react.Leaderboard.");
 
 const allBoardsAllRoundsScore = (
-  scores: BoardAllRoundsScore[],
+  scores: (BoardAllRoundsScore | null | undefined)[],
   tableCount: number,
 ) => {
   const withoutNullsUndefineds = scores.filter(
@@ -49,7 +49,7 @@ export interface BothScoresPct {
   individual: PlayerAllBoardsScore;
 }
 
-export type AllPlayerFinalScores = Record<number, BothScoresPct>;
+export type AllPlayerFinalScores = Record<number, BothScoresPct | undefined>;
 
 const roleForPlayerOnBoard = ({
   playerNumber,
@@ -60,7 +60,10 @@ const roleForPlayerOnBoard = ({
   playerNumber: number;
   board: number;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+  boardResults: Record<
+    string,
+    Omit<BoardResult, "board" | "round"> | null | undefined
+  >;
   game: Omit<Game, "tableAssignments">;
 }): "Declarer" | "Defender" | "Dummy" | undefined => {
   const whereIWas = whereWasI({
@@ -93,15 +96,20 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
 }: {
   game: Omit<Game, "tableAssignments">;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+  boardResults: Record<
+    string,
+    Omit<BoardResult, "board" | "round"> | null | undefined
+  >;
 }) => {
   return withEachPlayer(game).reduce<
     Record<
       number,
-      {
-        partnership: BoardAllRoundsScore[];
-        individual: BoardAllRoundsScore[];
-      }
+      | {
+          partnership: BoardAllRoundsScore[];
+          individual: BoardAllRoundsScore[];
+        }
+      | null
+      | undefined
     >
   >((playerAcc, playerNumber) => {
     playerAcc[playerNumber] = withEachBoard(game).reduce(
@@ -146,14 +154,11 @@ export const useLeaderboardResults = ({
 }: {
   game: Omit<Game, "tableAssignments"> | undefined;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
-}):
-  | {
-      partnershipScoresAll: Record<number, BothScoresPct>;
-      partnershipScoresNs: Record<number, BothScoresPct>;
-      partnershipScoresEw: Record<number, BothScoresPct>;
-    }
-  | undefined => {
+  boardResults: Record<
+    string,
+    Omit<BoardResult, "board" | "round"> | undefined
+  >;
+}) => {
   if (!game) {
     return;
   }
@@ -169,10 +174,11 @@ export const useLeaderboardResults = ({
   ).reduce<
     Record<
       number,
-      {
-        partnership: { matchPointPct: number; neubergPct: number };
-        individual: { matchPointPct: number; neubergPct: number };
-      }
+      | {
+          partnership: { matchPointPct: number; neubergPct: number };
+          individual: { matchPointPct: number; neubergPct: number };
+        }
+      | undefined
     >
   >((acc, playerNumber) => {
     const boardAllRoundsScoreList =
@@ -190,7 +196,7 @@ export const useLeaderboardResults = ({
       boardAllRoundsScoreList.individual,
       tableCount,
     );
-    if (partnershipScore !== undefined && partnershipScore !== null) {
+    if (partnershipScore !== undefined) {
       acc[+playerNumber] = {
         partnership: {
           matchPointPct: pctThreeSigDig(

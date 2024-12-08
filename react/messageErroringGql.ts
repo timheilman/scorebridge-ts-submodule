@@ -7,7 +7,7 @@ export const messageErroringGql = async <T>(gqlPromiseFn: () => Promise<T>) => {
   } catch (e) {
     log("messageErroringGql", "debug", { e });
 
-    if ((e as { errors: unknown[] }).errors) {
+    if ((e as { errors?: unknown[] }).errors) {
       throw new Error(
         JSON.stringify((e as { errors: unknown[] }).errors, null, 2),
       );

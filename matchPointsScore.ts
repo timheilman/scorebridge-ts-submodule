@@ -106,7 +106,10 @@ export const matchPointsScore = (params: {
   tableCount: number;
   board: number;
   movement: string;
-  boardResults: Record<string, Omit<BoardResult, "board" | "round">>;
+  boardResults: Record<
+    string,
+    Omit<BoardResult, "board" | "round"> | null | undefined
+  >;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;
   const whereIWas = whereWasI(params);

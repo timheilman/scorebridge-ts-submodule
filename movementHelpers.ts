@@ -2,13 +2,8 @@ import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups";
-import { allDirections } from "./bridgeEnums";
-import {
-  DirectionLetter,
-  PlayerAssignment,
-  Rank,
-  Strain,
-} from "./graphql/appsync";
+import { allDirections, UnkeyedPlayerAssignment } from "./bridgeEnums";
+import { DirectionLetter, Rank, Strain } from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
 import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
@@ -381,7 +376,7 @@ export const tableRoundDirectionToPlayerName = ({
   movement: string;
   tableCount: number;
   // key is "<tableNumber>_<directionLetter>"
-  playerAssignments: Record<string, Omit<PlayerAssignment, "directionLetter">>;
+  playerAssignments: Record<string, UnkeyedPlayerAssignment | undefined>;
 }) => {
   const { playerNumberMethod } = movementMethods(movement);
   return ({
@@ -407,7 +402,7 @@ export const tableRoundDirectionToPlayerName = ({
         movement,
       });
     return playerAssignments[`${originalTable}_${originalDirection}`]
-      .playerDisplayName;
+      ?.playerDisplayName;
   };
 };
 

@@ -99,7 +99,7 @@ export interface UseSubscriptionsParams {
   subscriptionDetails: ExistentiallyTypedSubscription[];
 }
 
-type PoolType = Record<SubscriptionNames, { unsubscribe: () => void }>;
+type PoolType = Map<SubscriptionNames, { unsubscribe: () => void } | undefined>;
 
 export function useSubscriptions({
   authMode = "userPool",
@@ -107,7 +107,10 @@ export function useSubscriptions({
   subscriptionDetails,
 }: UseSubscriptionsParams) {
   const pool: PoolType = useMemo(() => {
-    return {} as PoolType;
+    return new Map<
+      SubscriptionNames,
+      { unsubscribe: () => void } | undefined
+    >();
   }, []);
   const dispatch = useDispatch();
 
@@ -119,9 +122,10 @@ export function useSubscriptions({
   });
   useEffect(() => {
     const deleteSub = (subId: SubscriptionNames) => {
-      if (pool[subId]) {
-        pool[subId].unsubscribe();
-        delete pool[subId];
+      const sub = pool.get(subId);
+      if (sub) {
+        sub.unsubscribe();
+        pool.delete(subId);
         dispatch(clearSubscriptionState(subId));
         return true;
       }
@@ -134,18 +138,18 @@ export function useSubscriptions({
     };
     const handleAmplifySubscriptionError = (subId: SubscriptionNames) => {
       log("handleAmplifySubscriptionError", "debug", { subId });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (e: any) => {
-        if (e?.errors?.length && e.errors[0].message) {
+      return (e: unknown) => {
+        const castE = e as { errors?: { message?: string }[] };
+        if (castE.errors?.length && castE.errors[0].message) {
           log("handleAmplifySubscriptionError.message", "error", {
-            message: e.errors[0].message,
+            message: castE.errors[0].message,
             subId,
           });
           dispatch(
             setMostRecentSubscriptionError([
               subId,
 
-              `failed post-init w/message: ${e.errors[0].message}`,
+              `failed post-init w/message: ${castE.errors[0].message}`,
             ]),
           );
           return;
@@ -163,25 +167,24 @@ export function useSubscriptions({
     };
 
     const handleUnexpectedSubscriptionError = (
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      e: any,
+      e: unknown,
       subId: SubscriptionNames,
     ) => {
       log("handleUnexpectedSubscriptionError", "error", { subId, e });
-
-      if (e.message) {
+      const castE = e as { message?: string };
+      if (castE.message) {
         dispatch(
           setMostRecentSubscriptionError([
             subId,
 
-            `failed at init w/message: ${e.message}`,
+            `failed at init w/message: ${castE.message}`,
           ]),
         );
       } else {
         dispatch(
           setMostRecentSubscriptionError([
             subId,
-            `failed at init w/o message: ${e}`,
+            `failed at init w/o message: ${JSON.stringify(e)}`,
           ]),
         );
       }
@@ -204,16 +207,19 @@ export function useSubscriptions({
           ...variables,
         });
         const graphqlResponse = client.graphql({
-          authMode: authMode ?? "userPool",
+          authMode,
           query: query.gql,
           variables,
         });
-        pool[subId] = graphqlResponse.subscribe({
-          next: ({ data }) => {
-            callback(data[subId]);
-          },
-          error: handleAmplifySubscriptionError(subId),
-        });
+        pool.set(
+          subId,
+          graphqlResponse.subscribe({
+            next: ({ data }) => {
+              callback(data[subId]);
+            },
+            error: handleAmplifySubscriptionError(subId),
+          }),
+        );
         dispatch(setConnectionAttempted(subId));
         log("errorCatchingSubscription.ok", "debug", { subId });
       } catch (e: unknown) {
@@ -247,7 +253,7 @@ export function useSubscriptions({
         });
         dispatch(setSubscriptionsConnectionState(connectionState));
         if (connectionState === ConnectionState.Connected) {
-          fetchRecentData().catch((e) => {
+          fetchRecentData().catch((e: unknown) => {
             log("fetchRecentData.rethrowingError", "error", { e });
             throw e;
           });
