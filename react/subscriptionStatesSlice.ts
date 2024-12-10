@@ -11,25 +11,17 @@ export interface SubscriptionStateType {
   connectionState: ConnectionState;
 }
 
+const subIds = Object.keys(subIdToSubGql) as SubscriptionNames[];
 export const initialState: SubscriptionStateType = {
-  mostRecentErrors: Object.keys(subIdToSubGql).reduce<
-    SubscriptionStateType["mostRecentErrors"]
-  >((acc, subId: string) => {
-    acc[subId as SubscriptionNames] = null;
-    return acc;
-  }, {}),
-  connectionAttempted: Object.keys(subIdToSubGql).reduce<
-    SubscriptionStateType["connectionAttempted"]
-  >((acc, subId: string) => {
-    acc[subId as SubscriptionNames] = false;
-    return acc;
-  }, {}),
-  connected: Object.keys(subIdToSubGql).reduce<
-    SubscriptionStateType["connected"]
-  >((acc, subId: string) => {
-    acc[subId as SubscriptionNames] = false;
-    return acc;
-  }, {}),
+  mostRecentErrors: Object.fromEntries(
+    subIds.map((subId) => [subId, null]),
+  ) as Record<SubscriptionNames, null>,
+  connectionAttempted: Object.fromEntries(
+    subIds.map((subId) => [subId, false]),
+  ) as Record<SubscriptionNames, boolean>,
+  connected: Object.fromEntries(
+    subIds.map((subId) => [subId, false]),
+  ) as Record<SubscriptionNames, boolean>,
   connectionState: ConnectionState.Disconnected,
 };
 
