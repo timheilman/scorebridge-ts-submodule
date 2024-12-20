@@ -2,6 +2,7 @@ import {
   BoardResult,
   Player,
   PlayerAssignment,
+  Strain,
   TableAssignment,
 } from "./graphql/appsync";
 
@@ -30,3 +31,35 @@ export type UnkeyedTableAssignment = Omit<TableAssignment, "tableNumber">;
 export type UnkeyedPlayerAssignment = Omit<PlayerAssignment, "directionLetter">;
 export type UnkeyedBoardResult = Omit<BoardResult, "board" | "round">;
 export type UnkeyedPlayer = Omit<Player, "playerId">;
+export const englishNameOfDirection = (
+  direction: (typeof allDirections)[number]
+) => {
+  switch (direction) {
+    case "N":
+      return "North";
+    case "W":
+      return "West";
+    case "E":
+      return "East";
+    case "S":
+      return "South";
+    default:
+      return "Unknown";
+  }
+};
+export const englishNameOfStrain = (strain: Strain) => {
+  switch (strain) {
+    case "C":
+      return "Clubs";
+    case "D":
+      return "Diamonds";
+    case "H":
+      return "Hearts";
+    case "S":
+      return "Spades";
+    case "NT":
+      return "No Trump";
+    default:
+      return "Unknown";
+  }
+};
