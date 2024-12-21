@@ -2,7 +2,6 @@ import {
   BoardResult,
   Player,
   PlayerAssignment,
-  Strain,
   TableAssignment,
 } from "./graphql/appsync";
 
