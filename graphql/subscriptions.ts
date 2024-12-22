@@ -215,6 +215,8 @@ export const subIdToSubGql = {
             leadSuit
             result
           }
+          upsertClientId
+          upsertClientTimestamp
         }
       }
     `,

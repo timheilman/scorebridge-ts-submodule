@@ -374,6 +374,8 @@ export const mutIdToMutGql = {
             leadRank
             result
           }
+          upsertClientId
+          upsertClientTimestamp
         }
       }
     `,
