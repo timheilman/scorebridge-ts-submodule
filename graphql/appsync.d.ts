@@ -601,6 +601,8 @@ export interface UpsertBoardResultInput {
   gameId: Scalars["String"]["input"];
   partialBoardResult: PartialBoardResult;
   tableNumber: Scalars["Int"]["input"];
+  upsertClientId: Scalars["String"]["input"];
+  upsertClientTimestamp: Scalars["AWSDateTime"]["input"];
 }
 
 export interface UpsertBoardResultResponse {
@@ -609,4 +611,6 @@ export interface UpsertBoardResultResponse {
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
+  upsertClientId: Scalars["String"]["output"];
+  upsertClientTimestamp: Scalars["AWSDateTime"]["output"];
 }
