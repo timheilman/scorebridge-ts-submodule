@@ -48,7 +48,9 @@ enum Doubling {
 }
 
 enum BoardResultType {
+  NOT_BID_NOT_PLAYED
   PASSED_OUT
+  PLAYED
 }
 
 type Query {
