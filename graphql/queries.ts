@@ -93,7 +93,7 @@ export const qidToQueryGql = {
                 declarer
                 leadRank
                 leadSuit
-                result
+                wonTrickCount
               }
             }
           }
@@ -151,7 +151,7 @@ export const qidToQueryGql = {
               declarer
               leadRank
               leadSuit
-              result
+              wonTrickCount
             }
           }
         }
