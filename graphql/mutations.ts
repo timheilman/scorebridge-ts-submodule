@@ -262,7 +262,7 @@ export const mutIdToMutGql = {
             declarer
             leadRank
             leadSuit
-            result
+            wonTrickCount
           }
         }
       }
@@ -372,7 +372,7 @@ export const mutIdToMutGql = {
             doubling
             leadSuit
             leadRank
-            result
+            wonTrickCount
           }
           upsertClientId
           upsertClientTimestamp

@@ -135,7 +135,7 @@ export const subIdToSubGql = {
             declarer
             leadRank
             leadSuit
-            result
+            wonTrickCount
           }
         }
       }
@@ -213,7 +213,7 @@ export const subIdToSubGql = {
             declarer
             leadRank
             leadSuit
-            result
+            wonTrickCount
           }
           upsertClientId
           upsertClientTimestamp
