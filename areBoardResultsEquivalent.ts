@@ -13,7 +13,6 @@ export const maybeConvertResultToFalsy = (
     !br.leadRank &&
     !br.leadSuit &&
     !br.result &&
-    !br.type &&
     !br.doubling
   ) {
     return null;

@@ -1,45 +1,40 @@
-import { maybeConvertResultToFalsy } from "./areBoardResultsEquivalent";
 import {
-  BoardResult,
-  DirectionLetter,
-  Doubling,
-  Strain,
-} from "./graphql/appsync";
+  Level,
+  TypeSafeBoardResult,
+  UnkeyedTypeSafeBoardResult,
+  WonTrickCount,
+} from "./bridgeEnums";
+import { DirectionLetter, Doubling, Strain } from "./graphql/appsync";
 import { isVulnerable } from "./movementHelpers";
-import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
-const log = tsSubmoduleLogFn("boardScore");
 
 export interface BoardScoreParams {
   declarer: DirectionLetter;
-  level: number;
+  level: Level;
   strain: Strain;
   vulnerable: boolean;
-  doubling?: Doubling | null;
-  boardResult: number;
+  doubling: Doubling;
+  wonTrickCount: WonTrickCount;
 }
 
-function pointsPerOddContractTrickBeyondOne(strain: Strain) {
-  return strain === "C" || strain === "D" ? 20 : 30;
-}
+const pointsPerTrick = (strain: Strain) =>
+  strain === "C" || strain === "D" ? 20 : 30;
 
 const contractPoints = ({ strain, doubling, level }: BoardScoreParams) => {
-  const doublingFactor = !doubling ? 1 : doubling === "REDOUBLE" ? 4 : 2;
+  const doublingFactor =
+    doubling === "NONE" ? 1 : doubling === "REDOUBLE" ? 4 : 2;
   const noTrumpFirstTrickExtra = strain === "NT" ? 10 : 0;
   const toReturn =
-    (pointsPerOddContractTrickBeyondOne(strain) * level +
-      noTrumpFirstTrickExtra) *
-    doublingFactor;
+    (pointsPerTrick(strain) * level + noTrumpFirstTrickExtra) * doublingFactor;
   return toReturn;
 };
 
-const overtrickCount = ({ level, boardResult }: BoardScoreParams) => {
-  return boardResult - level;
-};
+const overtrickCount = ({ level, wonTrickCount }: BoardScoreParams) =>
+  wonTrickCount - 6 - level;
 
 const overtrickPoints = (params: BoardScoreParams) => {
   const { doubling, strain, vulnerable } = params;
-  if (!doubling) {
-    return pointsPerOddContractTrickBeyondOne(strain) * overtrickCount(params);
+  if (doubling === "NONE") {
+    return pointsPerTrick(strain) * overtrickCount(params);
   }
   const doubleFactor = doubling === "DOUBLE" ? 1 : 2;
   const vulnerableFactor = vulnerable ? 2 : 1;
@@ -69,7 +64,7 @@ const slamBonus = ({ level, vulnerable }: BoardScoreParams) => {
 };
 
 const insultBonus = ({ doubling }: BoardScoreParams) => {
-  if (!doubling) {
+  if (doubling === "NONE") {
     return 0;
   }
 
@@ -79,10 +74,11 @@ const insultBonus = ({ doubling }: BoardScoreParams) => {
 const penaltyPoints = ({
   doubling,
   vulnerable,
-  boardResult,
+  level,
+  wonTrickCount,
 }: BoardScoreParams) => {
-  const undertricks = Math.abs(boardResult);
-  if (!doubling) {
+  const undertricks = level + 6 - wonTrickCount;
+  if (doubling === "NONE") {
     const vulnerableFactor = vulnerable ? 2 : 1;
     return -undertricks * 50 * vulnerableFactor;
   }
@@ -105,7 +101,7 @@ export const biddingBoxScoreForNsDefinitelyPlayed = (
   params: BoardScoreParams,
 ) => {
   const scoreNorthSouth =
-    params.boardResult > 0
+    params.wonTrickCount - 6 >= params.level
       ? contractPoints(params) +
         overtrickPoints(params) +
         duplicateBonus(params) +
@@ -122,23 +118,14 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult,
   direction,
 }: {
-  boardResult?: Omit<BoardResult, "round"> | null;
+  boardResult: UnkeyedTypeSafeBoardResult & { board: number };
   direction: DirectionLetter;
 }) => {
-  if (!boardResult || !maybeConvertResultToFalsy(boardResult)) {
+  if (boardResult.type === "NOT_BID_NOT_PLAYED") {
     return;
   }
   if (boardResult.type === "PASSED_OUT") {
     return 0;
-  }
-  if (
-    !boardResult.declarer ||
-    !boardResult.result ||
-    !boardResult.level ||
-    !boardResult.strain
-  ) {
-    log("boardResultForNotYetCompletedPlayedBoard", "debug", { boardResult });
-    return;
   }
   const whichWay = direction === "N" || direction === "S" ? 1 : -1;
 
@@ -146,7 +133,7 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
     whichWay *
     biddingBoxScoreForNsDefinitelyPlayed({
       declarer: boardResult.declarer,
-      boardResult: boardResult.result,
+      wonTrickCount: boardResult.wonTrickCount,
       doubling: boardResult.doubling,
       level: boardResult.level,
       strain: boardResult.strain,

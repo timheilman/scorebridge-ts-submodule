@@ -52,23 +52,21 @@ interface BoardAndRound {
   board: number;
   round: number;
 }
-// 2024-12-24 Playing, here's the discriminated union we'd like:
-export type TypeSafeBoardResult = BoardAndRound &
-  (
-    | { __typename?: "TypeSafeBoardResult"; type: "PASSED_OUT" }
-    | { __typename?: "TypeSafeBoardResult"; type: "NOT_BID_NOT_PLAYED" }
-    | {
-        __typename?: "TypeSafeBoardResult";
-        type: "PLAYED";
-        strain: Strain;
-        declarer: DirectionLetter;
-        doubling: Doubling;
-        leadRank: Rank;
-        leadSuit: Suit;
-        level: Level;
-        wonTrickCount: WonTrickCount;
-      }
-  );
+export type UnkeyedTypeSafeBoardResult =
+  | { __typename?: "TypeSafeBoardResult"; type: "PASSED_OUT" }
+  | { __typename?: "TypeSafeBoardResult"; type: "NOT_BID_NOT_PLAYED" }
+  | {
+      __typename?: "TypeSafeBoardResult";
+      type: "PLAYED";
+      strain: Strain;
+      declarer: DirectionLetter;
+      doubling: Doubling;
+      leadRank: Rank;
+      leadSuit: Suit;
+      level: Level;
+      wonTrickCount: WonTrickCount;
+    };
+export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
 
 const typeSafeBoardResult: TypeSafeBoardResult = {
   board: 1,
