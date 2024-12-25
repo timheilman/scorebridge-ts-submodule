@@ -289,7 +289,7 @@ type BoardResult {
   declarer: DirectionLetter
   leadRank: Rank
   leadSuit: Suit
-  result: Int
+  wonTrickCount: Int
 }
 
 input PartialBoardResult {
@@ -302,7 +302,7 @@ input PartialBoardResult {
   declarer: DirectionLetter
   leadRank: Rank
   leadSuit: Suit
-  result: Int
+  wonTrickCount: Int
 }
 
 input UpsertBoardResultInput {

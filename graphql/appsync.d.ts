@@ -85,10 +85,10 @@ export interface BoardResult {
   leadRank?: Maybe<Rank>;
   leadSuit?: Maybe<Suit>;
   level?: Maybe<Scalars["Int"]["output"]>;
-  result?: Maybe<Scalars["Int"]["output"]>;
   round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
   type: BoardResultType;
+  wonTrickCount?: Maybe<Scalars["Int"]["output"]>;
 }
 
 export type BoardResultType = "NOT_BID_NOT_PLAYED" | "PASSED_OUT" | "PLAYED";
@@ -344,10 +344,10 @@ export interface PartialBoardResult {
   leadRank?: InputMaybe<Rank>;
   leadSuit?: InputMaybe<Suit>;
   level?: InputMaybe<Scalars["Int"]["input"]>;
-  result?: InputMaybe<Scalars["Int"]["input"]>;
   round: Scalars["Int"]["input"];
   strain?: InputMaybe<Strain>;
   type: BoardResultType;
+  wonTrickCount?: InputMaybe<Scalars["Int"]["input"]>;
 }
 
 export interface PartialGame {
