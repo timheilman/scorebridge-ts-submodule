@@ -43,6 +43,7 @@ enum Rank {
 }
 
 enum Doubling {
+  NONE
   DOUBLE
   REDOUBLE
 }
@@ -279,7 +280,7 @@ type PlayerAssignment {
 }
 
 type BoardResult {
-  type: BoardResultType
+  type: BoardResultType!
   board: Int!
   round: Int!
   level: Int
@@ -292,7 +293,7 @@ type BoardResult {
 }
 
 input PartialBoardResult {
-  type: BoardResultType
+  type: BoardResultType!
   board: Int!
   round: Int!
   level: Int

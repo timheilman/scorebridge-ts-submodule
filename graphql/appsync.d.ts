@@ -88,7 +88,7 @@ export interface BoardResult {
   result?: Maybe<Scalars["Int"]["output"]>;
   round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
-  type?: Maybe<BoardResultType>;
+  type: BoardResultType;
 }
 
 export type BoardResultType = "NOT_BID_NOT_PLAYED" | "PASSED_OUT" | "PLAYED";
@@ -185,7 +185,7 @@ export interface DeletePlayerInput {
 
 export type DirectionLetter = "E" | "N" | "S" | "W";
 
-export type Doubling = "DOUBLE" | "REDOUBLE";
+export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 
 export interface Game {
   __typename?: "Game";
@@ -347,7 +347,7 @@ export interface PartialBoardResult {
   result?: InputMaybe<Scalars["Int"]["input"]>;
   round: Scalars["Int"]["input"];
   strain?: InputMaybe<Strain>;
-  type?: InputMaybe<BoardResultType>;
+  type: BoardResultType;
 }
 
 export interface PartialGame {
