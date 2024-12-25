@@ -77,6 +77,97 @@ export interface AssignTableResponse {
   tableNumber: Scalars["Int"]["output"];
 }
 
+type LevelAndResult =
+  | {
+      level: 1;
+      result: -7 | -6 | -5 | -4 | -3 | -2 | -1 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+    }
+  | {
+      level: 2;
+      result: -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 2 | 3 | 4 | 5 | 6 | 7;
+    }
+  | {
+      level: 3;
+      result: -9 | -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 3 | 4 | 5 | 6 | 7;
+    }
+  | {
+      level: 4;
+      result: -10 | -9 | -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 4 | 5 | 6 | 7;
+    }
+  | {
+      level: 5;
+      result:
+        | -11
+        | -10
+        | -9
+        | -8
+        | -7
+        | -6
+        | -5
+        | -4
+        | -3
+        | -2
+        | -1
+        | 5
+        | 6
+        | 7;
+    }
+  | {
+      level: 6;
+      result:
+        | -12
+        | -11
+        | -10
+        | -9
+        | -8
+        | -7
+        | -6
+        | -5
+        | -4
+        | -3
+        | -2
+        | -1
+        | 6
+        | 7;
+    }
+  | {
+      level: 7;
+      result:
+        | -13
+        | -12
+        | -11
+        | -10
+        | -9
+        | -8
+        | -7
+        | -6
+        | -5
+        | -4
+        | -3
+        | -2
+        | -1
+        | 7;
+    };
+interface BoardAndRound {
+  board: number;
+  round: number;
+}
+// 2024-12-24 Playing, here's the discriminated union we'd like:
+export type DiscriminatedBoardResult = BoardAndRound &
+  (
+    | { __typename?: "DiscriminatedBoardResult"; type: "PASSED_OUT" }
+    | { __typename?: "DiscriminatedBoardResult"; type: "NOT_PLAYED" } // would want to put this back in the gql enum
+    | ({
+        __typename?: "DiscriminatedBoardResult";
+        type: "PLAYED"; // would want to put this back in the gql enum
+        strain: Strain;
+        declarer: DirectionLetter;
+        doubling: Doubling | "NOT_DOUBLED"; // would want to put this back in the gql enum
+        leadRank: Rank;
+        leadSuit: Suit;
+      } & LevelAndResult)
+  );
+
 export interface BoardResult {
   __typename?: "BoardResult";
   board: Scalars["Int"]["output"];
