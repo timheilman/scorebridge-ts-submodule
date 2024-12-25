@@ -67,17 +67,3 @@ export type UnkeyedTypeSafeBoardResult =
       wonTrickCount: WonTrickCount;
     };
 export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
-
-const typeSafeBoardResult: TypeSafeBoardResult = {
-  board: 1,
-  round: 1,
-  type: "PLAYED",
-  strain: "NT",
-  doubling: "NONE",
-  declarer: "N",
-  leadRank: "KING",
-  leadSuit: "H",
-  level: 2,
-  wonTrickCount: 10,
-};
-console.log(typeSafeBoardResult);

@@ -1,6 +1,5 @@
 import {
   Level,
-  TypeSafeBoardResult,
   UnkeyedTypeSafeBoardResult,
   WonTrickCount,
 } from "./bridgeEnums";

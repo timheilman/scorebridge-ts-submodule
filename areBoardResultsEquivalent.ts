@@ -12,7 +12,7 @@ export const maybeConvertResultToFalsy = (
     !br.declarer &&
     !br.leadRank &&
     !br.leadSuit &&
-    !br.result &&
+    !br.wonTrickCount &&
     !br.doubling
   ) {
     return null;
@@ -73,6 +73,6 @@ export const areBoardResultsEquivalent = (
     coalesceEq(solidBr1.declarer, solidBr2.declarer) &&
     coalesceEq(solidBr1.leadRank, solidBr2.leadRank) &&
     coalesceEq(solidBr1.leadSuit, solidBr2.leadSuit) &&
-    coalesceEq(solidBr1.result, solidBr2.result)
+    coalesceEq(solidBr1.wonTrickCount, solidBr2.wonTrickCount)
   );
 };
