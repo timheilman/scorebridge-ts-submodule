@@ -55,11 +55,11 @@ interface BoardAndRound {
 // 2024-12-24 Playing, here's the discriminated union we'd like:
 export type TypeSafeBoardResult = BoardAndRound &
   (
-    | { __typename?: "DiscriminatedBoardResult"; type: "PASSED_OUT" }
-    | { __typename?: "DiscriminatedBoardResult"; type: "NOT_PLAYED" } // would want to put this back in the gql enum
+    | { __typename?: "TypeSafeBoardResult"; type: "PASSED_OUT" }
+    | { __typename?: "TypeSafeBoardResult"; type: "NOT_BID_NOT_PLAYED" }
     | {
-        __typename?: "DiscriminatedBoardResult";
-        type: "PLAYED"; // would want to put this back in the gql enum
+        __typename?: "TypeSafeBoardResult";
+        type: "PLAYED";
         strain: Strain;
         declarer: DirectionLetter;
         doubling: Doubling | "NOT_DOUBLED"; // would want to put this back in the gql enum
