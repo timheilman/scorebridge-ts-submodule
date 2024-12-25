@@ -62,7 +62,7 @@ export type TypeSafeBoardResult = BoardAndRound &
         type: "PLAYED";
         strain: Strain;
         declarer: DirectionLetter;
-        doubling: Doubling | "NOT_DOUBLED"; // would want to put this back in the gql enum
+        doubling: Doubling;
         leadRank: Rank;
         leadSuit: Suit;
         level: Level;
@@ -75,7 +75,7 @@ const typeSafeBoardResult: TypeSafeBoardResult = {
   round: 1,
   type: "PLAYED",
   strain: "NT",
-  doubling: "NOT_DOUBLED",
+  doubling: "NONE",
   declarer: "N",
   leadRank: "KING",
   leadSuit: "H",
