@@ -14,6 +14,7 @@ import {
 // from the graphql
 export const allSuits = ["C", "D", "H", "S"] as const;
 export const allStrains = [...allSuits, "NT"] as const;
+export const allDoublings = ["NONE", "DOUBLE", "REDOUBLE"] as const;
 export const allRanks = [
   "TWO",
   "THREE",
@@ -67,3 +68,12 @@ export type UnkeyedTypeSafeBoardResult =
       wonTrickCount: WonTrickCount;
     };
 export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
+export const playedBoardRequiredFields = [
+  "level",
+  "strain",
+  "doubling",
+  "declarer",
+  "leadRank",
+  "leadSuit",
+  "wonTrickCount",
+] as const;

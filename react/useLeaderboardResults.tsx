@@ -1,4 +1,5 @@
-import { BoardResult, DirectionLetter, Game } from "../graphql/appsync";
+import { UnkeyedTypeSafeBoardResult } from "../bridgeEnums";
+import { DirectionLetter, Game } from "../graphql/appsync";
 import { BoardAllRoundsScore, matchPointsScore } from "../matchPointsScore";
 import {
   inversePlayerNumber,
@@ -60,10 +61,7 @@ const roleForPlayerOnBoard = ({
   playerNumber: number;
   board: number;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<
-    string,
-    Omit<BoardResult, "board" | "round"> | null | undefined
-  >;
+  boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
   game: Omit<Game, "tableAssignments">;
 }): "Declarer" | "Defender" | "Dummy" | undefined => {
   const whereIWas = whereWasI({
@@ -76,9 +74,6 @@ const roleForPlayerOnBoard = ({
   }
   const { direction, tableNumber, round } = whereIWas;
   const boardResult = boardResults[`${tableNumber}_${board}_${round}`];
-  if (!boardResult) {
-    return;
-  }
   if (!boardResult.declarer) {
     return;
   }
@@ -96,10 +91,7 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
 }: {
   game: Omit<Game, "tableAssignments">;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<
-    string,
-    Omit<BoardResult, "board" | "round"> | null | undefined
-  >;
+  boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
 }) => {
   return withEachPlayer(game).reduce<
     Record<
@@ -154,10 +146,7 @@ export const useLeaderboardResults = ({
 }: {
   game: Omit<Game, "tableAssignments"> | undefined;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<
-    string,
-    Omit<BoardResult, "board" | "round"> | undefined
-  >;
+  boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
 }) => {
   if (!game) {
     return;
