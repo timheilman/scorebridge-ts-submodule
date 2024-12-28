@@ -138,6 +138,10 @@ export async function batchDeleteClubDetails({
     tableName: scoreBridgeTableName,
   });
 }
+export const chunk = <T>(arr: T[], size: number) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
+    arr.slice(i * size, i * size + size),
+  );
 
 async function batchDeleteDdbRecords({
   items,
@@ -150,10 +154,6 @@ async function batchDeleteDdbRecords({
   profile: string | null;
   tableName: string;
 }) {
-  const chunk = <T>(arr: T[], size: number) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
-      arr.slice(i * size, i * size + size),
-    );
   // batch deletes have a maximum of 25 records:
   const chunks = chunk(items, 25);
   const promises: Promise<unknown>[] = [];
