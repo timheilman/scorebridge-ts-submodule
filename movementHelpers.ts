@@ -3,7 +3,7 @@ import {
   startingBoardForBoardGroup,
 } from "./boardGroups";
 import { allDirections, UnkeyedPlayerAssignment } from "./bridgeEnums";
-import { DirectionLetter, Rank, Strain } from "./graphql/appsync";
+import { DirectionLetter, Movement, Rank, Strain } from "./graphql/appsync";
 import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
 import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
 import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
@@ -94,26 +94,26 @@ export const englishOrArabicNumeralsRank = (rank: Rank) => {
   }
 };
 
-export const movementMethods = (movement: string) => {
-  if (movement === "rainbow") {
+export const movementMethods = (movement: Movement) => {
+  if (movement === "RAINBOW") {
     return {
       playerNumberMethod: playerNumberRainbow,
       boardGroupMethod: boardGroupRainbow,
     };
   }
-  if (movement === "mitchell") {
+  if (movement === "MITCHELL") {
     return {
       playerNumberMethod: playerNumberMitchell,
       boardGroupMethod: boardGroupMitchell,
     };
   }
-  if (movement === "howell") {
-    return {
-      playerNumberMethod: playerNumberHowell,
-      boardGroupMethod: boardGroupHowell,
-    };
+  if ((movement as string) !== "HOWELL") {
+    throw new Error(`Unrecognized movement: ${movement}`);
   }
-  throw new Error(`Unrecognized movement: ${movement}`);
+  return {
+    playerNumberMethod: playerNumberHowell,
+    boardGroupMethod: boardGroupHowell,
+  };
 };
 
 const ipnMemo = {} as Record<
@@ -124,7 +124,7 @@ const ipnMemo = {} as Record<
 interface InversePlayerNumberParams {
   tableCount: number;
   playerNumber: number;
-  movement: string;
+  movement: Movement;
   round?: number;
 }
 const inversePlayerNumberMemoKey = (props: InversePlayerNumberParams) => {
@@ -234,7 +234,7 @@ interface WhereWasIParams {
   tableCount: number;
   roundCount: number;
   boardsPerRound: number;
-  movement: string;
+  movement: Movement;
 }
 const whereWasIMemo = {} as Record<
   string,
@@ -313,7 +313,7 @@ export const tableRoundPairsForBoard = ({
   roundCount,
 }: {
   board: number;
-  movement: string;
+  movement: Movement;
   tableCount: number;
   boardsPerRound: number;
   roundCount: number;
@@ -354,7 +354,7 @@ export const tableRoundDirectionToPlayerName = ({
   tableCount,
   playerAssignments,
 }: {
-  movement: string;
+  movement: Movement;
   tableCount: number;
   // key is "<tableNumber>_<directionLetter>"
   playerAssignments: Record<string, UnkeyedPlayerAssignment | undefined>;

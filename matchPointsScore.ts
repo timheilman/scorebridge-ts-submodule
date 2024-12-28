@@ -1,5 +1,6 @@
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
 import { UnkeyedTypeSafeBoardResult } from "./bridgeEnums";
+import { Movement } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
@@ -11,7 +12,7 @@ interface TrueOpponentsParams {
   playerNumber: number;
   tableCount: number;
   board: number;
-  movement: string;
+  movement: Movement;
 }
 
 export const trueOpponents = (params: TrueOpponentsParams) => {
@@ -105,7 +106,7 @@ export const matchPointsScore = (params: {
   playerNumber: number;
   tableCount: number;
   board: number;
-  movement: string;
+  movement: Movement;
   boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;

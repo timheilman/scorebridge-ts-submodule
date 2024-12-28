@@ -1,10 +1,10 @@
 import {
-  AttributeValue,
-  BatchWriteItemCommand,
+  BatchWriteCommand,
+  DynamoDBDocumentClient,
+  NativeAttributeValue,
   QueryCommand,
   QueryCommandOutput,
-} from "@aws-sdk/client-dynamodb";
-import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
+} from "@aws-sdk/lib-dynamodb";
 
 import { cachedDynamoDbClient } from "./cachedDynamoDbClient";
 import { gameSortKeyPrefix0 } from "./ddbSortkey";
@@ -15,27 +15,27 @@ async function queryChunk({
   profile = null,
   tableName,
   keyConditionExpression,
-  unmarshalledExpressionAttributeValues,
+  expressionAttributeValues,
   exclusiveStartKey,
 }: {
   awsRegion: string;
   profile: string | null;
   tableName: string;
   keyConditionExpression: string;
-  unmarshalledExpressionAttributeValues: Record<string, string>;
-  exclusiveStartKey: Record<string, AttributeValue> | undefined;
+  expressionAttributeValues: Record<string, NativeAttributeValue>;
+  exclusiveStartKey: Record<string, NativeAttributeValue> | undefined;
 }) {
   log("queryChunk", "debug", {
     keyConditionExpression,
-    unmarshalledExpressionAttributeValues,
+    expressionAttributeValues,
   });
-  return cachedDynamoDbClient(awsRegion, profile).send(
+  return DynamoDBDocumentClient.from(
+    cachedDynamoDbClient({ awsRegion, profile }),
+  ).send(
     new QueryCommand({
       TableName: tableName,
       KeyConditionExpression: keyConditionExpression,
-      ExpressionAttributeValues: marshall(
-        unmarshalledExpressionAttributeValues,
-      ),
+      ExpressionAttributeValues: expressionAttributeValues,
       ExclusiveStartKey: exclusiveStartKey,
     }),
   );
@@ -46,23 +46,24 @@ async function batchQuery({
   profile = null,
   tableName,
   keyConditionExpression,
-  unmarshalledExpressionAttributeValues,
+  expressionAttributeValues,
 }: {
   awsRegion: string;
   profile: string | null;
   tableName: string;
   keyConditionExpression: string;
-  unmarshalledExpressionAttributeValues: Record<string, string>;
+  expressionAttributeValues: Record<string, NativeAttributeValue>;
 }) {
-  const items: Record<string, AttributeValue>[] = [];
-  let lastEvaluatedKey: Record<string, AttributeValue> | undefined = undefined;
+  const items: Record<string, NativeAttributeValue>[] = [];
+  let lastEvaluatedKey: Record<string, NativeAttributeValue> | undefined =
+    undefined;
   do {
     const results: QueryCommandOutput = await queryChunk({
       awsRegion,
       profile,
       tableName,
       keyConditionExpression,
-      unmarshalledExpressionAttributeValues,
+      expressionAttributeValues: expressionAttributeValues,
       exclusiveStartKey: lastEvaluatedKey,
     });
     log("batchQuery.doWhile", "debug", { items, results });
@@ -91,7 +92,7 @@ export async function batchDeleteGames({
 }) {
   const keyConditionExpression =
     "clubId = :clubId and begins_with(sortKey, :sk)";
-  const unmarshalledExpressionAttributeValues = {
+  const expressionAttributeValues = {
     ":clubId": clubId,
     ":sk": `${gameSortKeyPrefix0}#`,
   };
@@ -100,7 +101,7 @@ export async function batchDeleteGames({
     profile,
     tableName,
     keyConditionExpression,
-    unmarshalledExpressionAttributeValues,
+    expressionAttributeValues,
   });
   log("batchDeleteGames", "debug", { items, clubId });
   await batchDeleteDdbRecords({
@@ -126,7 +127,7 @@ export async function batchDeleteClubDetails({
     items: await batchQuery({
       awsRegion,
       tableName: scoreBridgeTableName,
-      unmarshalledExpressionAttributeValues: {
+      expressionAttributeValues: {
         ":clubId": clubId,
       },
       profile,
@@ -144,7 +145,7 @@ async function batchDeleteDdbRecords({
   profile = null,
   tableName,
 }: {
-  items: Record<string, AttributeValue>[];
+  items: Record<string, NativeAttributeValue>[];
   awsRegion: string;
   profile: string | null;
   tableName: string;
@@ -158,26 +159,19 @@ async function batchDeleteDdbRecords({
   const promises: Promise<unknown>[] = [];
   chunks.forEach((chunk) => {
     const requestItems = chunk.reduce<
-      { DeleteRequest: { Key: Record<string, AttributeValue> } }[]
-    >((requestItems, marshalledItem) => {
-      const item = unmarshall(marshalledItem) as {
+      { DeleteRequest: { Key: Record<string, NativeAttributeValue> } }[]
+    >((requestItems, item) => {
+      const { clubId, sortKey } = item as {
         clubId: string;
         sortKey: string;
       };
-      requestItems.push({
-        DeleteRequest: {
-          Key: marshall({
-            clubId: item.clubId,
-            sortKey: item.sortKey,
-          }),
-        },
-      });
+      requestItems.push({ DeleteRequest: { Key: { clubId, sortKey } } });
 
       return requestItems;
     }, []);
     promises.push(
-      cachedDynamoDbClient(awsRegion, profile).send(
-        new BatchWriteItemCommand({
+      cachedDynamoDbClient({ awsRegion, profile }).send(
+        new BatchWriteCommand({
           RequestItems: { [tableName]: requestItems },
         }),
       ),
