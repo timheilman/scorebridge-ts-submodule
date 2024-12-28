@@ -54,6 +54,12 @@ enum BoardResultType {
   PLAYED
 }
 
+enum Movement {
+  MITCHELL
+  HOWELL
+  RAINBOW
+}
+
 type Query {
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
@@ -435,7 +441,7 @@ input GetGameInput {
 type Game {
   clubId: String!
   gameId: String!
-  movement: String!
+  movement: Movement!
   tableCount: Int!
   roundCount: Int!
   boardsPerRound: Int!
@@ -453,7 +459,7 @@ type Player {
 input PartialGame {
   clubId: String!
   gameId: String!
-  movement: String!
+  movement: Movement!
   tableCount: Int!
   roundCount: Int!
   boardsPerRound: Int!
@@ -464,7 +470,7 @@ input PartialGame {
 
 input CreateGameInput {
   clubId: String!
-  movement: String!
+  movement: Movement!
   tableCount: Int!
   roundCount: Int!
   boardsPerRound: Int!

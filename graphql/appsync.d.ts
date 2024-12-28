@@ -147,7 +147,7 @@ export interface CreateGameInput {
   boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
   label?: InputMaybe<Scalars["String"]["input"]>;
-  movement: Scalars["String"]["input"];
+  movement: Movement;
   roundCount: Scalars["Int"]["input"];
   tableCount: Scalars["Int"]["input"];
 }
@@ -194,7 +194,7 @@ export interface Game {
   createdAt: Scalars["AWSDateTime"]["output"];
   gameId: Scalars["String"]["output"];
   label?: Maybe<Scalars["String"]["output"]>;
-  movement: Scalars["String"]["output"];
+  movement: Movement;
   roundCount: Scalars["Int"]["output"];
   tableAssignments: TableAssignment[];
   tableCount: Scalars["Int"]["output"];
@@ -241,6 +241,8 @@ export interface ListPlayersOutput {
   items: Maybe<Player>[];
   nextToken?: Maybe<Scalars["String"]["output"]>;
 }
+
+export type Movement = "HOWELL" | "MITCHELL" | "RAINBOW";
 
 export interface Mutation {
   __typename?: "Mutation";
@@ -356,7 +358,7 @@ export interface PartialGame {
   createdAt: Scalars["AWSDateTime"]["input"];
   gameId: Scalars["String"]["input"];
   label?: InputMaybe<Scalars["String"]["input"]>;
-  movement: Scalars["String"]["input"];
+  movement: Movement;
   roundCount: Scalars["Int"]["input"];
   tableAssignments: PartialTableAssignment[];
   tableCount: Scalars["Int"]["input"];
