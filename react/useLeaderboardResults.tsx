@@ -74,7 +74,10 @@ const roleForPlayerOnBoard = ({
   }
   const { direction, tableNumber, round } = whereIWas;
   const boardResult = boardResults[`${tableNumber}_${board}_${round}`];
-  if (!boardResult.declarer) {
+  if (
+    boardResult.type === "PASSED_OUT" ||
+    boardResult.type === "NOT_BID_NOT_PLAYED"
+  ) {
     return;
   }
   if (boardResult.declarer === direction) {
@@ -142,13 +145,16 @@ const pctThreeSigDig = (n: number) => Math.round(n * 1000) / 10;
 
 export const useLeaderboardResults = ({
   game,
+  boardResultsLoaded,
   boardResults,
 }: {
   game: Omit<Game, "tableAssignments"> | undefined;
+  boardResultsLoaded: boolean;
   // key is "<tableNumber>_<board>_<round>"
   boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
 }) => {
-  if (!game) {
+  log("useLeaderboardResults", "debug", { boardResultsLoaded, boardResults });
+  if (!game || !boardResultsLoaded) {
     return;
   }
   const tableCount = game.tableCount;
