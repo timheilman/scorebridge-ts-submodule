@@ -159,6 +159,23 @@ export const mutIdToMutGql = {
             round
             roundWelcomeConfirmed
             clubDeviceId
+            playerAssignments {
+              directionLetter
+              playerId
+              playerDisplayName
+            }
+            results {
+              board
+              round
+              type
+              level
+              strain
+              doubling
+              declarer
+              leadRank
+              leadSuit
+              wonTrickCount
+            }
           }
           tableCount
           roundCount

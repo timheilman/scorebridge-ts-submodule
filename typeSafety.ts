@@ -3,11 +3,13 @@ import {
   allDoublings,
   allLevels,
   allRanks,
+  allResults,
   allStrains,
   allSuits,
   allWonTrickCounts,
   Level,
   playedBoardRequiredFields,
+  Result,
   UnkeyedBoardResult,
   UnkeyedTypeSafeBoardResult,
   WonTrickCount,
@@ -52,11 +54,18 @@ export const typeSafeUnkeyedBoardResult = (
   return br as UnkeyedTypeSafeBoardResult;
 };
 
-export const typeSafeLevel = (level?: number): Level => {
+export const typeSafeLevel = (level?: number | "(none)"): Level => {
   if (!allLevels.includes(level as Level)) {
     throw new Error(`unexpected level ${level}`);
   }
   return level as Level;
+};
+
+export const typeSafeResult = (result?: number): Result => {
+  if (!allResults.includes(result as Result)) {
+    throw new Error(`unexpected result ${result}`);
+  }
+  return result as Result;
 };
 
 export const typeSafeStrain = (strain?: string): Strain => {

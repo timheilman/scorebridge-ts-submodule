@@ -40,37 +40,36 @@ export const allWonTrickCounts = [
 ] as const;
 export type Level = (typeof allLevels)[number];
 export type WonTrickCount = (typeof allWonTrickCounts)[number];
-export type Result =
-  | -13
-  | -12
-  | -11
-  | -10
-  | -9
-  | -8
-  | -7
-  | -6
-  | -5
-  | -4
-  | -3
-  | -2
-  | -1
-  | 1
-  | 2
-  | 3
-  | 4
-  | 5
-  | 6
-  | 7;
+export const allResults = [
+  -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7,
+] as const;
+export type Result = (typeof allResults)[number];
 export const wonTrickCountToResult = ({
   wonTrickCount,
   level,
 }: {
   wonTrickCount: WonTrickCount;
   level: Level;
-}) =>
+}): Result =>
   (wonTrickCount >= level + 6
     ? wonTrickCount - 6
     : wonTrickCount - level - 6) as Result;
+export const resultToWonTrickCount = ({
+  result,
+  level,
+}: {
+  result: Result;
+  level: Level;
+}) => {
+  if (result > 0 && result < level) {
+    throw new Error(`result ${result} is not possible for level ${level}`);
+  }
+  return (result > 0 ? result + 6 : result + level + 6) as WonTrickCount;
+};
+export const possibleResults = (level: Level): Result[] =>
+  allWonTrickCounts.map((wonTrickCount) =>
+    wonTrickCountToResult({ wonTrickCount, level }),
+  );
 
 // these are the values whereas keys are stored as part of the sortKey
 export type UnkeyedTableAssignment = Omit<TableAssignment, "tableNumber">;
