@@ -8,7 +8,7 @@ export const playerNumberMitchell = (props: PlayerNumberProps): number => {
   if (direction === "S") {
     return 2 * table;
   }
-  // standard mitchell movement
+  // standard MITCHELL movement
   const roundLessOne = round - 1;
   const tableLessOne = table - 1;
   if (direction === "E") {
@@ -30,7 +30,7 @@ function boardGroupMitchellOdd(props: BoardGroupProps) {
 function boardGroupMitchellEven(props: BoardGroupProps): number {
   const { table, tableCount } = props;
   if (table === 1) {
-    // table 2 always shares boards with table 1 in even mitchell:
+    // table 2 always shares boards with table 1 in even MITCHELL:
     return boardGroupMitchellEven({ ...props, table: 2 });
   }
   // otherwise, behaves identically to odd but with add'l bye stand table

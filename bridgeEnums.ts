@@ -31,6 +31,7 @@ export const allRanks = [
   "ACE",
 ] as const;
 export const allDirections = ["N", "W", "E", "S"] as const;
+export const allMovements = ["MITCHELL", "HOWELL", "RAINBOW"] as const;
 
 // These cannot be made into GraphQL enums, because they are subsets of the integers
 // and so must be validated in the resolvers instead

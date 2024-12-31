@@ -2,6 +2,7 @@ import {
   allDirections,
   allDoublings,
   allLevels,
+  allMovements,
   allRanks,
   allResults,
   allStrains,
@@ -17,6 +18,7 @@ import {
 import {
   DirectionLetter,
   Doubling,
+  Movement,
   Rank,
   Strain,
   Suit,
@@ -110,4 +112,11 @@ export const typeSafeWonTrickCount = (wonTrickCount?: number) => {
     throw new Error(`unexpected wonTrickCount ${wonTrickCount}`);
   }
   return wonTrickCount as WonTrickCount;
+};
+
+export const typeSafeMovement = (movement?: string) => {
+  if (!allMovements.includes(movement as Movement)) {
+    throw new Error(`unexpected movement ${movement}`);
+  }
+  return movement as Movement;
 };

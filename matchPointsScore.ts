@@ -148,7 +148,10 @@ export const matchPointsScore = (params: {
         },
         direction: opponent.direction,
       });
-      log("opponentsBiddingBoxScore", "debug", {
+      if (otherResult !== undefined && isNaN(otherResult)) {
+        throw new Error("expected a number, instead got NaN");
+      }
+      log("opponentsBiddingBoxScore", "info", {
         index: `${opponent.tableNumber}_${board}_${opponent.round}`,
         otherResult,
       });
