@@ -165,9 +165,9 @@ export const mutIdToMutGql = {
               playerDisplayName
             }
             results {
+              type
               board
               round
-              type
               level
               strain
               doubling
@@ -271,6 +271,7 @@ export const mutIdToMutGql = {
             playerDisplayName
           }
           results {
+            type
             board
             round
             level

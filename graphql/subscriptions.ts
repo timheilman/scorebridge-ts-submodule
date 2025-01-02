@@ -58,6 +58,23 @@ export const subIdToSubGql = {
           tableAssignments {
             tableNumber
             clubDeviceId
+            playerAssignments {
+              directionLetter
+              playerId
+              playerDisplayName
+            }
+            results {
+              type
+              board
+              round
+              level
+              strain
+              doubling
+              declarer
+              leadRank
+              leadSuit
+              wonTrickCount
+            }
           }
           createdAt
         }
@@ -127,6 +144,7 @@ export const subIdToSubGql = {
             playerDisplayName
           }
           results {
+            type
             board
             round
             level
