@@ -5,7 +5,7 @@
   "tsSubmodule.movementHelpers.inversePlayerNumber": "info",
   "tsSubmodule.movementHowell": "info",
   "features.assignLevelStrainDoublingDeclarer.SelectDoublingDirection": "info",
-  "features.clubDeviceInit.clubSlice": "info",
+  "features.clubDeviceInit.clubSlice": "debug",
   "features.gameResults.RankedPlayerPercentages.nsSum": "info",
   "tsSubmodule.deleteDdbRecords": "info",
   "tsSubmodule.subscriptions": "debug",
