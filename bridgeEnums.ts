@@ -41,20 +41,14 @@ export const allWonTrickCounts = [
 ] as const;
 export type Level = (typeof allLevels)[number];
 export type WonTrickCount = (typeof allWonTrickCounts)[number];
-export const allResults = [
-  -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7,
+export const allMadeResults = [1, 2, 3, 4, 5, 6, 7] as const;
+export const allDownResults = [
+  -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
 ] as const;
-export type Result = (typeof allResults)[number];
-
-// TODO: SCOR-337 fix this after fast test written or determined should not be:
-// export const allMadeResults = [1, 2, 3, 4, 5, 6, 7] as const;
-// export const allDownResults = [
-//   -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
-// ] as const;
-// export const allResults = [...allMadeResults, ...allDownResults] as const;
-// export type MadeResult = (typeof allMadeResults)[number];
-// export type DownResult = (typeof allDownResults)[number];
-// export type Result = MadeResult | DownResult;
+export const allResults = [...allMadeResults, ...allDownResults] as const;
+export type MadeResult = (typeof allMadeResults)[number];
+export type DownResult = (typeof allDownResults)[number];
+export type Result = MadeResult | DownResult;
 
 export const wonTrickCountToResult = ({
   wonTrickCount,

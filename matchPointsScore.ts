@@ -1,5 +1,5 @@
+import { StagedBoardResult } from "../features/clubDeviceInit/clubSlice";
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
-import { UnkeyedTypeSafeBoardResult } from "./bridgeEnums";
 import { Movement } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
@@ -107,9 +107,7 @@ export const matchPointsScore = (params: {
   tableCount: number;
   board: number;
   movement: Movement;
-  boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
-  // TODO: SCOR-337 fix this after fast test written or determined should not be:
-  // boardResults: Record<string, StagedBoardResult>;
+  boardResults: Record<string, StagedBoardResult>;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;
   const whereIWas = whereWasI(params);
