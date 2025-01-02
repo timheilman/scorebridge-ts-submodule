@@ -143,3 +143,44 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
     })
   );
 };
+
+// TODO: SCOR-337 fix this after fast test written or determined should not be:
+// export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
+//   boardResult,
+//   direction,
+// }: {
+//   boardResult: StagedBoardResult & { board: number };
+//   direction: DirectionLetter;
+// }) => {
+//   if (boardResult.type === "NOT_BID_NOT_PLAYED") {
+//     return;
+//   }
+//   if (boardResult.type === "PASSED_OUT") {
+//     return 0;
+//   }
+//   if (
+//     !boardResult.level ||
+//     !boardResult.strain ||
+//     !boardResult.doubling ||
+//     !boardResult.declarer ||
+//     !boardResult.wonTrickCount
+//   ) {
+//     return;
+//   }
+//   const whichWay = direction === "N" || direction === "S" ? 1 : -1;
+
+//   return (
+//     whichWay *
+//     biddingBoxScoreForNsDefinitelyPlayed({
+//       declarer: boardResult.declarer,
+//       wonTrickCount: boardResult.wonTrickCount,
+//       doubling: boardResult.doubling,
+//       level: boardResult.level,
+//       strain: boardResult.strain,
+//       vulnerable: isVulnerable({
+//         board: boardResult.board,
+//         direction: boardResult.declarer,
+//       }),
+//     })
+//   );
+// };

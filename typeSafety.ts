@@ -63,6 +63,20 @@ export const typeSafeLevel = (level?: number | "(none)"): Level => {
   return level as Level;
 };
 
+// TODO: SCOR-337 fix this after fast test written or determined should not be:
+// export const typeSafeMadeResult = (madeResult?: number): MadeResult => {
+//   if (!allMadeResults.includes(madeResult as MadeResult)) {
+//     throw new Error(`unexpected madeResult ${madeResult}`);
+//   }
+//   return madeResult as MadeResult;
+// };
+// export const typeSafeDownResult = (downResult?: number): DownResult => {
+//   if (!allDownResults.includes(downResult as DownResult)) {
+//     throw new Error(`unexpected downResult ${downResult}`);
+//   }
+//   return downResult as DownResult;
+// };
+
 export const typeSafeResult = (result?: number): Result => {
   if (!allResults.includes(result as Result)) {
     throw new Error(`unexpected result ${result}`);

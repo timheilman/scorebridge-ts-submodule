@@ -108,6 +108,8 @@ export const matchPointsScore = (params: {
   board: number;
   movement: Movement;
   boardResults: Record<string, UnkeyedTypeSafeBoardResult>;
+  // TODO: SCOR-337 fix this after fast test written or determined should not be:
+  // boardResults: Record<string, StagedBoardResult>;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;
   const whereIWas = whereWasI(params);
