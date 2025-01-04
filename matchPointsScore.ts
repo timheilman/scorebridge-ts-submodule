@@ -1,5 +1,5 @@
-import { StagedBoardResult } from "../features/clubDeviceInit/clubSlice";
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
+import { StagedBoardResult } from "./bridgeEnums";
 import { Movement } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
