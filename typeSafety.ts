@@ -44,17 +44,28 @@ export const typeSafeUnkeyedBoardResult = (
   }
   if (br.type === "PLAYED") {
     if (!allLevels.includes(br.level as Level)) {
-      throw new Error(`unexpected level ${br.level}`);
-    }
-    if (
-      (
-        ["strain", "doubling", "declarer", "leadRank", "leadSuit"] as const
-      ).some((key) => !br[key])
-    ) {
-      throw new Error(`unexpected strain ${br.strain}`);
+      throw new Error(`unexpected level ${br.level ?? "undefined"}`);
     }
     if (!allWonTrickCounts.includes(br.wonTrickCount as WonTrickCount)) {
-      throw new Error(`unexpected wonTrickCount ${br.wonTrickCount}`);
+      throw new Error(
+        `unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`,
+      );
+    }
+    const remainingRequiredSettings = [
+      "strain",
+      "doubling",
+      "declarer",
+      "leadRank",
+      "leadSuit",
+    ] as const;
+    if (remainingRequiredSettings.some((key) => !br[key])) {
+      throw new Error(
+        `PLAYED board is missing required settings: ${JSON.stringify(
+          remainingRequiredSettings.filter(
+            (requiredSetting) => !br[requiredSetting],
+          ),
+        )}`,
+      );
     }
   }
   return br as UnkeyedTypeSafeBoardResult;
