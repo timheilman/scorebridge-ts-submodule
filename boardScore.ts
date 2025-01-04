@@ -1,5 +1,4 @@
-import { StagedBoardResult } from "../features/clubDeviceInit/clubSlice";
-import { Level, WonTrickCount } from "./bridgeEnums";
+import { Level, StagedBoardResult, WonTrickCount } from "./bridgeEnums";
 import { DirectionLetter, Doubling, Strain } from "./graphql/appsync";
 import { isVulnerable } from "./movementHelpers";
 

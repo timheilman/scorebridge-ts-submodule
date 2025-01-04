@@ -113,3 +113,16 @@ export const playedBoardRequiredFields = [
   "leadSuit",
   "wonTrickCount",
 ] as const;
+export type StagedBoardResult =
+  | { type: "NOT_BID_NOT_PLAYED" }
+  | { type: "PASSED_OUT" }
+  | {
+      type: "PLAYED";
+      level?: Level;
+      strain?: Strain;
+      doubling?: Doubling;
+      declarer?: DirectionLetter;
+      leadRank?: Rank;
+      leadSuit?: Suit;
+      wonTrickCount?: WonTrickCount;
+    };
