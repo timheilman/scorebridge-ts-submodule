@@ -401,3 +401,29 @@ export const oppositeDir = (dir: DirectionLetter) => {
   return "E";
   // }
 };
+
+export const withEachTableBoardRoundTrio = ({
+  movement,
+  tableCount,
+  boardsPerRound,
+  roundCount,
+}: {
+  movement: Movement;
+  tableCount: number;
+  boardsPerRound: number;
+  roundCount: number;
+}) =>
+  withEachBoard({ roundCount, boardsPerRound }).reduce<
+    { board: number; table: number; round: number }[]
+  >((acc, board) => {
+    tableRoundPairsForBoard({
+      board,
+      movement,
+      tableCount,
+      boardsPerRound,
+      roundCount,
+    }).forEach(({ table, round }) => {
+      acc.push({ board, table, round });
+    });
+    return acc;
+  }, []);
