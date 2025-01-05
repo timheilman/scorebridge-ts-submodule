@@ -5,7 +5,10 @@ export const messageErroringGql = async <T>(gqlPromiseFn: () => Promise<T>) => {
   try {
     return await retryOnTimeoutGqlPromise({ gqlPromiseFn });
   } catch (e) {
-    log("messageErroringGql", "debug", { e });
+    log("messageErroringGql", "debug", {
+      e,
+      eErrors: (e as { errors?: unknown[] }).errors,
+    });
 
     if ((e as { errors?: unknown[] }).errors) {
       throw new Error(
