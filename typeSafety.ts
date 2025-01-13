@@ -15,6 +15,7 @@ import {
   MadeResult,
   playedBoardRequiredFields,
   Result,
+  StagedBoardResult,
   UnkeyedBoardResult,
   UnkeyedTypeSafeBoardResult,
   WonTrickCount,
@@ -28,28 +29,28 @@ import {
   Suit,
 } from "./graphql/appsync";
 
-export const typeSafeUnkeyedBoardResult = (
+class BoardResultTypeUnsafe extends Error {}
+
+const boardResultTypeSafetyProblem = (
   br?: UnkeyedBoardResult,
-): UnkeyedTypeSafeBoardResult => {
+): string | undefined => {
   if (!br) {
-    throw new Error("board result is undefined");
+    return "board result is undefined";
   }
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
     if (
       playedBoardRequiredFields.some((key) => br[key]) ||
       br.wonTrickCount === 0
     ) {
-      throw new Error(`${br.type} board result has unexpected fields`);
+      return `${br.type} board result has unexpected fields`;
     }
   }
   if (br.type === "PLAYED") {
     if (!allLevels.includes(br.level as Level)) {
-      throw new Error(`unexpected level ${br.level ?? "undefined"}`);
+      return `unexpected level ${br.level ?? "undefined"}`;
     }
     if (!allWonTrickCounts.includes(br.wonTrickCount as WonTrickCount)) {
-      throw new Error(
-        `unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`,
-      );
+      return `unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`;
     }
     const remainingRequiredSettings = [
       "strain",
@@ -59,14 +60,31 @@ export const typeSafeUnkeyedBoardResult = (
       "leadSuit",
     ] as const;
     if (remainingRequiredSettings.some((key) => !br[key])) {
-      throw new Error(
-        `PLAYED board is missing required settings: ${JSON.stringify(
-          remainingRequiredSettings.filter(
-            (requiredSetting) => !br[requiredSetting],
-          ),
-        )}`,
-      );
+      return `PLAYED board is missing required settings: ${JSON.stringify(
+        remainingRequiredSettings.filter(
+          (requiredSetting) => !br[requiredSetting],
+        ),
+      )}`;
     }
+  }
+};
+
+export const typeSafeUnkeyedBoardResult = (
+  br?: UnkeyedBoardResult,
+): UnkeyedTypeSafeBoardResult => {
+  const problem = boardResultTypeSafetyProblem(br);
+  if (problem) {
+    throw new BoardResultTypeUnsafe(problem);
+  }
+  return br as UnkeyedTypeSafeBoardResult;
+};
+
+export const typeSafeBoardResultOrUndefined = (
+  br: StagedBoardResult,
+): UnkeyedTypeSafeBoardResult | undefined => {
+  const problem = boardResultTypeSafetyProblem(br);
+  if (problem) {
+    return;
   }
   return br as UnkeyedTypeSafeBoardResult;
 };
