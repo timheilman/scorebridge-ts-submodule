@@ -1,18 +1,3 @@
 {
-  "": "debug",
-  "components.ButtonIcon.rendered": "info",
-  "cypress.": "info",
-  "tsSubmodule.movementHelpers.inversePlayerNumber": "info",
-  "tsSubmodule.movementHowell": "info",
-  "features.assignLevelStrainDoublingDeclarer.SelectDoublingDirection": "info",
-  "features.clubDeviceInit.clubSlice": "debug",
-  "features.gameResults.RankedPlayerPercentages.nsSum": "info",
-  "tsSubmodule.deleteDdbRecords": "info",
-  "tsSubmodule.subscriptions": "debug",
-  "tsSubmodule.OnlineStatus": "info",
-  "tsSubmodule.features.gameOver.test.myScoreUndefined": "info",
-  "tsSubmodule.features.gameOver.test.neuberg": "info",
-  "tsSubmodule.boardScoreboardResultNotYetBid": "info",
-  "utils.hooks.useCurrentRoundBoardResults.useAppSelector": "info",
-  "utils.i18n": "info"
+  "": "info"
 }
