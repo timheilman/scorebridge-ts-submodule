@@ -598,7 +598,6 @@ export interface UpdatePlayerInput {
 }
 
 export interface UpsertBoardResultInput {
-  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   partialBoardResult: PartialBoardResult;

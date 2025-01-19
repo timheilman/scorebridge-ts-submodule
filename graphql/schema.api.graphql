@@ -313,7 +313,6 @@ input PartialBoardResult {
 
 input UpsertBoardResultInput {
   clubId: String!
-  clubDeviceId: String
   gameId: String!
   tableNumber: Int!
   partialBoardResult: PartialBoardResult!
