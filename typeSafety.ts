@@ -67,6 +67,7 @@ const boardResultTypeSafetyProblem = (
       )}`;
     }
   }
+  return;
 };
 
 export const typeSafeUnkeyedBoardResult = (
