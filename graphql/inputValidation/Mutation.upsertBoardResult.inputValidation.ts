@@ -1,5 +1,3 @@
-import { Context } from "@aws-appsync/utils";
-
 import {
   allLevels,
   allWonTrickCounts,
@@ -12,10 +10,22 @@ import {
   GqlUtilErrorParams,
 } from "./multitenancy";
 
-export const errorForMutationUpsertBoardResult = (
-  ctx: Context<MutationUpsertBoardResultArgs>,
-): GqlUtilErrorParams | undefined => {
-  const { partialBoardResult } = ctx.arguments.input;
+export const errorForMutationUpsertBoardResult = ({
+  args,
+  cogIdentity,
+  claims,
+  isAdminSuper,
+  isAdminClub,
+  clubId,
+}: {
+  args: MutationUpsertBoardResultArgs;
+  cogIdentity: unknown;
+  claims: Record<string, unknown> | undefined;
+  isAdminSuper: boolean;
+  isAdminClub: boolean;
+  clubId: string;
+}): GqlUtilErrorParams | undefined => {
+  const { partialBoardResult } = args.input;
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     board: _board,
@@ -24,7 +34,7 @@ export const errorForMutationUpsertBoardResult = (
     type,
     ...putTargets
   } = partialBoardResult;
-  const upsertClientId = ctx.arguments.input.upsertClientId;
+  const upsertClientId = args.input.upsertClientId;
   const upsertClientIdSplit = upsertClientId.split(":");
   if (upsertClientIdSplit.length !== 2) {
     return {
@@ -35,24 +45,17 @@ export const errorForMutationUpsertBoardResult = (
   if (userType !== "webapp" && userType !== "clubDevice") {
     return { msg: `Unrecognized userType from upsertClientId: ${userType}` };
   }
-  const upsertClientIdShunt =
-    userType === "clubDevice"
-      ? ({
-          ...ctx,
-          arguments: {
-            ...ctx.arguments,
-            input: {
-              ...ctx.arguments.input,
-              clubDeviceId: cognitoUsername,
-            },
-          },
-        } as const)
-      : ctx;
   // this is somewhat superfluous; to make it airtight would require a 2-stage
   // pipeline to verify that the clubDeviceId provided is the one present in the
   // table assignment for this table number; gameId similarly
-  const deviceLevelMultitenancyError =
-    errorForDeviceLevelMultitenancy(upsertClientIdShunt);
+  const deviceLevelMultitenancyError = errorForDeviceLevelMultitenancy({
+    cogIdentity,
+    claims,
+    isAdminSuper,
+    isAdminClub,
+    clubId,
+    clubDeviceId: cognitoUsername,
+  });
   if (deviceLevelMultitenancyError) {
     return deviceLevelMultitenancyError;
   }

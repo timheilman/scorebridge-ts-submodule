@@ -1,4 +1,3 @@
-import { AppSyncIdentityCognito, Context } from "@aws-appsync/utils";
 export interface GqlUtilErrorParams {
   msg: string;
   errorType?: string;
@@ -8,21 +7,19 @@ export interface GqlUtilErrorParams {
   errorInfo?: any;
 }
 
-const getUserDetails = <T>(ctx: Context<T>) => {
-  const cogIdentity = ctx.identity as AppSyncIdentityCognito | undefined | null;
-  const groups = cogIdentity?.groups ?? [];
-  const isAdminSuper = groups.includes("adminSuper");
-  const isAdminClub = groups.includes("adminClub");
-  const claims = cogIdentity?.claims as Record<string, unknown> | undefined;
-  return { cogIdentity, isAdminSuper, isAdminClub, claims };
-};
-
-export const errorForClubLevelMultitenancy = <T>(
-  ctx: Context<T>,
-  clubId: string,
-  failureMessage: string,
-): GqlUtilErrorParams | undefined => {
-  const { cogIdentity, claims, isAdminSuper } = getUserDetails(ctx);
+export const errorForClubLevelMultitenancy = ({
+  cogIdentity,
+  claims,
+  isAdminSuper,
+  clubId,
+  failureMessage,
+}: {
+  cogIdentity: unknown;
+  claims: Record<string, unknown> | undefined;
+  isAdminSuper: boolean;
+  clubId: string;
+  failureMessage: string;
+}): GqlUtilErrorParams | undefined => {
   if (!cogIdentity) {
     return { msg: "No cogIdentity", errorType: "No cogIdentity" };
   }
@@ -41,13 +38,21 @@ export const errorForClubLevelMultitenancy = <T>(
   return;
 };
 
-export const errorForDeviceLevelMultitenancy = <
-  T extends { input: { clubId: string; clubDeviceId?: string | null } },
->(
-  ctx: Context<T>,
-): GqlUtilErrorParams | undefined => {
-  const { cogIdentity, claims, isAdminSuper, isAdminClub } =
-    getUserDetails(ctx);
+export const errorForDeviceLevelMultitenancy = ({
+  cogIdentity,
+  claims,
+  isAdminSuper,
+  isAdminClub,
+  clubId,
+  clubDeviceId,
+}: {
+  cogIdentity: unknown;
+  claims: Record<string, unknown> | undefined;
+  isAdminSuper: boolean;
+  isAdminClub: boolean;
+  clubId: string;
+  clubDeviceId?: string;
+}): GqlUtilErrorParams | undefined => {
   if (!cogIdentity) {
     return { msg: "No cogIdentity", errorType: "No cogIdentity" };
   }
@@ -59,12 +64,13 @@ export const errorForDeviceLevelMultitenancy = <
     return;
   }
 
-  const clubId = ctx.arguments.input.clubId;
-  const clubMultitenancyError = errorForClubLevelMultitenancy(
-    ctx,
+  const clubMultitenancyError = errorForClubLevelMultitenancy({
+    cogIdentity,
+    claims,
+    isAdminSuper,
     clubId,
-    "Can only interact with clubDevices within one's own club",
-  );
+    failureMessage: `Can only interact with clubDevices within one's own club. ClubId arg: ${clubId}; your clubId: ${claims["custom:tenantId"] as string}`,
+  });
   if (clubMultitenancyError) {
     return clubMultitenancyError;
   }
@@ -73,7 +79,6 @@ export const errorForDeviceLevelMultitenancy = <
     return;
   }
 
-  const clubDeviceId = ctx.arguments.input.clubDeviceId;
   if (!clubDeviceId) {
     util.error(
       "Must specify clubDeviceId with non-admin credentials",
