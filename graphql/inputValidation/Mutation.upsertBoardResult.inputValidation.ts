@@ -16,7 +16,14 @@ export const errorForMutationUpsertBoardResult = (
   ctx: Context<MutationUpsertBoardResultArgs>,
 ): GqlUtilErrorParams | undefined => {
   const { partialBoardResult } = ctx.arguments.input;
-  const { type, ...putTargets } = partialBoardResult;
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    board: _board,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    round: _round,
+    type,
+    ...putTargets
+  } = partialBoardResult;
   const upsertClientId = ctx.arguments.input.upsertClientId;
   const upsertClientIdSplit = upsertClientId.split(":");
   if (upsertClientIdSplit.length !== 2) {
@@ -54,7 +61,7 @@ export const errorForMutationUpsertBoardResult = (
     Object.keys(putTargets).length > 0
   ) {
     return {
-      msg: "Cannot set results on a PASSED_OUT or NOT_BID_NOT_PLAYED board result.  The only valid fields are board, round, and type.",
+      msg: `Cannot set results on a PASSED_OUT or NOT_BID_NOT_PLAYED board result.  The only valid fields are board, round, and type.  Instead received: ${JSON.stringify(putTargets)}`,
     };
   }
   if (
