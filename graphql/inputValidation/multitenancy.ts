@@ -80,14 +80,17 @@ export const errorForDeviceLevelMultitenancy = ({
   }
 
   if (!clubDeviceId) {
-    util.error(
-      "Must specify clubDeviceId with non-admin credentials",
-      "401: Invalid Club Device Id",
-    );
+    return {
+      msg: "Must specify clubDeviceId with non-admin credentials",
+      errorType: "401: Invalid Club Device Id",
+    };
   }
 
   if (claims.sub && claims.sub === clubDeviceId) {
     return;
   }
-  util.error("Can only act on one's own club device", "401: Invalid Club Id");
+  return {
+    msg: "Can only act on one's own club device",
+    errorType: "401: Invalid Club Id",
+  };
 };
