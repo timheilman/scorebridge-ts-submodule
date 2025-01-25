@@ -8,22 +8,17 @@ import { MutationUpsertBoardResultArgs } from "../appsync";
 import {
   errorForDeviceLevelMultitenancy,
   GqlUtilErrorParams,
+  PotentialCogIdentity,
 } from "./multitenancy";
 
 export const errorForMutationUpsertBoardResult = ({
   args,
   cogIdentity,
-  claims,
-  isAdminSuper,
-  isAdminClub,
-  clubId,
+  stage,
 }: {
   args: MutationUpsertBoardResultArgs;
-  cogIdentity: unknown;
-  claims: Record<string, unknown> | undefined;
-  isAdminSuper: boolean;
-  isAdminClub: boolean;
-  clubId: string;
+  cogIdentity: PotentialCogIdentity;
+  stage: string;
 }): GqlUtilErrorParams | undefined => {
   const { partialBoardResult } = args.input;
   const {
@@ -42,18 +37,18 @@ export const errorForMutationUpsertBoardResult = ({
     };
   }
   const [userType, cognitoUsername] = upsertClientIdSplit;
-  if (userType !== "webapp" && userType !== "clubDevice") {
-    return { msg: `Unrecognized userType from upsertClientId: ${userType}` };
+  const validUserTypes = [`webapp-${stage}`, `clubDevice-${stage}`];
+  if (!validUserTypes.includes(userType)) {
+    return {
+      msg: `Unrecognized userType from upsertClientId: ${userType}; valid types are: ${JSON.stringify(validUserTypes)}`,
+    };
   }
   // this is somewhat superfluous; to make it airtight would require a 2-stage
   // pipeline to verify that the clubDeviceId provided is the one present in the
   // table assignment for this table number; gameId similarly
   const deviceLevelMultitenancyError = errorForDeviceLevelMultitenancy({
     cogIdentity,
-    claims,
-    isAdminSuper,
-    isAdminClub,
-    clubId,
+    clubId: args.input.clubId,
     clubDeviceId: cognitoUsername,
   });
   if (deviceLevelMultitenancyError) {

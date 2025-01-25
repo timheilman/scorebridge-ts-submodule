@@ -7,26 +7,30 @@ export interface GqlUtilErrorParams {
   errorInfo?: any;
 }
 
+export type PotentialCogIdentity =
+  | {
+      claims: Record<string, unknown> | undefined;
+      groups: string[] | null;
+    }
+  | undefined;
+
 export const errorForClubLevelMultitenancy = ({
   cogIdentity,
-  claims,
-  isAdminSuper,
   clubId,
   failureMessage,
 }: {
-  cogIdentity: unknown;
-  claims: Record<string, unknown> | undefined;
-  isAdminSuper: boolean;
+  cogIdentity: PotentialCogIdentity;
   clubId: string;
   failureMessage: string;
 }): GqlUtilErrorParams | undefined => {
   if (!cogIdentity) {
     return { msg: "No cogIdentity", errorType: "No cogIdentity" };
   }
+  const { claims, groups } = cogIdentity;
   if (!claims) {
     return { msg: "No claims", errorType: "No claims" };
   }
-  if (isAdminSuper) {
+  if ((groups ?? []).includes("adminSuper")) {
     return;
   }
   if (!clubId) {
@@ -40,34 +44,27 @@ export const errorForClubLevelMultitenancy = ({
 
 export const errorForDeviceLevelMultitenancy = ({
   cogIdentity,
-  claims,
-  isAdminSuper,
-  isAdminClub,
   clubId,
   clubDeviceId,
 }: {
-  cogIdentity: unknown;
-  claims: Record<string, unknown> | undefined;
-  isAdminSuper: boolean;
-  isAdminClub: boolean;
+  cogIdentity: PotentialCogIdentity;
   clubId: string;
   clubDeviceId?: string;
 }): GqlUtilErrorParams | undefined => {
   if (!cogIdentity) {
     return { msg: "No cogIdentity", errorType: "No cogIdentity" };
   }
+  const { claims, groups } = cogIdentity;
   if (!claims) {
     return { msg: "No claims", errorType: "No claims" };
   }
 
-  if (isAdminSuper) {
+  if ((groups ?? []).includes("adminSuper")) {
     return;
   }
 
   const clubMultitenancyError = errorForClubLevelMultitenancy({
     cogIdentity,
-    claims,
-    isAdminSuper,
     clubId,
     failureMessage: `Can only interact with clubDevices within one's own club. ClubId arg: ${clubId}; your clubId: ${claims["custom:tenantId"] as string}`,
   });
@@ -75,7 +72,7 @@ export const errorForDeviceLevelMultitenancy = ({
     return clubMultitenancyError;
   }
 
-  if (isAdminClub) {
+  if ((groups ?? []).includes("adminClub")) {
     return;
   }
 
