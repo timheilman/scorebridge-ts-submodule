@@ -14,4 +14,5 @@ export const errorForMutationSetRound: InputValidator<MutationSetRoundArgs> = ({
   errorForDeviceLevelMultitenancy({
     cogIdentity,
     clubId: args.input.clubId,
+    clubDeviceId: args.input.clubDeviceId,
   });

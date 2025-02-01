@@ -13,4 +13,5 @@ export const errorForMutationAssignPlayer: InputValidator<
   errorForDeviceLevelMultitenancy({
     cogIdentity,
     clubId: args.input.clubId,
+    clubDeviceId: args.input.clubDeviceId ?? undefined,
   });
