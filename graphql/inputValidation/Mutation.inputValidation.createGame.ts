@@ -7,7 +7,7 @@ export const errorForMutationCreateGame: InputValidator<
   const multitenancyError = errorForClubLevelMultitenancy({
     cogIdentity,
     clubId: args.input.clubId,
-    failureMessage: "Can only create club devices for one's own club.",
+    failureMessage: "Can only create games for one's own club.",
   });
   if (multitenancyError) {
     return multitenancyError;
