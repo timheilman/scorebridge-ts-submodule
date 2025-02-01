@@ -7,19 +7,12 @@ import {
 import { MutationUpsertBoardResultArgs } from "../appsync";
 import {
   errorForDeviceLevelMultitenancy,
-  GqlUtilErrorParams,
-  PotentialCogIdentity,
+  InputValidator,
 } from "./multitenancy";
 
-export const errorForMutationUpsertBoardResult = ({
-  args,
-  cogIdentity,
-  stage,
-}: {
-  args: MutationUpsertBoardResultArgs;
-  cogIdentity: PotentialCogIdentity;
-  stage: string;
-}): GqlUtilErrorParams | undefined => {
+export const errorForMutationUpsertBoardResult: InputValidator<
+  MutationUpsertBoardResultArgs
+> = ({ args, cogIdentity, stage }) => {
   const { partialBoardResult } = args.input;
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

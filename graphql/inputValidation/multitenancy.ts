@@ -9,10 +9,21 @@ export interface GqlUtilErrorParams {
 
 export type PotentialCogIdentity =
   | {
+      sub: string;
       claims: Record<string, unknown> | undefined;
       groups: string[] | null;
     }
   | undefined;
+
+export interface InputValidationArgs<T> {
+  args: T;
+  cogIdentity: PotentialCogIdentity;
+  stage?: string;
+}
+
+export type InputValidator<T> = (
+  args: InputValidationArgs<T>,
+) => GqlUtilErrorParams | undefined;
 
 export const errorForClubLevelMultitenancy = ({
   cogIdentity,
