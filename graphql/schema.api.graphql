@@ -152,6 +152,13 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   deletePlayer(input: DeletePlayerInput!): Player!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
+  exploratoryTimeStamps(
+    input: ExploratoryTimeStampsInput!
+  ): ExploratoryTimeStampsResponse!
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 type Subscription {
@@ -217,6 +224,12 @@ type Subscription {
   onDeletePlayer(clubId: String!): Player
     @aws_subscribe(mutations: ["deletePlayer"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+
+  onExploratoryTimeStamps(clubId: String!): ExploratoryTimeStampsResponse
+    @aws_subscribe(mutations: ["exploratoryTimeStamps"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 input ListClubDevicesInput {
@@ -241,6 +254,22 @@ input ListPlayersInput {
   clubId: String!
   nextToken: String
   limit: Int
+}
+
+input ExploratoryTimeStampsInput {
+  clubId: String!
+  value: Int!
+  clientOrder: Int!
+  clientTs: String!
+}
+
+type ExploratoryTimeStampsResponse {
+  clubId: String!
+  value: Int!
+  clientOrder: Int!
+  clientTs: String!
+  reqTs: String!
+  resTs: String!
 }
 
 type ListGamesOutput {
