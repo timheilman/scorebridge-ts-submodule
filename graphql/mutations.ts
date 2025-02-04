@@ -408,6 +408,7 @@ export const mutIdToMutGql = {
       mutation updateBoardResult($input: UpdateBoardResultInput!) {
         exploratoryTimeStamps(input: $input) {
           clubId
+          key
           value
           clientOrder
           clientTs

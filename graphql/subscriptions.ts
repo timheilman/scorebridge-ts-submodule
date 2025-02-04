@@ -308,6 +308,7 @@ export const subIdToSubGql = {
       subscription OnExploratoryTimeStamps($clubId: String!) {
         onExploratoryTimeStamps(clubId: $clubId) {
           clubId
+          key
           value
           clientOrder
           clientTs
