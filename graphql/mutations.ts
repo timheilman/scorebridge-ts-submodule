@@ -11,6 +11,7 @@ import {
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
+  MutationExploratoryTimeStampsArgs,
   MutationSetRoundArgs,
   MutationUnassignPlayersArgs,
   MutationUnassignTableArgs,
@@ -398,5 +399,23 @@ export const mutIdToMutGql = {
       }
     `,
     "updateBoardResult",
+  ),
+  exploratoryTimeStamps: createKeyedGeneratedMutation<
+    "exploratoryTimeStamps",
+    MutationExploratoryTimeStampsArgs
+  >(
+    /* GraphQL */ `
+      mutation updateBoardResult($input: UpdateBoardResultInput!) {
+        exploratoryTimeStamps(input: $input) {
+          clubId
+          value
+          clientOrder
+          clientTs
+          reqTs
+          resTs
+        }
+      }
+    `,
+    "exploratoryTimeStamps",
   ),
 };
