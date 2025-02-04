@@ -137,7 +137,7 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  upsertBoardResult(input: UpsertBoardResultInput!): UpsertBoardResultResponse!
+  updateBoardResult(input: UpdateBoardResultInput!): UpdateBoardResultResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -198,8 +198,8 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  onUpsertBoardResult(clubId: String!): UpsertBoardResultResponse
-    @aws_subscribe(mutations: ["upsertBoardResult"])
+  onUpdateBoardResult(clubId: String!): UpdateBoardResultResponse
+    @aws_subscribe(mutations: ["updateBoardResult"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -311,7 +311,7 @@ input PartialBoardResult {
   wonTrickCount: Int
 }
 
-input UpsertBoardResultInput {
+input UpdateBoardResultInput {
   clubId: String!
   gameId: String!
   tableNumber: Int!
@@ -552,7 +552,7 @@ type DeleteClubAndAdminResponse {
   status: String!
 }
 
-type UpsertBoardResultResponse {
+type UpdateBoardResultResponse {
   clubId: String!
   tableNumber: Int!
   boardResult: BoardResult!

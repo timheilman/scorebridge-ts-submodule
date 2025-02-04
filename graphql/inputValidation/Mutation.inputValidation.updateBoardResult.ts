@@ -4,14 +4,14 @@ import {
   Level,
   WonTrickCount,
 } from "../../bridgeEnums";
-import { MutationUpsertBoardResultArgs } from "../appsync";
+import { MutationUpdateBoardResultArgs } from "../appsync";
 import {
   errorForDeviceLevelMultitenancy,
   InputValidator,
 } from "./multitenancy";
 
-export const errorForMutationUpsertBoardResult: InputValidator<
-  MutationUpsertBoardResultArgs
+export const errorForMutationUpdateBoardResult: InputValidator<
+  MutationUpdateBoardResultArgs
 > = ({ args, cogIdentity, stage }) => {
   const { partialBoardResult } = args.input;
   const {

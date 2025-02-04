@@ -11,7 +11,7 @@ import {
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdatePlayerArgs,
-  SubscriptionOnUpsertBoardResultArgs,
+  SubscriptionOnUpdateBoardResultArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {
@@ -211,13 +211,13 @@ export const subIdToSubGql = {
     `,
     "onUnassignPlayers",
   ),
-  onUpsertBoardResult: createKeyedGeneratedSubscription<
-    "onUpsertBoardResult",
-    SubscriptionOnUpsertBoardResultArgs
+  onUpdateBoardResult: createKeyedGeneratedSubscription<
+    "onUpdateBoardResult",
+    SubscriptionOnUpdateBoardResultArgs
   >(
     /* GraphQL */ `
-      subscription OnUpsertBoardResult($clubId: String!) {
-        onUpsertBoardResult(clubId: $clubId) {
+      subscription OnUpdateBoardResult($clubId: String!) {
+        onUpdateBoardResult(clubId: $clubId) {
           clubId
           tableNumber
           gameId
@@ -238,7 +238,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUpsertBoardResult",
+    "onUpdateBoardResult",
   ),
   onCreatePlayer: createKeyedGeneratedSubscription<
     "onCreatePlayer",

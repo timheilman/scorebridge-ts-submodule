@@ -264,7 +264,7 @@ export interface Mutation {
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
   updatePlayer: Player;
-  upsertBoardResult: UpsertBoardResultResponse;
+  updateBoardResult: UpdateBoardResultResponse;
 }
 
 export interface MutationAssignPlayerArgs {
@@ -335,8 +335,8 @@ export interface MutationUpdatePlayerArgs {
   input: UpdatePlayerInput;
 }
 
-export interface MutationUpsertBoardResultArgs {
-  input: UpsertBoardResultInput;
+export interface MutationUpdateBoardResultArgs {
+  input: UpdateBoardResultInput;
 }
 
 export interface PartialBoardResult {
@@ -473,7 +473,7 @@ export interface Subscription {
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
   onUpdatePlayer?: Maybe<Player>;
-  onUpsertBoardResult?: Maybe<UpsertBoardResultResponse>;
+  onUpdateBoardResult?: Maybe<UpdateBoardResultResponse>;
 }
 
 export interface SubscriptionOnAssignPlayerArgs {
@@ -524,7 +524,7 @@ export interface SubscriptionOnUpdatePlayerArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export interface SubscriptionOnUpsertBoardResultArgs {
+export interface SubscriptionOnUpdateBoardResultArgs {
   clubId: Scalars["String"]["input"];
 }
 
@@ -597,7 +597,7 @@ export interface UpdatePlayerInput {
   playerId: Scalars["String"]["input"];
 }
 
-export interface UpsertBoardResultInput {
+export interface UpdateBoardResultInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   partialBoardResult: PartialBoardResult;
@@ -606,8 +606,8 @@ export interface UpsertBoardResultInput {
   upsertClientTimestamp: Scalars["AWSDateTime"]["input"];
 }
 
-export interface UpsertBoardResultResponse {
-  __typename?: "UpsertBoardResultResponse";
+export interface UpdateBoardResultResponse {
+  __typename?: "UpdateBoardResultResponse";
   boardResult: BoardResult;
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
