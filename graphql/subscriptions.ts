@@ -8,10 +8,10 @@ import {
   SubscriptionOnDeletePlayerArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUnassignTableArgs,
+  SubscriptionOnUpdateBoardResultArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdatePlayerArgs,
-  SubscriptionOnUpdateBoardResultArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {

@@ -14,10 +14,10 @@ import {
   MutationSetRoundArgs,
   MutationUnassignPlayersArgs,
   MutationUnassignTableArgs,
+  MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
   MutationUpdatePlayerArgs,
-  MutationUpdateBoardResultArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
