@@ -258,6 +258,7 @@ input ListPlayersInput {
 
 input ExploratoryTimeStampsInput {
   clubId: String!
+  key: Int!
   value: Int!
   clientOrder: Int!
   clientTs: String!
@@ -265,6 +266,7 @@ input ExploratoryTimeStampsInput {
 
 type ExploratoryTimeStampsResponse {
   clubId: String!
+  key: Int!
   value: Int!
   clientOrder: Int!
   clientTs: String!

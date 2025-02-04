@@ -191,6 +191,7 @@ export interface ExploratoryTimeStampsInput {
   clientOrder: Scalars["Int"]["input"];
   clientTs: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
+  key: Scalars["Int"]["input"];
   value: Scalars["Int"]["input"];
 }
 
@@ -199,6 +200,7 @@ export interface ExploratoryTimeStampsResponse {
   clientOrder: Scalars["Int"]["output"];
   clientTs: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  key: Scalars["Int"]["output"];
   reqTs: Scalars["String"]["output"];
   resTs: Scalars["String"]["output"];
   value: Scalars["Int"]["output"];
