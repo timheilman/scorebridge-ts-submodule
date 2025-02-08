@@ -405,7 +405,7 @@ export const mutIdToMutGql = {
     MutationExploratoryTimeStampsArgs
   >(
     /* GraphQL */ `
-      mutation updateBoardResult($input: UpdateBoardResultInput!) {
+      mutation updateBoardResult($input: ExploratoryTimeStampsInput!) {
         exploratoryTimeStamps(input: $input) {
           clubId
           key
