@@ -584,6 +584,7 @@ export interface UpdateBoardResultResponse {
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
+  timestamp: Scalars["AWSDateTime"]["output"];
 }
 
 export interface UpdateClubNameInput {
