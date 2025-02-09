@@ -187,25 +187,6 @@ export type DirectionLetter = "E" | "N" | "S" | "W";
 
 export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 
-export interface ExploratoryTimeStampsInput {
-  clientOrder: Scalars["Int"]["input"];
-  clientTs: Scalars["String"]["input"];
-  clubId: Scalars["String"]["input"];
-  key: Scalars["Int"]["input"];
-  value: Scalars["Int"]["input"];
-}
-
-export interface ExploratoryTimeStampsResponse {
-  __typename?: "ExploratoryTimeStampsResponse";
-  clientOrder: Scalars["Int"]["output"];
-  clientTs: Scalars["String"]["output"];
-  clubId: Scalars["String"]["output"];
-  key: Scalars["Int"]["output"];
-  reqTs: Scalars["String"]["output"];
-  resTs: Scalars["String"]["output"];
-  value: Scalars["Int"]["output"];
-}
-
 export interface Game {
   __typename?: "Game";
   boardsPerRound: Scalars["Int"]["output"];
@@ -276,7 +257,6 @@ export interface Mutation {
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
   deletePlayer: Player;
-  exploratoryTimeStamps: ExploratoryTimeStampsResponse;
   setRound: SetRoundResponse;
   unassignPlayers: UnassignPlayersResponse;
   unassignTable: UnassignTableResponse;
@@ -329,10 +309,6 @@ export interface MutationDeleteGameArgs {
 
 export interface MutationDeletePlayerArgs {
   input: DeletePlayerInput;
-}
-
-export interface MutationExploratoryTimeStampsArgs {
-  input: ExploratoryTimeStampsInput;
 }
 
 export interface MutationSetRoundArgs {
@@ -491,7 +467,6 @@ export interface Subscription {
   onCreatePlayer?: Maybe<Player>;
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
-  onExploratoryTimeStamps?: Maybe<ExploratoryTimeStampsResponse>;
   onSetRound?: Maybe<SetRoundResponse>;
   onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUnassignTable?: Maybe<UnassignTableResponse>;
@@ -522,10 +497,6 @@ export interface SubscriptionOnDeleteGameArgs {
 }
 
 export interface SubscriptionOnDeletePlayerArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface SubscriptionOnExploratoryTimeStampsArgs {
   clubId: Scalars["String"]["input"];
 }
 

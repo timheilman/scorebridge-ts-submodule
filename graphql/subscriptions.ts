@@ -6,7 +6,6 @@ import {
   SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeletePlayerArgs,
-  SubscriptionOnExploratoryTimeStampsArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUnassignTableArgs,
   SubscriptionOnUpdateBoardResultArgs,
@@ -299,24 +298,5 @@ export const subIdToSubGql = {
       }
     `,
     "onSetRound",
-  ),
-  onExploratoryTimeStamps: createKeyedGeneratedSubscription<
-    "onExploratoryTimeStamps",
-    SubscriptionOnExploratoryTimeStampsArgs
-  >(
-    /* GraphQL */ `
-      subscription OnExploratoryTimeStamps($clubId: String!) {
-        onExploratoryTimeStamps(clubId: $clubId) {
-          clubId
-          key
-          value
-          clientOrder
-          clientTs
-          reqTs
-          resTs
-        }
-      }
-    `,
-    "onExploratoryTimeStamps",
   ),
 } as const;
