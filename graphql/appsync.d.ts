@@ -223,6 +223,7 @@ export interface ListGamesInput {
   finalGameFromLastList?: InputMaybe<PartialGame>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
+  timestampFromLastList?: InputMaybe<Scalars["AWSDateTime"]["input"]>;
 }
 
 export interface ListGamesOutput {

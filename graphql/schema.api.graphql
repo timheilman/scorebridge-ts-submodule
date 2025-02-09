@@ -235,6 +235,7 @@ input ListGamesInput {
   nextToken: String
   limit: Int
   finalGameFromLastList: PartialGame
+  timestampFromLastList: AWSDateTime
 }
 
 input ListPlayersInput {
