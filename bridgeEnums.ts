@@ -89,7 +89,7 @@ interface BoardAndRound {
   board: number;
   round: number;
 }
-export type UnkeyedTypeSafeBoardResult =
+export type UnkeyedTypeSafeBoardResult = { currentAsOf: string } & (
   | { __typename?: "TypeSafeBoardResult"; type: "PASSED_OUT" }
   | { __typename?: "TypeSafeBoardResult"; type: "NOT_BID_NOT_PLAYED" }
   | {
@@ -102,7 +102,8 @@ export type UnkeyedTypeSafeBoardResult =
       leadSuit: Suit;
       level: Level;
       wonTrickCount: WonTrickCount;
-    };
+    }
+);
 
 export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
 export const playedBoardRequiredFields = [
