@@ -233,8 +233,8 @@ export const subIdToSubGql = {
             leadSuit
             wonTrickCount
           }
-          upsertClientId
-          upsertClientTimestamp
+          clientId
+          timestamp
         }
       }
     `,

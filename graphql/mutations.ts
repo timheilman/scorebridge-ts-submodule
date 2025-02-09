@@ -392,8 +392,8 @@ export const mutIdToMutGql = {
             leadRank
             wonTrickCount
           }
-          upsertClientId
-          upsertClientTimestamp
+          clientId
+          timestamp
         }
       }
     `,

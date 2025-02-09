@@ -22,18 +22,18 @@ export const errorForMutationUpdateBoardResult: InputValidator<
     type,
     ...putTargets
   } = partialBoardResult;
-  const upsertClientId = args.input.upsertClientId;
-  const upsertClientIdSplit = upsertClientId.split(":");
-  if (upsertClientIdSplit.length !== 2) {
+  const clientId = args.input.clientId;
+  const clientIdSplit = clientId.split(":");
+  if (clientIdSplit.length !== 2) {
     return {
-      msg: `upsertClientId must be of the form '<userType>:<guid>', upsertClientId: ${upsertClientId}`,
+      msg: `clientId must be of the form '<userType>:<guid>', clientId: ${clientId}`,
     };
   }
-  const [userType, cognitoUsername] = upsertClientIdSplit;
+  const [userType, cognitoUsername] = clientIdSplit;
   const validUserTypes = [`webapp-${stage}`, `clubDevice-${stage}`];
   if (!validUserTypes.includes(userType)) {
     return {
-      msg: `Unrecognized userType from upsertClientId: ${userType}; valid types are: ${JSON.stringify(validUserTypes)}`,
+      msg: `Unrecognized userType from clientId: ${userType}; valid types are: ${JSON.stringify(validUserTypes)}`,
     };
   }
   // this is somewhat superfluous; to make it airtight would require a 2-stage
