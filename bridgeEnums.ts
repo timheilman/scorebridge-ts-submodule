@@ -103,6 +103,7 @@ export type UnkeyedTypeSafeBoardResult =
       level: Level;
       wonTrickCount: WonTrickCount;
     };
+
 export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
 export const playedBoardRequiredFields = [
   "level",

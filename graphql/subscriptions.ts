@@ -232,9 +232,9 @@ export const subIdToSubGql = {
             leadRank
             leadSuit
             wonTrickCount
+            timestamp
           }
           clientId
-          timestamp
         }
       }
     `,
