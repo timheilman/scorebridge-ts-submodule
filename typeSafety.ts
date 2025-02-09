@@ -32,7 +32,7 @@ import {
 class BoardResultTypeUnsafe extends Error {}
 
 const boardResultTypeSafetyProblem = (
-  br?: Omit<UnkeyedBoardResult, "timestamp">,
+  br?: Omit<UnkeyedBoardResult, "currentAsOf">,
 ): string | undefined => {
   if (!br) {
     return "board result is undefined";

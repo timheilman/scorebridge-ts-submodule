@@ -391,7 +391,7 @@ export const mutIdToMutGql = {
             leadSuit
             leadRank
             wonTrickCount
-            timestamp
+            currentAsOf
           }
           clientId
         }

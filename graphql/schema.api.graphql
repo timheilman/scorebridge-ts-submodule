@@ -235,7 +235,7 @@ input ListGamesInput {
   nextToken: String
   limit: Int
   finalGameFromLastList: PartialGame
-  timestampFromLastList: AWSDateTime
+  currentAsOfFromLastList: AWSDateTime
 }
 
 input ListPlayersInput {
@@ -290,7 +290,7 @@ type BoardResult {
   type: BoardResultType!
   board: Int!
   round: Int!
-  timestamp: AWSDateTime!
+  currentAsOf: AWSDateTime!
   level: Int
   strain: Strain
   doubling: Doubling

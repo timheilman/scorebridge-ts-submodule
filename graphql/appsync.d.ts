@@ -80,6 +80,7 @@ export interface AssignTableResponse {
 export interface BoardResult {
   __typename?: "BoardResult";
   board: Scalars["Int"]["output"];
+  currentAsOf: Scalars["AWSDateTime"]["output"];
   declarer?: Maybe<DirectionLetter>;
   doubling?: Maybe<Doubling>;
   leadRank?: Maybe<Rank>;
@@ -87,7 +88,6 @@ export interface BoardResult {
   level?: Maybe<Scalars["Int"]["output"]>;
   round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
-  timestamp: Scalars["AWSDateTime"]["output"];
   type: BoardResultType;
   wonTrickCount?: Maybe<Scalars["Int"]["output"]>;
 }
@@ -220,10 +220,10 @@ export interface ListClubDevicesOutput {
 
 export interface ListGamesInput {
   clubId: Scalars["String"]["input"];
+  currentAsOfFromLastList?: InputMaybe<Scalars["AWSDateTime"]["input"]>;
   finalGameFromLastList?: InputMaybe<PartialGame>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
-  timestampFromLastList?: InputMaybe<Scalars["AWSDateTime"]["input"]>;
 }
 
 export interface ListGamesOutput {
