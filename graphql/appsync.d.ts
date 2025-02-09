@@ -570,22 +570,20 @@ export interface UnexpectedErrorResponse {
 }
 
 export interface UpdateBoardResultInput {
+  clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   partialBoardResult: PartialBoardResult;
   tableNumber: Scalars["Int"]["input"];
-  upsertClientId: Scalars["String"]["input"];
-  upsertClientTimestamp: Scalars["AWSDateTime"]["input"];
 }
 
 export interface UpdateBoardResultResponse {
   __typename?: "UpdateBoardResultResponse";
   boardResult: BoardResult;
+  clientId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
-  upsertClientId: Scalars["String"]["output"];
-  upsertClientTimestamp: Scalars["AWSDateTime"]["output"];
 }
 
 export interface UpdateClubNameInput {

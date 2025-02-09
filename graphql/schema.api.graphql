@@ -316,8 +316,7 @@ input UpdateBoardResultInput {
   gameId: String!
   tableNumber: Int!
   partialBoardResult: PartialBoardResult!
-  upsertClientId: String!
-  upsertClientTimestamp: AWSDateTime!
+  clientId: String!
 }
 
 input SetRoundInput {
@@ -557,6 +556,5 @@ type UpdateBoardResultResponse {
   tableNumber: Int!
   boardResult: BoardResult!
   gameId: String!
-  upsertClientId: String!
-  upsertClientTimestamp: AWSDateTime!
+  clientId: String!
 }
