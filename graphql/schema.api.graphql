@@ -559,5 +559,4 @@ type UpdateBoardResultResponse {
   boardResult: BoardResult!
   gameId: String!
   clientId: String!
-  timestamp: AWSDateTime!
 }
