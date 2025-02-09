@@ -289,6 +289,7 @@ type BoardResult {
   type: BoardResultType!
   board: Int!
   round: Int!
+  timestamp: AWSDateTime!
   level: Int
   strain: Strain
   doubling: Doubling

@@ -87,6 +87,7 @@ export interface BoardResult {
   level?: Maybe<Scalars["Int"]["output"]>;
   round: Scalars["Int"]["output"];
   strain?: Maybe<Strain>;
+  timestamp: Scalars["AWSDateTime"]["output"];
   type: BoardResultType;
   wonTrickCount?: Maybe<Scalars["Int"]["output"]>;
 }
