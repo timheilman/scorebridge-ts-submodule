@@ -1,5 +1,5 @@
 import {
-  BoardResult,
+  BoardResultC,
   DirectionLetter,
   Doubling,
   Player,
@@ -80,32 +80,54 @@ export const possibleResults = (level: Level): Result[] =>
 // these are the values whereas keys are stored as part of the sortKey
 export type UnkeyedTableAssignment = Omit<TableAssignment, "tableNumber">;
 export type UnkeyedPlayerAssignment = Omit<PlayerAssignment, "directionLetter">;
-export type UnkeyedBoardResult = Omit<BoardResult, "board" | "round">;
 export type UnkeyedPlayer = Omit<Player, "playerId">;
 
 // the rules for board and round integers relative to movement, roundCount, and boardsPerRound
 // are too complicated to be put into the type system, so they are validated in the resolvers
+
+// https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?usp=sharing
 interface BoardAndRound {
   board: number;
   round: number;
 }
-export type UnkeyedTypeSafeBoardResult = { currentAsOf: string } & (
-  | { __typename?: "TypeSafeBoardResult"; type: "PASSED_OUT" }
-  | { __typename?: "TypeSafeBoardResult"; type: "NOT_BID_NOT_PLAYED" }
-  | {
-      __typename?: "TypeSafeBoardResult";
-      type: "PLAYED";
-      strain: Strain;
-      declarer: DirectionLetter;
-      doubling: Doubling;
-      leadRank: Rank;
-      leadSuit: Suit;
-      level: Level;
-      wonTrickCount: WonTrickCount;
-    }
-);
 
-export type TypeSafeBoardResult = BoardAndRound & UnkeyedTypeSafeBoardResult;
+interface CurrentAsOf {
+  currentAsOf: string;
+}
+
+interface StrictPlayed {
+  type: "PLAYED";
+  level: Level;
+  strain: Strain;
+  doubling: Doubling;
+  declarer: DirectionLetter;
+  leadRank: Rank;
+  leadSuit: Suit;
+  wonTrickCount: WonTrickCount;
+}
+
+type LoosePlayed = Partial<StrictPlayed> & { type: "PLAYED" };
+
+export type BoardResultUt =
+  | { type: "NOT_BID_NOT_PLAYED" }
+  | { type: "PASSED_OUT" }
+  | StrictPlayed;
+
+export type BoardResultUl =
+  | { type: "NOT_BID_NOT_PLAYED" }
+  | { type: "PASSED_OUT" }
+  | LoosePlayed;
+
+export type BoardResultUct = BoardResultUt & CurrentAsOf;
+// type BoardResultUCL = BoardResultUL & CurrentAsOf;
+// type BoardResultL = BoardResultUL & BoardAndRound;
+// type BoardResultCL = BoardResultUL & BoardAndRound & CurrentAsOf;
+
+export type BoardResultT = BoardResultUt & BoardAndRound;
+export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
+export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
+// type BoardResultU = Omit<BoardResult, "board" | "round">;
+
 export const playedBoardRequiredFields = [
   "level",
   "strain",
@@ -115,16 +137,3 @@ export const playedBoardRequiredFields = [
   "leadSuit",
   "wonTrickCount",
 ] as const;
-export type StagedBoardResult =
-  | { type: "NOT_BID_NOT_PLAYED" }
-  | { type: "PASSED_OUT" }
-  | {
-      type: "PLAYED";
-      level?: Level;
-      strain?: Strain;
-      doubling?: Doubling;
-      declarer?: DirectionLetter;
-      leadRank?: Rank;
-      leadSuit?: Suit;
-      wonTrickCount?: WonTrickCount;
-    };

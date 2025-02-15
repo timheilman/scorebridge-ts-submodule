@@ -10,14 +10,15 @@ import {
   allStrains,
   allSuits,
   allWonTrickCounts,
+  BoardResultUc,
+  BoardResultUct,
+  BoardResultUl,
+  BoardResultUt,
   DownResult,
   Level,
   MadeResult,
   playedBoardRequiredFields,
   Result,
-  StagedBoardResult,
-  UnkeyedBoardResult,
-  UnkeyedTypeSafeBoardResult,
   WonTrickCount,
 } from "./bridgeEnums";
 import {
@@ -31,26 +32,24 @@ import {
 
 class BoardResultTypeUnsafe extends Error {}
 
-const boardResultTypeSafetyProblem = (
-  br?: Omit<UnkeyedBoardResult, "currentAsOf">,
-): string | undefined => {
+const ucTypeSafetyProblem = (br?: BoardResultUc): string | undefined => {
   if (!br) {
-    return "board result is undefined";
+    return "UC board result is undefined";
   }
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
     if (
       playedBoardRequiredFields.some((key) => br[key]) ||
       br.wonTrickCount === 0
     ) {
-      return `${br.type} board result has unexpected fields`;
+      return `UC ${br.type} board result has unexpected fields`;
     }
   }
   if (br.type === "PLAYED") {
     if (!allLevels.includes(br.level as Level)) {
-      return `unexpected level ${br.level ?? "undefined"}`;
+      return `UC PLAYED board result unexpected level ${br.level ?? "undefined"}`;
     }
     if (!allWonTrickCounts.includes(br.wonTrickCount as WonTrickCount)) {
-      return `unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`;
+      return `UC PLAYED board result unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`;
     }
     const remainingRequiredSettings = [
       "strain",
@@ -70,24 +69,49 @@ const boardResultTypeSafetyProblem = (
   return;
 };
 
-export const typeSafeUnkeyedBoardResult = (
-  br?: UnkeyedBoardResult,
-): UnkeyedTypeSafeBoardResult => {
-  const problem = boardResultTypeSafetyProblem(br);
+const ulTypeSafetyProblem = (br?: BoardResultUl): string | undefined => {
+  if (!br) {
+    return "UL board result is undefined";
+  }
+  if (br.type === "PLAYED") {
+    if (br.level === undefined) {
+      return "UL board has undefined level";
+    }
+    if (br.wonTrickCount === undefined) {
+      return "UL board has undefined wonTrickCount";
+    }
+    const remainingRequiredSettings = [
+      "strain",
+      "doubling",
+      "declarer",
+      "leadRank",
+      "leadSuit",
+    ] as const;
+    if (remainingRequiredSettings.some((key) => !br[key])) {
+      return `PLAYED board is missing required settings: ${JSON.stringify(
+        remainingRequiredSettings.filter(
+          (requiredSetting) => !br[requiredSetting],
+        ),
+      )}`;
+    }
+  }
+  return;
+};
+
+export const ucToUct = (br?: BoardResultUc): BoardResultUct => {
+  const problem = ucTypeSafetyProblem(br);
   if (problem) {
     throw new BoardResultTypeUnsafe(problem);
   }
-  return br as UnkeyedTypeSafeBoardResult;
+  return br as BoardResultUct;
 };
 
-export const typeSafeBoardResultOrUndefined = (
-  br: StagedBoardResult,
-): UnkeyedTypeSafeBoardResult | undefined => {
-  const problem = boardResultTypeSafetyProblem(br);
+export const ulToUt = (br: BoardResultUl): BoardResultUt | undefined => {
+  const problem = ulTypeSafetyProblem(br);
   if (problem) {
     return;
   }
-  return br as UnkeyedTypeSafeBoardResult;
+  return br as BoardResultUt;
 };
 
 export const typeSafeLevel = (level?: number | "(none)"): Level => {

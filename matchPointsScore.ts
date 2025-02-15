@@ -1,5 +1,5 @@
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
-import { StagedBoardResult } from "./bridgeEnums";
+import { BoardResultUl } from "./bridgeEnums";
 import { Movement } from "./graphql/appsync";
 import { whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
@@ -107,7 +107,7 @@ export const matchPointsScore = (params: {
   tableCount: number;
   board: number;
   movement: Movement;
-  boardResults: Record<string, StagedBoardResult>;
+  boardResults: Record<string, BoardResultUl>;
 }): BoardAllRoundsScore | null | undefined => {
   const { board, boardResults } = params;
   const whereIWas = whereWasI(params);
