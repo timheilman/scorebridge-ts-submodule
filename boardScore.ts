@@ -1,4 +1,4 @@
-import { Level, StagedBoardResult, WonTrickCount } from "./bridgeEnums";
+import { BoardResultUl, Level, WonTrickCount } from "./bridgeEnums";
 import { DirectionLetter, Doubling, Strain } from "./graphql/appsync";
 import { isVulnerable } from "./movementHelpers";
 
@@ -113,7 +113,7 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
   boardResult,
   direction,
 }: {
-  boardResult: StagedBoardResult & { board: number };
+  boardResult: BoardResultUl & { board: number };
   direction: DirectionLetter;
 }) => {
   if (boardResult.type === "NOT_BID_NOT_PLAYED") {
