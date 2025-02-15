@@ -10,9 +10,9 @@ import {
   allStrains,
   allSuits,
   allWonTrickCounts,
+  BoardResultU,
   BoardResultUc,
   BoardResultUct,
-  BoardResultUl,
   BoardResultUt,
   DownResult,
   Level,
@@ -32,7 +32,7 @@ import {
 
 class BoardResultTypeUnsafe extends Error {}
 
-const ucTypeSafetyProblem = (br?: BoardResultUc): string | undefined => {
+const uTypeSafetyProblem = (br?: BoardResultU): string | undefined => {
   if (!br) {
     return "UC board result is undefined";
   }
@@ -69,45 +69,16 @@ const ucTypeSafetyProblem = (br?: BoardResultUc): string | undefined => {
   return;
 };
 
-const ulTypeSafetyProblem = (br?: BoardResultUl): string | undefined => {
-  if (!br) {
-    return "UL board result is undefined";
-  }
-  if (br.type === "PLAYED") {
-    if (br.level === undefined) {
-      return "UL board has undefined level";
-    }
-    if (br.wonTrickCount === undefined) {
-      return "UL board has undefined wonTrickCount";
-    }
-    const remainingRequiredSettings = [
-      "strain",
-      "doubling",
-      "declarer",
-      "leadRank",
-      "leadSuit",
-    ] as const;
-    if (remainingRequiredSettings.some((key) => !br[key])) {
-      return `PLAYED board is missing required settings: ${JSON.stringify(
-        remainingRequiredSettings.filter(
-          (requiredSetting) => !br[requiredSetting],
-        ),
-      )}`;
-    }
-  }
-  return;
-};
-
 export const ucToUct = (br?: BoardResultUc): BoardResultUct => {
-  const problem = ucTypeSafetyProblem(br);
+  const problem = uTypeSafetyProblem(br);
   if (problem) {
     throw new BoardResultTypeUnsafe(problem);
   }
   return br as BoardResultUct;
 };
 
-export const ulToUt = (br: BoardResultUl): BoardResultUt | undefined => {
-  const problem = ulTypeSafetyProblem(br);
+export const uToUt = (br: BoardResultU): BoardResultUt | undefined => {
+  const problem = uTypeSafetyProblem(br);
   if (problem) {
     return;
   }

@@ -1,4 +1,5 @@
 import {
+  BoardResult,
   BoardResultC,
   DirectionLetter,
   Doubling,
@@ -126,7 +127,7 @@ export type BoardResultUct = BoardResultUt & CurrentAsOf;
 export type BoardResultT = BoardResultUt & BoardAndRound;
 export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
 export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
-// type BoardResultU = Omit<BoardResult, "board" | "round">;
+export type BoardResultU = Omit<BoardResult, "board" | "round">;
 
 export const playedBoardRequiredFields = [
   "level",
