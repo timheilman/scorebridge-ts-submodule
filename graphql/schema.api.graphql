@@ -286,7 +286,8 @@ type PlayerAssignment {
   playerDisplayName: String!
 }
 
-type BoardResult {
+# https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
+type BoardResultC {
   type: BoardResultType!
   board: Int!
   round: Int!
@@ -300,7 +301,8 @@ type BoardResult {
   wonTrickCount: Int
 }
 
-input PartialBoardResult {
+# https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
+input BoardResult {
   type: BoardResultType!
   board: Int!
   round: Int!
@@ -317,7 +319,7 @@ input UpdateBoardResultInput {
   clubId: String!
   gameId: String!
   tableNumber: Int!
-  partialBoardResult: PartialBoardResult!
+  partialBoardResult: BoardResult!
   clientId: String!
 }
 
@@ -346,7 +348,7 @@ type TableAssignment {
   round: Int
   roundWelcomeConfirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
-  results: [BoardResult!]!
+  results: [BoardResultC!]!
 }
 
 input PartialTableAssignment {
@@ -356,7 +358,7 @@ input PartialTableAssignment {
   round: Int
   roundWelcomeConfirmed: Boolean
   playerAssignments: [PartialPlayerAssignment!]!
-  results: [PartialBoardResult!]!
+  results: [BoardResult!]!
 }
 
 input PartialPlayerAssignment {
@@ -389,7 +391,7 @@ type AssignTableResponse {
   round: Int
   roundWelcomeConfirmed: Boolean
   playerAssignments: [PlayerAssignment!]!
-  results: [BoardResult!]!
+  results: [BoardResultC!]!
 }
 
 type UnassignTableResponse {
@@ -556,7 +558,7 @@ type DeleteClubAndAdminResponse {
 type UpdateBoardResultResponse {
   clubId: String!
   tableNumber: Int!
-  boardResult: BoardResult!
+  boardResult: BoardResultC!
   gameId: String!
   clientId: String!
 }

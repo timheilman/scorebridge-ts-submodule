@@ -71,14 +71,27 @@ export interface AssignTableResponse {
   confirmed?: Maybe<Scalars["Boolean"]["output"]>;
   gameId: Scalars["String"]["output"];
   playerAssignments: PlayerAssignment[];
-  results: BoardResult[];
+  results: BoardResultC[];
   round?: Maybe<Scalars["Int"]["output"]>;
   roundWelcomeConfirmed?: Maybe<Scalars["Boolean"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
 }
 
 export interface BoardResult {
-  __typename?: "BoardResult";
+  board: Scalars["Int"]["input"];
+  declarer?: InputMaybe<DirectionLetter>;
+  doubling?: InputMaybe<Doubling>;
+  leadRank?: InputMaybe<Rank>;
+  leadSuit?: InputMaybe<Suit>;
+  level?: InputMaybe<Scalars["Int"]["input"]>;
+  round: Scalars["Int"]["input"];
+  strain?: InputMaybe<Strain>;
+  type: BoardResultType;
+  wonTrickCount?: InputMaybe<Scalars["Int"]["input"]>;
+}
+
+export interface BoardResultC {
+  __typename?: "BoardResultC";
   board: Scalars["Int"]["output"];
   currentAsOf: Scalars["AWSDateTime"]["output"];
   declarer?: Maybe<DirectionLetter>;
@@ -341,19 +354,6 @@ export interface MutationUpdatePlayerArgs {
   input: UpdatePlayerInput;
 }
 
-export interface PartialBoardResult {
-  board: Scalars["Int"]["input"];
-  declarer?: InputMaybe<DirectionLetter>;
-  doubling?: InputMaybe<Doubling>;
-  leadRank?: InputMaybe<Rank>;
-  leadSuit?: InputMaybe<Suit>;
-  level?: InputMaybe<Scalars["Int"]["input"]>;
-  round: Scalars["Int"]["input"];
-  strain?: InputMaybe<Strain>;
-  type: BoardResultType;
-  wonTrickCount?: InputMaybe<Scalars["Int"]["input"]>;
-}
-
 export interface PartialGame {
   boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
@@ -376,7 +376,7 @@ export interface PartialTableAssignment {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   playerAssignments: PartialPlayerAssignment[];
-  results: PartialBoardResult[];
+  results: BoardResult[];
   round?: InputMaybe<Scalars["Int"]["input"]>;
   roundWelcomeConfirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
@@ -537,7 +537,7 @@ export interface TableAssignment {
   clubDeviceId?: Maybe<Scalars["String"]["output"]>;
   confirmed?: Maybe<Scalars["Boolean"]["output"]>;
   playerAssignments: PlayerAssignment[];
-  results: BoardResult[];
+  results: BoardResultC[];
   round?: Maybe<Scalars["Int"]["output"]>;
   roundWelcomeConfirmed?: Maybe<Scalars["Boolean"]["output"]>;
   tableNumber: Scalars["Int"]["output"];
@@ -575,13 +575,13 @@ export interface UpdateBoardResultInput {
   clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  partialBoardResult: PartialBoardResult;
+  partialBoardResult: BoardResult;
   tableNumber: Scalars["Int"]["input"];
 }
 
 export interface UpdateBoardResultResponse {
   __typename?: "UpdateBoardResultResponse";
-  boardResult: BoardResult;
+  boardResult: BoardResultC;
   clientId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
