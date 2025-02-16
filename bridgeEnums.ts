@@ -138,3 +138,5 @@ export const playedBoardRequiredFields = [
   "leadSuit",
   "wonTrickCount",
 ] as const;
+
+export const anyGameItemLifetimeSeconds = 60 * 60 * 24 * 30; // 30 days
