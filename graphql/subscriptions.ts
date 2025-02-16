@@ -74,6 +74,7 @@ export const subIdToSubGql = {
               leadRank
               leadSuit
               wonTrickCount
+              currentAsOf
             }
           }
           createdAt
@@ -154,6 +155,7 @@ export const subIdToSubGql = {
             leadRank
             leadSuit
             wonTrickCount
+            currentAsOf
           }
         }
       }

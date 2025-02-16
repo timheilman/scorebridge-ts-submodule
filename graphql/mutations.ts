@@ -175,6 +175,7 @@ export const mutIdToMutGql = {
               leadRank
               leadSuit
               wonTrickCount
+              currentAsOf
             }
           }
           tableCount
@@ -281,6 +282,7 @@ export const mutIdToMutGql = {
             leadRank
             leadSuit
             wonTrickCount
+            currentAsOf
           }
         }
       }
