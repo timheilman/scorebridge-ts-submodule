@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 import {
   allDirections,
   allDoublings,
@@ -17,7 +19,6 @@ import {
   DownResult,
   Level,
   MadeResult,
-  playedBoardRequiredFields,
   Result,
   WonTrickCount,
 } from "./bridgeEnums";
@@ -34,39 +35,40 @@ class BoardResultTypeUnsafe extends Error {}
 
 const uTypeSafetyProblem = (br?: BoardResultU): string | undefined => {
   if (!br) {
-    return "UC board result is undefined";
+    return "board result is undefined";
   }
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
-    if (
-      playedBoardRequiredFields.some((key) => br[key]) ||
-      br.wonTrickCount === 0
-    ) {
-      return `UC ${br.type} board result has unexpected fields`;
-    }
+    return;
   }
-  if (br.type === "PLAYED") {
-    if (!allLevels.includes(br.level as Level)) {
-      return `UC PLAYED board result unexpected level ${br.level ?? "undefined"}`;
-    }
-    if (!allWonTrickCounts.includes(br.wonTrickCount as WonTrickCount)) {
-      return `UC PLAYED board result unexpected wonTrickCount ${br.wonTrickCount ?? "undefined"}`;
-    }
-    const remainingRequiredSettings = [
-      "strain",
-      "doubling",
-      "declarer",
-      "leadRank",
-      "leadSuit",
-    ] as const;
-    if (remainingRequiredSettings.some((key) => !br[key])) {
-      return `PLAYED board is missing required settings: ${JSON.stringify(
-        remainingRequiredSettings.filter(
-          (requiredSetting) => !br[requiredSetting],
-        ),
-      )}`;
-    }
+  const problems = [
+    tspLevel(br.level),
+    tspStrain(br.strain),
+    tspDoubling(br.doubling),
+    tspDirectionLetter(br.declarer),
+    tspRank(br.leadRank),
+    tspSuit(br.leadSuit),
+    tspWonTrickCount(br.wonTrickCount),
+  ].filter((p) => p);
+  if (problems.length > 0) {
+    return `PLAYED board result has problems: ${problems.join(", ")}`;
   }
   return;
+};
+
+const reduceToRequiredFields = (br: BoardResultUt): BoardResultUt => {
+  if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
+    return { type: br.type };
+  }
+  return {
+    type: br.type,
+    level: br.level,
+    strain: br.strain,
+    doubling: br.doubling,
+    declarer: br.declarer,
+    leadRank: br.leadRank,
+    leadSuit: br.leadSuit,
+    wonTrickCount: br.wonTrickCount,
+  };
 };
 
 export const ucToUct = (br?: BoardResultUc): BoardResultUct => {
@@ -74,7 +76,17 @@ export const ucToUct = (br?: BoardResultUc): BoardResultUct => {
   if (problem) {
     throw new BoardResultTypeUnsafe(problem);
   }
-  return br as BoardResultUct;
+  const boardResultUt = reduceToRequiredFields(br as BoardResultUt);
+  if (!br) {
+    // dead code; just to satisfy the type checker that br is defined
+    throw new BoardResultTypeUnsafe("board result is undefined");
+  }
+  if (!DateTime.fromISO(br.currentAsOf).isValid) {
+    throw new BoardResultTypeUnsafe(
+      `currentAsOf ${br.currentAsOf} is not a valid ISO DateTime`,
+    );
+  }
+  return { ...boardResultUt, currentAsOf: br.currentAsOf };
 };
 
 export const uToUt = (br: BoardResultU): BoardResultUt | undefined => {
@@ -82,83 +94,138 @@ export const uToUt = (br: BoardResultU): BoardResultUt | undefined => {
   if (problem) {
     return;
   }
-  return br as BoardResultUt;
+  return reduceToRequiredFields(br as BoardResultUt);
 };
 
-export const typeSafeLevel = (level?: number | "(none)"): Level => {
-  if (!allLevels.includes(level as Level)) {
-    throw new Error(`unexpected level ${level}`);
+const typeSafetyError = (problem?: string): undefined => {
+  if (problem) {
+    throw new BoardResultTypeUnsafe(problem);
   }
+  return;
+};
+
+// tsp for type safety problem
+const tspLevel = (level?: number | null): string | undefined => {
+  if (!allLevels.includes(level as Level)) {
+    return `unexpected level ${level}`;
+  }
+  return;
+};
+export const typeSafeLevel = (level?: number): Level => {
+  typeSafetyError(tspLevel(level));
   return level as Level;
 };
 
-export const typeSafeMadeResult = (madeResult?: number): MadeResult => {
+const tspMadeResult = (madeResult?: number | null): string | undefined => {
   if (!allMadeResults.includes(madeResult as MadeResult)) {
-    throw new Error(`unexpected madeResult ${madeResult}`);
+    return `unexpected madeResult ${madeResult}`;
   }
+  return;
+};
+export const typeSafeMadeResult = (madeResult?: number): MadeResult => {
+  typeSafetyError(tspMadeResult(madeResult));
   return madeResult as MadeResult;
 };
-export const typeSafeDownResult = (downResult?: number): DownResult => {
+
+const tspDownResult = (downResult?: number | null): string | undefined => {
   if (!allDownResults.includes(downResult as DownResult)) {
-    throw new Error(`unexpected downResult ${downResult}`);
+    return `unexpected downResult ${downResult}`;
   }
+  return;
+};
+export const typeSafeDownResult = (downResult?: number): DownResult => {
+  typeSafetyError(tspDownResult(downResult));
   return downResult as DownResult;
 };
 
-export const typeSafeResult = (result?: number): Result => {
+const tspResult = (result?: number | null): string | undefined => {
   if (!allResults.includes(result as Result)) {
-    throw new Error(`unexpected result ${result}`);
+    return `unexpected result ${result}`;
   }
+  return;
+};
+export const typeSafeResult = (result?: number): Result => {
+  typeSafetyError(tspResult(result));
   return result as Result;
 };
 
-export const typeSafeStrain = (strain?: string): Strain => {
+const tspStrain = (strain?: string | null): string | undefined => {
   if (!allStrains.includes(strain as Strain)) {
-    throw new Error(`unexpected strain ${strain}`);
+    return `unexpected strain ${strain}`;
   }
+  return;
+};
+export const typeSafeStrain = (strain?: string): Strain => {
+  typeSafetyError(tspStrain(strain));
   return strain as Strain;
 };
 
-export const typeSafeDoubling = (doubling?: string): Doubling => {
+const tspDoubling = (doubling?: string | null): string | undefined => {
   if (!allDoublings.includes(doubling as Doubling)) {
-    throw new Error(`unexpected doubling ${doubling}`);
+    return `unexpected doubling ${doubling}`;
   }
+  return;
+};
+export const typeSafeDoubling = (doubling?: string): Doubling => {
+  typeSafetyError(tspDoubling(doubling));
   return doubling as Doubling;
 };
 
+const tspDirectionLetter = (direction?: string | null): string | undefined => {
+  if (!allDirections.includes(direction as DirectionLetter)) {
+    return `unexpected direction ${direction}`;
+  }
+  return;
+};
 export const typeSafeDirectionLetter = (
   direction?: string,
 ): DirectionLetter => {
-  if (!allDirections.includes(direction as DirectionLetter)) {
-    throw new Error(`unexpected direction ${direction}`);
-  }
+  typeSafetyError(tspDirectionLetter(direction));
   return direction as DirectionLetter;
 };
 
-export const typeSafeRank = (rank?: string): Rank => {
+const tspRank = (rank?: string | null): string | undefined => {
   if (!allRanks.includes(rank as Rank)) {
-    throw new Error(`unexpected rank ${rank}`);
+    return `unexpected rank ${rank}`;
   }
+  return;
+};
+export const typeSafeRank = (rank?: string): Rank => {
+  typeSafetyError(tspRank(rank));
   return rank as Rank;
 };
 
-export const typeSafeSuit = (suit?: string): Suit => {
+const tspSuit = (suit?: string | null): string | undefined => {
   if (!allSuits.includes(suit as Suit)) {
-    throw new Error(`unexpected suit ${suit}`);
+    return `unexpected suit ${suit}`;
   }
+  return;
+};
+export const typeSafeSuit = (suit?: string): Suit => {
+  typeSafetyError(tspSuit(suit));
   return suit as Suit;
 };
 
-export const typeSafeWonTrickCount = (wonTrickCount?: number) => {
+const tspWonTrickCount = (
+  wonTrickCount?: number | null,
+): string | undefined => {
   if (!allWonTrickCounts.includes(wonTrickCount as WonTrickCount)) {
-    throw new Error(`unexpected wonTrickCount ${wonTrickCount}`);
+    return `unexpected wonTrickCount ${wonTrickCount}`;
   }
+  return;
+};
+export const typeSafeWonTrickCount = (wonTrickCount?: number) => {
+  typeSafetyError(tspWonTrickCount(wonTrickCount));
   return wonTrickCount as WonTrickCount;
 };
 
-export const typeSafeMovement = (movement?: string) => {
+const tspMovement = (movement?: string | null): string | undefined => {
   if (!allMovements.includes(movement as Movement)) {
-    throw new Error(`unexpected movement ${movement}`);
+    return `unexpected movement ${movement}`;
   }
+  return;
+};
+export const typeSafeMovement = (movement?: string) => {
+  typeSafetyError(tspMovement(movement));
   return movement as Movement;
 };
