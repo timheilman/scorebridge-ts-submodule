@@ -1,17 +1,16 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
-  SubscriptionOnAssignTableArgs,
   SubscriptionOnCreateGameArgs,
   SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeletePlayerArgs,
   SubscriptionOnUnassignPlayersArgs,
-  SubscriptionOnUnassignTableArgs,
   SubscriptionOnUpdateBoardResultArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdatePlayerArgs,
+  SubscriptionOnUpdateTableAssignmentArgs,
 } from "./appsync";
 
 export type GeneratedSubscription<InputType, OutputType> = string & {
@@ -125,58 +124,46 @@ export const subIdToSubGql = {
     `,
     "onUpdateClubName",
   ),
-  onAssignTable: createKeyedGeneratedSubscription<
-    "onAssignTable",
-    SubscriptionOnAssignTableArgs
+  onUpdateTableAssignment: createKeyedGeneratedSubscription<
+    "onUpdateTableAssignment",
+    SubscriptionOnUpdateTableAssignmentArgs
   >(
     /* GraphQL */ `
-      subscription OnAssignTable($clubId: String!) {
-        onAssignTable(clubId: $clubId) {
+      subscription OnUpdateTableAssignment($clubId: String!) {
+        onUpdateTableAssignment(clubId: $clubId) {
           clubId
           gameId
-          clubDeviceId
-          tableNumber
-          confirmed
-          round
-          roundWelcomeConfirmed
-          playerAssignments {
-            directionLetter
-            playerId
-            playerDisplayName
-          }
-          results {
-            type
-            board
+          clientId
+          tableAssignment {
+            tableNumber
+            clubDeviceId
+            confirmed
             round
-            level
-            strain
-            doubling
-            declarer
-            leadRank
-            leadSuit
-            wonTrickCount
+            roundWelcomeConfirmed
             currentAsOf
+            playerAssignments {
+              directionLetter
+              playerId
+              playerDisplayName
+            }
+            results {
+              board
+              round
+              type
+              level
+              strain
+              doubling
+              declarer
+              leadRank
+              leadSuit
+              wonTrickCount
+              currentAsOf
+            }
           }
         }
       }
     `,
-    "onAssignTable",
-  ),
-  onUnassignTable: createKeyedGeneratedSubscription<
-    "onUnassignTable",
-    SubscriptionOnUnassignTableArgs
-  >(
-    /* GraphQL */ `
-      subscription OnUnassignTable($clubId: String!) {
-        onUnassignTable(clubId: $clubId) {
-          clubId
-          gameId
-          clubDeviceId
-          tableNumber
-        }
-      }
-    `,
-    "onUnassignTable",
+    "onUpdateTableAssignment",
   ),
   onAssignPlayer: createKeyedGeneratedSubscription<
     "onAssignPlayer",
@@ -282,23 +269,5 @@ export const subIdToSubGql = {
       }
     `,
     "onDeletePlayer",
-  ),
-  onSetRound: createKeyedGeneratedSubscription<
-    "onSetRound",
-    SubscriptionOnDeletePlayerArgs
-  >(
-    /* GraphQL */ `
-      subscription OnSetRound($clubId: String!) {
-        onSetRound(clubId: $clubId) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-          round
-          roundWelcomeConfirmed
-        }
-      }
-    `,
-    "onSetRound",
   ),
 } as const;

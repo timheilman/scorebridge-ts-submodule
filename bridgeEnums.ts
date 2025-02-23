@@ -8,7 +8,7 @@ import {
   Rank,
   Strain,
   Suit,
-  TableAssignment,
+  TableAssignmentC,
 } from "./graphql/appsync";
 
 // We cannot take the types from these enumerations, because they are generated
@@ -79,7 +79,8 @@ export const possibleResults = (level: Level): Result[] =>
   );
 
 // these are the values whereas keys are stored as part of the sortKey
-export type UnkeyedTableAssignment = Omit<TableAssignment, "tableNumber">;
+// TODO: scor-354-358 need to rename UnkeyedTableAssignment to TableAssignmentUC
+export type UnkeyedTableAssignment = Omit<TableAssignmentC, "tableNumber">;
 export type UnkeyedPlayerAssignment = Omit<PlayerAssignment, "directionLetter">;
 export type UnkeyedPlayer = Omit<Player, "playerId">;
 

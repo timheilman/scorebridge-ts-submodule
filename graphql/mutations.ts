@@ -1,8 +1,6 @@
 import {
   Mutation,
   MutationAssignPlayerArgs,
-  MutationAssignTableArgs,
-  MutationConfirmTableAssignmentArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceArgs,
   MutationCreateGameArgs,
@@ -11,13 +9,12 @@ import {
   MutationDeleteClubDeviceArgs,
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
-  MutationSetRoundArgs,
   MutationUnassignPlayersArgs,
-  MutationUnassignTableArgs,
   MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
   MutationUpdatePlayerArgs,
+  MutationUpdateTableAssignmentArgs,
 } from "./appsync";
 
 type GeneratedMutation<InputType, OutputType> = string & {
@@ -252,90 +249,46 @@ export const mutIdToMutGql = {
     `,
     "deletePlayer",
   ),
-  assignTable: createKeyedGeneratedMutation<
-    "assignTable",
-    MutationAssignTableArgs
+  updateTableAssignment: createKeyedGeneratedMutation<
+    "updateTableAssignment",
+    MutationUpdateTableAssignmentArgs
   >(
     /* GraphQL */ `
-      mutation assignTable($input: AssignOrUnassignTableInput!) {
-        assignTable(input: $input) {
+      mutation updateTableAssignment($input: UpdateTableAssignmentInput!) {
+        updateTableAssignment(input: $input) {
           clubId
-          clubDeviceId
           gameId
-          tableNumber
-          confirmed
-          round
-          roundWelcomeConfirmed
-          playerAssignments {
-            directionLetter
-            playerId
-            playerDisplayName
-          }
-          results {
-            type
-            board
+          clientId
+          tableAssignment {
+            tableNumber
+            clubDeviceId
+            confirmed
             round
-            level
-            strain
-            doubling
-            declarer
-            leadRank
-            leadSuit
-            wonTrickCount
+            roundWelcomeConfirmed
             currentAsOf
+            playerAssignments {
+              directionLetter
+              playerId
+              playerDisplayName
+            }
+            results {
+              board
+              round
+              type
+              level
+              strain
+              doubling
+              declarer
+              leadRank
+              leadSuit
+              wonTrickCount
+              currentAsOf
+            }
           }
         }
       }
     `,
-    "assignTable",
-  ),
-  confirmTableAssignment: createKeyedGeneratedMutation<
-    "confirmTableAssignment",
-    MutationConfirmTableAssignmentArgs
-  >(
-    /* GraphQL */ `
-      mutation confirmTableAssignment($input: AssignOrUnassignTableInput!) {
-        confirmTableAssignment(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-          confirmed
-        }
-      }
-    `,
-    "confirmTableAssignment",
-  ),
-  setRound: createKeyedGeneratedMutation<"setRound", MutationSetRoundArgs>(
-    /* GraphQL */ `
-      mutation setRound($input: SetRoundInput!) {
-        setRound(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-          round
-          roundWelcomeConfirmed
-        }
-      }
-    `,
-    "setRound",
-  ),
-  unassignTable: createKeyedGeneratedMutation<
-    "unassignTable",
-    MutationUnassignTableArgs
-  >(
-    /* GraphQL */ `
-      mutation unassignTable($input: AssignOrUnassignTableInput!) {
-        unassignTable(input: $input) {
-          clubId
-          clubDeviceId
-          gameId
-          tableNumber
-        }
-      }
-    `,
-    "unassignTable",
+    "updateTableAssignment",
   ),
   assignPlayer: createKeyedGeneratedMutation<
     "assignPlayer",

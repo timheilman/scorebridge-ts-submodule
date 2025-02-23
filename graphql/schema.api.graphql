@@ -112,20 +112,31 @@ type Mutation {
   deleteGame(input: DeleteGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  assignTable(input: AssignOrUnassignTableInput!): AssignTableResponse!
+  updateTableAssignment(
+    input: UpdateTableAssignmentInput!
+  ): UpdateTableAssignmentResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
-  confirmTableAssignment(
-    input: AssignOrUnassignTableInput!
-  ): ConfirmTableAssignmentResponse!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
-  unassignTable(input: AssignOrUnassignTableInput!): UnassignTableResponse!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
+
+  # assignTable(input: AssignOrUnassignTableInput!): AssignTableResponse!
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
+  # confirmTableAssignment(
+  #   input: AssignOrUnassignTableInput!
+  # ): ConfirmTableAssignmentResponse!
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
+  # unassignTable(input: AssignOrUnassignTableInput!): UnassignTableResponse!
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
+  # setRound(input: SetRoundInput!): SetRoundResponse!
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
 
   assignPlayer(input: AssignPlayerInput!): AssignPlayerResponse!
     @aws_cognito_user_pools(
@@ -138,10 +149,6 @@ type Mutation {
     )
 
   updateBoardResult(input: UpdateBoardResultInput!): UpdateBoardResultResponse!
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
-  setRound(input: SetRoundInput!): SetRoundResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
@@ -172,18 +179,22 @@ type Subscription {
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  # These next two are for device-to-device communication to know which tables
-  # are still available for assignment, and when all tables have been assigned
-  onAssignTable(clubId: String!): AssignTableResponse
-    @aws_subscribe(mutations: ["assignTable"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
-  onUnassignTable(clubId: String!): UnassignTableResponse
-    @aws_subscribe(mutations: ["unassignTable"])
-    @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-    )
+  # # These next two are for device-to-device communication to know which tables
+  # # are still available for assignment, and when all tables have been assigned
+  # onAssignTable(clubId: String!): AssignTableResponse
+  #   @aws_subscribe(mutations: ["assignTable"])
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
+  # onUnassignTable(clubId: String!): UnassignTableResponse
+  #   @aws_subscribe(mutations: ["unassignTable"])
+  #   @aws_cognito_user_pools(
+  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+  #   )
+  # # for shits and giggles; maybe webapp wants to get current round updates
+  # onSetRound(clubId: String!): SetRoundResponse
+  #   @aws_subscribe(mutations: ["setRound"])
+  #   @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 
   # This is for for device-to-device communication to know player names for display
   # after round 1
@@ -198,15 +209,17 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
+  onUpdateTableAssignment(clubId: String!): UpdateTableAssignmentResponse
+    @aws_subscribe(mutations: ["updateTableAssignment"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
+
   onUpdateBoardResult(clubId: String!): UpdateBoardResultResponse
     @aws_subscribe(mutations: ["updateBoardResult"])
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
-  # for shits and giggles; maybe webapp wants to get current round updates
-  onSetRound(clubId: String!): SetRoundResponse
-    @aws_subscribe(mutations: ["setRound"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 
   onCreatePlayer(clubId: String!): Player
     @aws_subscribe(mutations: ["createPlayer"])
@@ -323,26 +336,27 @@ input UpdateBoardResultInput {
   clientId: String!
 }
 
-input SetRoundInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  round: Int!
-  roundWelcomeConfirmed: Boolean!
-}
+# input SetRoundInput {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+#   round: Int!
+#   roundWelcomeConfirmed: Boolean!
+# }
 
-type SetRoundResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  round: Int!
-  roundWelcomeConfirmed: Boolean!
-}
+# type SetRoundResponse {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+#   round: Int!
+#   roundWelcomeConfirmed: Boolean!
+# }
 
-type TableAssignment {
+type TableAssignmentC {
   tableNumber: Int!
+  currentAsOf: AWSDateTime!
   clubDeviceId: String
   confirmed: Boolean
   round: Int
@@ -351,7 +365,7 @@ type TableAssignment {
   results: [BoardResultC!]!
 }
 
-input PartialTableAssignment {
+input TableAssignment {
   tableNumber: Int!
   clubDeviceId: String
   confirmed: Boolean
@@ -361,45 +375,52 @@ input PartialTableAssignment {
   results: [BoardResult!]!
 }
 
+input UpdateTableAssignmentInput {
+  clubId: String!
+  gameId: String!
+  clientId: String!
+  partialTableAssignment: TableAssignment!
+}
+
 input PartialPlayerAssignment {
   directionLetter: DirectionLetter!
   playerId: String!
   playerDisplayName: String!
 }
 
-input AssignOrUnassignTableInput {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-}
+# input AssignOrUnassignTableInput {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+# }
 
-type ConfirmTableAssignmentResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  confirmed: Boolean!
-}
+# type ConfirmTableAssignmentResponse {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+#   confirmed: Boolean!
+# }
 
-type AssignTableResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-  confirmed: Boolean
-  round: Int
-  roundWelcomeConfirmed: Boolean
-  playerAssignments: [PlayerAssignment!]!
-  results: [BoardResultC!]!
-}
+# type AssignTableResponse {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+#   confirmed: Boolean
+#   round: Int
+#   roundWelcomeConfirmed: Boolean
+#   playerAssignments: [PlayerAssignment!]!
+#   results: [BoardResultC!]!
+# }
 
-type UnassignTableResponse {
-  clubId: String!
-  clubDeviceId: String!
-  gameId: String!
-  tableNumber: Int!
-}
+# type UnassignTableResponse {
+#   clubId: String!
+#   clubDeviceId: String!
+#   gameId: String!
+#   tableNumber: Int!
+# }
 
 input AssignPlayerInput {
   clubId: String!
@@ -448,7 +469,7 @@ type Game {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [TableAssignment!]!
+  tableAssignments: [TableAssignmentC!]!
   createdAt: AWSDateTime!
 }
 
@@ -466,7 +487,7 @@ input PartialGame {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [PartialTableAssignment!]!
+  tableAssignments: [TableAssignment!]!
   createdAt: AWSDateTime!
 }
 
@@ -555,10 +576,17 @@ type DeleteClubAndAdminResponse {
   status: String!
 }
 
-type UpdateBoardResultResponse {
+type UpdateTableAssignmentResponse {
   clubId: String!
-  tableNumber: Int!
-  boardResult: BoardResultC!
   gameId: String!
   clientId: String!
+  tableAssignment: TableAssignmentC!
+}
+
+type UpdateBoardResultResponse {
+  clubId: String!
+  gameId: String!
+  tableNumber: Int!
+  clientId: String!
+  boardResult: BoardResultC!
 }
