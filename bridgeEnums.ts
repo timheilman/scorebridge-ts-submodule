@@ -3,12 +3,14 @@ import {
   BoardResultC,
   DirectionLetter,
   Doubling,
+  Game,
   Player,
   PlayerAssignment,
   Rank,
   Strain,
   Suit,
-  TableAssignmentC,
+  TableAssignment,
+  TableAssignmentCt,
 } from "./graphql/appsync";
 
 // We cannot take the types from these enumerations, because they are generated
@@ -79,8 +81,6 @@ export const possibleResults = (level: Level): Result[] =>
   );
 
 // these are the values whereas keys are stored as part of the sortKey
-// TODO: scor-354-358 need to rename UnkeyedTableAssignment to TableAssignmentUC
-export type UnkeyedTableAssignment = Omit<TableAssignmentC, "tableNumber">;
 export type UnkeyedPlayerAssignment = Omit<PlayerAssignment, "directionLetter">;
 export type UnkeyedPlayer = Omit<Player, "playerId">;
 
@@ -129,6 +129,24 @@ export type BoardResultT = BoardResultUt & BoardAndRound;
 export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
 export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
 export type BoardResultU = Omit<BoardResult, "board" | "round">;
+
+export type TableAssignmentC = TableAssignment & CurrentAsOf;
+export type TableAssignmentT = Omit<TableAssignmentCt, "currentAsOf">;
+export type TableAssignmentU = Omit<TableAssignment, "tableNumber">;
+export type TableAssignmentUt = Omit<
+  TableAssignmentCt,
+  "tableNumber" | "currentAsOf"
+>;
+export type TableAssignmentUc = Omit<TableAssignment, "tableNumber"> &
+  CurrentAsOf;
+export type TableAssignmentUct = Omit<TableAssignmentCt, "tableNumber">;
+
+// lambda does not apply currentAsOf; response mapping template does:
+export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {
+  tableAssignments: (Omit<TableAssignmentT, "results"> & {
+    results: BoardResultT[];
+  })[];
+};
 
 export const playedBoardRequiredFields = [
   "level",
