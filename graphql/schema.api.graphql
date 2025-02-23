@@ -336,25 +336,7 @@ input UpdateBoardResultInput {
   clientId: String!
 }
 
-# input SetRoundInput {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-#   round: Int!
-#   roundWelcomeConfirmed: Boolean!
-# }
-
-# type SetRoundResponse {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-#   round: Int!
-#   roundWelcomeConfirmed: Boolean!
-# }
-
-type TableAssignmentC {
+type TableAssignmentCT {
   tableNumber: Int!
   currentAsOf: AWSDateTime!
   clubDeviceId: String
@@ -469,7 +451,7 @@ type Game {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [TableAssignmentC!]!
+  tableAssignments: [TableAssignmentCT!]!
   createdAt: AWSDateTime!
 }
 
@@ -580,7 +562,7 @@ type UpdateTableAssignmentResponse {
   clubId: String!
   gameId: String!
   clientId: String!
-  tableAssignment: TableAssignmentC!
+  tableAssignment: TableAssignmentCT!
 }
 
 type UpdateBoardResultResponse {

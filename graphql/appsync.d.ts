@@ -181,7 +181,7 @@ export interface Game {
   label?: Maybe<Scalars["String"]["output"]>;
   movement: Movement;
   roundCount: Scalars["Int"]["output"];
-  tableAssignments: TableAssignmentC[];
+  tableAssignments: TableAssignmentCt[];
   tableCount: Scalars["Int"]["output"];
 }
 
@@ -459,8 +459,8 @@ export interface TableAssignment {
   tableNumber: Scalars["Int"]["input"];
 }
 
-export interface TableAssignmentC {
-  __typename?: "TableAssignmentC";
+export interface TableAssignmentCt {
+  __typename?: "TableAssignmentCT";
   clubDeviceId?: Maybe<Scalars["String"]["output"]>;
   confirmed: Scalars["Boolean"]["output"];
   currentAsOf: Scalars["AWSDateTime"]["output"];
@@ -548,5 +548,5 @@ export interface UpdateTableAssignmentResponse {
   clientId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
-  tableAssignment: TableAssignmentC;
+  tableAssignment: TableAssignmentCt;
 }
