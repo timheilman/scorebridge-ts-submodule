@@ -181,7 +181,7 @@ export interface Game {
   label?: Maybe<Scalars["String"]["output"]>;
   movement: Movement;
   roundCount: Scalars["Int"]["output"];
-  tableAssignments: TableAssignment[];
+  tableAssignments: TableAssignmentC[];
   tableCount: Scalars["Int"]["output"];
 }
 
@@ -451,23 +451,23 @@ export type Suit = "C" | "D" | "H" | "S";
 
 export interface TableAssignment {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
-  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
+  confirmed: Scalars["Boolean"]["input"];
   playerAssignments: PartialPlayerAssignment[];
   results: BoardResult[];
-  round?: InputMaybe<Scalars["Int"]["input"]>;
-  roundWelcomeConfirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
+  round: Scalars["Int"]["input"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
 export interface TableAssignmentC {
   __typename?: "TableAssignmentC";
   clubDeviceId?: Maybe<Scalars["String"]["output"]>;
-  confirmed?: Maybe<Scalars["Boolean"]["output"]>;
+  confirmed: Scalars["Boolean"]["output"];
   currentAsOf: Scalars["AWSDateTime"]["output"];
   playerAssignments: PlayerAssignment[];
   results: BoardResultC[];
-  round?: Maybe<Scalars["Int"]["output"]>;
-  roundWelcomeConfirmed?: Maybe<Scalars["Boolean"]["output"]>;
+  round: Scalars["Int"]["output"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 

@@ -358,9 +358,9 @@ type TableAssignmentC {
   tableNumber: Int!
   currentAsOf: AWSDateTime!
   clubDeviceId: String
-  confirmed: Boolean
-  round: Int
-  roundWelcomeConfirmed: Boolean
+  confirmed: Boolean!
+  round: Int!
+  roundWelcomeConfirmed: Boolean!
   playerAssignments: [PlayerAssignment!]!
   results: [BoardResultC!]!
 }
@@ -368,9 +368,9 @@ type TableAssignmentC {
 input TableAssignment {
   tableNumber: Int!
   clubDeviceId: String
-  confirmed: Boolean
-  round: Int
-  roundWelcomeConfirmed: Boolean
+  confirmed: Boolean!
+  round: Int!
+  roundWelcomeConfirmed: Boolean!
   playerAssignments: [PartialPlayerAssignment!]!
   results: [BoardResult!]!
 }
