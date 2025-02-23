@@ -451,11 +451,11 @@ export type Suit = "C" | "D" | "H" | "S";
 
 export interface TableAssignment {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
-  confirmed: Scalars["Boolean"]["input"];
+  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   playerAssignments: PartialPlayerAssignment[];
   results: BoardResult[];
-  round: Scalars["Int"]["input"];
-  roundWelcomeConfirmed: Scalars["Boolean"]["input"];
+  round?: InputMaybe<Scalars["Int"]["input"]>;
+  roundWelcomeConfirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
 }
 
