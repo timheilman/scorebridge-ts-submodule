@@ -119,25 +119,6 @@ type Mutation {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
 
-  # assignTable(input: AssignOrUnassignTableInput!): AssignTableResponse!
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-  # confirmTableAssignment(
-  #   input: AssignOrUnassignTableInput!
-  # ): ConfirmTableAssignmentResponse!
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-  # unassignTable(input: AssignOrUnassignTableInput!): UnassignTableResponse!
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-  # setRound(input: SetRoundInput!): SetRoundResponse!
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-
   assignPlayer(input: AssignPlayerInput!): AssignPlayerResponse!
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
@@ -178,23 +159,6 @@ type Subscription {
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-
-  # # These next two are for device-to-device communication to know which tables
-  # # are still available for assignment, and when all tables have been assigned
-  # onAssignTable(clubId: String!): AssignTableResponse
-  #   @aws_subscribe(mutations: ["assignTable"])
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-  # onUnassignTable(clubId: String!): UnassignTableResponse
-  #   @aws_subscribe(mutations: ["unassignTable"])
-  #   @aws_cognito_user_pools(
-  #     cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
-  #   )
-  # # for shits and giggles; maybe webapp wants to get current round updates
-  # onSetRound(clubId: String!): SetRoundResponse
-  #   @aws_subscribe(mutations: ["setRound"])
-  #   @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 
   # This is for for device-to-device communication to know player names for display
   # after round 1
@@ -369,40 +333,6 @@ input PartialPlayerAssignment {
   playerId: String!
   playerDisplayName: String!
 }
-
-# input AssignOrUnassignTableInput {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-# }
-
-# type ConfirmTableAssignmentResponse {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-#   confirmed: Boolean!
-# }
-
-# type AssignTableResponse {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-#   confirmed: Boolean
-#   round: Int
-#   roundWelcomeConfirmed: Boolean
-#   playerAssignments: [PlayerAssignment!]!
-#   results: [BoardResultC!]!
-# }
-
-# type UnassignTableResponse {
-#   clubId: String!
-#   clubDeviceId: String!
-#   gameId: String!
-#   tableNumber: Int!
-# }
 
 input AssignPlayerInput {
   clubId: String!
