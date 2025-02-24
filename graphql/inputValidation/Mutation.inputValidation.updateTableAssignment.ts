@@ -45,5 +45,18 @@ export const errorForMutationUpdateTableAssignment: InputValidator<
   if (deviceLevelMultitenancyError) {
     return deviceLevelMultitenancyError;
   }
+
+  if (args.input.partialTableAssignment.tableNumber < 1) {
+    return {
+      msg: `tableNumber must be >= 1, tableNumber: ${args.input.partialTableAssignment.tableNumber}`,
+    };
+  }
+
+  if ((args.input.partialTableAssignment.round ?? 0) < 0) {
+    return {
+      msg: `round must be >= 0, round: ${args.input.partialTableAssignment.round}`,
+    };
+  }
+  // tableNumber being > tableCount must be verified after the first pipeline
   return;
 };
