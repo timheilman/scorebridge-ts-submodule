@@ -71,7 +71,7 @@ const reduceToRequiredFields = (br: BoardResultUt): BoardResultUt => {
   };
 };
 
-export const ucToUct = (br?: BoardResultUc): BoardResultUct => {
+export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
   const problem = uTypeSafetyProblem(br);
   if (problem) {
     throw new BoardResultTypeUnsafe(problem);
