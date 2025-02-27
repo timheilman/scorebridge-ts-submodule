@@ -212,7 +212,6 @@ input ListGamesInput {
   nextToken: String
   limit: Int
   finalGameFromLastList: PartialGame
-  currentAsOfFromLastList: AWSDateTime
 }
 
 input ListPlayersInput {
@@ -296,7 +295,7 @@ input UpdateBoardResultInput {
   clubId: String!
   gameId: String!
   tableNumber: Int!
-  partialBoardResult: BoardResult!
+  boardResult: BoardResult!
   clientId: String!
 }
 
@@ -317,15 +316,24 @@ input TableAssignment {
   confirmed: Boolean
   round: Int
   roundWelcomeConfirmed: Boolean
-  playerAssignments: [PartialPlayerAssignment!]!
-  results: [BoardResult!]!
+}
+
+input PagingTableAssignmentCT {
+  tableNumber: Int!
+  currentAsOf: AWSDateTime!
+  clubDeviceId: String
+  confirmed: Boolean!
+  round: Int!
+  roundWelcomeConfirmed: Boolean!
+  playerAssignments: [PlayerAssignment!]!
+  results: [BoardResultC!]!
 }
 
 input UpdateTableAssignmentInput {
   clubId: String!
   gameId: String!
   clientId: String!
-  partialTableAssignment: TableAssignment!
+  tableAssignment: TableAssignment!
 }
 
 input PartialPlayerAssignment {
@@ -399,7 +407,7 @@ input PartialGame {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [TableAssignment!]!
+  tableAssignments: [PagingTableAssignmentCT!]!
   createdAt: AWSDateTime!
 }
 

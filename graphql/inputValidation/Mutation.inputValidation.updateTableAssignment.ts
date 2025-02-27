@@ -7,7 +7,7 @@ import {
 export const errorForMutationUpdateTableAssignment: InputValidator<
   MutationUpdateTableAssignmentArgs
 > = ({ args, cogIdentity, stage }) => {
-  const clubDeviceId = args.input.partialTableAssignment.clubDeviceId;
+  const clubDeviceId = args.input.tableAssignment.clubDeviceId;
   if (clubDeviceId) {
     const deviceLevelMultitenancyError = errorForDeviceLevelMultitenancy({
       cogIdentity,
@@ -46,15 +46,15 @@ export const errorForMutationUpdateTableAssignment: InputValidator<
     return deviceLevelMultitenancyError;
   }
 
-  if (args.input.partialTableAssignment.tableNumber < 1) {
+  if (args.input.tableAssignment.tableNumber < 1) {
     return {
-      msg: `tableNumber must be >= 1, tableNumber: ${args.input.partialTableAssignment.tableNumber}`,
+      msg: `tableNumber must be >= 1, tableNumber: ${args.input.tableAssignment.tableNumber}`,
     };
   }
 
-  if ((args.input.partialTableAssignment.round ?? 0) < 0) {
+  if ((args.input.tableAssignment.round ?? 0) < 0) {
     return {
-      msg: `round must be >= 0, round: ${args.input.partialTableAssignment.round}`,
+      msg: `round must be >= 0, round: ${args.input.tableAssignment.round}`,
     };
   }
   // tableNumber being > tableCount must be verified after the first pipeline

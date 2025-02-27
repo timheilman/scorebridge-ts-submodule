@@ -204,7 +204,6 @@ export interface ListClubDevicesOutput {
 
 export interface ListGamesInput {
   clubId: Scalars["String"]["input"];
-  currentAsOfFromLastList?: InputMaybe<Scalars["AWSDateTime"]["input"]>;
   finalGameFromLastList?: InputMaybe<PartialGame>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
@@ -310,6 +309,17 @@ export interface MutationUpdateTableAssignmentArgs {
   input: UpdateTableAssignmentInput;
 }
 
+export interface PagingTableAssignmentCt {
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
+  confirmed: Scalars["Boolean"]["input"];
+  currentAsOf: Scalars["AWSDateTime"]["input"];
+  playerAssignments: PlayerAssignment[];
+  results: BoardResultC[];
+  round: Scalars["Int"]["input"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
 export interface PartialGame {
   boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
@@ -318,7 +328,7 @@ export interface PartialGame {
   label?: InputMaybe<Scalars["String"]["input"]>;
   movement: Movement;
   roundCount: Scalars["Int"]["input"];
-  tableAssignments: TableAssignment[];
+  tableAssignments: PagingTableAssignmentCt[];
   tableCount: Scalars["Int"]["input"];
 }
 
@@ -452,8 +462,6 @@ export type Suit = "C" | "D" | "H" | "S";
 export interface TableAssignment {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
-  playerAssignments: PartialPlayerAssignment[];
-  results: BoardResult[];
   round?: InputMaybe<Scalars["Int"]["input"]>;
   roundWelcomeConfirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   tableNumber: Scalars["Int"]["input"];
@@ -492,10 +500,10 @@ export interface UnexpectedErrorResponse {
 }
 
 export interface UpdateBoardResultInput {
+  boardResult: BoardResult;
   clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  partialBoardResult: BoardResult;
   tableNumber: Scalars["Int"]["input"];
 }
 
@@ -540,7 +548,7 @@ export interface UpdateTableAssignmentInput {
   clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-  partialTableAssignment: TableAssignment;
+  tableAssignment: TableAssignment;
 }
 
 export interface UpdateTableAssignmentResponse {

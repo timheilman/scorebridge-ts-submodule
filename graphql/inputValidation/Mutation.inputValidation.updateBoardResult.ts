@@ -13,7 +13,7 @@ import {
 export const errorForMutationUpdateBoardResult: InputValidator<
   MutationUpdateBoardResultArgs
 > = ({ args, cogIdentity, stage }) => {
-  const { partialBoardResult } = args.input;
+  const { boardResult } = args.input;
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     board: _board,
@@ -21,7 +21,7 @@ export const errorForMutationUpdateBoardResult: InputValidator<
     round: _round,
     type,
     ...putTargets
-  } = partialBoardResult;
+  } = boardResult;
   const clientId = args.input.clientId;
   const clientIdSplit = clientId.split(":");
   if (clientIdSplit.length !== 2) {
