@@ -20,6 +20,8 @@ import {
   Level,
   MadeResult,
   Result,
+  TableAssignmentU,
+  TableAssignmentUt,
   WonTrickCount,
 } from "./bridgeEnums";
 import {
@@ -33,7 +35,9 @@ import {
 
 class BoardResultTypeUnsafe extends Error {}
 
-const uTypeSafetyProblem = (br?: BoardResultU): string | undefined => {
+const uTypeSafetyProblemBoardResult = (
+  br?: BoardResultU,
+): string | undefined => {
   if (!br) {
     return "board result is undefined";
   }
@@ -55,7 +59,26 @@ const uTypeSafetyProblem = (br?: BoardResultU): string | undefined => {
   return;
 };
 
-const reduceToRequiredFields = (br: BoardResultUt): BoardResultUt => {
+const uTypeSafetyProblemTableAssignment = (
+  ta?: TableAssignmentU,
+): string | undefined => {
+  if (!ta) {
+    return "table assignment is undefined";
+  }
+  const problems = [
+    tspRound(ta.round),
+    tspBoolean(ta.confirmed),
+    tspBoolean(ta.roundWelcomeConfirmed),
+  ].filter((p) => p);
+  if (problems.length > 0) {
+    return `table assignment has problems: ${problems.join(", ")}`;
+  }
+  return;
+};
+
+const reduceToRequiredFieldsBoardResult = (
+  br: BoardResultUt,
+): BoardResultUt => {
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
     return { type: br.type };
   }
@@ -71,12 +94,25 @@ const reduceToRequiredFields = (br: BoardResultUt): BoardResultUt => {
   };
 };
 
+const reduceToRequiredFieldsTableAssignment = (
+  ta: TableAssignmentUt,
+): TableAssignmentUt => {
+  return {
+    clubDeviceId: ta.clubDeviceId,
+    confirmed: ta.confirmed,
+    round: ta.round,
+    roundWelcomeConfirmed: ta.roundWelcomeConfirmed,
+    results: ta.results,
+    playerAssignments: ta.playerAssignments,
+  };
+};
+
 export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
-  const problem = uTypeSafetyProblem(br);
+  const problem = uTypeSafetyProblemBoardResult(br);
   if (problem) {
     throw new BoardResultTypeUnsafe(problem);
   }
-  const boardResultUt = reduceToRequiredFields(br as BoardResultUt);
+  const boardResultUt = reduceToRequiredFieldsBoardResult(br as BoardResultUt);
   if (!br) {
     // dead code; just to satisfy the type checker that br is defined
     throw new BoardResultTypeUnsafe("board result is undefined");
@@ -89,12 +125,24 @@ export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
   return { ...boardResultUt, currentAsOf: br.currentAsOf };
 };
 
-export const uToUt = (br: BoardResultU): BoardResultUt | undefined => {
-  const problem = uTypeSafetyProblem(br);
+export const uToUtBoardResult = (
+  br: BoardResultU,
+): BoardResultUt | undefined => {
+  const problem = uTypeSafetyProblemBoardResult(br);
   if (problem) {
     return;
   }
-  return reduceToRequiredFields(br as BoardResultUt);
+  return reduceToRequiredFieldsBoardResult(br as BoardResultUt);
+};
+
+export const uToUtTableAssignment = (
+  ta: TableAssignmentU,
+): TableAssignmentUt | undefined => {
+  const problem = uTypeSafetyProblemTableAssignment(ta);
+  if (problem) {
+    return;
+  }
+  return reduceToRequiredFieldsTableAssignment(ta as TableAssignmentUt);
 };
 
 const typeSafetyError = (problem?: string): undefined => {
@@ -228,4 +276,40 @@ const tspMovement = (movement?: string | null): string | undefined => {
 export const typeSafeMovement = (movement?: string) => {
   typeSafetyError(tspMovement(movement));
   return movement as Movement;
+};
+
+const tspBoolean = (aBoolean?: boolean | null): string | undefined => {
+  if (aBoolean === undefined) {
+    return "boolean is undefined";
+  }
+  if (aBoolean === null) {
+    return "boolean is null";
+  }
+  return;
+};
+export const typeSafeConfirmed = (confirmed?: boolean) => {
+  typeSafetyError(tspBoolean(confirmed));
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return confirmed!;
+};
+
+const tspRound = (round?: number | null): string | undefined => {
+  if (round === undefined) {
+    return "round is undefined";
+  }
+  if (round === null) {
+    return "round is null";
+  }
+  if (Math.floor(round) !== round || Math.ceil(round) !== round) {
+    return `round ${round} is not an integer`;
+  }
+  if (round < 0) {
+    return `round ${round} is negative`;
+  }
+  return;
+};
+export const typeSafeRound = (round?: number) => {
+  typeSafetyError(tspRound(round));
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return round!;
 };
