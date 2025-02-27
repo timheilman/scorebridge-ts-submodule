@@ -309,12 +309,26 @@ export interface MutationUpdateTableAssignmentArgs {
   input: UpdateTableAssignmentInput;
 }
 
+export interface PagingBoardResultC {
+  board: Scalars["Int"]["input"];
+  currentAsOf: Scalars["AWSDateTime"]["input"];
+  declarer?: InputMaybe<DirectionLetter>;
+  doubling?: InputMaybe<Doubling>;
+  leadRank?: InputMaybe<Rank>;
+  leadSuit?: InputMaybe<Suit>;
+  level?: InputMaybe<Scalars["Int"]["input"]>;
+  round: Scalars["Int"]["input"];
+  strain?: InputMaybe<Strain>;
+  type: BoardResultType;
+  wonTrickCount?: InputMaybe<Scalars["Int"]["input"]>;
+}
+
 export interface PagingTableAssignmentCt {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   confirmed: Scalars["Boolean"]["input"];
   currentAsOf: Scalars["AWSDateTime"]["input"];
-  playerAssignments: PlayerAssignment[];
-  results: BoardResultC[];
+  playerAssignments: PartialPlayerAssignment[];
+  results: PagingBoardResultC[];
   round: Scalars["Int"]["input"];
   roundWelcomeConfirmed: Scalars["Boolean"]["input"];
   tableNumber: Scalars["Int"]["input"];

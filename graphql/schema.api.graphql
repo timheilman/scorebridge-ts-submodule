@@ -277,6 +277,20 @@ type BoardResultC {
   wonTrickCount: Int
 }
 
+input PagingBoardResultC {
+  type: BoardResultType!
+  board: Int!
+  round: Int!
+  currentAsOf: AWSDateTime!
+  level: Int
+  strain: Strain
+  doubling: Doubling
+  declarer: DirectionLetter
+  leadRank: Rank
+  leadSuit: Suit
+  wonTrickCount: Int
+}
+
 # https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
 input BoardResult {
   type: BoardResultType!
@@ -325,8 +339,8 @@ input PagingTableAssignmentCT {
   confirmed: Boolean!
   round: Int!
   roundWelcomeConfirmed: Boolean!
-  playerAssignments: [PlayerAssignment!]!
-  results: [BoardResultC!]!
+  playerAssignments: [PartialPlayerAssignment!]!
+  results: [PagingBoardResultC!]!
 }
 
 input UpdateTableAssignmentInput {
