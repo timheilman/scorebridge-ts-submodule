@@ -66,7 +66,7 @@ export const errorForMutationUpdateTableAssignment: InputValidator<
   }
   if (args.input.tableAssignment.roundWelcomeConfirmed === null) {
     return {
-      msg: `roundWelcomeConfirmed must be a boolean or undefined, roundWelcomeConfirmed: ${args.input.tableAssignment.confirmed}`,
+      msg: `roundWelcomeConfirmed must be a boolean or undefined, roundWelcomeConfirmed: ${args.input.tableAssignment.roundWelcomeConfirmed}`,
     };
   }
   return;
