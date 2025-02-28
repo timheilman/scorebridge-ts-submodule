@@ -474,6 +474,7 @@ export interface SubscriptionOnUpdateTableAssignmentArgs {
 export type Suit = "C" | "D" | "H" | "S";
 
 export interface TableAssignment {
+  clearClubDeviceId: Scalars["Boolean"]["input"];
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
   confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   round?: InputMaybe<Scalars["Int"]["input"]>;

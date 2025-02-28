@@ -130,7 +130,7 @@ export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
 export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
 export type BoardResultU = Omit<BoardResult, "board" | "round">;
 
-export type TableAssignmentC = TableAssignment & CurrentAsOf;
+// export type TableAssignmentC = TableAssignment & CurrentAsOf;
 export type TableAssignmentT = Omit<TableAssignmentCt, "currentAsOf">;
 export type TableAssignmentU = Omit<TableAssignment, "tableNumber">;
 export type TableAssignmentUt = Omit<

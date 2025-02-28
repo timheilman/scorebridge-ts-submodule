@@ -58,16 +58,11 @@ export const errorForMutationUpdateTableAssignment: InputValidator<
     };
   }
   // tableNumber being > tableCount must be verified after the first pipeline
-
-  if (args.input.tableAssignment.confirmed === null) {
-    return {
-      msg: `confirmed must be a boolean or undefined, confirmed: ${args.input.tableAssignment.confirmed}`,
-    };
-  }
-  if (args.input.tableAssignment.roundWelcomeConfirmed === null) {
-    return {
-      msg: `roundWelcomeConfirmed must be a boolean or undefined, roundWelcomeConfirmed: ${args.input.tableAssignment.roundWelcomeConfirmed}`,
-    };
+  if (
+    args.input.tableAssignment.clubDeviceId &&
+    args.input.tableAssignment.clearClubDeviceId
+  ) {
+    return { msg: "Cannot set and clear clubDeviceId in the same mutation." };
   }
   return;
 };

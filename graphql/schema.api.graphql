@@ -327,6 +327,7 @@ type TableAssignmentCT {
 input TableAssignment {
   tableNumber: Int!
   clubDeviceId: String
+  clearClubDeviceId: Boolean!
   confirmed: Boolean
   round: Int
   roundWelcomeConfirmed: Boolean

@@ -142,7 +142,11 @@ export const uToUtTableAssignment = (
   if (problem) {
     return;
   }
-  return reduceToRequiredFieldsTableAssignment(ta as TableAssignmentUt);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { clearClubDeviceId, ...taRemainder } = ta;
+  return reduceToRequiredFieldsTableAssignment(
+    taRemainder as TableAssignmentUt,
+  );
 };
 
 const typeSafetyError = (problem?: string): undefined => {
