@@ -12,7 +12,7 @@ import {
 
 export const errorForMutationUpdateBoardResult: InputValidator<
   MutationUpdateBoardResultArgs
-> = ({ args, cogIdentity, stage }) => {
+> = ({ args, cogIdentity }) => {
   const { boardResult } = args.input;
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,27 +22,15 @@ export const errorForMutationUpdateBoardResult: InputValidator<
     type,
     ...putTargets
   } = boardResult;
-  const clientId = args.input.clientId;
-  const clientIdSplit = clientId.split(":");
-  if (clientIdSplit.length !== 2) {
-    return {
-      msg: `clientId must be of the form '<userType>:<guid>', clientId: ${clientId}`,
-    };
-  }
-  const [userType, cognitoUsername] = clientIdSplit;
-  const validUserTypes = [`webapp-${stage}`, `clubDevice-${stage}`];
-  if (!validUserTypes.includes(userType)) {
-    return {
-      msg: `Unrecognized userType from clientId: ${userType}; valid types are: ${JSON.stringify(validUserTypes)}`,
-    };
-  }
   // this is somewhat superfluous; to make it airtight would require a 2-stage
   // pipeline to verify that the clubDeviceId provided is the one present in the
   // table assignment for this table number; gameId similarly
+  // so, passing restrictClubDeviceIdWhenNonAdmin: false for now; it should actually
+  // be true and the allowedClubDeviceId value passed from the table assignment record
   const deviceLevelMultitenancyError = errorForDeviceLevelMultitenancy({
     cogIdentity,
     clubId: args.input.clubId,
-    clubDeviceId: cognitoUsername,
+    restrictClubDeviceIdWhenNonAdmin: false,
   });
   if (deviceLevelMultitenancyError) {
     return deviceLevelMultitenancyError;

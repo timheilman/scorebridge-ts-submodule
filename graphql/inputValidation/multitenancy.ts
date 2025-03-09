@@ -18,7 +18,7 @@ export type PotentialCogIdentity =
 export interface InputValidationArgs<T> {
   args: T;
   cogIdentity: PotentialCogIdentity;
-  stage?: string;
+  clubDeviceIdAlreadyAssignedToThisTable?: string;
 }
 
 export type InputValidator<T> = (
@@ -56,11 +56,13 @@ export const errorForClubLevelMultitenancy = ({
 export const errorForDeviceLevelMultitenancy = ({
   cogIdentity,
   clubId,
-  clubDeviceId,
+  allowedClubDeviceId,
+  restrictClubDeviceIdWhenNonAdmin,
 }: {
   cogIdentity: PotentialCogIdentity;
   clubId: string;
-  clubDeviceId?: string;
+  restrictClubDeviceIdWhenNonAdmin: boolean;
+  allowedClubDeviceId?: string;
 }): GqlUtilErrorParams | undefined => {
   if (!cogIdentity) {
     return { msg: "No cogIdentity", errorType: "No cogIdentity" };
@@ -87,14 +89,17 @@ export const errorForDeviceLevelMultitenancy = ({
     return;
   }
 
-  if (!clubDeviceId) {
+  if (restrictClubDeviceIdWhenNonAdmin && !allowedClubDeviceId) {
     return {
       msg: "Must specify clubDeviceId with non-admin credentials",
       errorType: "401: Invalid Club Device Id",
     };
   }
 
-  if (claims.sub && claims.sub === clubDeviceId) {
+  if (
+    !restrictClubDeviceIdWhenNonAdmin ||
+    (claims.sub && claims.sub === allowedClubDeviceId)
+  ) {
     return;
   }
   return {
