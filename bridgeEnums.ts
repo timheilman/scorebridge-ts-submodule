@@ -97,6 +97,11 @@ interface CurrentAsOf {
   currentAsOf: string;
 }
 
+interface TableAssignmentVectors {
+  playerAssignments: PlayerAssignment[];
+  results: BoardResultC[];
+}
+
 interface StrictPlayed {
   type: "PLAYED";
   level: Level;
@@ -130,20 +135,59 @@ export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
 export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
 export type BoardResultU = Omit<BoardResult, "board" | "round">;
 
-// export type TableAssignmentC = TableAssignment & CurrentAsOf;
-export type TableAssignmentT = Omit<TableAssignmentCvt, "currentAsOf">;
-export type TableAssignmentU = Omit<TableAssignment, "tableNumber">;
-export type TableAssignmentUt = Omit<
+// TableAssignmentCvt is schema-defined
+
+// remove single: tableNumber, currentAsOf, vectors:
+export type TableAssignmentUvct = Omit<TableAssignmentCvt, "tableNumber">;
+export type TableAssignmentVt = Omit<TableAssignmentCvt, "currentAsOf">;
+export type TableAssignmentCt = Omit<
+  TableAssignmentCvt,
+  "results" | "playerAssignments"
+>;
+
+// remove doubles: tableNumber, currentAsOf, vectors:
+export type TableAssignmentUvt = Omit<
   TableAssignmentCvt,
   "tableNumber" | "currentAsOf"
 >;
+export type TableAssignmentUct = Omit<
+  TableAssignmentCvt,
+  "tableNumber" | "results" | "playerAssignments"
+>;
+export type TableAssignmentT = Omit<
+  TableAssignmentCvt,
+  "currentAsOf" | "results" | "playerAssignments"
+>;
+
+// remove all three: tableNumber, currentAsOf, vectors:
+export type TableAssignmentUt = Omit<
+  TableAssignmentCvt,
+  "tableNumber" | "currentAsOf" | "results" | "playerAssignments"
+>;
+
+// tableAssignment is schema-defined
+// modify singles: tableNumber, currentAsOf, vectors:
+export type TableAssignmentU = Omit<TableAssignment, "tableNumber">;
+export type TableAssignmentC = TableAssignment & CurrentAsOf;
+export type TableAssignmentV = TableAssignment & TableAssignmentVectors;
+
+// modify doubles: tableNumber, currentAsOf, vectors:
 export type TableAssignmentUc = Omit<TableAssignment, "tableNumber"> &
   CurrentAsOf;
-export type TableAssignmentUct = Omit<TableAssignmentCvt, "tableNumber">;
+export type TableAssignmentUv = Omit<TableAssignment, "tableNumber"> &
+  TableAssignmentVectors;
+export type TableAssignmentCv = TableAssignment &
+  CurrentAsOf &
+  TableAssignmentVectors;
+
+// modify triples: tableNumber, currentAsOf, vectors:
+export type TableAssignmentUcv = Omit<TableAssignment, "tableNumber"> &
+  CurrentAsOf &
+  TableAssignmentVectors;
 
 // lambda does not apply currentAsOf; response mapping template does:
 export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {
-  tableAssignments: (Omit<TableAssignmentT, "results"> & {
+  tableAssignments: (Omit<TableAssignmentVt, "results"> & {
     results: BoardResultT[];
   })[];
 };

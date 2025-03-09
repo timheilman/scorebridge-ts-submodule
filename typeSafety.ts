@@ -20,8 +20,6 @@ import {
   Level,
   MadeResult,
   Result,
-  TableAssignmentU,
-  TableAssignmentUt,
   WonTrickCount,
 } from "./bridgeEnums";
 import {
@@ -59,22 +57,22 @@ const uTypeSafetyProblemBoardResult = (
   return;
 };
 
-const uTypeSafetyProblemTableAssignment = (
-  ta?: TableAssignmentU,
-): string | undefined => {
-  if (!ta) {
-    return "table assignment is undefined";
-  }
-  const problems = [
-    tspRound(ta.round),
-    tspBoolean(ta.confirmed),
-    tspBoolean(ta.roundWelcomeConfirmed),
-  ].filter((p) => p);
-  if (problems.length > 0) {
-    return `table assignment has problems: ${problems.join(", ")}`;
-  }
-  return;
-};
+// const uTypeSafetyProblemTableAssignment = (
+//   ta?: TableAssignmentU,
+// ): string | undefined => {
+//   if (!ta) {
+//     return "table assignment is undefined";
+//   }
+//   const problems = [
+//     tspRound(ta.round),
+//     tspBoolean(ta.confirmed),
+//     tspBoolean(ta.roundWelcomeConfirmed),
+//   ].filter((p) => p);
+//   if (problems.length > 0) {
+//     return `table assignment has problems: ${problems.join(", ")}`;
+//   }
+//   return;
+// };
 
 const reduceToRequiredFieldsBoardResult = (
   br: BoardResultUt,
@@ -94,18 +92,18 @@ const reduceToRequiredFieldsBoardResult = (
   };
 };
 
-const reduceToRequiredFieldsTableAssignment = (
-  ta: TableAssignmentUt,
-): TableAssignmentUt => {
-  return {
-    clubDeviceId: ta.clubDeviceId,
-    confirmed: ta.confirmed,
-    round: ta.round,
-    roundWelcomeConfirmed: ta.roundWelcomeConfirmed,
-    results: ta.results,
-    playerAssignments: ta.playerAssignments,
-  };
-};
+// const reduceToRequiredFieldsTableAssignment = (
+//   ta: TableAssignmentUvt,
+// ): TableAssignmentUvt => {
+//   return {
+//     clubDeviceId: ta.clubDeviceId,
+//     confirmed: ta.confirmed,
+//     round: ta.round,
+//     roundWelcomeConfirmed: ta.roundWelcomeConfirmed,
+//     results: ta.results,
+//     playerAssignments: ta.playerAssignments,
+//   };
+// };
 
 export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
   const problem = uTypeSafetyProblemBoardResult(br);
@@ -135,19 +133,19 @@ export const uToUtBoardResult = (
   return reduceToRequiredFieldsBoardResult(br as BoardResultUt);
 };
 
-export const uToUtTableAssignment = (
-  ta: TableAssignmentU,
-): TableAssignmentUt | undefined => {
-  const problem = uTypeSafetyProblemTableAssignment(ta);
-  if (problem) {
-    return;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { clearClubDeviceId, ...taRemainder } = ta;
-  return reduceToRequiredFieldsTableAssignment(
-    taRemainder as TableAssignmentUt,
-  );
-};
+// export const uvToUvtTableAssignment = (
+//   ta: TableAssignmentUv,
+// ): TableAssignmentUvt | undefined => {
+//   const problem = uTypeSafetyProblemTableAssignment(ta);
+//   if (problem) {
+//     return;
+//   }
+//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   const { clearClubDeviceId, ...taRemainder } = ta;
+//   return reduceToRequiredFieldsTableAssignment(
+//     taRemainder as TableAssignmentUvt,
+//   );
+// };
 
 const typeSafetyError = (problem?: string): undefined => {
   if (problem) {
