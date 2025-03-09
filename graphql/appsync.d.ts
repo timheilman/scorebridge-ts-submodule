@@ -516,7 +516,6 @@ export interface UnexpectedErrorResponse {
 
 export interface UpdateBoardResultInput {
   boardResult: BoardResult;
-  clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
@@ -560,7 +559,6 @@ export interface UpdatePlayerInput {
 }
 
 export interface UpdateTableAssignmentInput {
-  clientId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   tableAssignment: TableAssignment;
