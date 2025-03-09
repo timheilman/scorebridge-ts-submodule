@@ -10,7 +10,7 @@ import {
   Strain,
   Suit,
   TableAssignment,
-  TableAssignmentCt,
+  TableAssignmentCvt,
 } from "./graphql/appsync";
 
 // We cannot take the types from these enumerations, because they are generated
@@ -131,15 +131,15 @@ export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
 export type BoardResultU = Omit<BoardResult, "board" | "round">;
 
 // export type TableAssignmentC = TableAssignment & CurrentAsOf;
-export type TableAssignmentT = Omit<TableAssignmentCt, "currentAsOf">;
+export type TableAssignmentT = Omit<TableAssignmentCvt, "currentAsOf">;
 export type TableAssignmentU = Omit<TableAssignment, "tableNumber">;
 export type TableAssignmentUt = Omit<
-  TableAssignmentCt,
+  TableAssignmentCvt,
   "tableNumber" | "currentAsOf"
 >;
 export type TableAssignmentUc = Omit<TableAssignment, "tableNumber"> &
   CurrentAsOf;
-export type TableAssignmentUct = Omit<TableAssignmentCt, "tableNumber">;
+export type TableAssignmentUct = Omit<TableAssignmentCvt, "tableNumber">;
 
 // lambda does not apply currentAsOf; response mapping template does:
 export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {

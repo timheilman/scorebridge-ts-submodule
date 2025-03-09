@@ -313,7 +313,7 @@ input UpdateBoardResultInput {
   clientId: String!
 }
 
-type TableAssignmentCT {
+type TableAssignmentCVT {
   tableNumber: Int!
   currentAsOf: AWSDateTime!
   clubDeviceId: String
@@ -333,7 +333,7 @@ input TableAssignment {
   roundWelcomeConfirmed: Boolean
 }
 
-input PagingTableAssignmentCT {
+input PagingTableAssignmentCVT {
   tableNumber: Int!
   currentAsOf: AWSDateTime!
   clubDeviceId: String
@@ -404,7 +404,7 @@ type Game {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [TableAssignmentCT!]!
+  tableAssignments: [TableAssignmentCVT!]!
   createdAt: AWSDateTime!
 }
 
@@ -422,7 +422,7 @@ input PartialGame {
   roundCount: Int!
   boardsPerRound: Int!
   label: String
-  tableAssignments: [PagingTableAssignmentCT!]!
+  tableAssignments: [PagingTableAssignmentCVT!]!
   createdAt: AWSDateTime!
 }
 
@@ -515,7 +515,7 @@ type UpdateTableAssignmentResponse {
   clubId: String!
   gameId: String!
   clientId: String!
-  tableAssignment: TableAssignmentCT!
+  tableAssignment: TableAssignmentCVT!
 }
 
 type UpdateBoardResultResponse {
