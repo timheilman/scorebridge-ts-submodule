@@ -45,24 +45,14 @@ export const errorForMutationUpdateBoardResult: InputValidator<
   }
   if (
     type === "PLAYED" &&
-    (putTargets.level === undefined ||
-      putTargets.level === null ||
-      !putTargets.strain ||
-      !putTargets.doubling ||
-      !putTargets.declarer ||
-      !putTargets.leadRank ||
-      !putTargets.leadSuit ||
-      putTargets.wonTrickCount === undefined ||
-      putTargets.wonTrickCount === null)
+    putTargets.level !== undefined &&
+    !allLevels.includes(putTargets.level as Level)
   ) {
-    return { msg: "Must provide all fields to a PLAYED board result." };
-  }
-
-  if (type === "PLAYED" && !allLevels.includes(putTargets.level as Level)) {
     return { msg: "Level is invalid." };
   }
   if (
     type === "PLAYED" &&
+    putTargets.wonTrickCount !== undefined &&
     !allWonTrickCounts.includes(putTargets.wonTrickCount as WonTrickCount)
   ) {
     return { msg: "WonTrickCount is invalid." };
