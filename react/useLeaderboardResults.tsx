@@ -1,4 +1,4 @@
-import { BoardResultUt } from "../bridgeEnums";
+import { BoardResultUl } from "../bridgeEnums";
 import { DirectionLetter, Game } from "../graphql/appsync";
 import { BoardAllRoundsScore, matchPointsScore } from "../matchPointsScore";
 import {
@@ -61,7 +61,7 @@ const roleForPlayerOnBoard = ({
   playerNumber: number;
   board: number;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, BoardResultUt>;
+  boardResults: Record<string, BoardResultUl>;
   game: Omit<Game, "tableAssignments">;
 }): "Declarer" | "Defender" | "Dummy" | undefined => {
   const whereIWas = whereWasI({
@@ -80,6 +80,11 @@ const roleForPlayerOnBoard = ({
   ) {
     return;
   }
+  if (!boardResult.declarer) {
+    throw new Error(
+      `roleForPlayerOnBoard called with PLAYED board without a declarer direction specified. Result in question: ${JSON.stringify(boardResult)}`,
+    );
+  }
   if (boardResult.declarer === direction) {
     return "Declarer";
   }
@@ -94,7 +99,7 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
 }: {
   game: Omit<Game, "tableAssignments">;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, BoardResultUt>;
+  boardResults: Record<string, BoardResultUl>;
 }) => {
   return withEachPlayer(game).reduce<
     Record<
@@ -151,7 +156,7 @@ export const useLeaderboardResults = ({
   game: Omit<Game, "tableAssignments"> | undefined;
   boardResultsLoaded: boolean;
   // key is "<tableNumber>_<board>_<round>"
-  boardResults: Record<string, BoardResultUt>;
+  boardResults: Record<string, BoardResultUl>;
 }) => {
   log("useLeaderboardResults", "debug", { boardResultsLoaded, boardResults });
   if (!game || !boardResultsLoaded) {

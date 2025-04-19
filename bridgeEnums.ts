@@ -102,36 +102,46 @@ interface TableAssignmentVectors {
   results: BoardResultC[];
 }
 
-interface StrictPlayed {
+// interface StrictPlayed {
+//   type: "PLAYED";
+//   level: Level;
+//   strain: Strain;
+//   doubling: Doubling;
+//   declarer: DirectionLetter;
+//   leadRank: Rank;
+//   leadSuit: Suit;
+//   wonTrickCount: WonTrickCount;
+// }
+
+// type LoosePlayed = Partial<StrictPlayed> & { type: "PLAYED" };
+interface LoosePlayed {
   type: "PLAYED";
-  level: Level;
-  strain: Strain;
-  doubling: Doubling;
-  declarer: DirectionLetter;
-  leadRank: Rank;
-  leadSuit: Suit;
-  wonTrickCount: WonTrickCount;
+  level?: Level;
+  strain?: Strain;
+  doubling?: Doubling;
+  declarer?: DirectionLetter;
+  leadRank?: Rank;
+  leadSuit?: Suit;
+  wonTrickCount?: WonTrickCount;
 }
 
-type LoosePlayed = Partial<StrictPlayed> & { type: "PLAYED" };
-
-export type BoardResultUt =
-  | { type: "NOT_BID_NOT_PLAYED" }
-  | { type: "PASSED_OUT" }
-  | StrictPlayed;
+// export type BoardResultUt =
+//   | { type: "NOT_BID_NOT_PLAYED" }
+//   | { type: "PASSED_OUT" }
+//   | StrictPlayed;
 
 export type BoardResultUl =
   | { type: "NOT_BID_NOT_PLAYED" }
   | { type: "PASSED_OUT" }
   | LoosePlayed;
 
-export type BoardResultUct = BoardResultUt & CurrentAsOf;
-// type BoardResultUCL = BoardResultUL & CurrentAsOf;
-// type BoardResultL = BoardResultUL & BoardAndRound;
-// type BoardResultCL = BoardResultUL & BoardAndRound & CurrentAsOf;
+// export type BoardResultUct = BoardResultUt & CurrentAsOf;
+export type BoardResultUcl = BoardResultUl & CurrentAsOf;
+export type BoardResultL = BoardResultUl & BoardAndRound;
+export type BoardResultCl = BoardResultUl & BoardAndRound & CurrentAsOf;
 
-export type BoardResultT = BoardResultUt & BoardAndRound;
-export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
+// export type BoardResultT = BoardResultUt & BoardAndRound;
+// export type BoardResultCt = BoardResultUt & BoardAndRound & CurrentAsOf;
 export type BoardResultUc = Omit<BoardResultC, "board" | "round">;
 export type BoardResultU = Omit<BoardResult, "board" | "round">;
 
@@ -188,7 +198,7 @@ export type TableAssignmentUcv = Omit<TableAssignment, "tableNumber"> &
 // lambda does not apply currentAsOf; response mapping template does:
 export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {
   tableAssignments: (Omit<TableAssignmentVt, "results"> & {
-    results: BoardResultT[];
+    results: BoardResultL[];
   })[];
 };
 

@@ -12,10 +12,9 @@ import {
   allStrains,
   allSuits,
   allWonTrickCounts,
-  BoardResultU,
   BoardResultUc,
-  BoardResultUct,
-  BoardResultUt,
+  BoardResultUcl,
+  BoardResultUl,
   DownResult,
   Level,
   MadeResult,
@@ -33,29 +32,29 @@ import {
 
 class BoardResultTypeUnsafe extends Error {}
 
-const uTypeSafetyProblemBoardResult = (
-  br?: BoardResultU,
-): string | undefined => {
-  if (!br) {
-    return "board result is undefined";
-  }
-  if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
-    return;
-  }
-  const problems = [
-    tspLevel(br.level),
-    tspStrain(br.strain),
-    tspDoubling(br.doubling),
-    tspDirectionLetter(br.declarer),
-    tspRank(br.leadRank),
-    tspSuit(br.leadSuit),
-    tspWonTrickCount(br.wonTrickCount),
-  ].filter((p) => p);
-  if (problems.length > 0) {
-    return `PLAYED board result has problems: ${problems.join(", ")}`;
-  }
-  return;
-};
+// const uTypeSafetyProblemBoardResult = (
+//   br?: BoardResultU,
+// ): string | undefined => {
+//   if (!br) {
+//     return "board result is undefined";
+//   }
+//   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
+//     return;
+//   }
+//   const problems = [
+//     tspLevel(br.level),
+//     tspStrain(br.strain),
+//     tspDoubling(br.doubling),
+//     tspDirectionLetter(br.declarer),
+//     tspRank(br.leadRank),
+//     tspSuit(br.leadSuit),
+//     tspWonTrickCount(br.wonTrickCount),
+//   ].filter((p) => p);
+//   if (problems.length > 0) {
+//     return `PLAYED board result has problems: ${problems.join(", ")}`;
+//   }
+//   return;
+// };
 
 // const uTypeSafetyProblemTableAssignment = (
 //   ta?: TableAssignmentU,
@@ -74,23 +73,23 @@ const uTypeSafetyProblemBoardResult = (
 //   return;
 // };
 
-const reduceToRequiredFieldsBoardResult = (
-  br: BoardResultUt,
-): BoardResultUt => {
-  if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
-    return { type: br.type };
-  }
-  return {
-    type: br.type,
-    level: br.level,
-    strain: br.strain,
-    doubling: br.doubling,
-    declarer: br.declarer,
-    leadRank: br.leadRank,
-    leadSuit: br.leadSuit,
-    wonTrickCount: br.wonTrickCount,
-  };
-};
+// const reduceToRequiredFieldsBoardResult = (
+//   br: BoardResultUt,
+// ): BoardResultUt => {
+//   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
+//     return { type: br.type };
+//   }
+//   return {
+//     type: br.type,
+//     level: br.level,
+//     strain: br.strain,
+//     doubling: br.doubling,
+//     declarer: br.declarer,
+//     leadRank: br.leadRank,
+//     leadSuit: br.leadSuit,
+//     wonTrickCount: br.wonTrickCount,
+//   };
+// };
 
 // const reduceToRequiredFieldsTableAssignment = (
 //   ta: TableAssignmentUvt,
@@ -105,32 +104,60 @@ const reduceToRequiredFieldsBoardResult = (
 //   };
 // };
 
-export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
-  const problem = uTypeSafetyProblemBoardResult(br);
-  if (problem) {
-    throw new BoardResultTypeUnsafe(problem);
-  }
-  const boardResultUt = reduceToRequiredFieldsBoardResult(br as BoardResultUt);
-  if (!br) {
-    // dead code; just to satisfy the type checker that br is defined
-    throw new BoardResultTypeUnsafe("board result is undefined");
-  }
+// export const ucToUctBoardResult = (br?: BoardResultUc): BoardResultUct => {
+//   const problem = uTypeSafetyProblemBoardResult(br);
+//   if (problem) {
+//     throw new BoardResultTypeUnsafe(problem);
+//   }
+//   const boardResultUt = reduceToRequiredFieldsBoardResult(br as BoardResultUt);
+//   if (!br) {
+//     // dead code; just to satisfy the type checker that br is defined
+//     throw new BoardResultTypeUnsafe("board result is undefined");
+//   }
+//   if (!DateTime.fromISO(br.currentAsOf).isValid) {
+//     throw new BoardResultTypeUnsafe(
+//       `currentAsOf ${br.currentAsOf} is not a valid ISO DateTime`,
+//     );
+//   }
+//   return { ...boardResultUt, currentAsOf: br.currentAsOf };
+// };
+
+export const ucToUclBoardResult = (br: BoardResultUc): BoardResultUcl => {
+  const boardResultUl = reduceToLooseFieldsBoardResult(br as BoardResultUl);
   if (!DateTime.fromISO(br.currentAsOf).isValid) {
     throw new BoardResultTypeUnsafe(
       `currentAsOf ${br.currentAsOf} is not a valid ISO DateTime`,
     );
   }
-  return { ...boardResultUt, currentAsOf: br.currentAsOf };
+  return { ...boardResultUl, currentAsOf: br.currentAsOf };
 };
 
-export const uToUtBoardResult = (
-  br: BoardResultU,
-): BoardResultUt | undefined => {
-  const problem = uTypeSafetyProblemBoardResult(br);
-  if (problem) {
-    return;
+// export const uToUtBoardResult = (
+//   br: BoardResultU,
+// ): BoardResultUt | undefined => {
+//   const problem = uTypeSafetyProblemBoardResult(br);
+//   if (problem) {
+//     return;
+//   }
+//   return reduceToRequiredFieldsBoardResult(br as BoardResultUt);
+// };
+
+export const reduceToLooseFieldsBoardResult = (
+  br: BoardResultUl,
+): BoardResultUl => {
+  if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
+    return { type: br.type };
   }
-  return reduceToRequiredFieldsBoardResult(br as BoardResultUt);
+  return {
+    type: br.type,
+    level: br.level,
+    strain: br.strain,
+    doubling: br.doubling,
+    declarer: br.declarer,
+    leadRank: br.leadRank,
+    leadSuit: br.leadSuit,
+    wonTrickCount: br.wonTrickCount,
+  };
 };
 
 // export const uvToUvtTableAssignment = (
