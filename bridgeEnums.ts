@@ -134,7 +134,9 @@ export type BoardResultUl =
   | { type: "NOT_BID_NOT_PLAYED" }
   | { type: "PASSED_OUT" }
   | LoosePlayed;
-
+export type StagedBoardResult =
+  | (BoardResultUl & { confirmed: boolean })
+  | undefined;
 // export type BoardResultUct = BoardResultUt & CurrentAsOf;
 export type BoardResultUcl = BoardResultUl & CurrentAsOf;
 export type BoardResultL = BoardResultUl & BoardAndRound;
