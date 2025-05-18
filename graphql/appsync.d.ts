@@ -59,7 +59,7 @@ export interface AssignPlayerResponse {
 
 export interface BoardResult {
   board: Scalars["Int"]["input"];
-  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
+  confirmed: Scalars["Boolean"]["input"];
   declarer?: InputMaybe<DirectionLetter>;
   doubling?: InputMaybe<Doubling>;
   leadRank?: InputMaybe<Rank>;

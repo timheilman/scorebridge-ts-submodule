@@ -124,7 +124,7 @@ interface LoosePlayed {
   leadRank?: Rank;
   leadSuit?: Suit;
   wonTrickCount?: WonTrickCount;
-  confirmed?: boolean;
+  confirmed: boolean;
 }
 
 // export type BoardResultUt =
@@ -133,8 +133,8 @@ interface LoosePlayed {
 //   | StrictPlayed;
 
 export type BoardResultUl =
-  | { type: "NOT_BID_NOT_PLAYED"; confirmed?: boolean }
-  | { type: "PASSED_OUT"; confirmed?: boolean }
+  | { type: "NOT_BID_NOT_PLAYED"; confirmed: boolean }
+  | { type: "PASSED_OUT"; confirmed: boolean }
   | LoosePlayed;
 export type StagedBoardResult = BoardResultUl | undefined;
 // export type BoardResultUct = BoardResultUt & CurrentAsOf;

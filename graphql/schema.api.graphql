@@ -305,7 +305,7 @@ input BoardResult {
   leadRank: Rank
   leadSuit: Suit
   wonTrickCount: Int
-  confirmed: Boolean
+  confirmed: Boolean!
 }
 
 input UpdateBoardResultInput {
