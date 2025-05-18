@@ -172,6 +172,7 @@ export const mutIdToMutGql = {
               leadRank
               leadSuit
               wonTrickCount
+              confirmed
               currentAsOf
             }
           }
@@ -282,6 +283,7 @@ export const mutIdToMutGql = {
               leadRank
               leadSuit
               wonTrickCount
+              confirmed
               currentAsOf
             }
           }
@@ -346,6 +348,7 @@ export const mutIdToMutGql = {
             leadSuit
             leadRank
             wonTrickCount
+            confirmed
             currentAsOf
           }
           clientId

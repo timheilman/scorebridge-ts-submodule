@@ -94,6 +94,7 @@ export const qidToQueryGql = {
                 leadRank
                 leadSuit
                 wonTrickCount
+                confirmed
                 currentAsOf
               }
             }
@@ -153,6 +154,7 @@ export const qidToQueryGql = {
               leadRank
               leadSuit
               wonTrickCount
+              confirmed
               currentAsOf
             }
           }

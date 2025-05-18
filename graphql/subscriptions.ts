@@ -73,6 +73,7 @@ export const subIdToSubGql = {
               leadRank
               leadSuit
               wonTrickCount
+              confirmed
               currentAsOf
             }
           }
@@ -157,6 +158,7 @@ export const subIdToSubGql = {
               leadRank
               leadSuit
               wonTrickCount
+              confirmed
               currentAsOf
             }
           }
@@ -221,6 +223,7 @@ export const subIdToSubGql = {
             leadRank
             leadSuit
             wonTrickCount
+            confirmed
             currentAsOf
           }
           clientId
