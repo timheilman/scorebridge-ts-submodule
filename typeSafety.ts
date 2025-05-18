@@ -146,7 +146,7 @@ export const reduceToLooseFieldsBoardResult = (
   br: BoardResultUl,
 ): BoardResultUl => {
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
-    return { type: br.type };
+    return { type: br.type, confirmed: br.confirmed };
   }
   return {
     type: br.type,
@@ -157,6 +157,7 @@ export const reduceToLooseFieldsBoardResult = (
     leadRank: br.leadRank,
     leadSuit: br.leadSuit,
     wonTrickCount: br.wonTrickCount,
+    confirmed: br.confirmed,
   };
 };
 
