@@ -200,7 +200,10 @@ export type TableAssignmentUcv = Omit<TableAssignment, "tableNumber"> &
 // lambda does not apply currentAsOf; response mapping template does:
 export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {
   tableAssignments: (Omit<TableAssignmentVt, "results"> & {
-    results: BoardResultL[];
+    results: (BoardAndRound & {
+      type: "NOT_BID_NOT_PLAYED";
+      confirmed: boolean;
+    })[];
   })[];
 };
 
