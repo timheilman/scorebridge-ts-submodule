@@ -37,7 +37,8 @@ export const errorForMutationUpdateBoardResult: InputValidator<
   }
   if (
     (type === "PASSED_OUT" || type === "NOT_BID_NOT_PLAYED") &&
-    Object.keys(putTargets).length > 0
+    // TODO: figure this out once schema is updated
+    Object.keys(putTargets).length > 1 // confirmed must be present
   ) {
     return {
       msg: `Cannot set results on a PASSED_OUT or NOT_BID_NOT_PLAYED board result.  The only valid fields are board, round, and type.  Instead received: ${JSON.stringify(putTargets)}`,

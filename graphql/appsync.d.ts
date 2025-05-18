@@ -59,6 +59,7 @@ export interface AssignPlayerResponse {
 
 export interface BoardResult {
   board: Scalars["Int"]["input"];
+  confirmed?: InputMaybe<Scalars["Boolean"]["input"]>;
   declarer?: InputMaybe<DirectionLetter>;
   doubling?: InputMaybe<Doubling>;
   leadRank?: InputMaybe<Rank>;
@@ -73,6 +74,7 @@ export interface BoardResult {
 export interface BoardResultC {
   __typename?: "BoardResultC";
   board: Scalars["Int"]["output"];
+  confirmed: Scalars["Boolean"]["output"];
   currentAsOf: Scalars["AWSDateTime"]["output"];
   declarer?: Maybe<DirectionLetter>;
   doubling?: Maybe<Doubling>;
@@ -311,6 +313,7 @@ export interface MutationUpdateTableAssignmentArgs {
 
 export interface PagingBoardResultC {
   board: Scalars["Int"]["input"];
+  confirmed: Scalars["Boolean"]["input"];
   currentAsOf: Scalars["AWSDateTime"]["input"];
   declarer?: InputMaybe<DirectionLetter>;
   doubling?: InputMaybe<Doubling>;

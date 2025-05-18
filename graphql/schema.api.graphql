@@ -275,6 +275,7 @@ type BoardResultC {
   leadRank: Rank
   leadSuit: Suit
   wonTrickCount: Int
+  confirmed: Boolean!
 }
 
 input PagingBoardResultC {
@@ -289,6 +290,7 @@ input PagingBoardResultC {
   leadRank: Rank
   leadSuit: Suit
   wonTrickCount: Int
+  confirmed: Boolean!
 }
 
 # https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
@@ -303,6 +305,7 @@ input BoardResult {
   leadRank: Rank
   leadSuit: Suit
   wonTrickCount: Int
+  confirmed: Boolean
 }
 
 input UpdateBoardResultInput {
