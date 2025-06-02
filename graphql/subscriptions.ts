@@ -48,14 +48,16 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnCreateGame($clubId: String!) {
         onCreateGame(clubId: $clubId) {
+          clubId
           gameId
-          movement
-          tableCount
-          roundCount
           label
+          movement
           boardsPerRound
           tableAssignments {
             tableNumber
+            confirmed
+            round
+            roundWelcomeConfirmed
             clubDeviceId
             playerAssignments {
               directionLetter
@@ -77,6 +79,9 @@ export const subIdToSubGql = {
               currentAsOf
             }
           }
+          tableCount
+          roundCount
+          boardsPerRound
           createdAt
         }
       }
