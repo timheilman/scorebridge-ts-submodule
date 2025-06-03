@@ -64,40 +64,41 @@ export const qidToQueryGql = {
       query listGames($input: ListGamesInput!) {
         listGames(input: $input) {
           items {
-            clubId
-            gameId
-            movement
-            tableCount
-            roundCount
             boardsPerRound
-            label
+            clubId
             createdAt
+            gameId
+            label
+            movement
+            roundCount
             tableAssignments {
-              tableNumber
-              confirmed
-              round
-              roundWelcomeConfirmed
               clubDeviceId
+              confirmed
+              currentAsOf
               playerAssignments {
                 directionLetter
-                playerId
                 playerDisplayName
+                playerId
               }
               results {
-                type
                 board
-                round
-                level
-                strain
-                doubling
-                declarer
-                leadRank
-                leadSuit
-                wonTrickCount
                 confirmed
                 currentAsOf
+                declarer
+                doubling
+                leadRank
+                leadSuit
+                level
+                round
+                strain
+                type
+                wonTrickCount
               }
+              round
+              roundWelcomeConfirmed
+              tableNumber
             }
+            tableCount
           }
           nextToken
         }
@@ -124,40 +125,41 @@ export const qidToQueryGql = {
     /* GraphQL */ `
       query getGame($input: GetGameInput!) {
         getGame(input: $input) {
+          boardsPerRound
           clubId
+          createdAt
           gameId
-          tableCount
+          label
           movement
           roundCount
-          boardsPerRound
-          label
-          createdAt
           tableAssignments {
-            tableNumber
-            confirmed
-            round
-            roundWelcomeConfirmed
             clubDeviceId
+            confirmed
+            currentAsOf
             playerAssignments {
               directionLetter
-              playerId
               playerDisplayName
+              playerId
             }
             results {
-              type
               board
-              round
-              level
-              strain
-              doubling
-              declarer
-              leadRank
-              leadSuit
-              wonTrickCount
               confirmed
               currentAsOf
+              declarer
+              doubling
+              leadRank
+              leadSuit
+              level
+              round
+              strain
+              type
+              wonTrickCount
             }
+            round
+            roundWelcomeConfirmed
+            tableNumber
           }
+          tableCount
         }
       }
     `,

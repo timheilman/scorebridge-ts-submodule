@@ -145,41 +145,41 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation createGame($input: CreateGameInput!) {
         createGame(input: $input) {
+          boardsPerRound
           clubId
+          createdAt
           gameId
           label
           movement
-          boardsPerRound
+          roundCount
           tableAssignments {
-            tableNumber
-            confirmed
-            round
-            roundWelcomeConfirmed
             clubDeviceId
+            confirmed
+            currentAsOf
             playerAssignments {
               directionLetter
-              playerId
               playerDisplayName
+              playerId
             }
             results {
-              type
               board
-              round
-              level
-              strain
-              doubling
-              declarer
-              leadRank
-              leadSuit
-              wonTrickCount
               confirmed
               currentAsOf
+              declarer
+              doubling
+              leadRank
+              leadSuit
+              level
+              round
+              strain
+              type
+              wonTrickCount
             }
+            round
+            roundWelcomeConfirmed
+            tableNumber
           }
           tableCount
-          roundCount
-          boardsPerRound
-          createdAt
         }
       }
     `,
