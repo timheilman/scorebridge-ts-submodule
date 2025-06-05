@@ -123,7 +123,7 @@ export interface LoosePlayed {
   declarer?: DirectionLetter;
   leadRank?: Rank;
   leadSuit?: Suit;
-  wonTrickCount?: WonTrickCount;
+  wonTrickCount?: WonTrickCount | null;
   confirmed: boolean;
 }
 
@@ -209,7 +209,7 @@ export type CreateGameLambdaReturnType = Omit<Game, "tableAssignments"> & {
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-export const playedBoardRequiredFields = [
+export const scoringFields = [
   "type",
   "level",
   "strain",
@@ -219,5 +219,6 @@ export const playedBoardRequiredFields = [
   "leadSuit",
   "wonTrickCount",
 ] as const;
+export type ScoringField = (typeof scoringFields)[number];
 
 export const anyGameItemLifetimeSeconds = 60 * 60 * 24 * 30; // 30 days

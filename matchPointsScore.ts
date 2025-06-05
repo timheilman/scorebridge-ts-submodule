@@ -18,7 +18,7 @@ interface TrueOpponentsParams {
 export const trueOpponents = (params: TrueOpponentsParams) => {
   const whereWasIResult = whereWasI(params);
   if (!whereWasIResult) {
-    throw new Error("expected to know where I was");
+    throw new Error(`expected to know where I was ${JSON.stringify(params)}`);
   }
   const {
     tableNumber: playerTable,
