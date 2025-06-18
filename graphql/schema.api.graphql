@@ -102,7 +102,9 @@ type Mutation {
   ): DeleteClubAndAdminResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
-  createClubDevice(input: CreateClubDeviceInput!): ClubDevice!
+  createClubDeviceRegistration(
+    input: CreateClubDeviceRegistrationInput!
+  ): CreateClubDeviceRegistrationResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -245,7 +247,7 @@ type ClubDevice {
   createdAt: AWSDateTime!
 }
 
-input CreateClubDeviceInput {
+input CreateClubDeviceRegistrationInput {
   clubId: String!
   deviceName: String!
   regToken: String!
@@ -373,6 +375,10 @@ input UnassignPlayersInput {
   clubDeviceId: String
   gameId: String!
   tableNumber: Int!
+}
+
+type CreateClubDeviceRegistrationResponse {
+  status: String!
 }
 
 type AssignPlayerResponse {

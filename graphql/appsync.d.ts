@@ -111,10 +111,15 @@ export interface ClubDevice {
   name: Scalars["String"]["output"];
 }
 
-export interface CreateClubDeviceInput {
+export interface CreateClubDeviceRegistrationInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
   regToken: Scalars["String"]["input"];
+}
+
+export interface CreateClubDeviceRegistrationResponse {
+  __typename?: "CreateClubDeviceRegistrationResponse";
+  status: Scalars["String"]["output"];
 }
 
 export interface CreateClubInput {
@@ -235,7 +240,7 @@ export interface Mutation {
   __typename?: "Mutation";
   assignPlayer: AssignPlayerResponse;
   createClub: CreateClubResponse;
-  createClubDevice: ClubDevice;
+  createClubDeviceRegistration: CreateClubDeviceRegistrationResponse;
   createGame: Game;
   createPlayer: Player;
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
@@ -259,8 +264,8 @@ export interface MutationCreateClubArgs {
   input: CreateClubInput;
 }
 
-export interface MutationCreateClubDeviceArgs {
-  input: CreateClubDeviceInput;
+export interface MutationCreateClubDeviceRegistrationArgs {
+  input: CreateClubDeviceRegistrationInput;
 }
 
 export interface MutationCreateGameArgs {
