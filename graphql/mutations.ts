@@ -2,7 +2,7 @@ import {
   Mutation,
   MutationAssignPlayerArgs,
   MutationCreateClubArgs,
-  MutationCreateClubDeviceArgs,
+  MutationCreateClubDeviceRegistrationArgs,
   MutationCreateGameArgs,
   MutationCreatePlayerArgs,
   MutationDeleteClubAndAdminArgs,
@@ -104,13 +104,15 @@ export const mutIdToMutGql = {
     `,
     "deleteClubAndAdmin",
   ),
-  createClubDevice: createKeyedGeneratedMutation<
-    "createClubDevice",
-    MutationCreateClubDeviceArgs
+  createClubDeviceRegistration: createKeyedGeneratedMutation<
+    "createClubDeviceRegistration",
+    MutationCreateClubDeviceRegistrationArgs
   >(
     /* GraphQL */ `
-      mutation createClubDevice($input: CreateClubDeviceInput!) {
-        createClubDevice(input: $input) {
+      mutation createClubDeviceRegistration(
+        $input: CreateClubDeviceRegistrationInput!
+      ) {
+        createClubDeviceRegistration(input: $input) {
           clubId
           clubDeviceId
           name
@@ -119,7 +121,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "createClubDevice",
+    "createClubDeviceRegistration",
   ),
   deleteClubDevice: createKeyedGeneratedMutation<
     "deleteClubDevice",
