@@ -473,6 +473,7 @@ export interface Subscription {
   onCreatePlayer?: Maybe<Player>;
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
+  onNotifyClubDeviceCreated: ClubDeviceWithRegToken;
   onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUpdateBoardResult?: Maybe<UpdateBoardResultResponse>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
@@ -498,6 +499,10 @@ export interface SubscriptionOnDeleteGameArgs {
 }
 
 export interface SubscriptionOnDeletePlayerArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnNotifyClubDeviceCreatedArgs {
   clubId: Scalars["String"]["input"];
 }
 
