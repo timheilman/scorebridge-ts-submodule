@@ -264,7 +264,7 @@ type ClubDevice {
 }
 
 type ClubDeviceRegistration {
-  # The clubId stored in ddb is the constant string "clubDeviceRegToken"
+  # The clubId stored in ddb is the constant string "clubDeviceRegistration"
   # This field is what is stored in ddb as "realClubId"
   clubId: String!
   deviceName: String!
