@@ -275,22 +275,22 @@ type ClubDevice {
 type ClubDeviceWithRegToken {
   clubId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   clubDeviceId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   name: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   email: AWSEmail!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   createdAt: AWSDateTime!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   regToken: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
 input ClubDeviceCreated {
