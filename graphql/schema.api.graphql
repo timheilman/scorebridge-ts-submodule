@@ -264,10 +264,12 @@ type ClubDevice {
 }
 
 type ClubDeviceRegistration {
-  clubId: String! # Not really a clubId; constant "regToken"
-  realClubId: String!
+  # The clubId stored in ddb is the constant string "clubDeviceRegToken"
+  # This field is what is stored in ddb as "realClubId"
+  clubId: String!
   deviceName: String!
   ttl: Int!
+  # This is stored in ddb as the sortKey; "regToken" does not appear in ddb
   regToken: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!

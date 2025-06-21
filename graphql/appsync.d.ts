@@ -116,7 +116,6 @@ export interface ClubDeviceRegistration {
   clubId: Scalars["String"]["output"];
   createdAt: Scalars["AWSDateTime"]["output"];
   deviceName: Scalars["String"]["output"];
-  realClubId: Scalars["String"]["output"];
   regToken: Scalars["String"]["output"];
   ttl: Scalars["Int"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
