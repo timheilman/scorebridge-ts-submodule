@@ -111,6 +111,17 @@ export interface ClubDevice {
   name: Scalars["String"]["output"];
 }
 
+export interface ClubDeviceRegistration {
+  __typename?: "ClubDeviceRegistration";
+  clubId: Scalars["String"]["output"];
+  createdAt: Scalars["AWSDateTime"]["output"];
+  deviceName: Scalars["String"]["output"];
+  realClubId: Scalars["String"]["output"];
+  regToken: Scalars["String"]["output"];
+  ttl: Scalars["Int"]["output"];
+  updatedAt: Scalars["AWSDateTime"]["output"];
+}
+
 export interface CreateClubDeviceRegistrationInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
@@ -195,6 +206,18 @@ export interface Game {
 export interface GetGameInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
+}
+
+export interface ListClubDeviceRegistrationsInput {
+  clubId: Scalars["String"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  nextToken?: InputMaybe<Scalars["String"]["input"]>;
+}
+
+export interface ListClubDeviceRegistrationsOutput {
+  __typename?: "ListClubDeviceRegistrationsOutput";
+  items: Maybe<ClubDeviceRegistration>[];
+  nextToken?: Maybe<Scalars["String"]["output"]>;
 }
 
 export interface ListClubDevicesInput {
@@ -378,6 +401,7 @@ export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
   getGame?: Maybe<Game>;
+  listClubDeviceRegistrations: ListClubDeviceRegistrationsOutput;
   listClubDevices: ListClubDevicesOutput;
   listGames: ListGamesOutput;
   listPlayers: ListPlayersOutput;
@@ -389,6 +413,10 @@ export interface QueryGetClubArgs {
 
 export interface QueryGetGameArgs {
   input: GetGameInput;
+}
+
+export interface QueryListClubDeviceRegistrationsArgs {
+  input: ListClubDeviceRegistrationsInput;
 }
 
 export interface QueryListClubDevicesArgs {

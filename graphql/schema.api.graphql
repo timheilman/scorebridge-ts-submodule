@@ -67,6 +67,11 @@ type Query {
     )
 
   # These input arguments eliminate repetitive gql mutation strings that must list arguments twice
+  listClubDeviceRegistrations(
+    input: ListClubDeviceRegistrationsInput!
+  ): ListClubDeviceRegistrationsOutput!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+
   listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
@@ -204,8 +209,19 @@ input ListClubDevicesInput {
   limit: Int
 }
 
+input ListClubDeviceRegistrationsInput {
+  clubId: String!
+  nextToken: String
+  limit: Int
+}
+
 type ListClubDevicesOutput {
   items: [ClubDevice]!
+  nextToken: String
+}
+
+type ListClubDeviceRegistrationsOutput {
+  items: [ClubDeviceRegistration]!
   nextToken: String
 }
 
@@ -245,6 +261,16 @@ type ClubDevice {
   name: String!
   email: AWSEmail!
   createdAt: AWSDateTime!
+}
+
+type ClubDeviceRegistration {
+  clubId: String! # Not really a clubId; constant "regToken"
+  realClubId: String!
+  deviceName: String!
+  ttl: Int!
+  regToken: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 input CreateClubDeviceRegistrationInput {
