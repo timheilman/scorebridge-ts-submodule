@@ -117,6 +117,7 @@ export interface ClubDeviceCreated {
   createdAt: Scalars["AWSDateTime"]["input"];
   email: Scalars["AWSEmail"]["input"];
   name: Scalars["String"]["input"];
+  regToken: Scalars["String"]["input"];
 }
 
 export interface ClubDeviceRegistration {
@@ -127,6 +128,16 @@ export interface ClubDeviceRegistration {
   regToken: Scalars["String"]["output"];
   ttl: Scalars["Int"]["output"];
   updatedAt: Scalars["AWSDateTime"]["output"];
+}
+
+export interface ClubDeviceWithRegToken {
+  __typename?: "ClubDeviceWithRegToken";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+  createdAt: Scalars["AWSDateTime"]["output"];
+  email: Scalars["AWSEmail"]["output"];
+  name: Scalars["String"]["output"];
+  regToken: Scalars["String"]["output"];
 }
 
 export interface CreateClubDeviceRegistrationInput {
@@ -272,7 +283,7 @@ export interface Mutation {
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
   deletePlayer: Player;
-  notifyClubDeviceCreated: ClubDevice;
+  notifyClubDeviceCreated: ClubDeviceWithRegToken;
   unassignPlayers: UnassignPlayersResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateBoardResult: UpdateBoardResultResponse;
