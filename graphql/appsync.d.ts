@@ -264,6 +264,7 @@ export interface Mutation {
   deleteClubDevice: ClubDevice;
   deleteGame: Game;
   deletePlayer: Player;
+  notifyClubDeviceCreated: ClubDevice;
   unassignPlayers: UnassignPlayersResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateBoardResult: UpdateBoardResultResponse;
@@ -307,6 +308,10 @@ export interface MutationDeleteGameArgs {
 
 export interface MutationDeletePlayerArgs {
   input: DeletePlayerInput;
+}
+
+export interface MutationNotifyClubDeviceCreatedArgs {
+  input: ClubDevice;
 }
 
 export interface MutationUnassignPlayersArgs {

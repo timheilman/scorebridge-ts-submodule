@@ -67,7 +67,6 @@ type Query {
     )
 
   # These input arguments eliminate repetitive gql mutation strings that must list arguments twice
-  # TODO: scor-426 current task is scouring for listClubDevices and doing listClubDeviceRegistrations
   listClubDeviceRegistrations(
     input: ListClubDeviceRegistrationsInput!
   ): ListClubDeviceRegistrationsOutput!
@@ -111,6 +110,10 @@ type Mutation {
   createClubDeviceRegistration(
     input: CreateClubDeviceRegistrationInput!
   ): ClubDeviceRegistration!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  # todo: scor-426 now making the update mechanism for webapp once device
+  # does actually create the device thru cloudFront distro lambda origin
+  notifyClubDeviceCreated(input: ClubDevice!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
