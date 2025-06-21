@@ -67,10 +67,11 @@ type Query {
     )
 
   # These input arguments eliminate repetitive gql mutation strings that must list arguments twice
-  # listClubDeviceRegistrations(
-  #   input: ListClubDeviceRegistrationsInput!
-  # ): ListClubDeviceRegistrationsOutput!
-  #   @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  # TODO: scor-426 current task is scouring for listClubDevices and doing listClubDeviceRegistrations
+  listClubDeviceRegistrations(
+    input: ListClubDeviceRegistrationsInput!
+  ): ListClubDeviceRegistrationsOutput!
+    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -209,21 +210,21 @@ input ListClubDevicesInput {
   limit: Int
 }
 
-# input ListClubDeviceRegistrationsInput {
-#   clubId: String!
-#   nextToken: String
-#   limit: Int
-# }
+input ListClubDeviceRegistrationsInput {
+  clubId: String!
+  nextToken: String
+  limit: Int
+}
 
 type ListClubDevicesOutput {
   items: [ClubDevice]!
   nextToken: String
 }
 
-# type ListClubDeviceRegistrationsOutput {
-#   items: [ClubDeviceRegistration]!
-#   nextToken: String
-# }
+type ListClubDeviceRegistrationsOutput {
+  items: [ClubDeviceRegistration]!
+  nextToken: String
+}
 
 input ListGamesInput {
   clubId: String!
