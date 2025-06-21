@@ -2,6 +2,7 @@ import {
   Query,
   QueryGetClubArgs,
   QueryGetGameArgs,
+  QueryListClubDeviceRegistrationsArgs,
   QueryListClubDevicesArgs,
   QueryListGamesArgs,
   QueryListPlayersArgs,
@@ -41,6 +42,29 @@ export const qidToQueryGql = {
       }
     `,
     "getClub",
+  ),
+  listClubDeviceRegistrations: createKeyedGeneratedQuery<
+    "listClubDeviceRegistrations",
+    QueryListClubDeviceRegistrationsArgs
+  >(
+    /* GraphQL */ `
+      query listClubDeviceRegistrations(
+        $input: ListClubDeviceRegistrationsInput!
+      ) {
+        listClubDeviceRegistrations(input: $input) {
+          items {
+            clubId
+            createdAt
+            deviceName
+            regToken
+            ttl
+            updatedAt
+          }
+          nextToken
+        }
+      }
+    `,
+    "listClubDeviceRegistrations",
   ),
   listClubDevices: createKeyedGeneratedQuery<
     "listClubDevices",
