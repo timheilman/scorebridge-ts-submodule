@@ -111,6 +111,14 @@ export interface ClubDevice {
   name: Scalars["String"]["output"];
 }
 
+export interface ClubDeviceCreated {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  createdAt: Scalars["AWSDateTime"]["input"];
+  email: Scalars["AWSEmail"]["input"];
+  name: Scalars["String"]["input"];
+}
+
 export interface ClubDeviceRegistration {
   __typename?: "ClubDeviceRegistration";
   clubId: Scalars["String"]["output"];
@@ -311,7 +319,7 @@ export interface MutationDeletePlayerArgs {
 }
 
 export interface MutationNotifyClubDeviceCreatedArgs {
-  input: ClubDevice;
+  input: ClubDeviceCreated;
 }
 
 export interface MutationUnassignPlayersArgs {

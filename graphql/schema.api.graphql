@@ -113,7 +113,7 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   # todo: scor-426 now making the update mechanism for webapp once device
   # does actually create the device thru cloudFront distro lambda origin
-  notifyClubDeviceCreated(input: ClubDevice!): ClubDevice!
+  notifyClubDeviceCreated(input: ClubDeviceCreated!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -260,6 +260,14 @@ type Club {
 }
 
 type ClubDevice {
+  clubId: String!
+  clubDeviceId: String!
+  name: String!
+  email: AWSEmail!
+  createdAt: AWSDateTime!
+}
+
+input ClubDeviceCreated {
   clubId: String!
   clubDeviceId: String!
   name: String!
