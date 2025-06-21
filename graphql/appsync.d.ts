@@ -128,11 +128,6 @@ export interface CreateClubDeviceRegistrationInput {
   regToken: Scalars["String"]["input"];
 }
 
-export interface CreateClubDeviceRegistrationResponse {
-  __typename?: "CreateClubDeviceRegistrationResponse";
-  status: Scalars["String"]["output"];
-}
-
 export interface CreateClubInput {
   newAdminEmail: Scalars["AWSEmail"]["input"];
   newClubName: Scalars["String"]["input"];
@@ -208,18 +203,6 @@ export interface GetGameInput {
   gameId: Scalars["String"]["input"];
 }
 
-export interface ListClubDeviceRegistrationsInput {
-  clubId: Scalars["String"]["input"];
-  limit?: InputMaybe<Scalars["Int"]["input"]>;
-  nextToken?: InputMaybe<Scalars["String"]["input"]>;
-}
-
-export interface ListClubDeviceRegistrationsOutput {
-  __typename?: "ListClubDeviceRegistrationsOutput";
-  items: Maybe<ClubDeviceRegistration>[];
-  nextToken?: Maybe<Scalars["String"]["output"]>;
-}
-
 export interface ListClubDevicesInput {
   clubId: Scalars["String"]["input"];
   limit?: InputMaybe<Scalars["Int"]["input"]>;
@@ -263,7 +246,7 @@ export interface Mutation {
   __typename?: "Mutation";
   assignPlayer: AssignPlayerResponse;
   createClub: CreateClubResponse;
-  createClubDeviceRegistration: CreateClubDeviceRegistrationResponse;
+  createClubDeviceRegistration: ClubDeviceRegistration;
   createGame: Game;
   createPlayer: Player;
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
@@ -401,7 +384,6 @@ export interface Query {
   __typename?: "Query";
   getClub?: Maybe<Club>;
   getGame?: Maybe<Game>;
-  listClubDeviceRegistrations: ListClubDeviceRegistrationsOutput;
   listClubDevices: ListClubDevicesOutput;
   listGames: ListGamesOutput;
   listPlayers: ListPlayersOutput;
@@ -413,10 +395,6 @@ export interface QueryGetClubArgs {
 
 export interface QueryGetGameArgs {
   input: GetGameInput;
-}
-
-export interface QueryListClubDeviceRegistrationsArgs {
-  input: ListClubDeviceRegistrationsInput;
 }
 
 export interface QueryListClubDevicesArgs {

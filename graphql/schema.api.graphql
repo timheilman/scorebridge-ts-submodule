@@ -67,10 +67,10 @@ type Query {
     )
 
   # These input arguments eliminate repetitive gql mutation strings that must list arguments twice
-  listClubDeviceRegistrations(
-    input: ListClubDeviceRegistrationsInput!
-  ): ListClubDeviceRegistrationsOutput!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  # listClubDeviceRegistrations(
+  #   input: ListClubDeviceRegistrationsInput!
+  # ): ListClubDeviceRegistrationsOutput!
+  #   @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
   listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -109,7 +109,7 @@ type Mutation {
 
   createClubDeviceRegistration(
     input: CreateClubDeviceRegistrationInput!
-  ): CreateClubDeviceRegistrationResponse!
+  ): ClubDeviceRegistration!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -209,21 +209,21 @@ input ListClubDevicesInput {
   limit: Int
 }
 
-input ListClubDeviceRegistrationsInput {
-  clubId: String!
-  nextToken: String
-  limit: Int
-}
+# input ListClubDeviceRegistrationsInput {
+#   clubId: String!
+#   nextToken: String
+#   limit: Int
+# }
 
 type ListClubDevicesOutput {
   items: [ClubDevice]!
   nextToken: String
 }
 
-type ListClubDeviceRegistrationsOutput {
-  items: [ClubDeviceRegistration]!
-  nextToken: String
-}
+# type ListClubDeviceRegistrationsOutput {
+#   items: [ClubDeviceRegistration]!
+#   nextToken: String
+# }
 
 input ListGamesInput {
   clubId: String!
@@ -401,10 +401,6 @@ input UnassignPlayersInput {
   clubDeviceId: String
   gameId: String!
   tableNumber: Int!
-}
-
-type CreateClubDeviceRegistrationResponse {
-  status: String!
 }
 
 type AssignPlayerResponse {
