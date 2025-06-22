@@ -113,7 +113,12 @@ export const mutIdToMutGql = {
         $input: CreateClubDeviceRegistrationInput!
       ) {
         createClubDeviceRegistration(input: $input) {
-          status
+          clubId
+          deviceName
+          ttl
+          regToken
+          createdAt
+          updatedAt
         }
       }
     `,
