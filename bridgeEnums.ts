@@ -1,6 +1,7 @@
 import {
   BoardResult,
   BoardResultC,
+  ClubDevice,
   DirectionLetter,
   Doubling,
   Game,
@@ -220,5 +221,9 @@ export const scoringFields = [
   "wonTrickCount",
 ] as const;
 export type ScoringField = (typeof scoringFields)[number];
+
+export type ClubDeviceWithPassword = ClubDevice & {
+  password: string;
+};
 
 export const anyGameItemLifetimeSeconds = 60 * 60 * 24 * 30; // 30 days
