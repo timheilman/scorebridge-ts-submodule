@@ -97,6 +97,10 @@ export interface UseSubscriptionsParams {
   authMode?: GraphQLAuthMode;
   fetchRecentData: () => Promise<void>;
   subscriptionDetails: ExistentiallyTypedSubscription[];
+  failedPostInitCallback?: (args: {
+    subId: string;
+    errorMessage: string;
+  }) => void;
 }
 
 type PoolType = Map<SubscriptionNames, { unsubscribe: () => void } | undefined>;
@@ -105,6 +109,7 @@ export function useSubscriptions({
   authMode = "userPool",
   fetchRecentData,
   subscriptionDetails,
+  failedPostInitCallback,
 }: UseSubscriptionsParams) {
   const pool: PoolType = useMemo(() => {
     return new Map<
@@ -155,6 +160,12 @@ export function useSubscriptions({
               `failed post-init w/message: ${castE.errors[0].message}`,
             ]),
           );
+          if (failedPostInitCallback) {
+            failedPostInitCallback({
+              subId,
+              errorMessage: castE.errors[0].message,
+            });
+          }
           return;
         }
         log("handleAmplifySubscriptionError.unexpected", "error", {
@@ -166,6 +177,12 @@ export function useSubscriptions({
             `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
           ]),
         );
+        if (failedPostInitCallback) {
+          failedPostInitCallback({
+            subId,
+            errorMessage: JSON.stringify(e, null, 2),
+          });
+        }
       };
     };
 
