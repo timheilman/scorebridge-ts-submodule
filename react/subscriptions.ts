@@ -148,7 +148,10 @@ export function useSubscriptions({
           dispatch(
             setMostRecentSubscriptionError([
               subId,
-
+              // TODO: scor-425 after extracting signIn to redux asyncThunk,
+              // check for these messages and dispatch the relogin
+              // scor-425: Connection failed: UnauthorizedException
+              // scor-429: Connection failed: {"errors":[{"errorType":"401: Invalid Club Id","message":"Can only subscribe to ... from one's own ..." }]}
               `failed post-init w/message: ${castE.errors[0].message}`,
             ]),
           );
