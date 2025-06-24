@@ -207,7 +207,7 @@ type Subscription {
 
   # todo: scor-426 now making the update mechanism for webapp once device
   # does actually create the device thru cloudFront distro lambda origin
-  onNotifyClubDeviceCreated(clubId: String!): ClubDeviceWithRegToken!
+  onNotifyClubDeviceCreated(clubId: String!): ClubDeviceWithRegToken
     @aws_subscribe(mutations: ["notifyClubDeviceCreated"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
