@@ -98,7 +98,7 @@ export interface UseSubscriptionsParams {
   fetchRecentData: () => Promise<void>;
   subscriptionDetails: ExistentiallyTypedSubscription[];
   failedPostInitCallback?: (args: {
-    subId: string;
+    subId: SubscriptionNames;
     errorMessage: string;
   }) => void;
 }
@@ -290,6 +290,7 @@ export function useSubscriptions({
   }, [
     authMode,
     dispatch,
+    failedPostInitCallback,
     fetchRecentData,
     pool,
     subscriptionDetails,
