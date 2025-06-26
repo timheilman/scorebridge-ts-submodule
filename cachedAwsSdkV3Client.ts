@@ -18,9 +18,7 @@ export function cachedAwsSdkV3Client<T>(
     if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {
       return profileDict[awsRegion][profile];
     }
-    if (!profileDict[awsRegion]) {
-      profileDict[awsRegion] = {};
-    }
+    profileDict[awsRegion] ??= {};
     profileDict[awsRegion][profile] = new klass({
       region: awsRegion,
       credentials: fromSsoUsingProfile(profile),
