@@ -219,6 +219,7 @@ export const scoringFields = [
   "leadRank",
   "leadSuit",
   "wonTrickCount",
+  "confirmed",
 ] as const;
 export type ScoringField = (typeof scoringFields)[number];
 
