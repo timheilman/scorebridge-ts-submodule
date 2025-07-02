@@ -1,3 +1,5 @@
+import { BoardResultUl, StagedBoardResult } from "./bridgeEnums";
+
 export const startingBoardForBoardGroup = ({
   boardGroup,
   boardsPerRound,
@@ -15,4 +17,28 @@ export const endingBoardForBoardGroup = ({
   boardsPerRound: number;
 }) => {
   return boardGroup * boardsPerRound;
+};
+export const combineStagedAndCloudBoardResults = ({
+  stagedBoardResults,
+  tableNumber,
+  cloudBoardResults,
+}: {
+  stagedBoardResults: Record<string, StagedBoardResult>;
+  tableNumber: number;
+  cloudBoardResults: Record<string, BoardResultUl>;
+}) => {
+  const nonFalsyStagedBoardResultEntries = Object.entries(
+    stagedBoardResults,
+  ).filter(([, val]) => !!val) as [string, BoardResultUl][];
+  const remappedStagedBoardResults = Object.fromEntries(
+    nonFalsyStagedBoardResultEntries.map(([roundBoard, val]) => [
+      `${tableNumber}_${roundBoard}`,
+      val,
+    ]),
+  );
+  const combinedCloudAndStagedBoardResults = {
+    ...cloudBoardResults,
+    ...remappedStagedBoardResults,
+  };
+  return combinedCloudAndStagedBoardResults;
 };

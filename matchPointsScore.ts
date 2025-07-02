@@ -1,7 +1,7 @@
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore";
-import { BoardResultUl } from "./bridgeEnums";
-import { Movement } from "./graphql/appsync";
-import { whereWasI, withEachPlayer } from "./movementHelpers";
+import { allDirections, BoardResultUl } from "./bridgeEnums";
+import { DirectionLetter, Game, Movement } from "./graphql/appsync";
+import { movementMethods, whereWasI, withEachPlayer } from "./movementHelpers";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 
 const log = tsSubmoduleLogFn("matchPointsScore.");
@@ -182,4 +182,79 @@ export const matchPointsScore = (params: {
     }),
     opponentScoreCount: opponentsBiddingBoxScores.length,
   };
+};
+const pointFooPct = (ratio: number) => Math.round(ratio * 1000) / 10;
+
+export const playerDirToMpScore = ({
+  game,
+  round,
+  tableNumber,
+  board,
+  combinedCloudAndStagedBoardResults,
+}: {
+  game: Omit<Game, "tableAssignments">;
+  round: number;
+  tableNumber: number;
+  board: number;
+  combinedCloudAndStagedBoardResults: Record<string, BoardResultUl>;
+}) => {
+  return allDirections.reduce<
+    Partial<
+      Record<DirectionLetter, { myPct: number; opponentPcts: string[] } | null>
+    >
+  >((dirToComp, dir) => {
+    const playerNumber = movementMethods(game.movement).playerNumberMethod({
+      direction: dir,
+      round,
+      table: tableNumber,
+      tableCount: game.tableCount,
+    });
+    const opponents = trueOpponents({ ...game, board, playerNumber });
+    const myScore = matchPointsScore({
+      ...game,
+      playerNumber,
+      board,
+      boardResults: combinedCloudAndStagedBoardResults,
+    });
+    if (myScore !== null && myScore !== undefined) {
+      dirToComp[dir] = {
+        myPct: pointFooPct(
+          myScore.boardAllRoundsScoreMatchPoints /
+            myScore.opponentScoreCount /
+            2,
+        ),
+        opponentPcts: opponents
+          .reduce<number[]>((numAcc, opponentPlayerNumber) => {
+            const opponentScore = matchPointsScore({
+              ...game,
+              playerNumber: opponentPlayerNumber,
+              board,
+              boardResults: combinedCloudAndStagedBoardResults,
+            });
+            if (opponentScore !== null && opponentScore !== undefined) {
+              numAcc.push(
+                pointFooPct(
+                  opponentScore.boardAllRoundsScoreMatchPoints /
+                    opponentScore.opponentScoreCount /
+                    2,
+                ),
+              );
+            }
+            return numAcc;
+          }, [])
+          .sort((a, b) => (dir === "N" || dir === "S" ? a - b : b - a))
+          .map((num) => `${num}%`),
+      };
+    }
+
+    return dirToComp;
+  }, {});
+};
+
+export const mpScoreString = (
+  mpScore: { myPct: number; opponentPcts: string[] } | null | undefined,
+): string => {
+  return mpScore !== null && mpScore !== undefined
+    ? `(${mpScore.myPct}% / ${mpScore.opponentPcts.length + 1})`
+    : "";
 };
