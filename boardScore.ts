@@ -127,7 +127,8 @@ export const biddingBoxScoreForPartnershipRegardlessOfPlayed = ({
     !boardResult.strain ||
     !boardResult.doubling ||
     !boardResult.declarer ||
-    !boardResult.wonTrickCount
+    boardResult.wonTrickCount === undefined ||
+    boardResult.wonTrickCount === null
   ) {
     return;
   }
