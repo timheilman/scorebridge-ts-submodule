@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.0.3](https://github.com/timheilman/scorebridge-device/compare/v2.0.2...v2.0.3) (2025-07-03)
+
+### Bug Fixes
+
+- scor-461 stringify dispatchRegister.catch error for propagation to dd ([dd247b9](https://github.com/timheilman/scorebridge-device/commit/dd247b9d878b25bccf362dcd16e49dea266df158))
+
 ## [2.0.2](https://github.com/timheilman/scorebridge-device/compare/v2.0.1...v2.0.2) (2025-07-03)
 
 ### Bug Fixes
