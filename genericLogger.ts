@@ -101,7 +101,7 @@ export const getPrintFn = (...addlParams: unknown[]) => {
     requestedCat,
   }: PrintFnParams) => {
     const remainingKey = requestedCat.slice(matchingConfigCat.length);
-    console.log(
+    console[requestedLevel === "fatal" ? "error" : requestedLevel](
       `${new Date().toJSON()} ${requestedLevel.toLocaleUpperCase()} (${matchingConfigCat}@${matchingConfigLevel.toLocaleUpperCase()})${remainingKey}`,
       ...addlParams,
     );
