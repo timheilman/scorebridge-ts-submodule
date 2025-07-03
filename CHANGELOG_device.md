@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.0.1](https://github.com/timheilman/scorebridge-device/compare/v2.0.0...v2.0.1) (2025-07-03)
+
+### Bug Fixes
+
+- scor-456 fix contrast for InitScreen errors and propagate to datadog ([#82](https://github.com/timheilman/scorebridge-device/issues/82)) ([f3fa9d8](https://github.com/timheilman/scorebridge-device/commit/f3fa9d8263510f3cf0882592081329e10ec88793))
+
 ## [2.0.0](https://github.com/timheilman/scorebridge-device/compare/v1.7.1...v2.0.0) (2025-07-03)
 
 ### ⚠ BREAKING CHANGES
