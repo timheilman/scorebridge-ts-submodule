@@ -114,8 +114,15 @@ type Mutation {
   notifyClubDeviceCreated(input: ClubDeviceCreated!): ClubDeviceWithRegToken!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
-  deleteClubDevice(input: DeleteClubDeviceInput!): ClubDevice!
+  enqueueClubDeviceDeletion(
+    input: EnqueueClubDeviceDeletionInput!
+  ): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  notifyClubDeviceDeleted(
+    input: EnqueueClubDeviceDeletionInput!
+  ): EnqueueClubDeviceDeletionInput!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+    @aws_iam
 
   createGame(input: CreateGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
@@ -205,10 +212,11 @@ type Subscription {
     @aws_subscribe(mutations: ["deletePlayer"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  # todo: scor-426 now making the update mechanism for webapp once device
-  # does actually create the device thru cloudFront distro lambda origin
   onNotifyClubDeviceCreated(clubId: String!): ClubDeviceWithRegToken
     @aws_subscribe(mutations: ["notifyClubDeviceCreated"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+  onNotifyClubDeviceDeleted(clubId: String!): ClubDeviceWithRegToken
+    @aws_subscribe(mutations: ["notifyClubDeviceDeleted"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
@@ -320,7 +328,7 @@ input CreateClubDeviceRegistrationInput {
   regToken: String!
 }
 
-input DeleteClubDeviceInput {
+input EnqueueClubDeviceDeletionInput {
   clubId: String!
   clubDeviceId: String!
 }

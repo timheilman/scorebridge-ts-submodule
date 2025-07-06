@@ -184,11 +184,6 @@ export interface DeleteClubAndAdminResponse {
   status: Scalars["String"]["output"];
 }
 
-export interface DeleteClubDeviceInput {
-  clubDeviceId: Scalars["String"]["input"];
-  clubId: Scalars["String"]["input"];
-}
-
 export interface DeleteGameInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
@@ -202,6 +197,11 @@ export interface DeletePlayerInput {
 export type DirectionLetter = "E" | "N" | "S" | "W";
 
 export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
+
+export interface EnqueueClubDeviceDeletionInput {
+  clubDeviceId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+}
 
 export interface Game {
   __typename?: "Game";
@@ -280,10 +280,11 @@ export interface Mutation {
   createGame: Game;
   createPlayer: Player;
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
-  deleteClubDevice: ClubDevice;
   deleteGame: Game;
   deletePlayer: Player;
+  enqueueClubDeviceDeletion: ClubDevice;
   notifyClubDeviceCreated: ClubDeviceWithRegToken;
+  notifyClubDeviceDeleted: EnqueueClubDeviceDeletionInput;
   unassignPlayers: UnassignPlayersResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateBoardResult: UpdateBoardResultResponse;
@@ -317,10 +318,6 @@ export interface MutationDeleteClubAndAdminArgs {
   input: DeleteClubAndAdminInput;
 }
 
-export interface MutationDeleteClubDeviceArgs {
-  input: DeleteClubDeviceInput;
-}
-
 export interface MutationDeleteGameArgs {
   input: DeleteGameInput;
 }
@@ -329,8 +326,16 @@ export interface MutationDeletePlayerArgs {
   input: DeletePlayerInput;
 }
 
+export interface MutationEnqueueClubDeviceDeletionArgs {
+  input: EnqueueClubDeviceDeletionInput;
+}
+
 export interface MutationNotifyClubDeviceCreatedArgs {
   input: ClubDeviceCreated;
+}
+
+export interface MutationNotifyClubDeviceDeletedArgs {
+  input: EnqueueClubDeviceDeletionInput;
 }
 
 export interface MutationUnassignPlayersArgs {
@@ -474,6 +479,7 @@ export interface Subscription {
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
   onNotifyClubDeviceCreated?: Maybe<ClubDeviceWithRegToken>;
+  onNotifyClubDeviceDeleted?: Maybe<ClubDeviceWithRegToken>;
   onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUpdateBoardResult?: Maybe<UpdateBoardResultResponse>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
@@ -503,6 +509,10 @@ export interface SubscriptionOnDeletePlayerArgs {
 }
 
 export interface SubscriptionOnNotifyClubDeviceCreatedArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnNotifyClubDeviceDeletedArgs {
   clubId: Scalars["String"]["input"];
 }
 
