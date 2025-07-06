@@ -485,7 +485,7 @@ export interface Subscription {
   onDeleteGame?: Maybe<Game>;
   onDeletePlayer?: Maybe<Player>;
   onNotifyClubDeviceCreated?: Maybe<ClubDeviceWithRegToken>;
-  onNotifyClubDeviceDeleted?: Maybe<ClubDeviceWithRegToken>;
+  onNotifyClubDeviceDeleted?: Maybe<EnqueueClubDeviceDeletionOutput>;
   onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUpdateBoardResult?: Maybe<UpdateBoardResultResponse>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;

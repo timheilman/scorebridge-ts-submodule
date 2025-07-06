@@ -215,7 +215,7 @@ type Subscription {
   onNotifyClubDeviceCreated(clubId: String!): ClubDeviceWithRegToken
     @aws_subscribe(mutations: ["notifyClubDeviceCreated"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  onNotifyClubDeviceDeleted(clubId: String!): ClubDeviceWithRegToken
+  onNotifyClubDeviceDeleted(clubId: String!): EnqueueClubDeviceDeletionOutput
     @aws_subscribe(mutations: ["notifyClubDeviceDeleted"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
