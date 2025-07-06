@@ -1,8 +1,8 @@
-import { MutationDeleteClubDeviceArgs } from "../appsync";
+import { MutationEnqueueClubDeviceDeletionArgs } from "../appsync";
 import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
 
-export const errorForMutationDeleteClubDevice: InputValidator<
-  MutationDeleteClubDeviceArgs
+export const errorForMutationEnqueueClubDeviceDeletion: InputValidator<
+  MutationEnqueueClubDeviceDeletionArgs
 > = ({ args, cogIdentity }) =>
   errorForClubLevelMultitenancy({
     cogIdentity,
