@@ -335,7 +335,11 @@ input EnqueueClubDeviceDeletionInput {
 
 type EnqueueClubDeviceDeletionOutput {
   clubId: String!
+    @aws_api_key
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
   clubDeviceId: String!
+    @aws_api_key
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
 }
 
 type PlayerAssignment {
