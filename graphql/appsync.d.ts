@@ -203,6 +203,12 @@ export interface EnqueueClubDeviceDeletionInput {
   clubId: Scalars["String"]["input"];
 }
 
+export interface EnqueueClubDeviceDeletionOutput {
+  __typename?: "EnqueueClubDeviceDeletionOutput";
+  clubDeviceId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+}
+
 export interface Game {
   __typename?: "Game";
   boardsPerRound: Scalars["Int"]["output"];
@@ -284,7 +290,7 @@ export interface Mutation {
   deletePlayer: Player;
   enqueueClubDeviceDeletion: ClubDevice;
   notifyClubDeviceCreated: ClubDeviceWithRegToken;
-  notifyClubDeviceDeleted: EnqueueClubDeviceDeletionInput;
+  notifyClubDeviceDeleted: EnqueueClubDeviceDeletionOutput;
   unassignPlayers: UnassignPlayersResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateBoardResult: UpdateBoardResultResponse;

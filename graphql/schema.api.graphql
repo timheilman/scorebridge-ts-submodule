@@ -120,7 +120,7 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
   notifyClubDeviceDeleted(
     input: EnqueueClubDeviceDeletionInput!
-  ): EnqueueClubDeviceDeletionInput!
+  ): EnqueueClubDeviceDeletionOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
 
@@ -329,6 +329,11 @@ input CreateClubDeviceRegistrationInput {
 }
 
 input EnqueueClubDeviceDeletionInput {
+  clubId: String!
+  clubDeviceId: String!
+}
+
+type EnqueueClubDeviceDeletionOutput {
   clubId: String!
   clubDeviceId: String!
 }
