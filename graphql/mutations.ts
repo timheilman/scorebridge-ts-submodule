@@ -3,12 +3,13 @@ import {
   MutationAssignPlayerArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceRegistrationArgs,
-  MutationEnqueueCreateGameArgs,
   MutationCreatePlayerArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
+  MutationEnqueueCreateGameArgs,
   MutationEnqueueDeleteClubDeviceArgs,
+  MutationNotifyCreateGameArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,
@@ -147,38 +148,9 @@ export const mutIdToMutGql = {
         enqueueCreateGame(input: $input) {
           boardsPerRound
           clubId
-          createdAt
-          gameId
           label
           movement
           roundCount
-          tableAssignments {
-            clubDeviceId
-            confirmed
-            currentAsOf
-            playerAssignments {
-              directionLetter
-              playerDisplayName
-              playerId
-            }
-            results {
-              board
-              confirmed
-              currentAsOf
-              declarer
-              doubling
-              leadRank
-              leadSuit
-              level
-              round
-              strain
-              type
-              wonTrickCount
-            }
-            round
-            roundWelcomeConfirmed
-            tableNumber
-          }
           tableCount
         }
       }
