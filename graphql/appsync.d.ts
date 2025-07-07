@@ -202,6 +202,7 @@ export interface EnqueueCreateGameOutput {
   __typename?: "EnqueueCreateGameOutput";
   boardsPerRound: Scalars["Int"]["output"];
   clubId: Scalars["String"]["output"];
+  gameId: Scalars["String"]["output"];
   label?: Maybe<Scalars["String"]["output"]>;
   movement: Movement;
   roundCount: Scalars["Int"]["output"];

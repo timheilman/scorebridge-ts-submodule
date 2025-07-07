@@ -625,6 +625,7 @@ input EnqueueCreateGameInput {
 
 type EnqueueCreateGameOutput {
   clubId: String!
+  gameId: String!
   movement: Movement!
   tableCount: Int!
   roundCount: Int!
