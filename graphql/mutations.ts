@@ -3,7 +3,7 @@ import {
   MutationAssignPlayerArgs,
   MutationCreateClubArgs,
   MutationCreateClubDeviceRegistrationArgs,
-  MutationCreateGameArgs,
+  MutationEnqueueCreateGameArgs,
   MutationCreatePlayerArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteGameArgs,
@@ -138,13 +138,13 @@ export const mutIdToMutGql = {
     `,
     "enqueueDeleteClubDevice",
   ),
-  createGame: createKeyedGeneratedMutation<
-    "createGame",
-    MutationCreateGameArgs
+  enqueueCreateGame: createKeyedGeneratedMutation<
+    "enqueueCreateGame",
+    MutationEnqueueCreateGameArgs
   >(
     /* GraphQL */ `
-      mutation createGame($input: CreateGameInput!) {
-        createGame(input: $input) {
+      mutation enqueueCreateGame($input: EnqueueCreateGameInput!) {
+        enqueueCreateGame(input: $input) {
           boardsPerRound
           clubId
           createdAt
@@ -183,7 +183,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "createGame",
+    "enqueueCreateGame",
   ),
   deleteGame: createKeyedGeneratedMutation<
     "deleteGame",

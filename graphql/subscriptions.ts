@@ -43,13 +43,13 @@ export const createKeyedGeneratedSubscription = <
   } as KeyedGeneratedSubscription<NAME, ARGS>;
 };
 export const subIdToSubGql = {
-  onCreateGame: createKeyedGeneratedSubscription<
-    "onCreateGame",
+  onNotifyCreateGame: createKeyedGeneratedSubscription<
+    "onNotifyCreateGame",
     SubscriptionOnCreateGameArgs
   >(
     /* GraphQL */ `
       subscription OnCreateGame($clubId: String!) {
-        onCreateGame(clubId: $clubId) {
+        onNotifyCreateGame(clubId: $clubId) {
           boardsPerRound
           clubId
           createdAt
@@ -88,7 +88,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onCreateGame",
+    "onNotifyCreateGame",
   ),
   onDeleteGame: createKeyedGeneratedSubscription<
     "onDeleteGame",
