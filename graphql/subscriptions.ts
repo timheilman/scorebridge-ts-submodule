@@ -5,8 +5,8 @@ import {
   SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeletePlayerArgs,
-  SubscriptionOnNotifyClubDeviceCreatedArgs,
-  SubscriptionOnNotifyClubDeviceDeletedArgs,
+  SubscriptionOnNotifyCreateClubDeviceArgs,
+  SubscriptionOnNotifyDeleteClubDeviceArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUpdateBoardResultArgs,
   SubscriptionOnUpdateClubNameArgs,
@@ -280,13 +280,13 @@ export const subIdToSubGql = {
     `,
     "onDeletePlayer",
   ),
-  onNotifyClubDeviceCreated: createKeyedGeneratedSubscription<
-    "onNotifyClubDeviceCreated",
-    SubscriptionOnNotifyClubDeviceCreatedArgs
+  onNotifyCreateClubDevice: createKeyedGeneratedSubscription<
+    "onNotifyCreateClubDevice",
+    SubscriptionOnNotifyCreateClubDeviceArgs
   >(
     /* GraphQL */ `
-      subscription OnNotifyClubDeviceCreated($clubId: String!) {
-        onNotifyClubDeviceCreated(clubId: $clubId) {
+      subscription OnNotifyCreateClubDevice($clubId: String!) {
+        onNotifyCreateClubDevice(clubId: $clubId) {
           clubId
           clubDeviceId
           name
@@ -296,20 +296,20 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyClubDeviceCreated",
+    "onNotifyCreateClubDevice",
   ),
-  onNotifyClubDeviceDeleted: createKeyedGeneratedSubscription<
-    "onNotifyClubDeviceDeleted",
-    SubscriptionOnNotifyClubDeviceDeletedArgs
+  onNotifyDeleteClubDevice: createKeyedGeneratedSubscription<
+    "onNotifyDeleteClubDevice",
+    SubscriptionOnNotifyDeleteClubDeviceArgs
   >(
     /* GraphQL */ `
-      subscription OnNotifyClubDeviceDeleted($clubId: String!) {
-        onNotifyClubDeviceDeleted(clubId: $clubId) {
+      subscription OnNotifyDeleteClubDevice($clubId: String!) {
+        onNotifyDeleteClubDevice(clubId: $clubId) {
           clubId
           clubDeviceId
         }
       }
     `,
-    "onNotifyClubDeviceDeleted",
+    "onNotifyDeleteClubDevice",
   ),
 } as const;

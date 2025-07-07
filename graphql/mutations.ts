@@ -8,7 +8,7 @@ import {
   MutationDeleteClubAndAdminArgs,
   MutationDeleteGameArgs,
   MutationDeletePlayerArgs,
-  MutationEnqueueClubDeviceDeletionArgs,
+  MutationEnqueueDeleteClubDeviceArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,
@@ -124,21 +124,19 @@ export const mutIdToMutGql = {
     `,
     "createClubDeviceRegistration",
   ),
-  enqueueClubDeviceDeletion: createKeyedGeneratedMutation<
-    "enqueueClubDeviceDeletion",
-    MutationEnqueueClubDeviceDeletionArgs
+  enqueueDeleteClubDevice: createKeyedGeneratedMutation<
+    "enqueueDeleteClubDevice",
+    MutationEnqueueDeleteClubDeviceArgs
   >(
     /* GraphQL */ `
-      mutation enqueueClubDeviceDeletion(
-        $input: EnqueueClubDeviceDeletionInput!
-      ) {
-        enqueueClubDeviceDeletion(input: $input) {
+      mutation enqueueDeleteClubDevice($input: EnqueueDeleteClubDeviceInput!) {
+        enqueueDeleteClubDevice(input: $input) {
           clubId
           clubDeviceId
         }
       }
     `,
-    "enqueueClubDeviceDeletion",
+    "enqueueDeleteClubDevice",
   ),
   createGame: createKeyedGeneratedMutation<
     "createGame",

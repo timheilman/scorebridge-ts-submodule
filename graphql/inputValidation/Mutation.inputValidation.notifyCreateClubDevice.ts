@@ -1,8 +1,8 @@
-import { MutationNotifyClubDeviceCreatedArgs } from "../appsync";
+import { MutationNotifyCreateClubDeviceArgs } from "../appsync";
 import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
 
-export const errorForMutationNotifyClubDeviceCreated: InputValidator<
-  MutationNotifyClubDeviceCreatedArgs
+export const errorForMutationNotifyCreateClubDevice: InputValidator<
+  MutationNotifyCreateClubDeviceArgs
 > = ({ args, cogIdentity }) =>
   errorForClubLevelMultitenancy({
     cogIdentity,

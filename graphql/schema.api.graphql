@@ -111,16 +111,14 @@ type Mutation {
     input: CreateClubDeviceRegistrationInput!
   ): ClubDeviceRegistration!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  notifyClubDeviceCreated(input: ClubDeviceCreated!): ClubDeviceWithRegToken!
+  notifyCreateClubDevice(input: ClubDeviceCreated!): ClubDeviceWithRegToken!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
-  enqueueClubDeviceDeletion(
-    input: EnqueueClubDeviceDeletionInput!
-  ): ClubDevice!
+  enqueueDeleteClubDevice(input: EnqueueDeleteClubDeviceInput!): ClubDevice!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  notifyClubDeviceDeleted(
-    input: EnqueueClubDeviceDeletionInput!
-  ): EnqueueClubDeviceDeletionOutput!
+  notifyDeleteClubDevice(
+    input: EnqueueDeleteClubDeviceInput!
+  ): EnqueueDeleteClubDeviceOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
 
@@ -212,11 +210,11 @@ type Subscription {
     @aws_subscribe(mutations: ["deletePlayer"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  onNotifyClubDeviceCreated(clubId: String!): ClubDeviceWithRegToken
-    @aws_subscribe(mutations: ["notifyClubDeviceCreated"])
+  onNotifyCreateClubDevice(clubId: String!): ClubDeviceWithRegToken
+    @aws_subscribe(mutations: ["notifyCreateClubDevice"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
-  onNotifyClubDeviceDeleted(clubId: String!): EnqueueClubDeviceDeletionOutput
-    @aws_subscribe(mutations: ["notifyClubDeviceDeleted"])
+  onNotifyDeleteClubDevice(clubId: String!): EnqueueDeleteClubDeviceOutput
+    @aws_subscribe(mutations: ["notifyDeleteClubDevice"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
@@ -328,12 +326,12 @@ input CreateClubDeviceRegistrationInput {
   regToken: String!
 }
 
-input EnqueueClubDeviceDeletionInput {
+input EnqueueDeleteClubDeviceInput {
   clubId: String!
   clubDeviceId: String!
 }
 
-type EnqueueClubDeviceDeletionOutput {
+type EnqueueDeleteClubDeviceOutput {
   clubId: String!
     @aws_iam
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
