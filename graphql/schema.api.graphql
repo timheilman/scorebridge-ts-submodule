@@ -122,8 +122,11 @@ type Mutation {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
 
-  createGame(input: CreateGameInput!): Game!
+  enqueueCreateGame(input: EnqueueCreateGameInput!): EnqueueCreateGameOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+  notifyCreateGame(input: EnqueueCreateGameInput!): Game!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+    @aws_iam
   deleteGame(input: DeleteGameInput!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
 
@@ -158,11 +161,6 @@ type Mutation {
 }
 
 type Subscription {
-  # These next three are for webapp-to-device communication to know when a device's current
-  # game has been updated (automatically on create, and to null on delete)
-  onCreateGame(clubId: String!): Game
-    @aws_subscribe(mutations: ["createGame"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
   onDeleteGame(clubId: String!): Game
     @aws_subscribe(mutations: ["deleteGame"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
@@ -216,6 +214,9 @@ type Subscription {
   onNotifyDeleteClubDevice(clubId: String!): EnqueueDeleteClubDeviceOutput
     @aws_subscribe(mutations: ["notifyDeleteClubDevice"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+  onNotifyCreateGame(clubId: String!): Game
+    @aws_subscribe(mutations: ["notifyCreateGame"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 }
 
 input ListClubDevicesInput {
@@ -342,24 +343,54 @@ type EnqueueDeleteClubDeviceOutput {
 
 type PlayerAssignment {
   directionLetter: DirectionLetter!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   playerId: String!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   playerDisplayName: String!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
 # https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
 type BoardResultC {
   type: BoardResultType!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   board: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   round: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   currentAsOf: AWSDateTime!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   level: Int
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   strain: Strain
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   doubling: Doubling
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   declarer: DirectionLetter
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   leadRank: Rank
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   leadSuit: Suit
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   wonTrickCount: Int
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   confirmed: Boolean!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
 input PagingBoardResultC {
@@ -401,13 +432,29 @@ input UpdateBoardResultInput {
 
 type TableAssignmentCVT {
   tableNumber: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   currentAsOf: AWSDateTime!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   clubDeviceId: String
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   confirmed: Boolean!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   round: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   roundWelcomeConfirmed: Boolean!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   playerAssignments: [PlayerAssignment!]!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   results: [BoardResultC!]!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
 input TableAssignment {
@@ -483,14 +530,32 @@ input GetGameInput {
 
 type Game {
   clubId: String!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   gameId: String!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   movement: Movement!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   tableCount: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   roundCount: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   boardsPerRound: Int!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   label: String
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   tableAssignments: [TableAssignmentCVT!]!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   createdAt: AWSDateTime!
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
 }
 
 type Player {
@@ -511,7 +576,16 @@ input PartialGame {
   createdAt: AWSDateTime!
 }
 
-input CreateGameInput {
+input EnqueueCreateGameInput {
+  clubId: String!
+  movement: Movement!
+  tableCount: Int!
+  roundCount: Int!
+  boardsPerRound: Int!
+  label: String
+}
+
+type EnqueueCreateGameOutput {
   clubId: String!
   movement: Movement!
   tableCount: Int!
