@@ -352,7 +352,7 @@ export interface MutationNotifyCreateClubDeviceArgs {
 }
 
 export interface MutationNotifyCreateGameArgs {
-  input: EnqueueCreateGameInput;
+  input: PartialGame;
 }
 
 export interface MutationNotifyDeleteClubDeviceArgs {

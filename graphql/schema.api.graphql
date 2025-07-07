@@ -124,7 +124,7 @@ type Mutation {
 
   enqueueCreateGame(input: EnqueueCreateGameInput!): EnqueueCreateGameOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  notifyCreateGame(input: EnqueueCreateGameInput!): Game!
+  notifyCreateGame(input: PartialGame!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
   deleteGame(input: DeleteGameInput!): Game!
