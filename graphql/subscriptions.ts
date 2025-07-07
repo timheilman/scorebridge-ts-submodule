@@ -1,11 +1,11 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
-  SubscriptionOnCreateGameArgs,
   SubscriptionOnCreatePlayerArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeletePlayerArgs,
   SubscriptionOnNotifyCreateClubDeviceArgs,
+  SubscriptionOnNotifyCreateGameArgs,
   SubscriptionOnNotifyDeleteClubDeviceArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUpdateBoardResultArgs,
@@ -45,10 +45,10 @@ export const createKeyedGeneratedSubscription = <
 export const subIdToSubGql = {
   onNotifyCreateGame: createKeyedGeneratedSubscription<
     "onNotifyCreateGame",
-    SubscriptionOnCreateGameArgs
+    SubscriptionOnNotifyCreateGameArgs
   >(
     /* GraphQL */ `
-      subscription OnCreateGame($clubId: String!) {
+      subscription OnNotifyCreateGame($clubId: String!) {
         onNotifyCreateGame(clubId: $clubId) {
           boardsPerRound
           clubId
