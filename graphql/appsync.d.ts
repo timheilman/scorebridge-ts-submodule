@@ -263,7 +263,7 @@ export interface ListClubDevicesOutput {
 
 export interface ListGamesInput {
   clubId: Scalars["String"]["input"];
-  finalGameFromLastList?: InputMaybe<PartialGame>;
+  finalGameFromLastList?: InputMaybe<PartialGameCvt>;
   limit?: InputMaybe<Scalars["Int"]["input"]>;
   nextToken?: InputMaybe<Scalars["String"]["input"]>;
 }
@@ -352,7 +352,7 @@ export interface MutationNotifyCreateClubDeviceArgs {
 }
 
 export interface MutationNotifyCreateGameArgs {
-  input: PartialGame;
+  input: PartialGameVt;
 }
 
 export interface MutationNotifyDeleteClubDeviceArgs {
@@ -383,6 +383,20 @@ export interface MutationUpdateTableAssignmentArgs {
   input: UpdateTableAssignmentInput;
 }
 
+export interface PagingBoardResult {
+  board: Scalars["Int"]["input"];
+  confirmed: Scalars["Boolean"]["input"];
+  declarer?: InputMaybe<DirectionLetter>;
+  doubling?: InputMaybe<Doubling>;
+  leadRank?: InputMaybe<Rank>;
+  leadSuit?: InputMaybe<Suit>;
+  level?: InputMaybe<Scalars["Int"]["input"]>;
+  round: Scalars["Int"]["input"];
+  strain?: InputMaybe<Strain>;
+  type: BoardResultType;
+  wonTrickCount?: InputMaybe<Scalars["Int"]["input"]>;
+}
+
 export interface PagingBoardResultC {
   board: Scalars["Int"]["input"];
   confirmed: Scalars["Boolean"]["input"];
@@ -409,7 +423,17 @@ export interface PagingTableAssignmentCvt {
   tableNumber: Scalars["Int"]["input"];
 }
 
-export interface PartialGame {
+export interface PagingTableAssignmentVt {
+  clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
+  confirmed: Scalars["Boolean"]["input"];
+  playerAssignments: PartialPlayerAssignment[];
+  results: PagingBoardResult[];
+  round: Scalars["Int"]["input"];
+  roundWelcomeConfirmed: Scalars["Boolean"]["input"];
+  tableNumber: Scalars["Int"]["input"];
+}
+
+export interface PartialGameCvt {
   boardsPerRound: Scalars["Int"]["input"];
   clubId: Scalars["String"]["input"];
   createdAt: Scalars["AWSDateTime"]["input"];
@@ -418,6 +442,18 @@ export interface PartialGame {
   movement: Movement;
   roundCount: Scalars["Int"]["input"];
   tableAssignments: PagingTableAssignmentCvt[];
+  tableCount: Scalars["Int"]["input"];
+}
+
+export interface PartialGameVt {
+  boardsPerRound: Scalars["Int"]["input"];
+  clubId: Scalars["String"]["input"];
+  createdAt: Scalars["AWSDateTime"]["input"];
+  gameId: Scalars["String"]["input"];
+  label?: InputMaybe<Scalars["String"]["input"]>;
+  movement: Movement;
+  roundCount: Scalars["Int"]["input"];
+  tableAssignments: PagingTableAssignmentVt[];
   tableCount: Scalars["Int"]["input"];
 }
 

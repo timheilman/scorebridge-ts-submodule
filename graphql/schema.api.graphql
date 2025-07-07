@@ -124,7 +124,7 @@ type Mutation {
 
   enqueueCreateGame(input: EnqueueCreateGameInput!): EnqueueCreateGameOutput!
     @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
-  notifyCreateGame(input: PartialGame!): Game!
+  notifyCreateGame(input: PartialGameVT!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
   deleteGame(input: DeleteGameInput!): Game!
@@ -247,7 +247,7 @@ input ListGamesInput {
   clubId: String!
   nextToken: String
   limit: Int
-  finalGameFromLastList: PartialGame
+  finalGameFromLastList: PartialGameCVT
 }
 
 input ListPlayersInput {
@@ -410,6 +410,20 @@ input PagingBoardResultC {
   confirmed: Boolean!
 }
 
+input PagingBoardResult {
+  type: BoardResultType!
+  board: Int!
+  round: Int!
+  level: Int
+  strain: Strain
+  doubling: Doubling
+  declarer: DirectionLetter
+  leadRank: Rank
+  leadSuit: Suit
+  wonTrickCount: Int
+  confirmed: Boolean!
+}
+
 # https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
 input BoardResult {
   type: BoardResultType!
@@ -477,6 +491,16 @@ input PagingTableAssignmentCVT {
   roundWelcomeConfirmed: Boolean!
   playerAssignments: [PartialPlayerAssignment!]!
   results: [PagingBoardResultC!]!
+}
+
+input PagingTableAssignmentVT {
+  tableNumber: Int!
+  clubDeviceId: String
+  confirmed: Boolean!
+  round: Int!
+  roundWelcomeConfirmed: Boolean!
+  playerAssignments: [PartialPlayerAssignment!]!
+  results: [PagingBoardResult!]!
 }
 
 input UpdateTableAssignmentInput {
@@ -566,7 +590,7 @@ type Player {
   playerDisplayName: String!
 }
 
-input PartialGame {
+input PartialGameCVT {
   clubId: String!
   gameId: String!
   movement: Movement!
@@ -575,6 +599,18 @@ input PartialGame {
   boardsPerRound: Int!
   label: String
   tableAssignments: [PagingTableAssignmentCVT!]!
+  createdAt: AWSDateTime!
+}
+
+input PartialGameVT {
+  clubId: String!
+  gameId: String!
+  movement: Movement!
+  tableCount: Int!
+  roundCount: Int!
+  boardsPerRound: Int!
+  label: String
+  tableAssignments: [PagingTableAssignmentVT!]!
   createdAt: AWSDateTime!
 }
 
