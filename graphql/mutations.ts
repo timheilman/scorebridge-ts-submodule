@@ -9,7 +9,6 @@ import {
   MutationDeletePlayerArgs,
   MutationEnqueueCreateGameArgs,
   MutationEnqueueDeleteClubDeviceArgs,
-  MutationNotifyCreateGameArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,

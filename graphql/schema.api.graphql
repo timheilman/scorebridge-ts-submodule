@@ -216,7 +216,9 @@ type Subscription {
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   onNotifyCreateGame(clubId: String!): Game
     @aws_subscribe(mutations: ["notifyCreateGame"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 input ListClubDevicesInput {
