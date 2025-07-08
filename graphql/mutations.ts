@@ -145,6 +145,7 @@ export const mutIdToMutGql = {
     /* GraphQL */ `
       mutation enqueueCreateGame($input: EnqueueCreateGameInput!) {
         enqueueCreateGame(input: $input) {
+          gameId
           boardsPerRound
           clubId
           label
