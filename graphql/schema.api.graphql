@@ -97,9 +97,6 @@ type Mutation {
   # notifyCreateClub, and since the creation is synchronous like createClubDevice,
   # we have no need for enqueueCreateClub: enqueue* is only to keep gql responses
   # snappy (in part because the amplify client cannot set the gql request timeout)
-  createClub(input: CreateClubInput!): CreateClubResponse!
-    @aws_api_key
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
   updateClubName(input: UpdateClubNameInput!): UpdateClubNameResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   updateCurrentGameId(
@@ -224,8 +221,8 @@ type Subscription {
       cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
     )
   # We cannot have an onNotifyCreateClub, because webapp cannot subcribe prior to login
-  # Instead, we will set a long timeout on the captcha-protected createClub cloudFront lambda
-  # destination fetch (if we can) -- that's my next test
+  # Instead, the captcha-protected createClub cloudFront lambda origin fetch is synchronous
+  # with a 30 second timeout (imposed by cloudFront, maybe can be upped)
 }
 
 input ListClubDevicesInput {
@@ -664,22 +661,6 @@ input UpdatePlayerInput {
 
 type UnexpectedErrorResponse {
   neverGetsReturned: String!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
-}
-
-input CreateClubInput {
-  newAdminEmail: AWSEmail!
-  newClubName: String!
-  suppressInvitationEmail: Boolean
-  recaptchaToken: String!
-}
-
-type CreateClubResponse {
-  userId: String!
-    @aws_api_key
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
-  clubId: String!
-    @aws_api_key
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
 }
 
