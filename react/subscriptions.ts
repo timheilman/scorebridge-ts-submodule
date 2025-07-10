@@ -20,12 +20,12 @@ import {
 const log = tsSubmoduleLogFn("subscriptions.");
 
 export type GraphQLAuthMode =
-  | "apiKey"
+  // | "apiKey"
   // | "oidc"
   // | "iam"
   // | "lambda"
   // | "none"
-  | "userPool";
+  "userPool";
 
 export type OutType<T> =
   T extends KeyedGeneratedSubscription<infer NAME, unknown>
