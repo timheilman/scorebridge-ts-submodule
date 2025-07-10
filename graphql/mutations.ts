@@ -1,7 +1,6 @@
 import {
   Mutation,
   MutationAssignPlayerArgs,
-  MutationCreateClubArgs,
   MutationCreateClubDeviceRegistrationArgs,
   MutationCreatePlayerArgs,
   MutationDeleteClubAndAdminArgs,
@@ -47,20 +46,6 @@ export const mutIdToMutGql = {
       }
     `,
     "unexpectedError",
-  ),
-  createClub: createKeyedGeneratedMutation<
-    "createClub",
-    MutationCreateClubArgs
-  >(
-    /* GraphQL */ `
-      mutation createClub($input: CreateClubInput!) {
-        createClub(input: $input) {
-          clubId
-          userId
-        }
-      }
-    `,
-    "createClub",
   ),
   updateClubName: createKeyedGeneratedMutation<
     "updateClubName",
