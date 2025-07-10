@@ -226,5 +226,10 @@ export type ScoringField = (typeof scoringFields)[number];
 export type ClubDeviceWithPassword = ClubDevice & {
   password: string;
 };
+export interface CreateClubInput {
+  newAdminEmail: string;
+  newClubName: string;
+  suppressInvitationEmail?: boolean;
+}
 
 export const anyGameItemLifetimeSeconds = 60 * 60 * 24 * 30; // 30 days
