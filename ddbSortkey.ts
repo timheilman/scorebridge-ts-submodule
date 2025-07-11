@@ -165,3 +165,23 @@ export const roundFromSortKey = (sortKey: string) => {
     error: "",
   };
 };
+
+export const gameItemSortKeyRegExStr = `^${gameSortKeyPrefix0}#[^#]+$`;
+
+export const tableAssignmentItemSortKeyRegExStr = ({
+  gameId = "[^#]+",
+}: {
+  gameId?: string;
+}) => {
+  return `^${gameSortKeyPrefix0}#${gameId}#\\d+$`;
+};
+
+export const boardResultItemSortKeyRegExStr = ({
+  gameId = "[^#]+",
+  tableNumber = "[0-9]+",
+}: {
+  gameId?: string;
+  tableNumber?: number | string;
+}) => {
+  return `^${gameSortKeyPrefix0}#${gameId}#${tableNumber}#${resultSortKeyPrefix3}#[^#]+#[^#]+$`;
+};
