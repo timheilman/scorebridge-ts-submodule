@@ -232,4 +232,9 @@ export interface CreateClubInput {
   suppressInvitationEmail?: boolean;
 }
 
+export interface CreateClubResponse {
+  userId: string;
+  clubId: string;
+}
+
 export const anyGameItemLifetimeSeconds = 60 * 60 * 24 * 30; // 30 days
