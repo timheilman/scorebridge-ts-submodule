@@ -350,53 +350,83 @@ type EnqueueDeleteClubDeviceOutput {
 type PlayerAssignment {
   directionLetter: DirectionLetter!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   playerId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   playerDisplayName: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 # https://docs.google.com/spreadsheets/d/1fotK1vf9V7WYQfU_0_dcIdM79r2DtKcGE9QwbEcJ9sw/edit?gid=0#gid=0
 type BoardResultC {
   type: BoardResultType!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   board: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   round: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   currentAsOf: AWSDateTime!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   level: Int
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   strain: Strain
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   doubling: Doubling
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   declarer: DirectionLetter
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   leadRank: Rank
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   leadSuit: Suit
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   wonTrickCount: Int
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   confirmed: Boolean!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 input PagingBoardResultC {
@@ -453,28 +483,44 @@ input UpdateBoardResultInput {
 type TableAssignmentCVT {
   tableNumber: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   currentAsOf: AWSDateTime!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   clubDeviceId: String
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   confirmed: Boolean!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   round: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   roundWelcomeConfirmed: Boolean!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   playerAssignments: [PlayerAssignment!]!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   results: [BoardResultC!]!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 input TableAssignment {
@@ -561,31 +607,49 @@ input GetGameInput {
 type Game {
   clubId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   gameId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   movement: Movement!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   tableCount: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   roundCount: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   boardsPerRound: Int!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   label: String
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   tableAssignments: [TableAssignmentCVT!]!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
   createdAt: AWSDateTime!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+    )
 }
 
 type Player {
