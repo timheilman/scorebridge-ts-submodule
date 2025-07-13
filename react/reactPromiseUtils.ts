@@ -3,12 +3,13 @@ import {
   RetryingGqlPromiseParams,
   retryOnNonresponsivePromise,
 } from "../promiseUtils";
-import { client } from "./gqlClient";
+import { cachedClient } from "./gqlClient";
 
 export const retryOnTimeoutGqlPromise = async <T>(
   params: RetryingGqlPromiseParams<T>,
 ): Promise<T> => {
   const { gqlPromiseFn, maxTries } = params;
+  const client = cachedClient();
   return retryOnNonresponsivePromise({
     promiseFn: gqlPromiseFn,
     cancelAfterWaitFn: (p) => client.cancel(p),

@@ -9,7 +9,7 @@ import {
   SubscriptionNames,
 } from "../graphql/subscriptions";
 import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
-import { client } from "./gqlClient";
+import { cachedClient } from "./gqlClient";
 import {
   clearSubscriptionState,
   setConnectionAttempted,
@@ -226,7 +226,7 @@ export function useSubscriptions({
           subscriptionName: subId,
           ...variables,
         });
-        const graphqlResponse = client.graphql({
+        const graphqlResponse = cachedClient().graphql({
           authMode,
           query: query.gql,
           variables,

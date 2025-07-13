@@ -1,3 +1,7 @@
 import { generateClient } from "aws-amplify/api";
-export const client = generateClient<Record<string, unknown>>();
+let client: ReturnType<typeof generateClient<Record<string, unknown>>>;
+export const cachedClient = () => {
+  client ??= generateClient<Record<string, unknown>>();
+  return client;
+};
 export type NetworkRequestStatus = "idle" | "inFlight" | "succeeded" | "failed";
