@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.0](https://github.com/timheilman/scorebridge-device/compare/v2.0.3...v2.1.0) (2025-07-16)
+
+### Features
+
+- scor-478 improve board confirmation ux ([#93](https://github.com/timheilman/scorebridge-device/issues/93)) ([38e1a52](https://github.com/timheilman/scorebridge-device/commit/38e1a52602ce2a5b3671e8214d93391b3fd544f2))
+
+### Bug Fixes
+
+- scor-458 fix submodule fetch on eas servers ([#86](https://github.com/timheilman/scorebridge-device/issues/86)) ([4aa80fc](https://github.com/timheilman/scorebridge-device/commit/4aa80fc45bf25c69d62b874dcc7725722d8474f9))
+- scor-464 wrong player names at board confirmation screen ([#85](https://github.com/timheilman/scorebridge-device/issues/85)) ([2c5f5cd](https://github.com/timheilman/scorebridge-device/commit/2c5f5cdcff2d221634d2a9e014deb94083f4e89d))
+- scor-480 fix too-early Amplify call by replacing client with cachedClient in gqlClient.ts ([#88](https://github.com/timheilman/scorebridge-device/issues/88)) ([56a934c](https://github.com/timheilman/scorebridge-device/commit/56a934cc42760411dd7b277fd161654d15d48927))
+
 ## [2.0.3](https://github.com/timheilman/scorebridge-device/compare/v2.0.2...v2.0.3) (2025-07-03)
 
 ### Bug Fixes
