@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.1](https://github.com/timheilman/scorebridge-device/compare/v2.1.0...v2.1.1) (2025-07-21)
+
+### Bug Fixes
+
+- scor-494 clear own table assignment even if new game has fewer tables than my old table number ([#95](https://github.com/timheilman/scorebridge-device/issues/95)) ([ac392b6](https://github.com/timheilman/scorebridge-device/commit/ac392b6b86a80943ff370bae19c137b4865e2b38))
+- scor-498 ensure player assignments make it to cloud before proceeding ([#97](https://github.com/timheilman/scorebridge-device/issues/97)) ([4c16773](https://github.com/timheilman/scorebridge-device/commit/4c16773cceda89d6165e05a6b41e8b0e3fc9eb49))
+- scor-501 improve readability of low-emphasis, disbled, and not-doubled Buttons ([#98](https://github.com/timheilman/scorebridge-device/issues/98)) ([2ca47bd](https://github.com/timheilman/scorebridge-device/commit/2ca47bda5d1a3440ef79bf82e731beea44129536))
+
 ## [2.1.0](https://github.com/timheilman/scorebridge-device/compare/v2.0.3...v2.1.0) (2025-07-16)
 
 ### Features
