@@ -1,13 +1,17 @@
 import { allDirections } from "./bridgeEnums";
 import { DirectionLetter } from "./graphql/appsync";
 
+// BridgeFridgeTable:
 export const clubSortKeyPrefix0 = "C";
 export const clubDeviceSortKeyPrefix0 = "D";
 export const gameSortKeyPrefix0 = "G";
-export const userSortKeyPrefix0 = "U";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
 export const resultSortKeyPrefix3 = "R";
 export const playerSortKeyPrefix0 = "P";
+
+// UserTable
+export const userDetailSortKeyPrefix0 = "U";
+export const clubIdGrantSortKeyPrefix0 = "C";
 
 export const clubDeviceIdFromSortKey = (sortKey: string) => {
   if (!sortKey.startsWith(clubDeviceSortKeyPrefix0)) {
