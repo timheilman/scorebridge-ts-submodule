@@ -1,2 +1,2 @@
 export const signInSuffix = "(auth)/finishingSignIn";
-export const signOutSuffix = "(auth)";
+export const signOutSuffix = "(userTabs)/finishingSignOut";
