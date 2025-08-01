@@ -22,7 +22,10 @@ export const bridgeFridgeRoleForString = (bridgeFridgeRole: string) => {
   return bridgeFridgeRole as BridgeFridgeRole;
 };
 // key is clubId:
-export type BridgeFridgeClaims = Record<string, BridgeFridgeRole>;
+export type BridgeFridgeClaims = Record<
+  string,
+  Omit<BridgeFridgeRole, "adminSuper">
+>;
 
 export type PotentialCogIdentity =
   | {
