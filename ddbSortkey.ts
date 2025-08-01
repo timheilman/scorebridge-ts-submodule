@@ -11,7 +11,7 @@ export const playerSortKeyPrefix0 = "P";
 
 // UserTable
 export const userDetailSortKeyPrefix0 = "U";
-export const clubIdGrantSortKeyPrefix0 = "C";
+export const bridgeFridgeClaimSortKeyPrefix0 = "C";
 
 export const clubDeviceIdFromSortKey = (sortKey: string) => {
   if (!sortKey.startsWith(clubDeviceSortKeyPrefix0)) {
