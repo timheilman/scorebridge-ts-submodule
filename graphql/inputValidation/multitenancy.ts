@@ -7,26 +7,42 @@ export interface GqlUtilErrorParams {
   errorInfo?: any;
 }
 
-export const allBridgeFridgeRoles = [
-  "adminSuper",
+export const allBridgeFridgeClaimTargets = [
   "ownerClub",
   "adminClub",
   "memberClub",
+] as const;
+// adminSuper and clubDevice are managed with cognito groups, not BridgeFridgeClaims:
+export const allBridgeFridgeRoles = [
+  ...allBridgeFridgeClaimTargets,
+  "adminSuper",
   "clubDevice",
 ] as const;
 export type BridgeFridgeRole = (typeof allBridgeFridgeRoles)[number];
+export type BridgeFridgeClaimTarget =
+  (typeof allBridgeFridgeClaimTargets)[number];
 export const bridgeFridgeRoleForString = (bridgeFridgeRole: string) => {
   if (!allBridgeFridgeRoles.includes(bridgeFridgeRole as BridgeFridgeRole)) {
     throw new Error(`Invalid bridgeFridgeRole: ${bridgeFridgeRole}`);
   }
   return bridgeFridgeRole as BridgeFridgeRole;
 };
+export const bridgeFridgeClaimTargetForString = (
+  bridgeFridgeClaimTarget: string,
+) => {
+  if (
+    !allBridgeFridgeClaimTargets.includes(
+      bridgeFridgeClaimTarget as BridgeFridgeClaimTarget,
+    )
+  ) {
+    throw new Error(
+      `Invalid bridgeFridgeClaimTarget: ${bridgeFridgeClaimTarget}`,
+    );
+  }
+  return bridgeFridgeClaimTarget as BridgeFridgeClaimTarget;
+};
 // key is clubId:
-export type BridgeFridgeClaims = Record<
-  string,
-  // adminSuper and clubDevice are managed with cognito groups, not BridgeFridgeClaims:
-  Exclude<BridgeFridgeRole, "adminSuper" | "clubDevice">
->;
+export type BridgeFridgeClaims = Record<string, BridgeFridgeClaimTarget>;
 
 export type PotentialCogIdentity =
   | {
