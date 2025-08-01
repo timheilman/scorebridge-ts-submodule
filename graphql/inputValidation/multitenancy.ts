@@ -7,6 +7,23 @@ export interface GqlUtilErrorParams {
   errorInfo?: any;
 }
 
+export const allBridgeFridgeRoles = [
+  "adminSuper",
+  "ownerClub",
+  "adminClub",
+  "memberClub",
+  "clubDevice",
+] as const;
+export type BridgeFridgeRole = (typeof allBridgeFridgeRoles)[number];
+export const bridgeFridgeRoleForString = (bridgeFridgeRole: string) => {
+  if (!allBridgeFridgeRoles.includes(bridgeFridgeRole as BridgeFridgeRole)) {
+    throw new Error(`Invalid bridgeFridgeRole: ${bridgeFridgeRole}`);
+  }
+  return bridgeFridgeRole as BridgeFridgeRole;
+};
+// key is clubId:
+export type BridgeFridgeClaims = Record<string, BridgeFridgeRole>;
+
 export type PotentialCogIdentity =
   | {
       sub: string;
