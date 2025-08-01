@@ -24,7 +24,8 @@ export const bridgeFridgeRoleForString = (bridgeFridgeRole: string) => {
 // key is clubId:
 export type BridgeFridgeClaims = Record<
   string,
-  Omit<BridgeFridgeRole, "adminSuper">
+  // adminSuper and clubDevice are managed with cognito groups, not BridgeFridgeClaims:
+  Omit<BridgeFridgeRole, "adminSuper" | "clubDevice">
 >;
 
 export type PotentialCogIdentity =
