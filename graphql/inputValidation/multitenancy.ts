@@ -12,7 +12,7 @@ export const allBridgeFridgeClaimTargets = [
   "adminClub",
   "memberClub",
 ] as const;
-// adminSuper and clubDevice are managed with cognito groups, not BridgeFridgeClaims:
+// adminSuper and clubDevice are managed only with cognito groups, not BridgeFridgeClaims:
 export const allBridgeFridgeRoles = [
   ...allBridgeFridgeClaimTargets,
   "adminSuper",

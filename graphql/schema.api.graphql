@@ -93,10 +93,11 @@ type Mutation {
   unexpectedError: UnexpectedErrorResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
 
-  # Since webapp cannot subscribe prior to club existing, we have no need for
-  # notifyCreateClub, and since the creation is synchronous like createClubDevice,
-  # we have no need for enqueueCreateClub: enqueue* is only to keep gql responses
-  # snappy (in part because the amplify client cannot set the gql request timeout)
+  # TODO: scor-61 change "adminClub" to "rando", since the differentiation is now
+  # adminSuper / clubDevice / rando
+  # whereas club-granularity access by randos is governed by the User table
+  # createClub(input: CreateClubInput!): Club!
+  #   @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   updateClubName(input: UpdateClubNameInput!): UpdateClubNameResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
   updateCurrentGameId(
