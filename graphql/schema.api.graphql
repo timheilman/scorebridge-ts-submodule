@@ -63,29 +63,29 @@ enum Movement {
 type Query {
   getClub(clubId: String!): Club
     @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+      cognito_groups: ["rando", "adminSuper", "clubDevice"]
     )
 
   # These input arguments eliminate repetitive gql mutation strings that must list arguments twice
   listClubDeviceRegistrations(
     input: ListClubDeviceRegistrationsInput!
   ): ListClubDeviceRegistrationsOutput!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 
   listClubDevices(input: ListClubDevicesInput!): ListClubDevicesOutput!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 
   listGames(input: ListGamesInput!): ListGamesOutput!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 
   getGame(input: GetGameInput!): Game
     @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+      cognito_groups: ["rando", "adminSuper", "clubDevice"]
     )
 
   listPlayers(input: ListPlayersInput!): ListPlayersOutput!
     @aws_cognito_user_pools(
-      cognito_groups: ["adminClub", "adminSuper", "clubDevice"]
+      cognito_groups: ["rando", "adminSuper", "clubDevice"]
     )
 }
 
@@ -93,31 +93,29 @@ type Mutation {
   unexpectedError: UnexpectedErrorResponse!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
 
-  # TODO: scor-61 change "adminClub" to "rando", since the differentiation is now
-  # adminSuper / clubDevice / rando
-  # whereas club-granularity access by randos is governed by the User table
+  # someday, but not now:
   # createClub(input: CreateClubInput!): Club!
   #   @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   updateClubName(input: UpdateClubNameInput!): UpdateClubNameResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   updateCurrentGameId(
     input: UpdateCurrentGameIdInput!
   ): UpdateCurrentGameIdResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   deleteClubAndAdmin(
     input: DeleteClubAndAdminInput!
   ): DeleteClubAndAdminResponse!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 
   createClubDeviceRegistration(
     input: CreateClubDeviceRegistrationInput!
   ): ClubDeviceRegistration!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
   notifyCreateClubDevice(input: ClubDeviceCreated!): ClubDeviceWithRegToken!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
   enqueueDeleteClubDevice(input: EnqueueDeleteClubDeviceInput!): ClubDevice!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
   notifyDeleteClubDevice(
     input: EnqueueDeleteClubDeviceInput!
   ): EnqueueDeleteClubDeviceOutput!
@@ -125,41 +123,41 @@ type Mutation {
     @aws_iam
 
   enqueueCreateGame(input: EnqueueCreateGameInput!): EnqueueCreateGameOutput!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
   notifyCreateGame(input: PartialGameVT!): Game!
     @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
     @aws_iam
   deleteGame(input: DeleteGameInput!): Game!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 
   updateTableAssignment(
     input: UpdateTableAssignmentInput!
   ): UpdateTableAssignmentResponse!
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   assignPlayer(input: AssignPlayerInput!): AssignPlayerResponse!
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   unassignPlayers(input: UnassignPlayersInput!): UnassignPlayersResponse!
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   updateBoardResult(input: UpdateBoardResultInput!): UpdateBoardResultResponse!
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   createPlayer(input: CreatePlayerInput!): Player!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
   updatePlayer(input: UpdatePlayerInput!): Player!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
   deletePlayer(input: DeletePlayerInput!): Player!
-    @aws_cognito_user_pools(cognito_groups: ["adminClub", "adminSuper"])
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 }
 
 type Subscription {
@@ -180,24 +178,24 @@ type Subscription {
   onAssignPlayer(clubId: String!): AssignPlayerResponse
     @aws_subscribe(mutations: ["assignPlayer"])
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   onUnassignPlayers(clubId: String!): UnassignPlayersResponse
     @aws_subscribe(mutations: ["unassignPlayers"])
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   onUpdateTableAssignment(clubId: String!): UpdateTableAssignmentResponse
     @aws_subscribe(mutations: ["updateTableAssignment"])
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   onUpdateBoardResult(clubId: String!): UpdateBoardResultResponse
     @aws_subscribe(mutations: ["updateBoardResult"])
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
   onCreatePlayer(clubId: String!): Player
@@ -212,14 +210,14 @@ type Subscription {
 
   onNotifyCreateClubDevice(clubId: String!): ClubDeviceWithRegToken
     @aws_subscribe(mutations: ["notifyCreateClubDevice"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   onNotifyDeleteClubDevice(clubId: String!): EnqueueDeleteClubDeviceOutput
     @aws_subscribe(mutations: ["notifyDeleteClubDevice"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   onNotifyCreateGame(clubId: String!): Game
     @aws_subscribe(mutations: ["notifyCreateGame"])
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   # We cannot have an onNotifyCreateClub, because webapp cannot subcribe prior to login
   # Instead, the captcha-protected createClub cloudFront lambda origin fetch is synchronous
@@ -289,22 +287,22 @@ type ClubDevice {
 type ClubDeviceWithRegToken {
   clubId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   clubDeviceId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   name: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   email: AWSEmail!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   createdAt: AWSDateTime!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   regToken: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
 }
 
 input ClubDeviceCreated {
@@ -342,27 +340,27 @@ input EnqueueDeleteClubDeviceInput {
 type EnqueueDeleteClubDeviceOutput {
   clubId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
   clubDeviceId: String!
     @aws_iam
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "adminClub"])
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "rando"])
 }
 
 type PlayerAssignment {
   directionLetter: DirectionLetter!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   playerId: String!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   playerDisplayName: String!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 }
 
@@ -371,62 +369,62 @@ type BoardResultC {
   type: BoardResultType!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   board: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   round: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   currentAsOf: AWSDateTime!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   level: Int
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   strain: Strain
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   doubling: Doubling
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   declarer: DirectionLetter
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   leadRank: Rank
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   leadSuit: Suit
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   wonTrickCount: Int
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   confirmed: Boolean!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 }
 
@@ -485,42 +483,42 @@ type TableAssignmentCVT {
   tableNumber: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   currentAsOf: AWSDateTime!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   clubDeviceId: String
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   confirmed: Boolean!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   round: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   roundWelcomeConfirmed: Boolean!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   playerAssignments: [PlayerAssignment!]!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   results: [BoardResultC!]!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 }
 
@@ -609,47 +607,47 @@ type Game {
   clubId: String!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   gameId: String!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   movement: Movement!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   tableCount: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   roundCount: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   boardsPerRound: Int!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   label: String
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   tableAssignments: [TableAssignmentCVT!]!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
   createdAt: AWSDateTime!
     @aws_iam
     @aws_cognito_user_pools(
-      cognito_groups: ["adminSuper", "adminClub", "clubDevice"]
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 }
 

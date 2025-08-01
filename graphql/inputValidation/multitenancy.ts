@@ -84,7 +84,14 @@ export const errorForClubLevelMultitenancy = ({
   if (!clubId) {
     return { msg: "No clubId", errorType: "No clubId" };
   }
-  if (clubId !== claims["custom:tenantId"]) {
+  if (
+    clubId !== claims["custom:tenantId"] &&
+    !["ownerClub", "adminClub"].includes(
+      (JSON.parse(claims.bridgeFridgeClaims as string) as BridgeFridgeClaims)[
+        clubId
+      ],
+    )
+  ) {
     return { msg: failureMessage, errorType: "401: Invalid Club Id" };
   }
   return;
