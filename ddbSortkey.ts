@@ -1,14 +1,239 @@
 import { allDirections } from "./bridgeEnums";
 import { DirectionLetter } from "./graphql/appsync";
 
-// BridgeFridgeTable:
+// CLUB, below:
 export const clubSortKeyPrefix0 = "C";
 export const clubDeviceSortKeyPrefix0 = "D";
 export const gameSortKeyPrefix0 = "G";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
 export const resultSortKeyPrefix3 = "R";
+// CLUBHUMAN, below:
 export const playerSortKeyPrefix0 = "P";
 
+// DATA MODELING OF HUMANS
+//
+// Common cases:
+// 1) preTokenGeneration: need to go from cogntio user id => map of club id to role
+// 2) playerAssignment: need to go from club id => list of club player display names
+//
+// Rare cases:
+// 3) mergeIdps: multiple logins created by same user should be mergeable; different cognitoUserIds
+// pointing to different humanIds must instead be made to point to the same humanId
+// 4) claimRosterEntry: login created by user should be mergeable with roster entry
+// created by adminClub; cognitoUserId and clubHumanId pointing to different humanIds must
+// instead be made to point to the same humanId
+
+// Thought exercise: traditional RDBMS w/ uniqueness indexes
+// Human table
+// ----------
+// humanId (primary key)
+// userPreference1 (not sure what yet)
+// userPreference2 (not sure what yet)
+
+// CognitoUser table (join table between "IdentityProvider" and Human)
+// ----------------
+// cognitoUserId (primary key)
+// humanId (foreign key)
+// identityProvider ("Facebook", "Google", "SignInWithApple", "LogInWithAmazon", "CognitoUserPool") (phantom foreign key)
+// email
+// cross this out: alternate unique key: (humanId, identityProviderName); allow multiple users from one idp for one human
+// alternate unique key: (identityProviderName, email)
+
+// ClubHuman table (join table between Club and Human)
+// ----------------
+// clubId (foreign key)
+// humanId (foreign key)
+// clubHumanId
+// role (e.g. "ownerClub", "adminClub", "memberClub")
+// displayName
+// composite primary key: (clubId, clubHumanId)
+// alternate unique key: (clubId, humanId)
+// alternate unique key: (clubId, displayName) (for autocomplete uniqueness at player assignment)
+
+// NationalPlayer table (join table between "NationalOrg" and Human)
+// ----------------
+// nationalOrg (e.g. "ACBL") (phantom foreign key)
+// humanId (foreign key)
+// nationalPlayerId
+// composite primary key: (nationalOrg, nationalPlayerId)
+// alternate unique key: (nationalOrg, humanId)
+
+// Club table
+// ----------
+// clubId (primary key)
+// name
+// mostly as FK target for 1:M hierarchy stuff not modeled here: game, playerAssignment, etc.
+
+// now, applying the above to the learnings of adjacency lists, here:
+// https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-adjacency-graphs.html
+// how will I achieve those alternate unique keys?  Do I even need to?
+// NationalOrg and IdentityProvider are phantom tables
+
+// Human:
+// pk: HUMAN#<humanId>, sk: HUMAN#<humanId>, userPreference1: <userPreference1>, ...
+
+// Club:
+// pk: CLUB#<clubId>, sk: CLUB#<clubId>, name: <clubName>
+// This already exists: CLUB is clubSortKeyPrefix0, although it currently looks like
+// pk: <clubId>, sk: CLUB
+
+// NationalPlayer:
+// normally this would be
+// pk: HUMAN#<humanId>, sk: NATIONALORG#<nationalOrgId>, nationalPlayerId: <nationalPlayerId>
+// but that won't get the uniqueness we want on (nationalOrgId, nationalPlayerId)
+// We could just punt on this uniqueness for now: allow multiple humans to have the same ACBL#?
+// that seems wrong.  The other way to solve this is with a transaction that inserts the
+// pk: HUMAN#<humanId>, sk: NATIONALORG#<nationalOrgId>, nationalPlayerId: <nationalPlayerId>
+// record and also inserts the
+// pk: NATIONALORG#<nationalOrgId>, sk: NATIONALPLAYER#<nationalPlayerId>, humanId: <humanId> record, failing the
+// transaction if the second record already exists.
+
+// ClubHuman:
+// normally this would be
+// pk: HUMAN#<humanId>, sk: CLUB#<clubId>, clubHumanId: <clubHumanId>, role: <role>*, displayName: <displayName>
+// but that won't get the uniqueness we want on (clubId, clubHumanId) and (clubId, displayName)
+// Gotta do this with a transaction, also inserting:
+// pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId>, humanId: <humanId>
+// failing the transaction if it already exists.  (This already exists: CLUBHUMAN is playerSortKeyPrefix0)
+// however, use case playerAssignment (see below) causes us to swap the primary and alternate, so:
+// pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId>, humanId: <humanId>, role: <role>*, displayName: <displayName>
+// with additional uniqueness enforced by:
+// pk: HUMAN#<humanId>, sk: CLUB#<clubId>, clubHumanId: <clubHumanId>
+// _if_ displayName is present, then also:
+// pk: CLUB#<clubId>, sk: CLUBHUMANDISPLAYNAME#<displayName>, clubHumanId: <clubHumanId>, humanId: <humanId>
+
+// CognitoUser
+// normally, would be:
+// pk: HUMAN#<humanId>, sk: IDP#<idp>, cognitoUserId, email, givenName, familyName, maybe image?
+// but this causes uniqueness, where we don't need it.  Instead, we'll use the first-class entity for cognitoUser::
+// pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId>, idp: <idp>, email: <email>, givenName, familyName, maybe image?
+// transaction for uniqueness also inserts:
+// pk: IDP#<idp>, sk: EMAIL#<email>, humanId: <humanId>, cognitoUserId: <cognitoUserId>
+// failing the transaction if it already exists, although I think this is guaranteed by the social provider IDPs
+// anyway: I think cognitoUserId is always the same for the same <idp>, <email> pair, and is always unique.
+
+// Use case 1) preTokenGeneration:
+// cognitoUserId => map from clubId to role
+// so working backward from the use case, we want:
+// pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId>, role: <role>
+// but the fundamental problem there is that different IDPs could wind up returning different roles for the
+// same human in the same club.  roles will be written seldom but read a great deal, so perhaps what
+// we do is insert these records additionally, duplicating role data, and use transactions to ensure
+// that the role in the pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId> record is always the same as all roles
+// in the corresponding pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId> records, linked via the
+// pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId> records.
+// * thus, the role: <role> value in the pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId> is the
+// canonical value, but not the one read during the preTokenGeneration use case
+
+// Use case 2) playerAssignment:
+// clubId => list of clubHuman displayNames/ clubMemberIds
+// working backward from use case, let's make the "alternate" adjacency list uniqueness record
+// become the primary, and what would normally be the primary will be the alternate (see above)
+
+// Use case 3) mergeIdps:
+// BEFORE:
+// ------
+// pk: HUMAN#<humanId1>, sk: HUMAN#<humanId1>, userPreference1: <userPreference1.1>, ...
+// pk: HUMAN#<humanId2>, sk: HUMAN#<humanId2>, userPreference1: <userPreference2.1>, ...
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: <nationalPlayerId1>
+// pk: HUMAN#<humanId2>, sk: NATIONALORG#<nationalOrgId2>, nationalPlayerId: <nationalPlayerId2>
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#<nationalPlayerId1>, humanId: <humanId1>
+// pk: NATIONALORG#<nationalOrgId2>, sk: NATIONALPLAYER#<nationalPlayerId2>, humanId: <humanId2>
+// pk: CLUB#<clubId1>, sk: CLUBHUMAN#<clubHumanId1>, humanId: <humanId1>, role: <role1>*, displayName: <displayName1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMANDISPLAYNAME#<displayName1>, clubHumanId: <clubHumanId1>, humanId: <humanId1>
+// pk: CLUB#<clubId2>, sk: CLUBHUMAN#<clubHumanId2>, humanId: <humanId2>, role: <role2>*, displayName: <displayName2>
+// pk: CLUB#<clubId2>, sk: CLUBHUMANDISPLAYNAME#<displayName2>, clubHumanId: <clubHumanId2>, humanId: <humanId2>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId1>, clubHumanId: <clubHumanId1>
+// pk: HUMAN#<humanId2>, sk: CLUB#<clubId2>, clubHumanId: <clubHumanId2>
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId1>, role: <role1>
+// pk: COGNITOUSERID#<cognitoUserId2>, sk: CLUB#<clubId2>, role: <role2>
+// pk: IDP#<idp1>, sk: EMAIL#<email1>, humanId: <humanId1>, cognitoUserId: <cognitoUserId1>
+// pk: IDP#<idp2>, sk: EMAIL#<email2>, humanId: <humanId2>, cognitoUserId: <cognitoUserId2>
+// pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId1>, idp: <idp1>, email: <email1>, givenName1, familyName1, maybe image1?
+// pk: HUMAN#<humanId2>, sk: COGNITOUSERID#<cognitoUserId2>, idp: <idp2>, email: <email2>, givenName1, familyName1, maybe image1?
+//
+// let d(x1, x2) = x1 === x2 ? x1 : user decision which to keep among x1, x2
+// let e(role1, role2) = greater-privileged role among role1, role2
+// AFTER:
+// -----
+// pk: HUMAN#<humanId1>, sk: HUMAN#<humanId1>, userPreference1: d(<userPreference1.1>, <userPreference2.1>), ...
+
+// if d(<nationalOrgId1>, <nationalOrgId2>) !== <nationalOrgId1>:
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: <nationalPlayerId1>
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId2>, nationalPlayerId: <nationalPlayerId2>
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#<nationalPlayerId1>, humanId: <humanId1>
+// pk: NATIONALORG#<nationalOrgId2>, sk: NATIONALPLAYER#<nationalPlayerId2>, humanId: <humanId1>
+// if d(<nationalOrgId1>, <nationalOrgId2>) === <nationalOrgId1>:
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: d(<nationalPlayerId1>, <nationalPlayerId2>)
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#d(<nationalPlayerId1>, <nationalPlayerId2>), humanId: <humanId1>
+
+// if d(<clubId1>, <clubId2>) !== <clubId1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMAN#<clubHumanId1>, humanId: <humanId1>, role: <role1>*, displayName: <displayName1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMANDISPLAYNAME#<displayName1>, clubHumanId: <clubHumanId1>, humanId: <humanId1>
+// pk: CLUB#<clubId2>, sk: CLUBHUMAN#<clubHumanId2>, humanId: <humanId1>, role: <role2>*, displayName: <displayName2>
+// pk: CLUB#<clubId2>, sk: CLUBHUMANDISPLAYNAME#<displayName2>, clubHumanId: <clubHumanId2>, humanId: <humanId1>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId1>, clubHumanId: <clubHumanId1>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId2>, clubHumanId: <clubHumanId2>
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId1>, role: <role1>
+// pk: COGNITOUSERID#<cognitoUserId2>, sk: CLUB#<clubId2>, role: <role2>
+// if d(<clubId1>, <clubId2>) === <clubId1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMAN#<clubHumanId1>, humanId: <humanId1>, role: e(<role1>, <role2>)*, displayName: d(<displayName1>, displayName2>)
+// pk: CLUB#<clubId1>, sk: CLUBHUMANDISPLAYNAME#d(<displayName1>, displayName2>), clubHumanId: <clubHumanId1>, humanId: <humanId1>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId1>, clubHumanId: <clubHumanId1>
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId1>, role: e(<role1>, <role2>)
+
+// pk: HUMAN#<humanId1>, sk: IDP#<idp1>, cognitoUserId, email, givenName, familyName, maybe image?
+// pk: HUMAN#<humanId1>, sk: IDP#<idp2>, cognitoUserId, email, givenName, familyName, maybe image?
+// pk: IDP#<idp1>, sk: EMAIL#<email1>, humanId: <humanId1>, cognitoUserId: <cognitoUserId1>
+// pk: IDP#<idp2>, sk: EMAIL#<email2>, humanId: <humanId1>, cognitoUserId: <cognitoUserId2>
+// pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId1>, idp: <idp1>, email: <email1>
+// pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId2>, idp: <idp2>, email: <email2>
+
+// Use case 4) claimRosterEntry. (humanId1, owner of clubId1 w/no roster, claiming roster entry humanId2 in clubId2):
+
+// BEFORE:
+// ------
+// pk: HUMAN#<humanId1>, sk: HUMAN#<humanId1>, userPreference1: <userPreference1.1>, ...
+// pk: HUMAN#<humanId2>, sk: HUMAN#<humanId2>, userPreference1: <userPreference2.1>, ...
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: <nationalPlayerId1>
+// pk: HUMAN#<humanId2>, sk: NATIONALORG#<nationalOrgId2>, nationalPlayerId: <nationalPlayerId2>
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#<nationalPlayerId1>, humanId: <humanId1>
+// pk: NATIONALORG#<nationalOrgId2>, sk: NATIONALPLAYER#<nationalPlayerId2>, humanId: <humanId2>
+// pk: CLUB#<clubId1>, sk: CLUBHUMAN#<clubHumanId1>, humanId: <humanId1>, role: adminClub*, displayName: <displayName1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMANDISPLAYNAME#<displayName1>, clubHumanId: <clubHumanId1>, humanId: <humanId1>
+// pk: CLUB#<clubId2>, sk: CLUBHUMAN#<clubHumanId2>, humanId: <humanId2>, role: memberClub*, displayName: <displayName2>
+// pk: CLUB#<clubId2>, sk: CLUBHUMANDISPLAYNAME#<displayName2>, clubHumanId: <clubHumanId2>, humanId: <humanId2>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId1>, clubHumanId: <clubHumanId1>
+// pk: HUMAN#<humanId2>, sk: CLUB#<clubId2>, clubHumanId: <clubHumanId2>
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId1>, role: adminClub
+// pk: IDP#<idp1>, sk: EMAIL#<email1>, humanId: <humanId1>, cognitoUserId: <cognitoUserId1>
+// pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId1>, idp: <idp1>, email: <email1>, givenName1, familyName1, maybe image1?
+
+// AFTER:
+// -----
+// pk: HUMAN#<humanId1>, sk: HUMAN#<humanId1>, userPreference1: <userPreference1.1>, UserPreference2: <userPreference2.1> ...
+
+// if d(<nationalOrgId1>, <nationalOrgId2>) !== <nationalOrgId1>:
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: <nationalPlayerId1>
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId2>, nationalPlayerId: <nationalPlayerId2>
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#<nationalPlayerId1>, humanId: <humanId1>
+// pk: NATIONALORG#<nationalOrgId2>, sk: NATIONALPLAYER#<nationalPlayerId2>, humanId: <humanId1>
+// if d(<nationalOrgId1>, <nationalOrgId2>) === <nationalOrgId1>:
+// pk: HUMAN#<humanId1>, sk: NATIONALORG#<nationalOrgId1>, nationalPlayerId: d(<nationalPlayerId1>, <nationalPlayerId2>)
+// pk: NATIONALORG#<nationalOrgId1>, sk: NATIONALPLAYER#d(<nationalPlayerId1>, <nationalPlayerId2>), humanId: <humanId1>
+
+// pk: CLUB#<clubId1>, sk: CLUBHUMAN#<clubHumanId1>, humanId: <humanId1>, role: adminClub*, displayName: <displayName1>
+// pk: CLUB#<clubId1>, sk: CLUBHUMANDISPLAYNAME#<displayName1>, clubHumanId: <clubHumanId1>, humanId: <humanId1>
+// pk: CLUB#<clubId2>, sk: CLUBHUMAN#<clubHumanId2>, humanId: <humanId1>, role: memberClub*, displayName: <displayName2>
+// pk: CLUB#<clubId2>, sk: CLUBHUMANDISPLAYNAME#<displayName2>, clubHumanId: <clubHumanId2>, humanId: <humanId1>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId1>, clubHumanId: <clubHumanId1>
+// pk: HUMAN#<humanId1>, sk: CLUB#<clubId2>, clubHumanId: <clubHumanId2>
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId1>, role: adminClub
+// pk: COGNITOUSERID#<cognitoUserId1>, sk: CLUB#<clubId2>, role: memberClub
+// pk: IDP#<idp1>, sk: EMAIL#<email1>, humanId: <humanId1>, cognitoUserId: <cognitoUserId1>
+// pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId1>, idp: <idp1>, email: <email1>, givenName1, familyName1, maybe image1?
+
+// the following was a mistake; remove this table:
 // UserTable
 export const userDetailSortKeyPrefix0 = "U";
 export const bridgeFridgeClaimSortKeyPrefix0 = "C";
