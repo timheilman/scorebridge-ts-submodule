@@ -2,13 +2,13 @@ import { allDirections } from "./bridgeEnums";
 import { DirectionLetter } from "./graphql/appsync";
 
 // CLUB, below:
-export const clubSortKeyPrefix0 = "C";
-export const clubDeviceSortKeyPrefix0 = "D";
-export const gameSortKeyPrefix0 = "G";
+export const clubSortKeyPrefix0 = "CLUB";
+export const clubDeviceSortKeyPrefix0 = "CDEV";
+export const gameSortKeyPrefix0 = "GAME";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
-export const resultSortKeyPrefix3 = "R";
+export const resultSortKeyPrefix3 = "BDRT";
 // CLUBHUMAN, below:
-export const playerSortKeyPrefix0 = "P";
+export const playerSortKeyPrefix0 = "CLHU";
 
 // DATA MODELING OF HUMANS
 //
