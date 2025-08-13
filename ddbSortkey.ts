@@ -233,11 +233,6 @@ export const playerSortKeyPrefix0 = "P";
 // pk: IDP#<idp1>, sk: EMAIL#<email1>, humanId: <humanId1>, cognitoUserId: <cognitoUserId1>
 // pk: HUMAN#<humanId1>, sk: COGNITOUSERID#<cognitoUserId1>, idp: <idp1>, email: <email1>, givenName1, familyName1, maybe image1?
 
-// the following was a mistake; remove this table:
-// UserTable
-export const userDetailSortKeyPrefix0 = "U";
-export const bridgeFridgeClaimSortKeyPrefix0 = "C";
-
 export const clubDeviceIdFromSortKey = (sortKey: string) => {
   if (!sortKey.startsWith(clubDeviceSortKeyPrefix0)) {
     return {
