@@ -7,6 +7,7 @@ export interface GqlUtilErrorParams {
   errorInfo?: any;
 }
 
+// these claim target roles are for those under cognito group "rando":
 export const allBridgeFridgeClaimTargets = [
   "ownerClub",
   "adminClub",
