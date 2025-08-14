@@ -1,9 +1,9 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
-  SubscriptionOnCreatePlayerArgs,
+  SubscriptionOnCreateClubHumanArgs,
   SubscriptionOnDeleteGameArgs,
-  SubscriptionOnDeletePlayerArgs,
+  SubscriptionOnDeleteClubHumanArgs,
   SubscriptionOnNotifyCreateClubDeviceArgs,
   SubscriptionOnNotifyCreateGameArgs,
   SubscriptionOnNotifyDeleteClubDeviceArgs,
@@ -11,7 +11,7 @@ import {
   SubscriptionOnUpdateBoardResultArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
-  SubscriptionOnUpdatePlayerArgs,
+  SubscriptionOnUpdateClubHumanArgs,
   SubscriptionOnUpdateTableAssignmentArgs,
 } from "./appsync";
 
@@ -239,46 +239,46 @@ export const subIdToSubGql = {
     `,
     "onUpdateBoardResult",
   ),
-  onCreatePlayer: createKeyedGeneratedSubscription<
-    "onCreatePlayer",
-    SubscriptionOnCreatePlayerArgs
+  onCreateClubHuman: createKeyedGeneratedSubscription<
+    "onCreateClubHuman",
+    SubscriptionOnCreateClubHumanArgs
   >(
     /* GraphQL */ `
-      subscription OnCreatePlayer($clubId: String!) {
-        onCreatePlayer(clubId: $clubId) {
+      subscription OnCreateClubHuman($clubId: String!) {
+        onCreateClubHuman(clubId: $clubId) {
           playerId
           playerDisplayName
         }
       }
     `,
-    "onCreatePlayer",
+    "onCreateClubHuman",
   ),
-  onUpdatePlayer: createKeyedGeneratedSubscription<
-    "onUpdatePlayer",
-    SubscriptionOnUpdatePlayerArgs
+  onUpdateClubHuman: createKeyedGeneratedSubscription<
+    "onUpdateClubHuman",
+    SubscriptionOnUpdateClubHumanArgs
   >(
     /* GraphQL */ `
-      subscription OnUpdatePlayer($clubId: String!) {
-        onUpdatePlayer(clubId: $clubId) {
+      subscription OnUpdateClubHuman($clubId: String!) {
+        onUpdateClubHuman(clubId: $clubId) {
           playerId
           playerDisplayName
         }
       }
     `,
-    "onUpdatePlayer",
+    "onUpdateClubHuman",
   ),
-  onDeletePlayer: createKeyedGeneratedSubscription<
-    "onDeletePlayer",
-    SubscriptionOnDeletePlayerArgs
+  onDeleteClubHuman: createKeyedGeneratedSubscription<
+    "onDeleteClubHuman",
+    SubscriptionOnDeleteClubHumanArgs
   >(
     /* GraphQL */ `
-      subscription OnDeletePlayer($clubId: String!) {
-        onDeletePlayer(clubId: $clubId) {
+      subscription OnDeleteClubHuman($clubId: String!) {
+        onDeleteClubHuman(clubId: $clubId) {
           playerId
         }
       }
     `,
-    "onDeletePlayer",
+    "onDeleteClubHuman",
   ),
   onNotifyCreateClubDevice: createKeyedGeneratedSubscription<
     "onNotifyCreateClubDevice",

@@ -2,17 +2,17 @@ import {
   Mutation,
   MutationAssignPlayerArgs,
   MutationCreateClubDeviceRegistrationArgs,
-  MutationCreatePlayerArgs,
+  MutationCreateClubHumanArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteGameArgs,
-  MutationDeletePlayerArgs,
+  MutationDeleteClubHumanArgs,
   MutationEnqueueCreateGameArgs,
   MutationEnqueueDeleteClubDeviceArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
-  MutationUpdatePlayerArgs,
+  MutationUpdateClubHumanArgs,
   MutationUpdateTableAssignmentArgs,
 } from "./appsync";
 
@@ -162,50 +162,50 @@ export const mutIdToMutGql = {
     `,
     "deleteGame",
   ),
-  createPlayer: createKeyedGeneratedMutation<
-    "createPlayer",
-    MutationCreatePlayerArgs
+  createClubHuman: createKeyedGeneratedMutation<
+    "createClubHuman",
+    MutationCreateClubHumanArgs
   >(
     /* GraphQL */ `
-      mutation createPlayer($input: CreatePlayerInput!) {
-        createPlayer(input: $input) {
+      mutation createClubHuman($input: CreateClubHumanInput!) {
+        createClubHuman(input: $input) {
           clubId
           playerId
           playerDisplayName
         }
       }
     `,
-    "createPlayer",
+    "createClubHuman",
   ),
-  updatePlayer: createKeyedGeneratedMutation<
-    "updatePlayer",
-    MutationUpdatePlayerArgs
+  updateClubHuman: createKeyedGeneratedMutation<
+    "updateClubHuman",
+    MutationUpdateClubHumanArgs
   >(
     /* GraphQL */ `
-      mutation updatePlayer($input: UpdatePlayerInput!) {
-        updatePlayer(input: $input) {
+      mutation updateClubHuman($input: UpdateClubHumanInput!) {
+        updateClubHuman(input: $input) {
           clubId
           playerId
           playerDisplayName
         }
       }
     `,
-    "updatePlayer",
+    "updateClubHuman",
   ),
-  deletePlayer: createKeyedGeneratedMutation<
-    "deletePlayer",
-    MutationDeletePlayerArgs
+  deleteClubHuman: createKeyedGeneratedMutation<
+    "deleteClubHuman",
+    MutationDeleteClubHumanArgs
   >(
     /* GraphQL */ `
-      mutation deletePlayer($input: DeletePlayerInput!) {
-        deletePlayer(input: $input) {
+      mutation deleteClubHuman($input: DeleteClubHumanInput!) {
+        deleteClubHuman(input: $input) {
           clubId
           playerId
           playerDisplayName
         }
       }
     `,
-    "deletePlayer",
+    "deleteClubHuman",
   ),
   updateTableAssignment: createKeyedGeneratedMutation<
     "updateTableAssignment",
