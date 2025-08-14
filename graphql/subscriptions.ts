@@ -2,16 +2,16 @@ import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
   SubscriptionOnCreateClubHumanArgs,
-  SubscriptionOnDeleteGameArgs,
   SubscriptionOnDeleteClubHumanArgs,
+  SubscriptionOnDeleteGameArgs,
   SubscriptionOnNotifyCreateClubDeviceArgs,
   SubscriptionOnNotifyCreateGameArgs,
   SubscriptionOnNotifyDeleteClubDeviceArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUpdateBoardResultArgs,
+  SubscriptionOnUpdateClubHumanArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
-  SubscriptionOnUpdateClubHumanArgs,
   SubscriptionOnUpdateTableAssignmentArgs,
 } from "./appsync";
 

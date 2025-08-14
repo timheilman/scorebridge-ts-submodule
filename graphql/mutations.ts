@@ -4,15 +4,15 @@ import {
   MutationCreateClubDeviceRegistrationArgs,
   MutationCreateClubHumanArgs,
   MutationDeleteClubAndAdminArgs,
-  MutationDeleteGameArgs,
   MutationDeleteClubHumanArgs,
+  MutationDeleteGameArgs,
   MutationEnqueueCreateGameArgs,
   MutationEnqueueDeleteClubDeviceArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
+  MutationUpdateClubHumanArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
-  MutationUpdateClubHumanArgs,
   MutationUpdateTableAssignmentArgs,
 } from "./appsync";
 

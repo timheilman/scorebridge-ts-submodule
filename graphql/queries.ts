@@ -4,8 +4,8 @@ import {
   QueryGetGameArgs,
   QueryListClubDeviceRegistrationsArgs,
   QueryListClubDevicesArgs,
-  QueryListGamesArgs,
   QueryListClubHumansArgs,
+  QueryListGamesArgs,
 } from "./appsync";
 
 type GeneratedQuery<InputType, OutputType> = string & {

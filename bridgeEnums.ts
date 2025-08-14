@@ -2,10 +2,10 @@ import {
   BoardResult,
   BoardResultC,
   ClubDevice,
+  ClubHuman,
   DirectionLetter,
   Doubling,
   Game,
-  Player,
   PlayerAssignment,
   Rank,
   Strain,
@@ -83,7 +83,7 @@ export const possibleResults = (level: Level): Result[] =>
 
 // these are the values whereas keys are stored as part of the sortKey
 export type UnkeyedPlayerAssignment = Omit<PlayerAssignment, "directionLetter">;
-export type UnkeyedPlayer = Omit<Player, "clubHumanId">;
+export type UnkeyedClubHuman = Omit<ClubHuman, "clubHumanId">;
 
 // the rules for board and round integers relative to movement, roundCount, and boardsPerRound
 // are too complicated to be put into the type system, so they are validated in the resolvers
