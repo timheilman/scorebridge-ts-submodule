@@ -83,7 +83,7 @@ type Query {
       cognito_groups: ["rando", "adminSuper", "clubDevice"]
     )
 
-  listPlayers(input: ListPlayersInput!): ListPlayersOutput!
+  listClubHumans(input: ListClubHumansInput!): ListClubHumansOutput!
     @aws_cognito_user_pools(
       cognito_groups: ["rando", "adminSuper", "clubDevice"]
     )
@@ -152,11 +152,11 @@ type Mutation {
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
-  createPlayer(input: CreatePlayerInput!): Player!
+  createClubHuman(input: CreateClubHumanInput!): ClubHuman!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
-  updatePlayer(input: UpdatePlayerInput!): Player!
+  updateClubHuman(input: UpdateClubHumanInput!): ClubHuman!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
-  deletePlayer(input: DeletePlayerInput!): Player!
+  deleteClubHuman(input: DeleteClubHumanInput!): ClubHuman!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 }
 
@@ -198,14 +198,14 @@ type Subscription {
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
-  onCreatePlayer(clubId: String!): Player
-    @aws_subscribe(mutations: ["createPlayer"])
+  onCreateClubHuman(clubId: String!): ClubHuman
+    @aws_subscribe(mutations: ["createClubHuman"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  onUpdatePlayer(clubId: String!): Player
-    @aws_subscribe(mutations: ["updatePlayer"])
+  onUpdateClubHuman(clubId: String!): ClubHuman
+    @aws_subscribe(mutations: ["updateClubHuman"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  onDeletePlayer(clubId: String!): Player
-    @aws_subscribe(mutations: ["deletePlayer"])
+  onDeleteClubHuman(clubId: String!): ClubHuman
+    @aws_subscribe(mutations: ["deleteClubHuman"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
   onNotifyCreateClubDevice(clubId: String!): ClubDeviceWithRegToken
@@ -253,7 +253,7 @@ input ListGamesInput {
   finalGameFromLastList: PartialGameCVT
 }
 
-input ListPlayersInput {
+input ListClubHumansInput {
   clubId: String!
   nextToken: String
   limit: Int
@@ -264,8 +264,8 @@ type ListGamesOutput {
   nextToken: String
 }
 
-type ListPlayersOutput {
-  items: [Player]!
+type ListClubHumansOutput {
+  items: [ClubHuman]!
   nextToken: String
 }
 
@@ -352,12 +352,12 @@ type PlayerAssignment {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
-  playerId: String!
+  clubHumanId: String!
     @aws_iam
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
-  playerDisplayName: String!
+  clubHumanDisplayName: String!
     @aws_iam
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
@@ -560,8 +560,8 @@ input UpdateTableAssignmentInput {
 
 input PartialPlayerAssignment {
   directionLetter: DirectionLetter!
-  playerId: String!
-  playerDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String!
 }
 
 input AssignPlayerInput {
@@ -570,8 +570,8 @@ input AssignPlayerInput {
   gameId: String!
   tableNumber: Int!
   directionLetter: DirectionLetter!
-  playerId: String!
-  playerDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String!
 }
 
 input UnassignPlayersInput {
@@ -587,8 +587,8 @@ type AssignPlayerResponse {
   gameId: String!
   tableNumber: Int!
   directionLetter: DirectionLetter!
-  playerId: String!
-  playerDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String!
 }
 
 type UnassignPlayersResponse {
@@ -651,10 +651,10 @@ type Game {
     )
 }
 
-type Player {
+type ClubHuman {
   clubId: String!
-  playerId: String!
-  playerDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String!
 }
 
 input PartialGameCVT {
@@ -700,10 +700,10 @@ type EnqueueCreateGameOutput {
   label: String
 }
 
-input CreatePlayerInput {
+input CreateClubHumanInput {
   clubId: String!
-  playerId: String
-  playerDisplayName: String!
+  clubHumanId: String
+  clubHumanDisplayName: String!
 }
 
 input DeleteGameInput {
@@ -711,15 +711,15 @@ input DeleteGameInput {
   gameId: String!
 }
 
-input DeletePlayerInput {
+input DeleteClubHumanInput {
   clubId: String!
-  playerId: String!
+  clubHumanId: String!
 }
 
-input UpdatePlayerInput {
+input UpdateClubHumanInput {
   clubId: String!
-  playerId: String!
-  playerDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String!
 }
 
 type UnexpectedErrorResponse {

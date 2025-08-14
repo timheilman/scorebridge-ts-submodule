@@ -38,22 +38,22 @@ export interface Scalars {
 
 export interface AssignPlayerInput {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
+  clubHumanDisplayName: Scalars["String"]["input"];
+  clubHumanId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   directionLetter: DirectionLetter;
   gameId: Scalars["String"]["input"];
-  playerDisplayName: Scalars["String"]["input"];
-  playerId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
 
 export interface AssignPlayerResponse {
   __typename?: "AssignPlayerResponse";
   clubDeviceId?: Maybe<Scalars["String"]["output"]>;
+  clubHumanDisplayName: Scalars["String"]["output"];
+  clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
   gameId: Scalars["String"]["output"];
-  playerDisplayName: Scalars["String"]["output"];
-  playerId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
 
@@ -140,16 +140,23 @@ export interface ClubDeviceWithRegToken {
   regToken: Scalars["String"]["output"];
 }
 
+export interface ClubHuman {
+  __typename?: "ClubHuman";
+  clubHumanDisplayName: Scalars["String"]["output"];
+  clubHumanId: Scalars["String"]["output"];
+  clubId: Scalars["String"]["output"];
+}
+
 export interface CreateClubDeviceRegistrationInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
   regToken: Scalars["String"]["input"];
 }
 
-export interface CreatePlayerInput {
+export interface CreateClubHumanInput {
+  clubHumanDisplayName: Scalars["String"]["input"];
+  clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
-  playerDisplayName: Scalars["String"]["input"];
-  playerId?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface DeleteClubAndAdminInput {
@@ -162,14 +169,14 @@ export interface DeleteClubAndAdminResponse {
   status: Scalars["String"]["output"];
 }
 
+export interface DeleteClubHumanInput {
+  clubHumanId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+}
+
 export interface DeleteGameInput {
   clubId: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
-}
-
-export interface DeletePlayerInput {
-  clubId: Scalars["String"]["input"];
-  playerId: Scalars["String"]["input"];
 }
 
 export type DirectionLetter = "E" | "N" | "S" | "W";
@@ -249,6 +256,18 @@ export interface ListClubDevicesOutput {
   nextToken?: Maybe<Scalars["String"]["output"]>;
 }
 
+export interface ListClubHumansInput {
+  clubId: Scalars["String"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  nextToken?: InputMaybe<Scalars["String"]["input"]>;
+}
+
+export interface ListClubHumansOutput {
+  __typename?: "ListClubHumansOutput";
+  items: Maybe<ClubHuman>[];
+  nextToken?: Maybe<Scalars["String"]["output"]>;
+}
+
 export interface ListGamesInput {
   clubId: Scalars["String"]["input"];
   finalGameFromLastList?: InputMaybe<PartialGameCvt>;
@@ -262,28 +281,16 @@ export interface ListGamesOutput {
   nextToken?: Maybe<Scalars["String"]["output"]>;
 }
 
-export interface ListPlayersInput {
-  clubId: Scalars["String"]["input"];
-  limit?: InputMaybe<Scalars["Int"]["input"]>;
-  nextToken?: InputMaybe<Scalars["String"]["input"]>;
-}
-
-export interface ListPlayersOutput {
-  __typename?: "ListPlayersOutput";
-  items: Maybe<Player>[];
-  nextToken?: Maybe<Scalars["String"]["output"]>;
-}
-
 export type Movement = "HOWELL" | "MITCHELL" | "RAINBOW";
 
 export interface Mutation {
   __typename?: "Mutation";
   assignPlayer: AssignPlayerResponse;
   createClubDeviceRegistration: ClubDeviceRegistration;
-  createPlayer: Player;
+  createClubHuman: ClubHuman;
   deleteClubAndAdmin: DeleteClubAndAdminResponse;
+  deleteClubHuman: ClubHuman;
   deleteGame: Game;
-  deletePlayer: Player;
   enqueueCreateGame: EnqueueCreateGameOutput;
   enqueueDeleteClubDevice: ClubDevice;
   notifyCreateClubDevice: ClubDeviceWithRegToken;
@@ -292,9 +299,9 @@ export interface Mutation {
   unassignPlayers: UnassignPlayersResponse;
   unexpectedError: UnexpectedErrorResponse;
   updateBoardResult: UpdateBoardResultResponse;
+  updateClubHuman: ClubHuman;
   updateClubName: UpdateClubNameResponse;
   updateCurrentGameId: UpdateCurrentGameIdResponse;
-  updatePlayer: Player;
   updateTableAssignment: UpdateTableAssignmentResponse;
 }
 
@@ -306,20 +313,20 @@ export interface MutationCreateClubDeviceRegistrationArgs {
   input: CreateClubDeviceRegistrationInput;
 }
 
-export interface MutationCreatePlayerArgs {
-  input: CreatePlayerInput;
+export interface MutationCreateClubHumanArgs {
+  input: CreateClubHumanInput;
 }
 
 export interface MutationDeleteClubAndAdminArgs {
   input: DeleteClubAndAdminInput;
 }
 
-export interface MutationDeleteGameArgs {
-  input: DeleteGameInput;
+export interface MutationDeleteClubHumanArgs {
+  input: DeleteClubHumanInput;
 }
 
-export interface MutationDeletePlayerArgs {
-  input: DeletePlayerInput;
+export interface MutationDeleteGameArgs {
+  input: DeleteGameInput;
 }
 
 export interface MutationEnqueueCreateGameArgs {
@@ -350,16 +357,16 @@ export interface MutationUpdateBoardResultArgs {
   input: UpdateBoardResultInput;
 }
 
+export interface MutationUpdateClubHumanArgs {
+  input: UpdateClubHumanInput;
+}
+
 export interface MutationUpdateClubNameArgs {
   input: UpdateClubNameInput;
 }
 
 export interface MutationUpdateCurrentGameIdArgs {
   input: UpdateCurrentGameIdInput;
-}
-
-export interface MutationUpdatePlayerArgs {
-  input: UpdatePlayerInput;
 }
 
 export interface MutationUpdateTableAssignmentArgs {
@@ -441,23 +448,16 @@ export interface PartialGameVt {
 }
 
 export interface PartialPlayerAssignment {
+  clubHumanDisplayName: Scalars["String"]["input"];
+  clubHumanId: Scalars["String"]["input"];
   directionLetter: DirectionLetter;
-  playerDisplayName: Scalars["String"]["input"];
-  playerId: Scalars["String"]["input"];
-}
-
-export interface Player {
-  __typename?: "Player";
-  clubId: Scalars["String"]["output"];
-  playerDisplayName: Scalars["String"]["output"];
-  playerId: Scalars["String"]["output"];
 }
 
 export interface PlayerAssignment {
   __typename?: "PlayerAssignment";
+  clubHumanDisplayName: Scalars["String"]["output"];
+  clubHumanId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
-  playerDisplayName: Scalars["String"]["output"];
-  playerId: Scalars["String"]["output"];
 }
 
 export interface Query {
@@ -466,8 +466,8 @@ export interface Query {
   getGame?: Maybe<Game>;
   listClubDeviceRegistrations: ListClubDeviceRegistrationsOutput;
   listClubDevices: ListClubDevicesOutput;
+  listClubHumans: ListClubHumansOutput;
   listGames: ListGamesOutput;
-  listPlayers: ListPlayersOutput;
 }
 
 export interface QueryGetClubArgs {
@@ -486,12 +486,12 @@ export interface QueryListClubDevicesArgs {
   input: ListClubDevicesInput;
 }
 
-export interface QueryListGamesArgs {
-  input: ListGamesInput;
+export interface QueryListClubHumansArgs {
+  input: ListClubHumansInput;
 }
 
-export interface QueryListPlayersArgs {
-  input: ListPlayersInput;
+export interface QueryListGamesArgs {
+  input: ListGamesInput;
 }
 
 export type Rank =
@@ -514,17 +514,17 @@ export type Strain = "C" | "D" | "H" | "NT" | "S";
 export interface Subscription {
   __typename?: "Subscription";
   onAssignPlayer?: Maybe<AssignPlayerResponse>;
-  onCreatePlayer?: Maybe<Player>;
+  onCreateClubHuman?: Maybe<ClubHuman>;
+  onDeleteClubHuman?: Maybe<ClubHuman>;
   onDeleteGame?: Maybe<Game>;
-  onDeletePlayer?: Maybe<Player>;
   onNotifyCreateClubDevice?: Maybe<ClubDeviceWithRegToken>;
   onNotifyCreateGame?: Maybe<Game>;
   onNotifyDeleteClubDevice?: Maybe<EnqueueDeleteClubDeviceOutput>;
   onUnassignPlayers?: Maybe<UnassignPlayersResponse>;
   onUpdateBoardResult?: Maybe<UpdateBoardResultResponse>;
+  onUpdateClubHuman?: Maybe<ClubHuman>;
   onUpdateClubName?: Maybe<UpdateClubNameResponse>;
   onUpdateCurrentGameId?: Maybe<UpdateCurrentGameIdResponse>;
-  onUpdatePlayer?: Maybe<Player>;
   onUpdateTableAssignment?: Maybe<UpdateTableAssignmentResponse>;
 }
 
@@ -532,15 +532,15 @@ export interface SubscriptionOnAssignPlayerArgs {
   clubId: Scalars["String"]["input"];
 }
 
-export interface SubscriptionOnCreatePlayerArgs {
+export interface SubscriptionOnCreateClubHumanArgs {
+  clubId: Scalars["String"]["input"];
+}
+
+export interface SubscriptionOnDeleteClubHumanArgs {
   clubId: Scalars["String"]["input"];
 }
 
 export interface SubscriptionOnDeleteGameArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface SubscriptionOnDeletePlayerArgs {
   clubId: Scalars["String"]["input"];
 }
 
@@ -564,15 +564,15 @@ export interface SubscriptionOnUpdateBoardResultArgs {
   clubId: Scalars["String"]["input"];
 }
 
+export interface SubscriptionOnUpdateClubHumanArgs {
+  clubId: Scalars["String"]["input"];
+}
+
 export interface SubscriptionOnUpdateClubNameArgs {
   clubId: Scalars["String"]["input"];
 }
 
 export interface SubscriptionOnUpdateCurrentGameIdArgs {
-  clubId: Scalars["String"]["input"];
-}
-
-export interface SubscriptionOnUpdatePlayerArgs {
   clubId: Scalars["String"]["input"];
 }
 
@@ -639,6 +639,12 @@ export interface UpdateBoardResultResponse {
   tableNumber: Scalars["Int"]["output"];
 }
 
+export interface UpdateClubHumanInput {
+  clubHumanDisplayName: Scalars["String"]["input"];
+  clubHumanId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+}
+
 export interface UpdateClubNameInput {
   clubId: Scalars["String"]["input"];
   newName: Scalars["String"]["input"];
@@ -659,12 +665,6 @@ export interface UpdateCurrentGameIdResponse {
   __typename?: "UpdateCurrentGameIdResponse";
   clubId: Scalars["String"]["output"];
   newCurrentGameId?: Maybe<Scalars["String"]["output"]>;
-}
-
-export interface UpdatePlayerInput {
-  clubId: Scalars["String"]["input"];
-  playerDisplayName: Scalars["String"]["input"];
-  playerId: Scalars["String"]["input"];
 }
 
 export interface UpdateTableAssignmentInput {
