@@ -10,6 +10,27 @@ export const resultSortKeyPrefix3 = "BDRT";
 // CLUBHUMAN, below:
 export const playerSortKeyPrefix0 = "CLHU";
 
+export const clubKey = (clubId: string) => `${clubSortKeyPrefix0}#${clubId}`;
+export const clubKeys = (clubId: string) => ({
+  pk: clubKey(clubId),
+  sk: clubKey(clubId),
+});
+export const clubIdFromKey = (clubKey: string) => {
+  if (!clubKey.startsWith(clubSortKeyPrefix0)) {
+    return {
+      error: `Not a clubKey; ${clubKey} did not start with ${clubSortKeyPrefix0}`,
+      result: "",
+    };
+  }
+  const theSplit = clubKey.split("#");
+  if (theSplit.length < 2) {
+    return {
+      error: `Not a correct clubKey; ${clubKey} has no hashes.`,
+      result: "",
+    };
+  }
+  return { result: theSplit[1], error: "" };
+};
 // DATA MODELING OF HUMANS
 //
 // Common cases:

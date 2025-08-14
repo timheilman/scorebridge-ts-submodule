@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 
 import { cachedDynamoDbClient } from "./cachedDynamoDbClient";
-import { gameSortKeyPrefix0 } from "./ddbSortkey";
+import { clubKey, gameSortKeyPrefix0 } from "./ddbSortkey";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("deleteDdbRecords.");
 async function queryChunk({
@@ -90,10 +90,9 @@ export async function batchDeleteGames({
   tableName: string;
   clubId: string;
 }) {
-  const keyConditionExpression =
-    "clubId = :clubId and begins_with(sortKey, :sk)";
+  const keyConditionExpression = "pk = :pk and begins_with(sk, :sk)";
   const expressionAttributeValues = {
-    ":clubId": clubId,
+    ":pk": clubKey(clubId),
     ":sk": `${gameSortKeyPrefix0}#`,
   };
   const items = await batchQuery({
@@ -128,10 +127,10 @@ export async function batchDeleteClubDetails({
       awsRegion,
       tableName: scoreBridgeTableName,
       expressionAttributeValues: {
-        ":clubId": clubId,
+        ":pk": clubKey(clubId),
       },
       profile,
-      keyConditionExpression: "clubId = :clubId",
+      keyConditionExpression: "pk = :pk",
     }),
     awsRegion,
     profile,
@@ -161,11 +160,13 @@ async function batchDeleteDdbRecords({
     const requestItems = chunk.reduce<
       { DeleteRequest: { Key: Record<string, NativeAttributeValue> } }[]
     >((requestItems, item) => {
-      const { clubId, sortKey } = item as {
-        clubId: string;
-        sortKey: string;
+      const { pk, sk } = item as {
+        pk: string;
+        sk: string;
       };
-      requestItems.push({ DeleteRequest: { Key: { clubId, sortKey } } });
+      requestItems.push({
+        DeleteRequest: { Key: { pk, sk } },
+      });
 
       return requestItems;
     }, []);
