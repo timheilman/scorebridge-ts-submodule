@@ -328,14 +328,14 @@ export const clubHumanIdFromSortKey = (sortKey: string) => {
     };
   }
   const theSplit = sortKey.split("#");
-  // P, playerId
+  // P, clubHumanId
   if (theSplit.length < 2) {
     return {
       result: "",
       error: `Not a correct sortKey; ${sortKey} has no hashes.`,
     };
   }
-  // playerIds can (and do) contain hash (#), so must rejoin them:
+  // clubHumanIds can (and do) contain hash (#), so must rejoin them:
   return { result: theSplit.slice(1, theSplit.length).join("#"), error: "" };
 };
 

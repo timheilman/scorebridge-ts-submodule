@@ -170,8 +170,8 @@ export const mutIdToMutGql = {
       mutation createClubHuman($input: CreateClubHumanInput!) {
         createClubHuman(input: $input) {
           clubId
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -185,8 +185,8 @@ export const mutIdToMutGql = {
       mutation updateClubHuman($input: UpdateClubHumanInput!) {
         updateClubHuman(input: $input) {
           clubId
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -200,8 +200,8 @@ export const mutIdToMutGql = {
       mutation deleteClubHuman($input: DeleteClubHumanInput!) {
         deleteClubHuman(input: $input) {
           clubId
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -226,8 +226,8 @@ export const mutIdToMutGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              playerId
-              playerDisplayName
+              clubHumanId
+              clubHumanDisplayName
             }
             results {
               board
@@ -261,8 +261,8 @@ export const mutIdToMutGql = {
           gameId
           tableNumber
           directionLetter
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,

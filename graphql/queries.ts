@@ -101,8 +101,8 @@ export const qidToQueryGql = {
               currentAsOf
               playerAssignments {
                 directionLetter
-                playerDisplayName
-                playerId
+                clubHumanDisplayName
+                clubHumanId
               }
               results {
                 board
@@ -139,8 +139,8 @@ export const qidToQueryGql = {
         listClubHumans(input: $input) {
           items {
             clubId
-            playerId
-            playerDisplayName
+            clubHumanId
+            clubHumanDisplayName
           }
           nextToken
         }
@@ -165,8 +165,8 @@ export const qidToQueryGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              playerDisplayName
-              playerId
+              clubHumanDisplayName
+              clubHumanId
             }
             results {
               board

@@ -63,8 +63,8 @@ export const subIdToSubGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              playerDisplayName
-              playerId
+              clubHumanDisplayName
+              clubHumanId
             }
             results {
               board
@@ -151,8 +151,8 @@ export const subIdToSubGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              playerId
-              playerDisplayName
+              clubHumanId
+              clubHumanDisplayName
             }
             results {
               board
@@ -186,8 +186,8 @@ export const subIdToSubGql = {
           clubDeviceId
           tableNumber
           directionLetter
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -246,8 +246,8 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnCreateClubHuman($clubId: String!) {
         onCreateClubHuman(clubId: $clubId) {
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -260,8 +260,8 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnUpdateClubHuman($clubId: String!) {
         onUpdateClubHuman(clubId: $clubId) {
-          playerId
-          playerDisplayName
+          clubHumanId
+          clubHumanDisplayName
         }
       }
     `,
@@ -274,7 +274,7 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnDeleteClubHuman($clubId: String!) {
         onDeleteClubHuman(clubId: $clubId) {
-          playerId
+          clubHumanId
         }
       }
     `,
