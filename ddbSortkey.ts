@@ -8,7 +8,7 @@ export const gameSortKeyPrefix0 = "GAME";
 // shares slot with PlayerAssignment.directionLetter, so must not be N, S, E, or W:
 export const resultSortKeyPrefix3 = "BDRT";
 // CLUBHUMAN, below:
-export const playerSortKeyPrefix0 = "CLHU";
+export const clubHumanSortKeyPrefix0 = "CLHU";
 
 export const clubKey = (clubId: string) => `${clubSortKeyPrefix0}#${clubId}`;
 export const clubKeys = (clubId: string) => ({
@@ -320,11 +320,11 @@ export const gameIdFromSortKey = (sortKey: string) => {
   return { result: theSplit[1], error: "" };
 };
 
-export const playerIdFromSortKey = (sortKey: string) => {
-  if (!sortKey.startsWith(playerSortKeyPrefix0)) {
+export const clubHumanIdFromSortKey = (sortKey: string) => {
+  if (!sortKey.startsWith(clubHumanSortKeyPrefix0)) {
     return {
       result: "",
-      error: `Not a correct sortKey; ${sortKey} did not start with ${playerSortKeyPrefix0}`,
+      error: `Not a correct sortKey; ${sortKey} did not start with ${clubHumanSortKeyPrefix0}`,
     };
   }
   const theSplit = sortKey.split("#");
