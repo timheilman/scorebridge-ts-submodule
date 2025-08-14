@@ -9,6 +9,8 @@ export const gameSortKeyPrefix0 = "GAME";
 export const resultSortKeyPrefix3 = "BDRT";
 // CLUBHUMAN, below:
 export const clubHumanSortKeyPrefix0 = "CLHU";
+export const humanSortKeyPrefix0 = "HUMN";
+export const cognitoUserSortKeyPrefix0 = "CGID";
 
 export const clubKey = (clubId: string) => `${clubSortKeyPrefix0}#${clubId}`;
 export const clubKeys = (clubId: string) => ({
@@ -26,6 +28,67 @@ export const clubIdFromKey = (clubKey: string) => {
   if (theSplit.length < 2) {
     return {
       error: `Not a correct clubKey; ${clubKey} has no hashes.`,
+      result: "",
+    };
+  }
+  return { result: theSplit[1], error: "" };
+};
+
+export const humanKey = (humanId: string) =>
+  `${humanSortKeyPrefix0}#${humanId}`;
+export const humanKeys = (humanId: string) => ({
+  pk: humanKey(humanId),
+  sk: humanKey(humanId),
+});
+export const humanIdFromKey = (humanKey: string) => {
+  if (!humanKey.startsWith(humanSortKeyPrefix0)) {
+    return {
+      error: `Not a humanKey: ${humanKey} did not start with ${humanSortKeyPrefix0}`,
+      result: "",
+    };
+  }
+  const theSplit = humanKey.split("#");
+  if (theSplit.length < 2) {
+    return {
+      error: `Not a correct humanKey; ${humanKey} has no hashes.`,
+      result: "",
+    };
+  }
+  return { result: theSplit[1], error: "" };
+};
+
+export const clubHumanKey = (clubHumanId: string) =>
+  `${clubHumanSortKeyPrefix0}#${clubHumanId}`;
+export const clubHumanIdFromKey = (clubHumanKey: string) => {
+  if (!clubHumanKey.startsWith(clubHumanSortKeyPrefix0)) {
+    return {
+      error: `Not a clubHumanKey: ${clubHumanKey} did not start with ${clubHumanSortKeyPrefix0}`,
+      result: "",
+    };
+  }
+  const theSplit = clubHumanKey.split("#");
+  if (theSplit.length < 2) {
+    return {
+      error: `Not a correct clubHumanKey; ${clubHumanKey} has no hashes.`,
+      result: "",
+    };
+  }
+  return { result: theSplit[1], error: "" };
+};
+
+export const cognitoUserIdKey = (cognitoUserId: string) =>
+  `${cognitoUserSortKeyPrefix0}#${cognitoUserId}`;
+export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
+  if (!cognitoUserIdKey.startsWith(cognitoUserSortKeyPrefix0)) {
+    return {
+      error: `Not a cognitoUserIdKey: ${cognitoUserIdKey} did not start with ${cognitoUserSortKeyPrefix0}`,
+      result: "",
+    };
+  }
+  const theSplit = cognitoUserIdKey.split("#");
+  if (theSplit.length < 2) {
+    return {
+      error: `Not a correct cognitoUserIdKey; ${cognitoUserIdKey} has no hashes.`,
       result: "",
     };
   }
@@ -127,7 +190,7 @@ export const clubIdFromKey = (clubKey: string) => {
 // normally, would be:
 // pk: HUMAN#<humanId>, sk: IDP#<idp>, cognitoUserId, email, givenName, familyName, maybe image?
 // but this causes uniqueness, where we don't need it.  Instead, we'll use the first-class entity for cognitoUser::
-// pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId>, idp: <idp>, email: <email>, givenName, familyName, maybe image?
+// pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId>, idp: <idp>, email: <email>, userName, givenName, familyName, maybe image?
 // transaction for uniqueness also inserts:
 // pk: IDP#<idp>, sk: EMAIL#<email>, humanId: <humanId>, cognitoUserId: <cognitoUserId>
 // failing the transaction if it already exists, although I think this is guaranteed by the social provider IDPs
