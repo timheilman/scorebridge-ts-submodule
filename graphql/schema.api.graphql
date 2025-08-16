@@ -357,7 +357,7 @@ type PlayerAssignment {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
-  clubHumanDisplayName: String!
+  clubHumanDisplayName: String
     @aws_iam
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]

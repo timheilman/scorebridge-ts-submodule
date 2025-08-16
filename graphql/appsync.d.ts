@@ -455,7 +455,7 @@ export interface PartialPlayerAssignment {
 
 export interface PlayerAssignment {
   __typename?: "PlayerAssignment";
-  clubHumanDisplayName: Scalars["String"]["output"];
+  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
 }
