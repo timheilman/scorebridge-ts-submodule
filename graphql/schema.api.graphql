@@ -357,7 +357,7 @@ type PlayerAssignment {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
-  clubHumanDisplayName: String
+  clubHumanDisplayName: String!
     @aws_iam
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
@@ -654,7 +654,7 @@ type Game {
 type ClubHuman {
   clubId: String!
   clubHumanId: String!
-  clubHumanDisplayName: String!
+  clubHumanDisplayName: String
 }
 
 input PartialGameCVT {
@@ -702,8 +702,8 @@ type EnqueueCreateGameOutput {
 
 input CreateClubHumanInput {
   clubId: String!
-  clubHumanId: String
-  clubHumanDisplayName: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String
 }
 
 input DeleteGameInput {
@@ -719,7 +719,7 @@ input DeleteClubHumanInput {
 input UpdateClubHumanInput {
   clubId: String!
   clubHumanId: String!
-  clubHumanDisplayName: String!
+  clubHumanDisplayName: String
 }
 
 type UnexpectedErrorResponse {

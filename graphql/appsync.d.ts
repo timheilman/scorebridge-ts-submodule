@@ -142,7 +142,7 @@ export interface ClubDeviceWithRegToken {
 
 export interface ClubHuman {
   __typename?: "ClubHuman";
-  clubHumanDisplayName: Scalars["String"]["output"];
+  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
 }
@@ -154,8 +154,8 @@ export interface CreateClubDeviceRegistrationInput {
 }
 
 export interface CreateClubHumanInput {
-  clubHumanDisplayName: Scalars["String"]["input"];
-  clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
+  clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
+  clubHumanId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
 }
 
@@ -455,7 +455,7 @@ export interface PartialPlayerAssignment {
 
 export interface PlayerAssignment {
   __typename?: "PlayerAssignment";
-  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
+  clubHumanDisplayName: Scalars["String"]["output"];
   clubHumanId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
 }
@@ -640,7 +640,7 @@ export interface UpdateBoardResultResponse {
 }
 
 export interface UpdateClubHumanInput {
-  clubHumanDisplayName: Scalars["String"]["input"];
+  clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
   clubHumanId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
 }
