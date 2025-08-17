@@ -196,6 +196,16 @@ export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
 // failing the transaction if it already exists, although I think this is guaranteed by the social provider IDPs
 // anyway: I think cognitoUserId is always the same for the same <idp>, <email> pair, and is always unique.
 
+// CognitoUserClub
+// pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId>, clubHumanId: <clubHumanId>, humanId: <humanId>, displayName: <displayName>, role: <role>*
+// This is purely an efficiency table. It is redundant, and only re-encodes
+// the relationship from Club to HumanClub to Human to CognitoUser, as
+// directly the relationship from CognitoUser to Club.  This is to have
+// a place to look up clubId, role pairs directly from a cognitoUserId
+// during preTokenGeneration without needing >1 ddb query. It must
+// be kept in sync with the values on the
+// pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId> table
+
 // Use case 1) preTokenGeneration:
 // cognitoUserId => map from clubId to role
 // so working backward from the use case, we want:
@@ -207,7 +217,8 @@ export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
 // in the corresponding pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId> records, linked via the
 // pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId> records.
 // * thus, the role: <role> value in the pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId> is the
-// canonical value, but not the one read during the preTokenGeneration use case
+// canonical value, but not the one read during the preTokenGeneration use case from the
+// pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId> record
 
 // Use case 2) playerAssignment:
 // clubId => list of clubHuman displayNames/ clubMemberIds
