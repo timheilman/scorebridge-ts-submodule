@@ -130,7 +130,14 @@ export const errorForDeviceLevelMultitenancy = ({
     return clubMultitenancyError;
   }
 
-  if ((groups ?? []).includes("adminClub")) {
+  if (
+    clubId === claims["custom:tenantId"] ||
+    ["ownerClub", "adminClub"].includes(
+      (JSON.parse(claims.bridgeFridgeClaims as string) as BridgeFridgeClaims)[
+        clubId
+      ],
+    )
+  ) {
     return;
   }
 
