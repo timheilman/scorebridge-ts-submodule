@@ -19,7 +19,7 @@ async function queryChunk({
   exclusiveStartKey,
 }: {
   awsRegion: string;
-  profile: string | null;
+  profile?: string | null;
   tableName: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
@@ -41,7 +41,7 @@ async function queryChunk({
   );
 }
 
-async function batchQuery({
+export const batchQuery = async ({
   awsRegion,
   profile = null,
   tableName,
@@ -49,11 +49,11 @@ async function batchQuery({
   expressionAttributeValues,
 }: {
   awsRegion: string;
-  profile: string | null;
+  profile?: string | null;
   tableName: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
-}) {
+}) => {
   const items: Record<string, NativeAttributeValue>[] = [];
   let lastEvaluatedKey: Record<string, NativeAttributeValue> | undefined =
     undefined;
@@ -63,7 +63,7 @@ async function batchQuery({
       profile,
       tableName,
       keyConditionExpression,
-      expressionAttributeValues: expressionAttributeValues,
+      expressionAttributeValues,
       exclusiveStartKey: lastEvaluatedKey,
     });
     log("batchQuery.doWhile", "debug", { items, results });
@@ -77,7 +77,7 @@ async function batchQuery({
     lastEvaluatedKey = results.LastEvaluatedKey;
   } while (lastEvaluatedKey && Object.keys(lastEvaluatedKey).length !== 0);
   return items;
-}
+};
 
 export async function batchDeleteGames({
   awsRegion,
@@ -111,7 +111,7 @@ export async function batchDeleteGames({
   });
 }
 
-export async function batchDeleteClubDetails({
+export const batchDeleteClubItems = async ({
   awsRegion,
   profile = null,
   scoreBridgeTableName,
@@ -121,8 +121,8 @@ export async function batchDeleteClubDetails({
   profile?: string | null;
   scoreBridgeTableName: string;
   clubId: string;
-}) {
-  await batchDeleteDdbRecords({
+}) =>
+  batchDeleteDdbRecords({
     items: await batchQuery({
       awsRegion,
       tableName: scoreBridgeTableName,
@@ -136,13 +136,13 @@ export async function batchDeleteClubDetails({
     profile,
     tableName: scoreBridgeTableName,
   });
-}
+
 export const chunk = <T>(arr: T[], size: number) =>
   Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
     arr.slice(i * size, i * size + size),
   );
 
-async function batchDeleteDdbRecords({
+export const batchDeleteDdbRecords = async ({
   items,
   awsRegion,
   profile = null,
@@ -150,9 +150,9 @@ async function batchDeleteDdbRecords({
 }: {
   items: Record<string, NativeAttributeValue>[];
   awsRegion: string;
-  profile: string | null;
+  profile?: string | null;
   tableName: string;
-}) {
+}) => {
   // batch deletes have a maximum of 25 records:
   const chunks = chunk(items, 25);
   const promises: Promise<unknown>[] = [];
@@ -180,4 +180,4 @@ async function batchDeleteDdbRecords({
   });
 
   return await Promise.all(promises);
-}
+};

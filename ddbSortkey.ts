@@ -118,6 +118,7 @@ export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
 // ----------------
 // cognitoUserId (primary key)
 // humanId (foreign key)
+// userName
 // identityProvider ("Facebook", "Google", "SignInWithApple", "LogInWithAmazon", "CognitoUserPool") (phantom foreign key)
 // email
 // cross this out: alternate unique key: (humanId, identityProviderName); allow multiple users from one idp for one human
