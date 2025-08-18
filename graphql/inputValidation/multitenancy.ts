@@ -93,7 +93,10 @@ export const errorForClubLevelMultitenancy = ({
       ],
     )
   ) {
-    return { msg: failureMessage, errorType: "401: Invalid Club Id" };
+    return {
+      msg: `${failureMessage}; claims: ${claims.bridgeFridgeClaims as string}`,
+      errorType: "401: Invalid Club Id",
+    };
   }
   return;
 };
