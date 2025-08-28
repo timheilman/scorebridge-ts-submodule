@@ -192,10 +192,11 @@ export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
 // pk: HUMAN#<humanId>, sk: IDP#<idp>, cognitoUserId, email, givenName, familyName, maybe image?
 // but this causes uniqueness, where we don't need it.  Instead, we'll use the first-class entity for cognitoUser::
 // pk: HUMAN#<humanId>, sk: COGNITOUSERID#<cognitoUserId>, idp: <idp>, email: <email>, userName, givenName, familyName, maybe image?
-// transaction for uniqueness also inserts:
+// transaction for uniqueness could also insert:
 // pk: IDP#<idp>, sk: EMAIL#<email>, humanId: <humanId>, cognitoUserId: <cognitoUserId>
-// failing the transaction if it already exists, although I think this is guaranteed by the social provider IDPs
-// anyway: I think cognitoUserId is always the same for the same <idp>, <email> pair, and is always unique.
+// failing the transaction if it already exists, but it won't because (I think) this is guaranteed
+// by the social provider IDPs anyway: no two accounts for the same IDP are allowed to have the same
+// email, whether the IDP is social or CognitoUserPool.
 
 // CognitoUserClub
 // pk: COGNITOUSERID#<cognitoUserId>, sk: CLUB#<clubId>, clubHumanId: <clubHumanId>, humanId: <humanId>, displayName: <displayName>, role: <role>*
@@ -204,7 +205,7 @@ export const cognitoUserIdFromKey = (cognitoUserIdKey: string) => {
 // directly the relationship from CognitoUser to Club.  This is to have
 // a place to look up clubId, role pairs directly from a cognitoUserId
 // during preTokenGeneration without needing >1 ddb query. It must
-// be kept in sync with the values on the
+// be kept in sync (via transaction) with the values on the
 // pk: CLUB#<clubId>, sk: CLUBHUMAN#<clubHumanId> table
 
 // Use case 1) preTokenGeneration:
