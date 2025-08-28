@@ -152,10 +152,20 @@ type Mutation {
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
-  createClubHuman(input: CreateClubHumanInput!): ClubHuman!
+  enqueueCreateClubHuman(
+    input: EnqueueCreateClubHumanInput!
+  ): EnqueueCreateClubHumanOutput!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
-  updateClubHuman(input: UpdateClubHumanInput!): ClubHuman!
+  notifyCreateClubHuman(input: NotifyClubHumanInput!): NotifyClubHuman!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+    @aws_iam
+  enqueueUpdateClubHuman(
+    input: EnqueueUpdateClubHumanInput!
+  ): EnqueueUpdateClubHumanOutput!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
+  notifyUpdateClubHuman(input: NotifyClubHumanInput!): NotifyClubHuman!
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+    @aws_iam
   deleteClubHuman(input: DeleteClubHumanInput!): ClubHuman!
     @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
 }
@@ -198,12 +208,16 @@ type Subscription {
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
 
-  onCreateClubHuman(clubId: String!): ClubHuman
-    @aws_subscribe(mutations: ["createClubHuman"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
-  onUpdateClubHuman(clubId: String!): ClubHuman
-    @aws_subscribe(mutations: ["updateClubHuman"])
-    @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
+  onNotifyCreateClubHuman(clubId: String!): NotifyClubHuman
+    @aws_subscribe(mutations: ["notifyCreateClubHuman"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
+    )
+  onNotifyUpdateClubHuman(clubId: String!): NotifyClubHuman
+    @aws_subscribe(mutations: ["notifyUpdateClubHuman"])
+    @aws_cognito_user_pools(
+      cognito_groups: ["adminSuper", "rando", "clubDevice"]
+    )
   onDeleteClubHuman(clubId: String!): ClubHuman
     @aws_subscribe(mutations: ["deleteClubHuman"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
@@ -700,10 +714,26 @@ type EnqueueCreateGameOutput {
   label: String
 }
 
-input CreateClubHumanInput {
+input EnqueueCreateClubHumanInput {
   clubId: String!
   clubHumanId: String!
   clubHumanDisplayName: String
+}
+
+type EnqueueCreateClubHumanOutput {
+  clubId: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String
+}
+
+input NotifyClubHumanInput {
+  error: String
+  clubHuman: EnqueueUpdateClubHumanInput
+}
+
+type NotifyClubHuman {
+  error: String
+  clubHuman: ClubHuman
 }
 
 input DeleteGameInput {
@@ -716,7 +746,13 @@ input DeleteClubHumanInput {
   clubHumanId: String!
 }
 
-input UpdateClubHumanInput {
+input EnqueueUpdateClubHumanInput {
+  clubId: String!
+  clubHumanId: String!
+  clubHumanDisplayName: String
+}
+
+type EnqueueUpdateClubHumanOutput {
   clubId: String!
   clubHumanId: String!
   clubHumanDisplayName: String
