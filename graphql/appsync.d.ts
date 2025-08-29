@@ -416,7 +416,6 @@ export interface NotifyClubHuman {
 export interface NotifyClubHumanInput {
   clubHuman?: InputMaybe<EnqueueUpdateClubHumanInput>;
   error?: InputMaybe<Scalars["String"]["input"]>;
-  humanId?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface PagingBoardResult {

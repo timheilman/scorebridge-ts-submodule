@@ -731,7 +731,6 @@ type EnqueueCreateClubHumanOutput {
 input NotifyClubHumanInput {
   error: String
   clubHuman: EnqueueUpdateClubHumanInput
-  humanId: String
 }
 
 type NotifyClubHuman {
