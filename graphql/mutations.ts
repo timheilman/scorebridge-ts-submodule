@@ -170,8 +170,9 @@ export const mutIdToMutGql = {
       mutation enqueueCreateClubHuman($input: EnqueueCreateClubHumanInput!) {
         enqueueCreateClubHuman(input: $input) {
           clubId
-          clubHumanId
           clubHumanDisplayName
+          clubHumanId
+          humanId
         }
       }
     `,
@@ -185,8 +186,9 @@ export const mutIdToMutGql = {
       mutation enqueueUpdateClubHuman($input: EnqueueUpdateClubHumanInput!) {
         enqueueUpdateClubHuman(input: $input) {
           clubId
-          clubHumanId
           clubHumanDisplayName
+          clubHumanId
+          humanId
         }
       }
     `,

@@ -1,8 +1,8 @@
-import { MutationEnqueueCreateClubHumanArgs } from "../appsync";
+import { MutationEnqueueUpdateClubHumanArgs } from "../appsync";
 import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
 
 export const errorForMutationEnqueueUpdateClubHuman: InputValidator<
-  MutationEnqueueCreateClubHumanArgs
+  MutationEnqueueUpdateClubHumanArgs
 > = ({ args, cogIdentity }) => {
   const multitenancyError = errorForClubLevelMultitenancy({
     cogIdentity,
@@ -12,17 +12,20 @@ export const errorForMutationEnqueueUpdateClubHuman: InputValidator<
   if (multitenancyError) {
     return multitenancyError;
   }
-  const { clubId, clubHumanId, clubHumanDisplayName } = args.input;
+  const { clubId, clubHumanId, clubHumanDisplayName, humanId } = args.input;
 
   if (
     !clubId ||
-    !clubHumanId ||
+    !humanId ||
+    (clubHumanId !== null &&
+      clubHumanId !== undefined &&
+      clubHumanId.trim() === "") ||
     (clubHumanDisplayName !== null &&
       clubHumanDisplayName !== undefined &&
       clubHumanDisplayName.trim() === "")
   ) {
     return {
-      msg: "Invalid clubHuman parameters: clubId and clubHumanId are required, and clubHumanDisplayName must not be empty or whitespace",
+      msg: "Invalid clubHuman parameters: clubId and humanId are required, and clubHumanId and clubHumanDisplayName are optional but if present, must not be empty or whitespace",
       errorType: "400: Invalid clubHuman parameters",
     };
   }

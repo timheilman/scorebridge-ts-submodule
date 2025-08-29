@@ -249,8 +249,9 @@ export const subIdToSubGql = {
           error
           clubHuman {
             clubId
-            clubHumanId
             clubHumanDisplayName
+            clubHumanId
+            humanId
           }
         }
       }
@@ -267,8 +268,9 @@ export const subIdToSubGql = {
           error
           clubHuman {
             clubId
-            clubHumanId
             clubHumanDisplayName
+            clubHumanId
+            humanId
           }
         }
       }
