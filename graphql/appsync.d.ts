@@ -38,10 +38,10 @@ export interface Scalars {
 
 export interface AssignPlayerInput {
   clubDeviceId?: InputMaybe<Scalars["String"]["input"]>;
-  clubHumanDisplayName: Scalars["String"]["input"];
   clubHumanId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
   directionLetter: DirectionLetter;
+  displayName: Scalars["String"]["input"];
   gameId: Scalars["String"]["input"];
   tableNumber: Scalars["Int"]["input"];
 }
@@ -49,10 +49,10 @@ export interface AssignPlayerInput {
 export interface AssignPlayerResponse {
   __typename?: "AssignPlayerResponse";
   clubDeviceId?: Maybe<Scalars["String"]["output"]>;
-  clubHumanDisplayName: Scalars["String"]["output"];
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
+  displayName: Scalars["String"]["output"];
   gameId: Scalars["String"]["output"];
   tableNumber: Scalars["Int"]["output"];
 }
@@ -142,9 +142,9 @@ export interface ClubDeviceWithRegToken {
 
 export interface ClubHuman {
   __typename?: "ClubHuman";
-  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  displayName?: Maybe<Scalars["String"]["output"]>;
   humanId: Scalars["String"]["output"];
 }
 
@@ -179,16 +179,16 @@ export type DirectionLetter = "E" | "N" | "S" | "W";
 export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 
 export interface EnqueueCreateClubHumanInput {
-  clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
   clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
+  displayName?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface EnqueueCreateClubHumanOutput {
   __typename?: "EnqueueCreateClubHumanOutput";
-  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  displayName?: Maybe<Scalars["String"]["output"]>;
   humanId: Scalars["String"]["output"];
 }
 
@@ -224,17 +224,17 @@ export interface EnqueueDeleteClubDeviceOutput {
 }
 
 export interface EnqueueUpdateClubHumanInput {
-  clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
   clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
+  displayName?: InputMaybe<Scalars["String"]["input"]>;
   humanId: Scalars["String"]["input"];
 }
 
 export interface EnqueueUpdateClubHumanOutput {
   __typename?: "EnqueueUpdateClubHumanOutput";
-  clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId?: Maybe<Scalars["String"]["output"]>;
   clubId: Scalars["String"]["output"];
+  displayName?: Maybe<Scalars["String"]["output"]>;
   humanId: Scalars["String"]["output"];
 }
 
@@ -494,16 +494,16 @@ export interface PartialGameVt {
 }
 
 export interface PartialPlayerAssignment {
-  clubHumanDisplayName: Scalars["String"]["input"];
   clubHumanId: Scalars["String"]["input"];
   directionLetter: DirectionLetter;
+  displayName: Scalars["String"]["input"];
 }
 
 export interface PlayerAssignment {
   __typename?: "PlayerAssignment";
-  clubHumanDisplayName: Scalars["String"]["output"];
   clubHumanId: Scalars["String"]["output"];
   directionLetter: DirectionLetter;
+  displayName: Scalars["String"]["output"];
 }
 
 export interface Query {

@@ -371,7 +371,7 @@ type PlayerAssignment {
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
     )
-  clubHumanDisplayName: String!
+  displayName: String!
     @aws_iam
     @aws_cognito_user_pools(
       cognito_groups: ["adminSuper", "rando", "clubDevice"]
@@ -575,7 +575,7 @@ input UpdateTableAssignmentInput {
 input PartialPlayerAssignment {
   directionLetter: DirectionLetter!
   clubHumanId: String!
-  clubHumanDisplayName: String!
+  displayName: String!
 }
 
 input AssignPlayerInput {
@@ -585,7 +585,7 @@ input AssignPlayerInput {
   tableNumber: Int!
   directionLetter: DirectionLetter!
   clubHumanId: String!
-  clubHumanDisplayName: String!
+  displayName: String!
 }
 
 input UnassignPlayersInput {
@@ -602,7 +602,7 @@ type AssignPlayerResponse {
   tableNumber: Int!
   directionLetter: DirectionLetter!
   clubHumanId: String!
-  clubHumanDisplayName: String!
+  displayName: String!
 }
 
 type UnassignPlayersResponse {
@@ -669,7 +669,7 @@ type ClubHuman {
   clubId: String!
   humanId: String!
   clubHumanId: String!
-  clubHumanDisplayName: String
+  displayName: String
 }
 
 input PartialGameCVT {
@@ -718,14 +718,14 @@ type EnqueueCreateGameOutput {
 input EnqueueCreateClubHumanInput {
   clubId: String!
   clubHumanId: String
-  clubHumanDisplayName: String
+  displayName: String
 }
 
 type EnqueueCreateClubHumanOutput {
   clubId: String!
   clubHumanId: String!
   humanId: String!
-  clubHumanDisplayName: String
+  displayName: String
 }
 
 input NotifyClubHumanInput {
@@ -753,14 +753,14 @@ input EnqueueUpdateClubHumanInput {
   clubId: String!
   humanId: String!
   clubHumanId: String
-  clubHumanDisplayName: String
+  displayName: String
 }
 
 type EnqueueUpdateClubHumanOutput {
   clubId: String!
   humanId: String!
   clubHumanId: String
-  clubHumanDisplayName: String
+  displayName: String
 }
 
 type UnexpectedErrorResponse {
