@@ -12,7 +12,7 @@ export const errorForMutationEnqueueUpdateClubHuman: InputValidator<
   if (multitenancyError) {
     return multitenancyError;
   }
-  const { clubId, clubHumanId, clubHumanDisplayName, humanId } = args.input;
+  const { clubId, clubHumanId, displayName, humanId } = args.input;
 
   if (
     !clubId ||
@@ -20,12 +20,12 @@ export const errorForMutationEnqueueUpdateClubHuman: InputValidator<
     (clubHumanId !== null &&
       clubHumanId !== undefined &&
       clubHumanId.trim() === "") ||
-    (clubHumanDisplayName !== null &&
-      clubHumanDisplayName !== undefined &&
-      clubHumanDisplayName.trim() === "")
+    (displayName !== null &&
+      displayName !== undefined &&
+      displayName.trim() === "")
   ) {
     return {
-      msg: "Invalid clubHuman parameters: clubId and humanId are required, and clubHumanId and clubHumanDisplayName are optional but if present, must not be empty or whitespace",
+      msg: "Invalid clubHuman parameters: clubId and humanId are required, and clubHumanId and displayName are optional but if present, must not be empty or whitespace",
       errorType: "400: Invalid clubHuman parameters",
     };
   }

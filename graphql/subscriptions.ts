@@ -63,7 +63,7 @@ export const subIdToSubGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              clubHumanDisplayName
+              displayName
               clubHumanId
             }
             results {
@@ -152,7 +152,7 @@ export const subIdToSubGql = {
             playerAssignments {
               directionLetter
               clubHumanId
-              clubHumanDisplayName
+              displayName
             }
             results {
               board
@@ -187,7 +187,7 @@ export const subIdToSubGql = {
           tableNumber
           directionLetter
           clubHumanId
-          clubHumanDisplayName
+          displayName
         }
       }
     `,
@@ -249,7 +249,7 @@ export const subIdToSubGql = {
           error
           clubHuman {
             clubId
-            clubHumanDisplayName
+            displayName
             clubHumanId
             humanId
           }
@@ -268,7 +268,7 @@ export const subIdToSubGql = {
           error
           clubHuman {
             clubId
-            clubHumanDisplayName
+            displayName
             clubHumanId
             humanId
           }

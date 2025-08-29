@@ -383,7 +383,7 @@ export const tableRoundDirectionToPlayerName = ({
         movement,
       });
     return playerAssignments[`${originalTable}_${originalDirection}`]
-      ?.clubHumanDisplayName;
+      ?.displayName;
   };
 };
 

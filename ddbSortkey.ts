@@ -11,7 +11,7 @@ export const resultSortKeyPrefix3 = "BDRT";
 export const clubHumanSortKeyPrefix0 = "CLHU";
 export const humanSortKeyPrefix0 = "HUMN";
 export const cognitoUserSortKeyPrefix0 = "CGID";
-export const clubHumanDisplayNameSortKeyPrefix0 = "CHDN";
+export const displayNameSortKeyPrefix0 = "CHDN";
 
 export const clubKey = (clubId: string) => `${clubSortKeyPrefix0}#${clubId}`;
 export const clubKeys = (clubId: string) => ({
@@ -77,8 +77,8 @@ export const clubHumanIdFromKey = (clubHumanKey: string) => {
   return { result: theSplit[1], error: "" };
 };
 
-export const clubHumanDisplayNameKey = (clubHumanDisplayName: string) =>
-  `${clubHumanDisplayNameSortKeyPrefix0}#${clubHumanDisplayName}`;
+export const displayNameKey = (displayName: string) =>
+  `${displayNameSortKeyPrefix0}#${displayName}`;
 
 export const cognitoUserIdKey = (cognitoUserId: string) =>
   `${cognitoUserSortKeyPrefix0}#${cognitoUserId}`;

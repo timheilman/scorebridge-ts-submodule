@@ -101,7 +101,7 @@ export const qidToQueryGql = {
               currentAsOf
               playerAssignments {
                 directionLetter
-                clubHumanDisplayName
+                displayName
                 clubHumanId
               }
               results {
@@ -140,7 +140,7 @@ export const qidToQueryGql = {
           items {
             clubId
             clubHumanId
-            clubHumanDisplayName
+            displayName
           }
           nextToken
         }
@@ -165,7 +165,7 @@ export const qidToQueryGql = {
             currentAsOf
             playerAssignments {
               directionLetter
-              clubHumanDisplayName
+              displayName
               clubHumanId
             }
             results {
