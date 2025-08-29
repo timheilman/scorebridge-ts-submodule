@@ -145,6 +145,7 @@ export interface ClubHuman {
   clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  humanId: Scalars["String"]["output"];
 }
 
 export interface CreateClubDeviceRegistrationInput {
@@ -188,6 +189,7 @@ export interface EnqueueCreateClubHumanOutput {
   clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
+  humanId: Scalars["String"]["output"];
 }
 
 export interface EnqueueCreateGameInput {
@@ -412,6 +414,7 @@ export interface NotifyClubHuman {
 export interface NotifyClubHumanInput {
   clubHuman?: InputMaybe<EnqueueUpdateClubHumanInput>;
   error?: InputMaybe<Scalars["String"]["input"]>;
+  humanId?: InputMaybe<Scalars["String"]["input"]>;
 }
 
 export interface PagingBoardResult {
