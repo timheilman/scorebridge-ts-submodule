@@ -1,15 +1,15 @@
 import {
   Subscription,
   SubscriptionOnAssignPlayerArgs,
-  SubscriptionOnCreateClubHumanArgs,
   SubscriptionOnDeleteClubHumanArgs,
   SubscriptionOnDeleteGameArgs,
   SubscriptionOnNotifyCreateClubDeviceArgs,
+  SubscriptionOnNotifyCreateClubHumanArgs,
   SubscriptionOnNotifyCreateGameArgs,
   SubscriptionOnNotifyDeleteClubDeviceArgs,
+  SubscriptionOnNotifyUpdateClubHumanArgs,
   SubscriptionOnUnassignPlayersArgs,
   SubscriptionOnUpdateBoardResultArgs,
-  SubscriptionOnUpdateClubHumanArgs,
   SubscriptionOnUpdateClubNameArgs,
   SubscriptionOnUpdateCurrentGameIdArgs,
   SubscriptionOnUpdateTableAssignmentArgs,
@@ -239,33 +239,41 @@ export const subIdToSubGql = {
     `,
     "onUpdateBoardResult",
   ),
-  onCreateClubHuman: createKeyedGeneratedSubscription<
-    "onCreateClubHuman",
-    SubscriptionOnCreateClubHumanArgs
+  onNotifyCreateClubHuman: createKeyedGeneratedSubscription<
+    "onNotifyCreateClubHuman",
+    SubscriptionOnNotifyCreateClubHumanArgs
   >(
     /* GraphQL */ `
-      subscription OnCreateClubHuman($clubId: String!) {
-        onCreateClubHuman(clubId: $clubId) {
-          clubHumanId
-          clubHumanDisplayName
+      subscription OnNotifyCreateClubHuman($clubId: String!) {
+        onNotifyCreateClubHuman(clubId: $clubId) {
+          error
+          clubHuman {
+            clubId
+            clubHumanId
+            clubHumanDisplayName
+          }
         }
       }
     `,
-    "onCreateClubHuman",
+    "onNotifyCreateClubHuman",
   ),
-  onUpdateClubHuman: createKeyedGeneratedSubscription<
-    "onUpdateClubHuman",
-    SubscriptionOnUpdateClubHumanArgs
+  onNotifyUpdateClubHuman: createKeyedGeneratedSubscription<
+    "onNotifyUpdateClubHuman",
+    SubscriptionOnNotifyUpdateClubHumanArgs
   >(
     /* GraphQL */ `
-      subscription OnUpdateClubHuman($clubId: String!) {
-        onUpdateClubHuman(clubId: $clubId) {
-          clubHumanId
-          clubHumanDisplayName
+      subscription OnNotifyUpdateClubHuman($clubId: String!) {
+        onNotifyUpdateClubHuman(clubId: $clubId) {
+          error
+          clubHuman {
+            clubId
+            clubHumanId
+            clubHumanDisplayName
+          }
         }
       }
     `,
-    "onUpdateClubHuman",
+    "onNotifyUpdateClubHuman",
   ),
   onDeleteClubHuman: createKeyedGeneratedSubscription<
     "onDeleteClubHuman",

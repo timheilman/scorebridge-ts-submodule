@@ -2,15 +2,15 @@ import {
   Mutation,
   MutationAssignPlayerArgs,
   MutationCreateClubDeviceRegistrationArgs,
-  MutationCreateClubHumanArgs,
   MutationDeleteClubAndAdminArgs,
   MutationDeleteClubHumanArgs,
   MutationDeleteGameArgs,
+  MutationEnqueueCreateClubHumanArgs,
   MutationEnqueueCreateGameArgs,
   MutationEnqueueDeleteClubDeviceArgs,
+  MutationEnqueueUpdateClubHumanArgs,
   MutationUnassignPlayersArgs,
   MutationUpdateBoardResultArgs,
-  MutationUpdateClubHumanArgs,
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
   MutationUpdateTableAssignmentArgs,
@@ -162,35 +162,35 @@ export const mutIdToMutGql = {
     `,
     "deleteGame",
   ),
-  createClubHuman: createKeyedGeneratedMutation<
-    "createClubHuman",
-    MutationCreateClubHumanArgs
+  enqueueCreateClubHuman: createKeyedGeneratedMutation<
+    "enqueueCreateClubHuman",
+    MutationEnqueueCreateClubHumanArgs
   >(
     /* GraphQL */ `
-      mutation createClubHuman($input: CreateClubHumanInput!) {
-        createClubHuman(input: $input) {
+      mutation enqueueCreateClubHuman($input: EnqueueCreateClubHumanInput!) {
+        enqueueCreateClubHuman(input: $input) {
           clubId
           clubHumanId
           clubHumanDisplayName
         }
       }
     `,
-    "createClubHuman",
+    "enqueueCreateClubHuman",
   ),
-  updateClubHuman: createKeyedGeneratedMutation<
-    "updateClubHuman",
-    MutationUpdateClubHumanArgs
+  enqueueUpdateClubHuman: createKeyedGeneratedMutation<
+    "enqueueUpdateClubHuman",
+    MutationEnqueueUpdateClubHumanArgs
   >(
     /* GraphQL */ `
-      mutation updateClubHuman($input: UpdateClubHumanInput!) {
-        updateClubHuman(input: $input) {
+      mutation enqueueUpdateClubHuman($input: EnqueueUpdateClubHumanInput!) {
+        enqueueUpdateClubHuman(input: $input) {
           clubId
           clubHumanId
           clubHumanDisplayName
         }
       }
     `,
-    "updateClubHuman",
+    "enqueueUpdateClubHuman",
   ),
   deleteClubHuman: createKeyedGeneratedMutation<
     "deleteClubHuman",

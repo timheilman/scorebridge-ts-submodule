@@ -667,6 +667,7 @@ type Game {
 
 type ClubHuman {
   clubId: String!
+  humanId: String!
   clubHumanId: String!
   clubHumanDisplayName: String
 }
@@ -723,12 +724,14 @@ input EnqueueCreateClubHumanInput {
 type EnqueueCreateClubHumanOutput {
   clubId: String!
   clubHumanId: String!
+  humanId: String!
   clubHumanDisplayName: String
 }
 
 input NotifyClubHumanInput {
   error: String
   clubHuman: EnqueueUpdateClubHumanInput
+  humanId: String
 }
 
 type NotifyClubHuman {
