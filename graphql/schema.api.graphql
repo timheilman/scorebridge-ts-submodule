@@ -717,7 +717,7 @@ type EnqueueCreateGameOutput {
 
 input EnqueueCreateClubHumanInput {
   clubId: String!
-  clubHumanId: String!
+  clubHumanId: String
   clubHumanDisplayName: String
 }
 
@@ -751,13 +751,15 @@ input DeleteClubHumanInput {
 
 input EnqueueUpdateClubHumanInput {
   clubId: String!
-  clubHumanId: String!
+  humanId: String!
+  clubHumanId: String
   clubHumanDisplayName: String
 }
 
 type EnqueueUpdateClubHumanOutput {
   clubId: String!
-  clubHumanId: String!
+  humanId: String!
+  clubHumanId: String
   clubHumanDisplayName: String
 }
 

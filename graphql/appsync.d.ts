@@ -180,7 +180,7 @@ export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 
 export interface EnqueueCreateClubHumanInput {
   clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
-  clubHumanId: Scalars["String"]["input"];
+  clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
 }
 
@@ -225,15 +225,17 @@ export interface EnqueueDeleteClubDeviceOutput {
 
 export interface EnqueueUpdateClubHumanInput {
   clubHumanDisplayName?: InputMaybe<Scalars["String"]["input"]>;
-  clubHumanId: Scalars["String"]["input"];
+  clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
+  humanId: Scalars["String"]["input"];
 }
 
 export interface EnqueueUpdateClubHumanOutput {
   __typename?: "EnqueueUpdateClubHumanOutput";
   clubHumanDisplayName?: Maybe<Scalars["String"]["output"]>;
-  clubHumanId: Scalars["String"]["output"];
+  clubHumanId?: Maybe<Scalars["String"]["output"]>;
   clubId: Scalars["String"]["output"];
+  humanId: Scalars["String"]["output"];
 }
 
 export interface Game {
