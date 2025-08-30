@@ -672,6 +672,13 @@ type ClubHuman {
   displayName: String
 }
 
+input ClubHumanInput {
+  clubId: String!
+  humanId: String!
+  clubHumanId: String!
+  displayName: String
+}
+
 input PartialGameCVT {
   clubId: String!
   gameId: String!
@@ -730,7 +737,7 @@ type EnqueueCreateClubHumanOutput {
 
 input NotifyClubHumanInput {
   error: String
-  clubHuman: EnqueueUpdateClubHumanInput
+  clubHuman: ClubHumanInput
 }
 
 type NotifyClubHuman {

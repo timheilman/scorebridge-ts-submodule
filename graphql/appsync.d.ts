@@ -148,6 +148,13 @@ export interface ClubHuman {
   humanId: Scalars["String"]["output"];
 }
 
+export interface ClubHumanInput {
+  clubHumanId: Scalars["String"]["input"];
+  clubId: Scalars["String"]["input"];
+  displayName?: InputMaybe<Scalars["String"]["input"]>;
+  humanId: Scalars["String"]["input"];
+}
+
 export interface CreateClubDeviceRegistrationInput {
   clubId: Scalars["String"]["input"];
   deviceName: Scalars["String"]["input"];
@@ -414,7 +421,7 @@ export interface NotifyClubHuman {
 }
 
 export interface NotifyClubHumanInput {
-  clubHuman?: InputMaybe<EnqueueUpdateClubHumanInput>;
+  clubHuman?: InputMaybe<ClubHumanInput>;
   error?: InputMaybe<Scalars["String"]["input"]>;
 }
 
