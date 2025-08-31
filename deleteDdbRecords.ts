@@ -6,20 +6,17 @@ import {
   QueryCommandOutput,
 } from "@aws-sdk/lib-dynamodb";
 
-import { cachedDynamoDbClient } from "./cachedDynamoDbClient";
 import { clubKey, gameSortKeyPrefix0 } from "./ddbSortkey";
 import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
 const log = tsSubmoduleLogFn("deleteDdbRecords.");
 async function queryChunk({
-  awsRegion,
-  profile = null,
+  ddbClient,
   tableName,
   keyConditionExpression,
   expressionAttributeValues,
   exclusiveStartKey,
 }: {
-  awsRegion: string;
-  profile?: string | null;
+  ddbClient: DynamoDBDocumentClient;
   tableName: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
@@ -29,9 +26,7 @@ async function queryChunk({
     keyConditionExpression,
     expressionAttributeValues,
   });
-  return DynamoDBDocumentClient.from(
-    cachedDynamoDbClient({ awsRegion, profile }),
-  ).send(
+  return ddbClient.send(
     new QueryCommand({
       TableName: tableName,
       KeyConditionExpression: keyConditionExpression,
@@ -42,14 +37,12 @@ async function queryChunk({
 }
 
 export const batchQuery = async ({
-  awsRegion,
-  profile = null,
+  ddbClient,
   tableName,
   keyConditionExpression,
   expressionAttributeValues,
 }: {
-  awsRegion: string;
-  profile?: string | null;
+  ddbClient: DynamoDBDocumentClient;
   tableName: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
@@ -59,8 +52,7 @@ export const batchQuery = async ({
     undefined;
   do {
     const results: QueryCommandOutput = await queryChunk({
-      awsRegion,
-      profile,
+      ddbClient,
       tableName,
       keyConditionExpression,
       expressionAttributeValues,
@@ -80,13 +72,11 @@ export const batchQuery = async ({
 };
 
 export async function batchDeleteGames({
-  awsRegion,
-  profile,
+  ddbClient,
   tableName,
   clubId,
 }: {
-  awsRegion: string;
-  profile: string;
+  ddbClient: DynamoDBDocumentClient;
   tableName: string;
   clubId: string;
 }) {
@@ -96,8 +86,7 @@ export async function batchDeleteGames({
     ":sk": `${gameSortKeyPrefix0}#`,
   };
   const items = await batchQuery({
-    awsRegion,
-    profile,
+    ddbClient,
     tableName,
     keyConditionExpression,
     expressionAttributeValues,
@@ -105,35 +94,30 @@ export async function batchDeleteGames({
   log("batchDeleteGames", "debug", { items, clubId });
   await batchDeleteDdbRecords({
     items,
-    awsRegion,
-    profile,
+    ddbClient,
     tableName,
   });
 }
 
 export const batchDeleteClubItems = async ({
-  awsRegion,
-  profile = null,
+  ddbClient,
   scoreBridgeTableName,
   clubId,
 }: {
-  awsRegion: string;
-  profile?: string | null;
+  ddbClient: DynamoDBDocumentClient;
   scoreBridgeTableName: string;
   clubId: string;
 }) =>
   batchDeleteDdbRecords({
     items: await batchQuery({
-      awsRegion,
+      ddbClient,
       tableName: scoreBridgeTableName,
       expressionAttributeValues: {
         ":pk": clubKey(clubId),
       },
-      profile,
       keyConditionExpression: "pk = :pk",
     }),
-    awsRegion,
-    profile,
+    ddbClient,
     tableName: scoreBridgeTableName,
   });
 
@@ -144,13 +128,11 @@ export const chunk = <T>(arr: T[], size: number) =>
 
 export const batchDeleteDdbRecords = async ({
   items,
-  awsRegion,
-  profile = null,
+  ddbClient,
   tableName,
 }: {
   items: Record<string, NativeAttributeValue>[];
-  awsRegion: string;
-  profile?: string | null;
+  ddbClient: DynamoDBDocumentClient;
   tableName: string;
 }) => {
   // batch deletes have a maximum of 25 records:
@@ -171,7 +153,7 @@ export const batchDeleteDdbRecords = async ({
       return requestItems;
     }, []);
     promises.push(
-      cachedDynamoDbClient({ awsRegion, profile }).send(
+      ddbClient.send(
         new BatchWriteCommand({
           RequestItems: { [tableName]: requestItems },
         }),
