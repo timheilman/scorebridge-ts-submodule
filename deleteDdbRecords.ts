@@ -12,12 +12,14 @@ const log = tsSubmoduleLogFn("deleteDdbRecords.");
 async function queryChunk({
   ddbClient,
   tableName,
+  indexName,
   keyConditionExpression,
   expressionAttributeValues,
   exclusiveStartKey,
 }: {
   ddbClient: DynamoDBDocumentClient;
   tableName: string;
+  indexName?: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
   exclusiveStartKey: Record<string, NativeAttributeValue> | undefined;
@@ -29,6 +31,7 @@ async function queryChunk({
   return ddbClient.send(
     new QueryCommand({
       TableName: tableName,
+      ...(indexName ? { IndexName: indexName } : {}),
       KeyConditionExpression: keyConditionExpression,
       ExpressionAttributeValues: expressionAttributeValues,
       ExclusiveStartKey: exclusiveStartKey,
@@ -39,11 +42,13 @@ async function queryChunk({
 export const batchQuery = async ({
   ddbClient,
   tableName,
+  indexName,
   keyConditionExpression,
   expressionAttributeValues,
 }: {
   ddbClient: DynamoDBDocumentClient;
   tableName: string;
+  indexName?: string;
   keyConditionExpression: string;
   expressionAttributeValues: Record<string, NativeAttributeValue>;
 }) => {
@@ -54,6 +59,7 @@ export const batchQuery = async ({
     const results: QueryCommandOutput = await queryChunk({
       ddbClient,
       tableName,
+      indexName,
       keyConditionExpression,
       expressionAttributeValues,
       exclusiveStartKey: lastEvaluatedKey,
