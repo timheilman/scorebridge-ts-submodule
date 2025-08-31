@@ -188,14 +188,14 @@ export type Doubling = "DOUBLE" | "NONE" | "REDOUBLE";
 export interface EnqueueCreateClubHumanInput {
   clubHumanId?: InputMaybe<Scalars["String"]["input"]>;
   clubId: Scalars["String"]["input"];
-  displayName?: InputMaybe<Scalars["String"]["input"]>;
+  displayName: Scalars["String"]["input"];
 }
 
 export interface EnqueueCreateClubHumanOutput {
   __typename?: "EnqueueCreateClubHumanOutput";
   clubHumanId: Scalars["String"]["output"];
   clubId: Scalars["String"]["output"];
-  displayName?: Maybe<Scalars["String"]["output"]>;
+  displayName: Scalars["String"]["output"];
   humanId: Scalars["String"]["output"];
 }
 

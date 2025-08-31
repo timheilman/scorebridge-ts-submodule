@@ -725,14 +725,14 @@ type EnqueueCreateGameOutput {
 input EnqueueCreateClubHumanInput {
   clubId: String!
   clubHumanId: String
-  displayName: String
+  displayName: String!
 }
 
 type EnqueueCreateClubHumanOutput {
   clubId: String!
   clubHumanId: String!
   humanId: String!
-  displayName: String
+  displayName: String!
 }
 
 input NotifyClubHumanInput {
