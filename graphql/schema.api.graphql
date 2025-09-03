@@ -741,8 +741,10 @@ input NotifyClubHumanInput {
 }
 
 type NotifyClubHuman {
-  error: String
+  error: String @aws_cognito_user_pools(cognito_groups: ["adminSuper"]) @aws_iam
   clubHuman: ClubHuman
+    @aws_cognito_user_pools(cognito_groups: ["adminSuper"])
+    @aws_iam
 }
 
 input DeleteGameInput {
