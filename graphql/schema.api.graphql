@@ -667,9 +667,17 @@ type Game {
 
 type ClubHuman {
   clubId: String!
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
+    @aws_iam
   humanId: String!
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
+    @aws_iam
   clubHumanId: String!
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
+    @aws_iam
   displayName: String
+    @aws_cognito_user_pools(cognito_groups: ["rando", "adminSuper"])
+    @aws_iam
 }
 
 input ClubHumanInput {
