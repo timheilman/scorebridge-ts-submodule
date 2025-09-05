@@ -204,6 +204,7 @@ export const mutIdToMutGql = {
           clubId
           clubHumanId
           displayName
+          humanId
         }
       }
     `,

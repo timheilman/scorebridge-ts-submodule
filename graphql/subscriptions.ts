@@ -284,7 +284,10 @@ export const subIdToSubGql = {
     /* GraphQL */ `
       subscription OnDeleteClubHuman($clubId: String!) {
         onDeleteClubHuman(clubId: $clubId) {
+          clubId
           clubHumanId
+          displayName
+          humanId
         }
       }
     `,
