@@ -172,8 +172,8 @@ export interface DeleteClubAndAdminResponse {
 }
 
 export interface DeleteClubHumanInput {
-  clubHumanId: Scalars["String"]["input"];
   clubId: Scalars["String"]["input"];
+  humanId: Scalars["String"]["input"];
 }
 
 export interface DeleteGameInput {

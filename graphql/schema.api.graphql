@@ -762,7 +762,7 @@ input DeleteGameInput {
 
 input DeleteClubHumanInput {
   clubId: String!
-  clubHumanId: String!
+  humanId: String!
 }
 
 input EnqueueUpdateClubHumanInput {
