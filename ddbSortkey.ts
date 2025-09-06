@@ -60,22 +60,6 @@ export const humanIdFromKey = (humanKey: string) => {
 
 export const clubHumanKey = (clubHumanId: string) =>
   `${clubHumanSortKeyPrefix0}#${clubHumanId}`;
-export const clubHumanIdFromKey = (clubHumanKey: string) => {
-  if (!clubHumanKey.startsWith(clubHumanSortKeyPrefix0)) {
-    return {
-      error: `Not a clubHumanKey: ${clubHumanKey} did not start with ${clubHumanSortKeyPrefix0}`,
-      result: "",
-    };
-  }
-  const theSplit = clubHumanKey.split("#");
-  if (theSplit.length < 2) {
-    return {
-      error: `Not a correct clubHumanKey; ${clubHumanKey} has no hashes.`,
-      result: "",
-    };
-  }
-  return { result: theSplit[1], error: "" };
-};
 
 export const displayNameKey = (displayName: string) =>
   `${displayNameSortKeyPrefix0}#${displayName}`;
