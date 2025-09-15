@@ -7,13 +7,13 @@ const envDict: Record<string, Lambda> = {};
 
 export const cachedLambdaClient = (
   awsRegion: string,
-  profile: string | null
+  profile: string | null,
 ): Lambda => {
   return cachedAwsSdkV3Client<Lambda>(
     Lambda,
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };

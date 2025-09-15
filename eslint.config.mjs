@@ -3,6 +3,7 @@
 import appsync from "@aws-appsync/eslint-plugin";
 import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import pluginJest from "eslint-plugin-jest";
 import reactPlugin from "eslint-plugin-react";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
@@ -10,7 +11,6 @@ import reactNative from "eslint-plugin-react-native";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import testingLibrary from "eslint-plugin-testing-library";
 import globals from "globals";
-import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default [
@@ -120,6 +120,6 @@ export default [
         // not allowed in appsync js runtime:
         "@typescript-eslint/prefer-nullish-coalescing": "off",
       },
-    }
+    },
   ),
 ];

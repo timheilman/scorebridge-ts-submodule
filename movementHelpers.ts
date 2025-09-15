@@ -2,8 +2,8 @@ import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
 } from "./boardGroups.js";
-import { allDirections } from "./bridgeEnums.js";
 import type { UnkeyedPlayerAssignment } from "./bridgeEnums.js";
+import { allDirections } from "./bridgeEnums.js";
 import type {
   DirectionLetter,
   Movement,

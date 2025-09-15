@@ -27,12 +27,10 @@ export type GraphQLAuthMode =
   // | "none"
   "userPool";
 
-export type OutType<T> = T extends KeyedGeneratedSubscription<
-  infer NAME,
-  unknown
->
-  ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
-  : never;
+export type OutType<T> =
+  T extends KeyedGeneratedSubscription<infer NAME, unknown>
+    ? NeverEmpty<Pick<Subscription, NAME>>[NAME]
+    : never;
 
 // these next three types are pulled from AWS Amplify v6 source code
 // For why these are copied-into this repo, see
@@ -51,13 +49,14 @@ type NeverEmpty<T> = {
  * array, this will only be the case when we also have errors,
  * which will then be *thrown*.
  */
-type WithListsFixed<T> = T extends PagedList<infer IT, infer NAME>
-  ? PagedList<Exclude<IT, null | undefined>, NAME>
-  : T extends Record<string, unknown>
-  ? {
-      [K in keyof T]: WithListsFixed<T[K]>;
-    }
-  : T;
+type WithListsFixed<T> =
+  T extends PagedList<infer IT, infer NAME>
+    ? PagedList<Exclude<IT, null | undefined>, NAME>
+    : T extends Record<string, unknown>
+      ? {
+          [K in keyof T]: WithListsFixed<T[K]>;
+        }
+      : T;
 /**
  * Describes a paged list result from AppSync, which can either
  * live at the top query or property (e.g., related model) level.
@@ -70,25 +69,25 @@ interface PagedList<T, TYPENAME> {
 
 export interface SubscriptionDetail<
   SUB_NAME extends SubscriptionNames,
-  INPUT_TYPE
+  INPUT_TYPE,
 > {
   query: KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>;
   variables: INPUT_TYPE;
   callback: (
-    result: OutType<KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>>
+    result: OutType<KeyedGeneratedSubscription<SUB_NAME, INPUT_TYPE>>,
   ) => void;
 }
 // This type and function may seem convoluted, but they are informed by this excellent post:
 // https://stackoverflow.com/questions/65129070/defining-an-array-of-differing-generic-types-in-typescript
 export type ExistentiallyTypedSubscription = <R>(
   cb: <SUB_NAME extends SubscriptionNames, INPUT_TYPE>(
-    subDet: SubscriptionDetail<SUB_NAME, INPUT_TYPE>
-  ) => R
+    subDet: SubscriptionDetail<SUB_NAME, INPUT_TYPE>,
+  ) => R,
 ) => R;
 
 export const existentiallyTypedSubscription =
   <SUB_NAME extends SubscriptionNames, INPUT_TYPE>(
-    sd: SubscriptionDetail<SUB_NAME, INPUT_TYPE>
+    sd: SubscriptionDetail<SUB_NAME, INPUT_TYPE>,
   ): ExistentiallyTypedSubscription =>
   (cb) =>
     cb(sd);
@@ -121,7 +120,7 @@ export function useSubscriptions({
   const dispatch = useDispatch();
 
   const subscriptionNames = subscriptionDetails.map((ets) =>
-    ets((subDets) => subDets.query.__subscriptionName)
+    ets((subDets) => subDets.query.__subscriptionName),
   );
   log("useSubscriptions.mounting", "debug", {
     subscriptionNames: JSON.stringify(subscriptionNames),
@@ -159,7 +158,7 @@ export function useSubscriptions({
               // scor-425: Connection failed: UnauthorizedException
               // scor-429: Connection failed: {"errors":[{"errorType":"401: Invalid Club Id","message":"Can only subscribe to ... from one's own ..." }]}
               `failed post-init w/message: ${castE.errors[0].message}`,
-            ])
+            ]),
           );
           if (failedPostInitCallback) {
             failedPostInitCallback({
@@ -176,7 +175,7 @@ export function useSubscriptions({
           setMostRecentSubscriptionError([
             subId,
             `failed post-init w/o message: ${JSON.stringify(e, null, 2)}`,
-          ])
+          ]),
         );
         if (failedPostInitCallback) {
           failedPostInitCallback({
@@ -189,7 +188,7 @@ export function useSubscriptions({
 
     const handleUnexpectedSubscriptionError = (
       e: unknown,
-      subId: SubscriptionNames
+      subId: SubscriptionNames,
     ) => {
       log("handleUnexpectedSubscriptionError", "error", { subId, e });
       const castE = e as { message?: string };
@@ -199,14 +198,14 @@ export function useSubscriptions({
             subId,
 
             `failed at init w/message: ${castE.message}`,
-          ])
+          ]),
         );
       } else {
         dispatch(
           setMostRecentSubscriptionError([
             subId,
             `failed at init w/o message: ${JSON.stringify(e)}`,
-          ])
+          ]),
         );
       }
       return;
@@ -214,7 +213,7 @@ export function useSubscriptions({
 
     const errorCatchingSubscription = <
       SUB_NAME extends SubscriptionNames,
-      INPUT_TYPE
+      INPUT_TYPE,
     >({
       query,
       variables,
@@ -239,7 +238,7 @@ export function useSubscriptions({
               callback(data[subId]);
             },
             error: handleAmplifySubscriptionError(subId),
-          })
+          }),
         );
         dispatch(setConnectionAttempted(subId));
         log("errorCatchingSubscription.ok", "debug", { subId });

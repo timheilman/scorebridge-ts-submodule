@@ -1,7 +1,7 @@
 import type { BoardResultUl } from "../bridgeEnums.js";
 import type { DirectionLetter, Game } from "../graphql/appsync.js";
-import { matchPointsScore } from "../matchPointsScore.js";
 import type { BoardAllRoundsScore } from "../matchPointsScore.js";
+import { matchPointsScore } from "../matchPointsScore.js";
 import {
   inversePlayerNumber,
   oppositeDir,
@@ -15,25 +15,25 @@ const log = tsSubmoduleLogFn("react.Leaderboard.");
 
 const allBoardsAllRoundsScore = (
   scores: (BoardAllRoundsScore | null | undefined)[],
-  tableCount: number
+  tableCount: number,
 ) => {
   const withoutNullsUndefineds = scores.filter(
-    (n) => n !== null && n !== undefined
+    (n) => n !== null && n !== undefined,
   );
   if (withoutNullsUndefineds.length === 0) {
     return undefined;
   }
   const mpSum = withoutNullsUndefineds.reduce(
     (acc, score) => acc + score.boardAllRoundsScoreMatchPoints,
-    0
+    0,
   );
   const oscSum = withoutNullsUndefineds.reduce(
     (acc, score) => acc + score.opponentScoreCount,
-    0
+    0,
   );
   const nsSum = withoutNullsUndefineds.reduce(
     (acc, score) => acc + score.boardAllRoundsScoreNeuberg,
-    0
+    0,
   );
   log("nsSum", "debug", { scores, nsSum });
   return {
@@ -84,8 +84,8 @@ const roleForPlayerOnBoard = ({
   if (!boardResult.declarer) {
     throw new Error(
       `roleForPlayerOnBoard called with PLAYED board without a declarer direction specified. Result in question: ${JSON.stringify(
-        boardResult
-      )}`
+        boardResult,
+      )}`,
     );
   }
   if (boardResult.declarer === direction) {
@@ -143,7 +143,7 @@ const getPlayerNumberToBoardAllRoundsScoreList = ({
       {
         partnership: [] as BoardAllRoundsScore[],
         individual: [] as BoardAllRoundsScore[],
-      }
+      },
     );
     return playerAcc;
   }, {});
@@ -173,7 +173,7 @@ export const useLeaderboardResults = ({
       boardResults,
     });
   const playerNumberToAllBoardsScorePct = Object.keys(
-    playerNumberToBoardAllRoundsScoreList
+    playerNumberToBoardAllRoundsScoreList,
   ).reduce<
     Record<
       number,
@@ -188,25 +188,25 @@ export const useLeaderboardResults = ({
       playerNumberToBoardAllRoundsScoreList[+playerNumber];
     if (!boardAllRoundsScoreList) {
       throw new Error(
-        `Expected boardAllRoundsScoreList for player number, ${playerNumber}`
+        `Expected boardAllRoundsScoreList for player number, ${playerNumber}`,
       );
     }
     const partnershipScore = allBoardsAllRoundsScore(
       boardAllRoundsScoreList.partnership,
-      tableCount
+      tableCount,
     );
     const indivScore = allBoardsAllRoundsScore(
       boardAllRoundsScoreList.individual,
-      tableCount
+      tableCount,
     );
     if (partnershipScore !== undefined) {
       acc[+playerNumber] = {
         partnership: {
           matchPointPct: pctThreeSigDig(
-            partnershipScore.allBoardsScoreDecimalMatchPoints
+            partnershipScore.allBoardsScoreDecimalMatchPoints,
           ),
           neubergPct: pctThreeSigDig(
-            partnershipScore.allBoardsScoreDecimalNeuberg
+            partnershipScore.allBoardsScoreDecimalNeuberg,
           ),
         },
         individual: {
@@ -236,7 +236,7 @@ export const useLeaderboardResults = ({
         if (direction === dir1 || direction === dir2) {
           return true;
         }
-      })
+      }),
     );
   };
 

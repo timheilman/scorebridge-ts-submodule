@@ -93,7 +93,7 @@ const penaltyPoints = ({
 };
 
 export const biddingBoxScoreForNsDefinitelyPlayed = (
-  params: BoardScoreParams
+  params: BoardScoreParams,
 ) => {
   const scoreNorthSouth =
     params.wonTrickCount - 6 >= params.level

@@ -10,13 +10,13 @@ const envDict: Record<string, CognitoIdentityProviderClient> = {};
 
 export const cachedCognitoIdpClient = (
   awsRegion: string,
-  profile: string | null
+  profile: string | null,
 ): CognitoIdentityProviderClient => {
   return cachedAwsSdkV3Client<CognitoIdentityProviderClient>(
     CognitoIdentityProviderClient,
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };

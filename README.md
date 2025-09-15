@@ -1,26 +1,28 @@
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [ScoreBridge](#scorebridge)
-   * [Background](#background)
-   * [The Four Code Repositories](#the-four-code-repositories)
-      + [scorebridge-ts-submodule](#scorebridge-ts-submodule)
-      + [scorebridge-webapp](#scorebridge-webapp)
-      + [scorebridge-device](#scorebridge-device)
-      + [scorebridge-cloud](#scorebridge-cloud)
-   * [Identities and Environments](#identities-and-environments)
-      + [Services, AWS subaccounts, and Stages/Environments](#services-aws-subaccounts-and-stagesenvironments)
-      + [AWS IAM Identity Center, SSO, and the CLI](#aws-iam-identity-center-sso-and-the-cli)
-      + [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
-      + [scorebridge-cloud informing webapp and device of env-specific values](#scorebridge-cloud-informing-webapp-and-device-of-env-specific-values)
-   * [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
+  - [Background](#background)
+  - [The Four Code Repositories](#the-four-code-repositories)
+    - [scorebridge-ts-submodule](#scorebridge-ts-submodule)
+    - [scorebridge-webapp](#scorebridge-webapp)
+    - [scorebridge-device](#scorebridge-device)
+    - [scorebridge-cloud](#scorebridge-cloud)
+  - [Identities and Environments](#identities-and-environments)
+    - [Services, AWS subaccounts, and Stages/Environments](#services-aws-subaccounts-and-stagesenvironments)
+    - [AWS IAM Identity Center, SSO, and the CLI](#aws-iam-identity-center-sso-and-the-cli)
+    - [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
+    - [scorebridge-cloud informing webapp and device of env-specific values](#scorebridge-cloud-informing-webapp-and-device-of-env-specific-values)
+  - [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
 - [RELEASE NOTES](#release-notes)
 
 <!-- TOC end -->
 
 <!-- TOC --><a name="scorebridge"></a>
+
 ## ScoreBridge
 
 <!-- TOC --><a name="background"></a>
+
 ### Background
 
 In Portland, Oregon, USA there is a [duplicate bridge](https://en.wikipedia.org/wiki/Duplicate_bridge) [club](https://www.facebook.com/groups/394839073989383) run by a guy named Zack. It is not sanctioned by the [ACBL](https://acbl.org/) and Zack charges no dues – it's purely social and for-fun. I (Tim aka tdh) am a club member. Different club members take turns hosting the game at their homes.
@@ -28,36 +30,43 @@ In Portland, Oregon, USA there is a [duplicate bridge](https://en.wikipedia.org/
 Presently we use Google sheets and extensive macros that Zack has written in them to score the games. However, it is awkward and error-prone using Google Sheets to enter player identities and scores so I undertook this project to make things easier and less error-prone.
 
 <!-- TOC --><a name="the-four-code-repositories"></a>
+
 ### The Four Code Repositories
 
 The project is in four parts:
 
 <!-- TOC --><a name="scorebridge-ts-submodule"></a>
+
 #### scorebridge-ts-submodule
 
 This TypeScript [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) is consumed by the three others. Code moves here when it is needed from more than one other repository. The following documentation is presented here because parts of it apply to all three other repositories.
 
 <!-- TOC --><a name="scorebridge-webapp"></a>
+
 #### scorebridge-webapp
 
 The [webapp](https://github.com/timheilman/scorebridge-webapp) is a React app that runs in a browser. The club admin (Zack) uses the webapp to administer the game. It is hosted by the continuous integration/continuous deployment (CI/CD) facility provided by AWS Amplify Frontend Hosting. Although AWS Amplify also offers a backend hosting facility, we do not use it preferring instead to use the serverless NPM framework as described in scorebridge-cloud, below.
 
 <!-- TOC --><a name="scorebridge-device"></a>
+
 #### scorebridge-device
 
 The [device app](https://github.com/timheilman/scorebridge-device) is a React Native app that runs on iOS and Android. Players use the device app to enter identities and scores. So far in development the only build/deployment model in place is that using Expo Go. The Expo iOS or Android app is used to run the device app on a phone or tablet. Ideally, eventually distribution of the device app should be done using the Apple App Store and Google Play Store, but for now Expo Go is the only means available.
 
 <!-- TOC --><a name="scorebridge-cloud"></a>
+
 #### scorebridge-cloud
 
 The [cloud backend](https://github.com/timheilman/scorebridge-cloud) is built and deployed using the [NPM serverless](https://www.NPMjs.com/package/serverless) framework. It coordinates interaction between the webapp and device app. It uses AWS AppSync, Cognito, DynamoDB, and Lambda. It is NOT hosted by the CI/CD facility provided by AWS Amplify Backend Hosting; instead it is hosted on AWS by the NPM serverless framework.
 
 <!-- TOC --><a name="identities-and-environments"></a>
+
 ### Identities and Environments
 
 Two separate systems are used for identity management in this project. For the identities of developers on the project, we use the AWS IAM Identity Center. (For the identities of club admins and players in the game, we use AWS Cognito; see scorebridge-cloud for more information.) Although this part regarding developer identities is a bear, it is the best practice currently recommended by the union of AWS and the NPM serverless framework.
 
 <!-- TOC --><a name="services-aws-subaccounts-and-stagesenvironments"></a>
+
 #### Services, AWS subaccounts, and Stages/Environments
 
 In the serverless NPM framework, each "stage" or "environment" (these terms are synonymous) of scorebridge-webapp and scorebridge-cloud are hosted under differing AWS subaccounts of a root AWS account. (These AWS subaccounts can host multiple environments, but each environment is only within a single AWS subaccount.) An AWS subaccount corresponds to what the serverless NPM framework calls a "service".
@@ -67,6 +76,7 @@ All this is done to provide isolation between environments. For example, the pro
 Each AWS subaccount corresponding to an NPM serverless framework service is administered beneath a root AWS account, using AWS Organizations.
 
 <!-- TOC --><a name="aws-iam-identity-center-sso-and-the-cli"></a>
+
 #### AWS IAM Identity Center, SSO, and the CLI
 
 The AWS IAM Identity Center (previously known as AWS Single-Sign-On and still called `aws sso` on the AWS CLI) instance is associated with the root account of the project. The root account/subaccount relationship is managed in AWS Organizations. Permission sets provide differential access for those AWS IAM Identity Center accounts to each of the AWS subaccounts beneath the root account, associated with each NPM serverless framework service.
@@ -92,6 +102,7 @@ sso_registration_scopes = sso:account:access
 In this example profile and session, `sbc00` corresponds to the NPM serverless framework service name. It is kept short because AWS lambdas deployed by the NPM serverless framework are automatically named using both the NPM serverless framework service name _and_ the environment name, since a single NPM serverless framework service (and thus, AWS subaccount) can host multiple environments. `PowerUser` corresponds to the AWS IAM Identity Center permissions set. `437893194722` is the AWS account number of the AWS subaccount, corresponding to the NPM serverless service `sbc00`, that hosts the `dev` and `tmpenv` environments. `https://d-92674207af.awsapps.com/start` is the SSO start URL provided by scorebridge's root account AWS IAM Identity Center instance. `us-west-2` is the AWS region in which the environments are hosted. `tdh` refers to my own AWS IAM Identity Center account.
 
 <!-- TOC --><a name="expected-env-vars-for-your-cli"></a>
+
 #### Expected env vars for your CLI
 
 Once you have an AWS SSO profile set up, this project expects this env var to be set:
@@ -103,6 +114,7 @@ export SB_TEST_AWS_CLI_PROFILE=ScoreBridge-sbc00-tdh-PowerUser-profile
 This tells the build and test code in scorebridge-cloud and scorebridge-webapp which AWS SSO profile to use for the build, deploy, and test. Switching which NPM serverless framework service/AWS subaccount you are pointed at is done by switching this env var to a different AWS SSO profile. Within that service/account which env you are pointed at is done by setting the `STAGE` env var to the name of that env, which is accomplished by the `npm run exportEnvDev` and `npm run refreshExportedDetailsEverywhere` commands described below. See the `package.json` file in scorebridge-cloud for more information.
 
 <!-- TOC --><a name="scorebridge-cloud-informing-webapp-and-device-of-env-specific-values"></a>
+
 #### scorebridge-cloud informing webapp and device of env-specific values
 
 Once things are set up, a typical deployment and test of scorebridge-cloud, scorebridge-webapp, and scorebridge-device in the dev environment will look like this:
@@ -136,12 +148,13 @@ Then, to run the app:
 The app should launch and run.
 
 <!-- TOC --><a name="this-submodule-should-be-an-npm-package"></a>
+
 ### This submodule should be an NPM package
 
 Ideally this submodule would be an NPM package. However, at this stage in development this repo is still so volatile that the overhead of publishing and consuming an NPM package is not worth it. When the repo stabilizes, it should be converted to an NPM package.
 
 <!-- TOC --><a name="release-notes"></a>
+
 ## RELEASE NOTES
 
 See [the app changelog](./CHANGELOG_device.md)
-

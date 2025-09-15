@@ -337,7 +337,7 @@ export const clubDeviceIdFromSortKey = (sortKey: string) => {
 };
 
 export const directionLetterFromSortKey = (
-  sortKey: string
+  sortKey: string,
 ): { error: string; result: DirectionLetter } => {
   if (!sortKey.startsWith(gameSortKeyPrefix0)) {
     return {

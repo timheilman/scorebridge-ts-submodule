@@ -78,7 +78,7 @@ export const resultToWonTrickCount = ({
 };
 export const possibleResults = (level: Level): Result[] =>
   allWonTrickCounts.map((wonTrickCount) =>
-    wonTrickCountToResult({ wonTrickCount, level })
+    wonTrickCountToResult({ wonTrickCount, level }),
   );
 
 // these are the values whereas keys are stored as part of the sortKey

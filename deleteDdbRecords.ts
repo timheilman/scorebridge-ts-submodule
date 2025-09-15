@@ -1,11 +1,11 @@
+import type {
+  NativeAttributeValue,
+  QueryCommandOutput,
+} from "@aws-sdk/lib-dynamodb";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
   QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
-import type {
-  NativeAttributeValue,
-  QueryCommandOutput,
 } from "@aws-sdk/lib-dynamodb";
 
 import { clubKey, gameSortKeyPrefix0 } from "./ddbSortkey.js";
@@ -37,7 +37,7 @@ async function queryChunk({
       KeyConditionExpression: keyConditionExpression,
       ExpressionAttributeValues: expressionAttributeValues,
       ExclusiveStartKey: exclusiveStartKey,
-    })
+    }),
   );
 }
 
@@ -131,7 +131,7 @@ export const batchDeleteClubItems = async ({
 
 export const chunk = <T>(arr: T[], size: number) =>
   Array.from({ length: Math.ceil(arr.length / size) }, (_v, i) =>
-    arr.slice(i * size, i * size + size)
+    arr.slice(i * size, i * size + size),
   );
 
 export const batchDeleteDdbRecords = async ({
@@ -164,8 +164,8 @@ export const batchDeleteDdbRecords = async ({
       ddbClient.send(
         new BatchWriteCommand({
           RequestItems: { [tableName]: requestItems },
-        })
-      )
+        }),
+      ),
     );
   });
 

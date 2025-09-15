@@ -11,7 +11,7 @@ export const effectiveTable = ({
   const roundLessOneModThree = (round - 1) % 3;
   if (roundLessOneModThree !== 0) {
     throw new Error(
-      "Only intended for use with roundLessOneModThree === 0 invocations"
+      "Only intended for use with roundLessOneModThree === 0 invocations",
     );
   }
   if (direction === "N") {
@@ -38,10 +38,10 @@ function rotatedOnce(direction: DirectionLetter) {
   return direction === "N"
     ? direction
     : direction === "W"
-    ? "S"
-    : direction === "S"
-    ? "E"
-    : "W";
+      ? "S"
+      : direction === "S"
+        ? "E"
+        : "W";
 }
 
 const rotatedTwice = (direction: DirectionLetter) =>
@@ -173,7 +173,7 @@ const playerNumberRainbowTwoTable = ({
     }
   }
   return whoFollowsRainbowTwoTable(
-    playerNumberRainbowTwoTable({ table, direction, round: round - 1 })
+    playerNumberRainbowTwoTable({ table, direction, round: round - 1 }),
   );
 };
 

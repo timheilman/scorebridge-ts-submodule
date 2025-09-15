@@ -17,6 +17,6 @@ export const cachedDynamoDbClient = ({
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };

@@ -24,7 +24,7 @@ export type SubscriptionNames = keyof Omit<Subscription, "__typename">;
 
 export interface KeyedGeneratedSubscription<
   NAME extends SubscriptionNames,
-  ARGS
+  ARGS,
 > {
   gql: GeneratedSubscription<ARGS, Pick<Subscription, NAME>>;
   __subscriptionName: NAME;
@@ -32,10 +32,10 @@ export interface KeyedGeneratedSubscription<
 
 export const createKeyedGeneratedSubscription = <
   NAME extends SubscriptionNames,
-  ARGS
+  ARGS,
 >(
   subGql: string,
-  subscriptionName: NAME
+  subscriptionName: NAME,
 ) => {
   return {
     gql: subGql,
@@ -88,7 +88,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyCreateGame"
+    "onNotifyCreateGame",
   ),
   onDeleteGame: createKeyedGeneratedSubscription<
     "onDeleteGame",
@@ -101,7 +101,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onDeleteGame"
+    "onDeleteGame",
   ),
 
   onUpdateCurrentGameId: createKeyedGeneratedSubscription<
@@ -115,7 +115,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUpdateCurrentGameId"
+    "onUpdateCurrentGameId",
   ),
 
   onUpdateClubName: createKeyedGeneratedSubscription<
@@ -130,7 +130,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUpdateClubName"
+    "onUpdateClubName",
   ),
   onUpdateTableAssignment: createKeyedGeneratedSubscription<
     "onUpdateTableAssignment",
@@ -172,7 +172,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUpdateTableAssignment"
+    "onUpdateTableAssignment",
   ),
   onAssignPlayer: createKeyedGeneratedSubscription<
     "onAssignPlayer",
@@ -191,7 +191,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onAssignPlayer"
+    "onAssignPlayer",
   ),
   onUnassignPlayers: createKeyedGeneratedSubscription<
     "onUnassignPlayers",
@@ -207,7 +207,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUnassignPlayers"
+    "onUnassignPlayers",
   ),
   onUpdateBoardResult: createKeyedGeneratedSubscription<
     "onUpdateBoardResult",
@@ -237,7 +237,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onUpdateBoardResult"
+    "onUpdateBoardResult",
   ),
   onNotifyCreateClubHuman: createKeyedGeneratedSubscription<
     "onNotifyCreateClubHuman",
@@ -256,7 +256,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyCreateClubHuman"
+    "onNotifyCreateClubHuman",
   ),
   onNotifyUpdateClubHuman: createKeyedGeneratedSubscription<
     "onNotifyUpdateClubHuman",
@@ -275,7 +275,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyUpdateClubHuman"
+    "onNotifyUpdateClubHuman",
   ),
   onDeleteClubHuman: createKeyedGeneratedSubscription<
     "onDeleteClubHuman",
@@ -291,7 +291,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onDeleteClubHuman"
+    "onDeleteClubHuman",
   ),
   onNotifyCreateClubDevice: createKeyedGeneratedSubscription<
     "onNotifyCreateClubDevice",
@@ -309,7 +309,7 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyCreateClubDevice"
+    "onNotifyCreateClubDevice",
   ),
   onNotifyDeleteClubDevice: createKeyedGeneratedSubscription<
     "onNotifyDeleteClubDevice",
@@ -323,6 +323,6 @@ export const subIdToSubGql = {
         }
       }
     `,
-    "onNotifyDeleteClubDevice"
+    "onNotifyDeleteClubDevice",
   ),
 } as const;

@@ -1,6 +1,6 @@
 import { biddingBoxScoreForPartnershipRegardlessOfPlayed } from "./boardScore.js";
-import { allDirections } from "./bridgeEnums.js";
 import type { BoardResultUl } from "./bridgeEnums.js";
+import { allDirections } from "./bridgeEnums.js";
 import type { DirectionLetter, Game, Movement } from "./graphql/appsync.js";
 import {
   movementMethods,
@@ -66,8 +66,8 @@ export const singleBoardScoreCalcMatchPoints = ({
       (opponentScore === myBiddingBoxScore
         ? 1
         : opponentScore < myBiddingBoxScore
-        ? 2
-        : 0)
+          ? 2
+          : 0)
     );
   }, 0);
 };
@@ -165,7 +165,7 @@ export const matchPointsScore = (params: {
       }
       return acc;
     },
-    []
+    [],
   );
   log("opponentsBiddingBoxScores", "debug", { opponentsBiddingBoxScores });
   if (opponentsBiddingBoxScores.length === 0) {
@@ -226,7 +226,7 @@ export const playerDirToMpScore = ({
         myPct: pointFooPct(
           myScore.boardAllRoundsScoreMatchPoints /
             myScore.opponentScoreCount /
-            2
+            2,
         ),
         opponentPcts: opponents
           .reduce<number[]>((numAcc, opponentPlayerNumber) => {
@@ -241,8 +241,8 @@ export const playerDirToMpScore = ({
                 pointFooPct(
                   opponentScore.boardAllRoundsScoreMatchPoints /
                     opponentScore.opponentScoreCount /
-                    2
-                )
+                    2,
+                ),
               );
             }
             return numAcc;
@@ -257,7 +257,7 @@ export const playerDirToMpScore = ({
 };
 
 export const mpScoreString = (
-  mpScore: { myPct: number; opponentPcts: string[] } | null | undefined
+  mpScore: { myPct: number; opponentPcts: string[] } | null | undefined,
 ): string => {
   return mpScore !== null && mpScore !== undefined
     ? `(${mpScore.myPct}% / ${mpScore.opponentPcts.length + 1})`

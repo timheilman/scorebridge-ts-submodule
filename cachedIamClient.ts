@@ -7,13 +7,13 @@ const envDict: Record<string, IAMClient> = {};
 
 export const cachedIamClient = (
   awsRegion: string,
-  profile: string | null
+  profile: string | null,
 ): IAMClient => {
   return cachedAwsSdkV3Client<IAMClient>(
     IAMClient,
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };

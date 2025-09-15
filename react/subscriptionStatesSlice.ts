@@ -2,8 +2,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { ConnectionState } from "aws-amplify/api";
 
-import { subIdToSubGql } from "../graphql/subscriptions.js";
 import type { SubscriptionNames } from "../graphql/subscriptions.js";
+import { subIdToSubGql } from "../graphql/subscriptions.js";
 
 export interface SubscriptionStateType {
   mostRecentErrors: Record<SubscriptionNames, string | null>;
@@ -15,13 +15,13 @@ export interface SubscriptionStateType {
 const subIds = Object.keys(subIdToSubGql) as SubscriptionNames[];
 export const initialState: SubscriptionStateType = {
   mostRecentErrors: Object.fromEntries(
-    subIds.map((subId) => [subId, null])
+    subIds.map((subId) => [subId, null]),
   ) as Record<SubscriptionNames, null>,
   connectionAttempted: Object.fromEntries(
-    subIds.map((subId) => [subId, false])
+    subIds.map((subId) => [subId, false]),
   ) as Record<SubscriptionNames, boolean>,
   connected: Object.fromEntries(
-    subIds.map((subId) => [subId, false])
+    subIds.map((subId) => [subId, false]),
   ) as Record<SubscriptionNames, boolean>,
   connectionState: ConnectionState.Disconnected,
 };
@@ -32,20 +32,20 @@ export const subscriptionStatesSlice = createSlice({
   reducers: {
     setMostRecentSubscriptionError: (
       state,
-      action: PayloadAction<[SubscriptionNames, string | null]>
+      action: PayloadAction<[SubscriptionNames, string | null]>,
     ) => {
       state.mostRecentErrors[action.payload[0]] = action.payload[1];
       state.connected[action.payload[0]] = false;
     },
     setConnectionAttempted: (
       state,
-      action: PayloadAction<SubscriptionNames>
+      action: PayloadAction<SubscriptionNames>,
     ) => {
       state.connectionAttempted[action.payload] = true;
     },
     setSubscriptionsConnectionState: (
       state,
-      action: PayloadAction<ConnectionState>
+      action: PayloadAction<ConnectionState>,
     ) => {
       state.connectionState = action.payload;
       if (action.payload === ConnectionState.Connected) {
@@ -66,7 +66,7 @@ export const subscriptionStatesSlice = createSlice({
     },
     clearSubscriptionState: (
       state,
-      action: PayloadAction<SubscriptionNames>
+      action: PayloadAction<SubscriptionNames>,
     ) => {
       state.mostRecentErrors[action.payload] = null;
       state.connectionAttempted[action.payload] = false;

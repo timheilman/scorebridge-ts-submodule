@@ -1,5 +1,15 @@
 import { DateTime } from "luxon";
 
+import type {
+  BoardResultUc,
+  BoardResultUcl,
+  BoardResultUl,
+  DownResult,
+  Level,
+  MadeResult,
+  Result,
+  WonTrickCount,
+} from "./bridgeEnums.js";
 import {
   allDirections,
   allDoublings,
@@ -12,16 +22,6 @@ import {
   allStrains,
   allSuits,
   allWonTrickCounts,
-} from "./bridgeEnums.js";
-import type {
-  BoardResultUc,
-  BoardResultUcl,
-  BoardResultUl,
-  DownResult,
-  Level,
-  MadeResult,
-  Result,
-  WonTrickCount,
 } from "./bridgeEnums.js";
 import type {
   DirectionLetter,
@@ -128,7 +128,7 @@ export const ucToUclBoardResult = (br: BoardResultUc): BoardResultUcl => {
   const boardResultUl = reduceToLooseFieldsBoardResult(br as BoardResultUl);
   if (!DateTime.fromISO(br.currentAsOf).isValid) {
     throw new BoardResultTypeUnsafe(
-      `currentAsOf ${br.currentAsOf} is not a valid ISO DateTime`
+      `currentAsOf ${br.currentAsOf} is not a valid ISO DateTime`,
     );
   }
   return { ...boardResultUl, currentAsOf: br.currentAsOf };
@@ -145,7 +145,7 @@ export const ucToUclBoardResult = (br: BoardResultUc): BoardResultUcl => {
 // };
 
 export const reduceToLooseFieldsBoardResult = (
-  br: BoardResultUl
+  br: BoardResultUl,
 ): BoardResultUl => {
   if (br.type === "PASSED_OUT" || br.type === "NOT_BID_NOT_PLAYED") {
     return { type: br.type, confirmed: br.confirmed };
@@ -258,7 +258,7 @@ const tspDirectionLetter = (direction?: string | null): string | undefined => {
   return;
 };
 export const typeSafeDirectionLetter = (
-  direction?: string
+  direction?: string,
 ): DirectionLetter => {
   typeSafetyError(tspDirectionLetter(direction));
   return direction as DirectionLetter;
@@ -287,7 +287,7 @@ export const typeSafeSuit = (suit?: string): Suit => {
 };
 
 const tspWonTrickCount = (
-  wonTrickCount?: number | null
+  wonTrickCount?: number | null,
 ): string | undefined => {
   if (!allWonTrickCounts.includes(wonTrickCount as WonTrickCount)) {
     return `unexpected wonTrickCount ${wonTrickCount}`;

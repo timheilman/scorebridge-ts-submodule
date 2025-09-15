@@ -1,8 +1,8 @@
-import { allLevels, allWonTrickCounts } from "../../bridgeEnums.js";
 import type { Level, WonTrickCount } from "../../bridgeEnums.js";
+import { allLevels, allWonTrickCounts } from "../../bridgeEnums.js";
 import type { MutationUpdateBoardResultArgs } from "../appsync.js";
-import { errorForDeviceLevelMultitenancy } from "./multitenancy.js";
 import type { InputValidator } from "./multitenancy.js";
+import { errorForDeviceLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationUpdateBoardResult: InputValidator<
   MutationUpdateBoardResultArgs
@@ -36,7 +36,7 @@ export const errorForMutationUpdateBoardResult: InputValidator<
   ) {
     return {
       msg: `Cannot set results on a PASSED_OUT or NOT_BID_NOT_PLAYED board result.  The only valid fields are board, round, and type.  Instead received: ${JSON.stringify(
-        putTargets
+        putTargets,
       )}`,
     };
   }

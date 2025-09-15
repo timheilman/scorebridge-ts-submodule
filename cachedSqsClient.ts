@@ -17,6 +17,6 @@ export const cachedSqsClient = ({
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };

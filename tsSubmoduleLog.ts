@@ -1,9 +1,9 @@
+import type { LogLevel } from "./genericLogger.js";
 import {
   currentConfig,
   getPrintFn,
   withConfigProvideLogFn,
 } from "./genericLogger.js";
-import type { LogLevel } from "./genericLogger.js";
 
 // because this file is referenced from cloud, webapp, cypress main, cypress
 // task, and device contexts, it is ignored for linting and formatting from all
@@ -54,7 +54,7 @@ function localCurrentConfig() {
     return currentConfig(processEnvNoPrefix);
   } else if (foundProcess && process.env.CYPRESS) {
     console.log(
-      "Submodule logging config: using process.env with CYPRESS_TASK_ prefix:"
+      "Submodule logging config: using process.env with CYPRESS_TASK_ prefix:",
     );
     const processEnvCypressTaskPrefix =
       process.env[`CYPRESS_TASK_${submoduleLoggingConfigKey}`];
@@ -62,7 +62,7 @@ function localCurrentConfig() {
     return currentConfig(processEnvCypressTaskPrefix);
   } else if (foundProcess && process.env.EXPO_PUBLIC_SB_EXPO) {
     console.log(
-      "Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:"
+      "Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:",
     );
     const processEnvExpoPublicPrefix =
       process.env[`EXPO_PUBLIC_${submoduleLoggingConfigKey}`];
@@ -74,7 +74,7 @@ function localCurrentConfig() {
 }
 const config = localCurrentConfig();
 export function tsSubmoduleLogFn(
-  catPrefix: string
+  catPrefix: string,
 ): (catSuffix: string, logLevel: LogLevel, ...addlParams: unknown[]) => void {
   return withConfigProvideLogFn(config, getPrintFn)(`tsSubmodule.${catPrefix}`);
 }

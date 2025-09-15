@@ -127,7 +127,9 @@ export const errorForDeviceLevelMultitenancy = ({
   const clubMultitenancyError = errorForClubLevelMultitenancy({
     cogIdentity,
     clubId,
-    failureMessage: `Can only interact with clubDevices within one's own club. ClubId arg: ${clubId}; your clubId: ${claims["custom:tenantId"] as string}`,
+    failureMessage: `Can only interact with clubDevices within one's own club. ClubId arg: ${clubId}; your clubId: ${
+      claims["custom:tenantId"] as string
+    }`,
   });
   if (clubMultitenancyError) {
     return clubMultitenancyError;

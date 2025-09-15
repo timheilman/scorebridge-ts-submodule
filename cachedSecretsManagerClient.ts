@@ -7,13 +7,13 @@ const envDict: Record<string, SecretsManagerClient> = {};
 
 export const cachedSecretsManagerClient = (
   awsRegion: string,
-  profile: string | null
+  profile: string | null,
 ): SecretsManagerClient => {
   return cachedAwsSdkV3Client<SecretsManagerClient>(
     SecretsManagerClient,
     awsRegion,
     profile,
     profileDict,
-    envDict
+    envDict,
   );
 };
