@@ -4,6 +4,9 @@
     "url": "https://github.com/timheilman/scorebridge-ts-submodule/issues"
   },
   "description": "Shared submodule for bridgefridge-cloud and bridgefridge-fe",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
   "homepage": "https://github.com/timheilman/scorebridge-ts-submodule#readme",
   "keywords": [
     "duplicate",
@@ -20,5 +23,6 @@
   "scripts": {
     "test": "echo 'no tests within-submodule yet'"
   },
+  "type": "module",
   "version": "0.1.0"
 }
