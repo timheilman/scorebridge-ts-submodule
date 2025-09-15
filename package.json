@@ -1,24 +1,24 @@
 {
-  "name": "bridgefridge-ts-submodule",
-  "version": "0.1.0",
+  "author": "Tim Heilman",
+  "bugs": {
+    "url": "https://github.com/timheilman/scorebridge-ts-submodule/issues"
+  },
   "description": "Shared submodule for bridgefridge-cloud and bridgefridge-fe",
-  "main": "there_is_no_entry_point.js",
-  "scripts": {
-    "test": "echo 'no tests within-submodule yet'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/timheilman/scorebridge-ts-submodule.git"
-  },
+  "homepage": "https://github.com/timheilman/scorebridge-ts-submodule#readme",
   "keywords": [
     "duplicate",
     "contract",
     "bridge"
   ],
-  "author": "Tim Heilman",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/timheilman/scorebridge-ts-submodule/issues"
+  "main": "there_is_no_entry_point.js",
+  "name": "bridgefridge-ts-submodule",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timheilman/scorebridge-ts-submodule.git"
   },
-  "homepage": "https://github.com/timheilman/scorebridge-ts-submodule#readme"
+  "scripts": {
+    "test": "echo 'no tests within-submodule yet'"
+  },
+  "version": "0.1.0"
 }
