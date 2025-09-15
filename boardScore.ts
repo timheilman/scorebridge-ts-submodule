@@ -1,6 +1,6 @@
-import { BoardResultUl, Level, WonTrickCount } from "./bridgeEnums";
-import { DirectionLetter, Doubling, Strain } from "./graphql/appsync";
-import { isVulnerable } from "./movementHelpers";
+import type { BoardResultUl, Level, WonTrickCount } from "./bridgeEnums.js";
+import type { DirectionLetter, Doubling, Strain } from "./graphql/appsync.js";
+import { isVulnerable } from "./movementHelpers.js";
 
 export interface BoardScoreParams {
   declarer: DirectionLetter;
@@ -93,7 +93,7 @@ const penaltyPoints = ({
 };
 
 export const biddingBoxScoreForNsDefinitelyPlayed = (
-  params: BoardScoreParams,
+  params: BoardScoreParams
 ) => {
   const scoreNorthSouth =
     params.wonTrickCount - 6 >= params.level

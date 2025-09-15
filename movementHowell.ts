@@ -1,5 +1,5 @@
-import { BoardGroupProps, PlayerNumberProps } from "./movementHelpers";
-import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+import type { BoardGroupProps, PlayerNumberProps } from "./movementHelpers.js";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog.js";
 const log = tsSubmoduleLogFn("movementHowell.");
 export const playerNumberHowell = (props: PlayerNumberProps): number => {
   const { tableCount } = props;

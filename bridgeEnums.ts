@@ -1,4 +1,4 @@
-import {
+import type {
   BoardResult,
   BoardResultC,
   ClubDevice,
@@ -12,7 +12,7 @@ import {
   Suit,
   TableAssignment,
   TableAssignmentCvt,
-} from "./graphql/appsync";
+} from "./graphql/appsync.js";
 
 // We cannot take the types from these enumerations, because they are generated
 // from the graphql
@@ -78,7 +78,7 @@ export const resultToWonTrickCount = ({
 };
 export const possibleResults = (level: Level): Result[] =>
   allWonTrickCounts.map((wonTrickCount) =>
-    wonTrickCountToResult({ wonTrickCount, level }),
+    wonTrickCountToResult({ wonTrickCount, level })
   );
 
 // these are the values whereas keys are stored as part of the sortKey

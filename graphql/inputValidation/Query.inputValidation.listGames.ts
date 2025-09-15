@@ -1,5 +1,6 @@
-import { QueryListGamesArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { QueryListGamesArgs } from "../appsync.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
+import type { InputValidator } from "./multitenancy.js";
 
 export const errorForQueryListGames: InputValidator<QueryListGamesArgs> = ({
   args,

@@ -1,5 +1,6 @@
-import { MutationDeleteClubAndAdminArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { MutationDeleteClubAndAdminArgs } from "../appsync.js";
+import type { InputValidator } from "./multitenancy.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationDeleteClubAndAdmin: InputValidator<
   MutationDeleteClubAndAdminArgs

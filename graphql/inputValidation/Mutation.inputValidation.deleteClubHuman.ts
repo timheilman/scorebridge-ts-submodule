@@ -1,7 +1,7 @@
-import { AppSyncIdentityCognito } from "aws-lambda";
+import type { AppSyncIdentityCognito } from "aws-lambda";
 
-import { MutationDeleteClubHumanArgs } from "../appsync";
-import { errorForClubLevelMultitenancy } from "./multitenancy";
+import type { MutationDeleteClubHumanArgs } from "../appsync.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationDeleteClubHuman = ({
   cogIdentity,

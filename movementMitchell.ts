@@ -1,4 +1,4 @@
-import { BoardGroupProps, PlayerNumberProps } from "./movementHelpers";
+import type { BoardGroupProps, PlayerNumberProps } from "./movementHelpers.js";
 
 export const playerNumberMitchell = (props: PlayerNumberProps): number => {
   const { table, tableCount, direction, round } = props;

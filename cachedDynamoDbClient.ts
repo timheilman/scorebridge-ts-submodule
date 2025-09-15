@@ -1,6 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
-import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client";
+import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client.js";
 
 const profileDict: Record<string, Record<string, DynamoDBClient>> = {};
 const envDict: Record<string, DynamoDBClient> = {};
@@ -17,6 +17,6 @@ export const cachedDynamoDbClient = ({
     awsRegion,
     profile,
     profileDict,
-    envDict,
+    envDict
   );
 };

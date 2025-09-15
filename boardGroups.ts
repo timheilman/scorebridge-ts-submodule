@@ -1,4 +1,4 @@
-import { BoardResultUl, StagedBoardResult } from "./bridgeEnums";
+import type { BoardResultUl, StagedBoardResult } from "./bridgeEnums.js";
 
 export const startingBoardForBoardGroup = ({
   boardGroup,
@@ -28,13 +28,13 @@ export const combineStagedAndCloudBoardResults = ({
   cloudBoardResults: Record<string, BoardResultUl>;
 }) => {
   const nonFalsyStagedBoardResultEntries = Object.entries(
-    stagedBoardResults,
+    stagedBoardResults
   ).filter(([, val]) => !!val) as [string, BoardResultUl][];
   const remappedStagedBoardResults = Object.fromEntries(
     nonFalsyStagedBoardResultEntries.map(([roundBoard, val]) => [
       `${tableNumber}_${roundBoard}`,
       val,
-    ]),
+    ])
   );
   const combinedCloudAndStagedBoardResults = {
     ...cloudBoardResults,

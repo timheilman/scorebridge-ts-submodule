@@ -1,8 +1,8 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 
-import { SubscriptionNames } from "../graphql/subscriptions";
-import { tsSubmoduleLogFn } from "../tsSubmoduleLog";
-import { useConnectionHealthy } from "./useConnectionHealthy";
+import type { SubscriptionNames } from "../graphql/subscriptions.js";
+import { tsSubmoduleLogFn } from "../tsSubmoduleLog.js";
+import { useConnectionHealthy } from "./useConnectionHealthy.js";
 
 const log = tsSubmoduleLogFn("OnlineStatus.");
 

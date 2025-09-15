@@ -1,19 +1,19 @@
 import { Lambda } from "@aws-sdk/client-lambda";
 
-import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client";
+import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client.js";
 
 const profileDict: Record<string, Record<string, Lambda>> = {};
 const envDict: Record<string, Lambda> = {};
 
 export const cachedLambdaClient = (
   awsRegion: string,
-  profile: string | null,
+  profile: string | null
 ): Lambda => {
   return cachedAwsSdkV3Client<Lambda>(
     Lambda,
     awsRegion,
     profile,
     profileDict,
-    envDict,
+    envDict
   );
 };

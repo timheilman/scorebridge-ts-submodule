@@ -1,8 +1,6 @@
-import { MutationUpdateTableAssignmentArgs } from "../appsync";
-import {
-  errorForDeviceLevelMultitenancy,
-  InputValidator,
-} from "./multitenancy";
+import type { MutationUpdateTableAssignmentArgs } from "../appsync.js";
+import { errorForDeviceLevelMultitenancy } from "./multitenancy.js";
+import type { InputValidator } from "./multitenancy.js";
 
 export const errorForMutationUpdateTableAssignment: InputValidator<
   MutationUpdateTableAssignmentArgs

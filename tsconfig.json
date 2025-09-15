@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "target": "es2020", // set to the *lowest* target you support
-    "strict": true,
-    "verbatimModuleSyntax": true,
     "declaration": true,
-    "sourceMap": true,
     "declarationMap": true,
+    "jsx": "react-native",
+    "module": "nodenext",
+    "outDir": "dist",
     "rootDir": ".",
-    "outDir": "dist"
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2020", // set to the *lowest* target you support
+    "verbatimModuleSyntax": true
   }
 }

@@ -1,12 +1,10 @@
-import { GqlTimeoutAfterRetriesError } from "../GqlTimeoutAfterRetriesError";
-import {
-  RetryingGqlPromiseParams,
-  retryOnNonresponsivePromise,
-} from "../promiseUtils";
-import { cachedClient } from "./gqlClient";
+import { GqlTimeoutAfterRetriesError } from "../GqlTimeoutAfterRetriesError.js";
+import { retryOnNonresponsivePromise } from "../promiseUtils.js";
+import type { RetryingGqlPromiseParams } from "../promiseUtils.js";
+import { cachedClient } from "./gqlClient.js";
 
 export const retryOnTimeoutGqlPromise = async <T>(
-  params: RetryingGqlPromiseParams<T>,
+  params: RetryingGqlPromiseParams<T>
 ): Promise<T> => {
   const { gqlPromiseFn, maxTries } = params;
   const client = cachedClient();
@@ -17,7 +15,9 @@ export const retryOnTimeoutGqlPromise = async <T>(
     rejectWithAfterMaxTries: (innerRejection) => {
       const innerError = innerRejection as Error;
       return new GqlTimeoutAfterRetriesError(
-        `Failed after ${maxTries} tries. Latest error: ${innerError.message ? innerError.message : (innerRejection as string)}`,
+        `Failed after ${maxTries} tries. Latest error: ${
+          innerError.message ? innerError.message : (innerRejection as string)
+        }`
       );
     },
     ...params,

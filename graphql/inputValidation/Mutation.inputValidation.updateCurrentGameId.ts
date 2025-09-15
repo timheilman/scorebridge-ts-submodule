@@ -1,5 +1,6 @@
-import { MutationUpdateCurrentGameIdArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { MutationUpdateCurrentGameIdArgs } from "../appsync.js";
+import type { InputValidator } from "./multitenancy.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationUpdateCurrentGameId: InputValidator<
   MutationUpdateCurrentGameIdArgs

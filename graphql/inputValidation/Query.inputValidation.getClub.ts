@@ -1,5 +1,6 @@
-import { QueryGetClubArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { QueryGetClubArgs } from "../appsync.js";
+import type { InputValidator } from "./multitenancy.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForQueryGetClub: InputValidator<QueryGetClubArgs> = ({
   args,

@@ -1,4 +1,4 @@
-import {
+import type {
   Mutation,
   MutationAssignPlayerArgs,
   MutationCreateClubDeviceRegistrationArgs,
@@ -14,7 +14,7 @@ import {
   MutationUpdateClubNameArgs,
   MutationUpdateCurrentGameIdArgs,
   MutationUpdateTableAssignmentArgs,
-} from "./appsync";
+} from "./appsync.js";
 
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
@@ -28,7 +28,7 @@ export interface KeyedGeneratedMutation<NAME extends MutationNames, ARGS> {
 
 const createKeyedGeneratedMutation = <NAME extends MutationNames, ARGS>(
   mutGql: string,
-  mutationName: NAME,
+  mutationName: NAME
 ) => {
   return {
     gql: mutGql,
@@ -45,7 +45,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "unexpectedError",
+    "unexpectedError"
   ),
   updateClubName: createKeyedGeneratedMutation<
     "updateClubName",
@@ -59,7 +59,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "updateClubName",
+    "updateClubName"
   ),
 
   updateCurrentGameId: createKeyedGeneratedMutation<
@@ -74,7 +74,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "updateCurrentGameId",
+    "updateCurrentGameId"
   ),
   deleteClubAndAdmin: createKeyedGeneratedMutation<
     "deleteClubAndAdmin",
@@ -87,7 +87,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "deleteClubAndAdmin",
+    "deleteClubAndAdmin"
   ),
   createClubDeviceRegistration: createKeyedGeneratedMutation<
     "createClubDeviceRegistration",
@@ -107,7 +107,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "createClubDeviceRegistration",
+    "createClubDeviceRegistration"
   ),
   enqueueDeleteClubDevice: createKeyedGeneratedMutation<
     "enqueueDeleteClubDevice",
@@ -121,7 +121,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "enqueueDeleteClubDevice",
+    "enqueueDeleteClubDevice"
   ),
   enqueueCreateGame: createKeyedGeneratedMutation<
     "enqueueCreateGame",
@@ -140,7 +140,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "enqueueCreateGame",
+    "enqueueCreateGame"
   ),
   deleteGame: createKeyedGeneratedMutation<
     "deleteGame",
@@ -160,7 +160,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "deleteGame",
+    "deleteGame"
   ),
   enqueueCreateClubHuman: createKeyedGeneratedMutation<
     "enqueueCreateClubHuman",
@@ -176,7 +176,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "enqueueCreateClubHuman",
+    "enqueueCreateClubHuman"
   ),
   enqueueUpdateClubHuman: createKeyedGeneratedMutation<
     "enqueueUpdateClubHuman",
@@ -192,7 +192,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "enqueueUpdateClubHuman",
+    "enqueueUpdateClubHuman"
   ),
   deleteClubHuman: createKeyedGeneratedMutation<
     "deleteClubHuman",
@@ -208,7 +208,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "deleteClubHuman",
+    "deleteClubHuman"
   ),
   updateTableAssignment: createKeyedGeneratedMutation<
     "updateTableAssignment",
@@ -250,7 +250,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "updateTableAssignment",
+    "updateTableAssignment"
   ),
   assignPlayer: createKeyedGeneratedMutation<
     "assignPlayer",
@@ -269,7 +269,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "assignPlayer",
+    "assignPlayer"
   ),
   unassignPlayers: createKeyedGeneratedMutation<
     "unassignPlayers",
@@ -285,7 +285,7 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "unassignPlayers",
+    "unassignPlayers"
   ),
   updateBoardResult: createKeyedGeneratedMutation<
     "updateBoardResult",
@@ -315,6 +315,6 @@ export const mutIdToMutGql = {
         }
       }
     `,
-    "updateBoardResult",
+    "updateBoardResult"
   ),
 };

@@ -1,5 +1,5 @@
-import { allDirections } from "./bridgeEnums";
-import { DirectionLetter } from "./graphql/appsync";
+import { allDirections } from "./bridgeEnums.js";
+import type { DirectionLetter } from "./graphql/appsync.js";
 
 // CLUB, below:
 export const clubSortKeyPrefix0 = "CLUB";
@@ -337,7 +337,7 @@ export const clubDeviceIdFromSortKey = (sortKey: string) => {
 };
 
 export const directionLetterFromSortKey = (
-  sortKey: string,
+  sortKey: string
 ): { error: string; result: DirectionLetter } => {
   if (!sortKey.startsWith(gameSortKeyPrefix0)) {
     return {

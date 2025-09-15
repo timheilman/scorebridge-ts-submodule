@@ -1,5 +1,6 @@
-import { MutationEnqueueCreateGameArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { MutationEnqueueCreateGameArgs } from "../appsync.js";
+import type { InputValidator } from "./multitenancy.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationEnqueueCreateGame: InputValidator<
   MutationEnqueueCreateGameArgs

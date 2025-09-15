@@ -1,5 +1,6 @@
-import { QueryListClubDeviceRegistrationsArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { QueryListClubDeviceRegistrationsArgs } from "../appsync.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
+import type { InputValidator } from "./multitenancy.js";
 
 export const errorForQueryListClubDeviceRegistrations: InputValidator<
   QueryListClubDeviceRegistrationsArgs

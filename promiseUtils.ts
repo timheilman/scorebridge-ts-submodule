@@ -1,4 +1,4 @@
-import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog.js";
 const log = tsSubmoduleLogFn("promiseUtils.");
 
 const initialWaitBeforeKillAndRetryMs = 5000;
@@ -61,7 +61,7 @@ interface ExpBackoffPromiseParams<T> {
 }
 
 export const expBackoffPromise = async <T>(
-  params: ExpBackoffPromiseParams<T>,
+  params: ExpBackoffPromiseParams<T>
 ): Promise<T> => {
   const {
     promiseFn,
@@ -96,7 +96,7 @@ export const expBackoffPromise = async <T>(
           }),
         delayMs: Math.min(
           initialDelayMs * Math.pow(2, tryCount - 1),
-          maxDelayMs,
+          maxDelayMs
         ),
       });
     }
@@ -114,7 +114,7 @@ export type RetryOnNonresponsivePromiseParams<T> = Omit<
   };
 
 export const retryOnNonresponsivePromise = async <T>(
-  props: RetryOnNonresponsivePromiseParams<T>,
+  props: RetryOnNonresponsivePromiseParams<T>
 ): Promise<T> => {
   const {
     promiseFn,
@@ -179,7 +179,7 @@ export type RetryOnNetworkFailurePromiseParams<T> = Omit<
 >;
 
 export const retryOnNetworkFailurePromise = <T>(
-  props: RetryOnNetworkFailurePromiseParams<T>,
+  props: RetryOnNetworkFailurePromiseParams<T>
 ): Promise<T> =>
   expBackoffPromise({
     ...props,

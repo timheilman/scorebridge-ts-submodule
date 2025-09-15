@@ -1,4 +1,4 @@
-import {
+import type {
   Query,
   QueryGetClubArgs,
   QueryGetGameArgs,
@@ -6,7 +6,7 @@ import {
   QueryListClubDevicesArgs,
   QueryListClubHumansArgs,
   QueryListGamesArgs,
-} from "./appsync";
+} from "./appsync.js";
 
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
@@ -22,7 +22,7 @@ interface KeyedGeneratedQuery<NAME extends QueryNames, ARGS> {
 
 const createKeyedGeneratedQuery = <NAME extends QueryNames, ARGS>(
   queryGql: string,
-  queryName: NAME,
+  queryName: NAME
 ) => {
   return {
     gql: queryGql,
@@ -41,7 +41,7 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "getClub",
+    "getClub"
   ),
   listClubDeviceRegistrations: createKeyedGeneratedQuery<
     "listClubDeviceRegistrations",
@@ -64,7 +64,7 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "listClubDeviceRegistrations",
+    "listClubDeviceRegistrations"
   ),
   listClubDevices: createKeyedGeneratedQuery<
     "listClubDevices",
@@ -81,7 +81,7 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "listClubDevices",
+    "listClubDevices"
   ),
   listGames: createKeyedGeneratedQuery<"listGames", QueryListGamesArgs>(
     /* GraphQL */ `
@@ -128,7 +128,7 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "listGames",
+    "listGames"
   ),
   listClubHumans: createKeyedGeneratedQuery<
     "listClubHumans",
@@ -146,7 +146,7 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "listClubHumans",
+    "listClubHumans"
   ),
   getGame: createKeyedGeneratedQuery<"getGame", QueryGetGameArgs>(
     /* GraphQL */ `
@@ -190,6 +190,6 @@ export const qidToQueryGql = {
         }
       }
     `,
-    "getGame",
+    "getGame"
   ),
 };

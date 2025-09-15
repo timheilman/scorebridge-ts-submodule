@@ -1,7 +1,7 @@
 import { fromEnv } from "@aws-sdk/credential-providers";
-import { AwsCredentialIdentityProvider } from "@smithy/types/dist-types/identity/awsCredentialIdentity";
+import type { AwsCredentialIdentityProvider } from "@smithy/types/dist-types/identity/awsCredentialIdentity.js";
 
-import fromSsoUsingProfile from "./fromSsoUsingProfile";
+import fromSsoUsingProfile from "./fromSsoUsingProfile.js";
 
 type AwsClientConstructor<T> = new (params: {
   region: string;
@@ -12,7 +12,7 @@ export function cachedAwsSdkV3Client<T>(
   awsRegion: string,
   profile: string | null,
   profileDict: Record<string, Record<string, T> | undefined>,
-  envDict: Record<string, T>,
+  envDict: Record<string, T>
 ) {
   if (profile) {
     if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {

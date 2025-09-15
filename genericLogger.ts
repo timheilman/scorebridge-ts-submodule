@@ -46,7 +46,7 @@ function genericLogger(loggingConfig: LoggingConfig) {
   return (
     category: string,
     logLevel: LogLevel,
-    printFn: (p: PrintFnParams) => void,
+    printFn: (p: PrintFnParams) => void
   ) => {
     const matchingConfigCat = Object.keys(loggingConfig).reduce<string | null>(
       (acc, configKey) => {
@@ -57,7 +57,7 @@ function genericLogger(loggingConfig: LoggingConfig) {
         }
         return acc;
       },
-      null,
+      null
     );
     if (
       matchingConfigCat !== null && // default is OFF
@@ -75,7 +75,7 @@ function genericLogger(loggingConfig: LoggingConfig) {
 
 export function withConfigProvideLogFn(
   config: LoggingConfig,
-  printFnProvider: (...addlParams: unknown[]) => (p: PrintFnParams) => void,
+  printFnProvider: (...addlParams: unknown[]) => (p: PrintFnParams) => void
 ) {
   return (catPrefix: string) => {
     return (
@@ -86,13 +86,13 @@ export function withConfigProvideLogFn(
       genericLogger(config)(
         catPrefix + catSuffix,
         logLevel,
-        printFnProvider(...addlParams),
+        printFnProvider(...addlParams)
       );
     };
   };
 }
 
-import fileLoggingConfig from "./loggingConfig.json";
+import fileLoggingConfig from "./loggingConfig.json" with { type: "json" };
 export const getPrintFn = (...addlParams: unknown[]) => {
   return ({
     matchingConfigCat,
@@ -103,7 +103,7 @@ export const getPrintFn = (...addlParams: unknown[]) => {
     const remainingKey = requestedCat.slice(matchingConfigCat.length);
     console[requestedLevel === "fatal" ? "error" : requestedLevel](
       `${new Date().toJSON()} ${requestedLevel.toLocaleUpperCase()} (${matchingConfigCat}@${matchingConfigLevel.toLocaleUpperCase()})${remainingKey}`,
-      ...addlParams,
+      ...addlParams
     );
   };
 };
@@ -120,7 +120,7 @@ export function currentConfig(envConfigStr: string | undefined) {
       envConfigObj = JSON.parse(envConfigStr) as LoggingConfig;
     } catch {
       console.error(
-        "Unable to parse logging config from env var, falling back to file.",
+        "Unable to parse logging config from env var, falling back to file."
       );
       return fileLoggingConfig as LoggingConfig;
     }

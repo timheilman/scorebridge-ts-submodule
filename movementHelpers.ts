@@ -1,13 +1,22 @@
 import {
   endingBoardForBoardGroup,
   startingBoardForBoardGroup,
-} from "./boardGroups";
-import { allDirections, UnkeyedPlayerAssignment } from "./bridgeEnums";
-import { DirectionLetter, Movement, Rank, Strain } from "./graphql/appsync";
-import { boardGroupHowell, playerNumberHowell } from "./movementHowell";
-import { boardGroupMitchell, playerNumberMitchell } from "./movementMitchell";
-import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow";
-import { tsSubmoduleLogFn } from "./tsSubmoduleLog";
+} from "./boardGroups.js";
+import { allDirections } from "./bridgeEnums.js";
+import type { UnkeyedPlayerAssignment } from "./bridgeEnums.js";
+import type {
+  DirectionLetter,
+  Movement,
+  Rank,
+  Strain,
+} from "./graphql/appsync.js";
+import { boardGroupHowell, playerNumberHowell } from "./movementHowell.js";
+import {
+  boardGroupMitchell,
+  playerNumberMitchell,
+} from "./movementMitchell.js";
+import { boardGroupRainbow, playerNumberRainbow } from "./movementRainbow.js";
+import { tsSubmoduleLogFn } from "./tsSubmoduleLog.js";
 const log = tsSubmoduleLogFn("movementHelpers.");
 export interface BoardGroupProps {
   tableCount: number;

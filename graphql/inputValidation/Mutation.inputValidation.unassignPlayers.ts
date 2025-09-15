@@ -1,8 +1,6 @@
-import { MutationUnassignPlayersArgs } from "../appsync";
-import {
-  errorForDeviceLevelMultitenancy,
-  InputValidator,
-} from "./multitenancy";
+import type { MutationUnassignPlayersArgs } from "../appsync.js";
+import { errorForDeviceLevelMultitenancy } from "./multitenancy.js";
+import type { InputValidator } from "./multitenancy.js";
 
 export const errorForMutationUnassignPlayers: InputValidator<
   MutationUnassignPlayersArgs

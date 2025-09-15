@@ -1,6 +1,6 @@
 import { SQSClient } from "@aws-sdk/client-sqs";
 
-import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client";
+import { cachedAwsSdkV3Client } from "./cachedAwsSdkV3Client.js";
 
 const profileDict: Record<string, Record<string, SQSClient>> = {};
 const envDict: Record<string, SQSClient> = {};
@@ -17,6 +17,6 @@ export const cachedSqsClient = ({
     awsRegion,
     profile,
     profileDict,
-    envDict,
+    envDict
   );
 };

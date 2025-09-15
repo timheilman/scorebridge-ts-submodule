@@ -1,5 +1,6 @@
-import { MutationDeleteGameArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { MutationDeleteGameArgs } from "../appsync.js";
+import type { InputValidator } from "./multitenancy.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
 
 export const errorForMutationDeleteGame: InputValidator<
   MutationDeleteGameArgs

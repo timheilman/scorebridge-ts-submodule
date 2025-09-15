@@ -1,5 +1,6 @@
-import { MutationNotifyCreateGameArgs } from "../appsync";
-import { errorForClubLevelMultitenancy, InputValidator } from "./multitenancy";
+import type { MutationNotifyCreateGameArgs } from "../appsync.js";
+import { errorForClubLevelMultitenancy } from "./multitenancy.js";
+import type { InputValidator } from "./multitenancy.js";
 
 export const errorForMutationNotifyCreateGame: InputValidator<
   MutationNotifyCreateGameArgs
