@@ -87,7 +87,7 @@ In this example profile and session, `sbc00` corresponds to the NPM serverless f
 Once you have an AWS SSO profile set up, this project expects this env var to be set:
 
 ```zsh
-export SB_TEST_AWS_CLI_PROFILE=ScoreBridge-sbc00-tdh-PowerUser-profile
+export BF_STAGE_AWS_CLI_PROFILE=ScoreBridge-sbc00-tdh-PowerUser-profile
 ```
 
 This tells the build and test code in scorebridge-cloud and scorebridge-webapp which AWS SSO profile to use for the build, deploy, and test. Switching which NPM serverless framework service/AWS subaccount you are pointed at is done by switching this env var to a different AWS SSO profile. Within that service/account which env you are pointed at is done by setting the `STAGE` env var to the name of that env, which is accomplished by the `npm run exportEnvDev` and `npm run refreshExportedDetailsEverywhere` commands described below. See the `package.json` file in scorebridge-cloud for more information.

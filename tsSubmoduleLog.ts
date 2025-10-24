@@ -34,7 +34,7 @@ function logOrInformUndefined(s: string | undefined) {
 // logging configuration will be via the file loggingConfig.json.
 
 function localCurrentConfig() {
-  const submoduleLoggingConfigKey = "TS_SUBMODULE_SB_LOGGING_CONFIG";
+  const submoduleLoggingConfigKey = "TS_SUBMODULE_BF_LOGGING_CONFIG";
   let foundProcess = true;
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -60,7 +60,7 @@ function localCurrentConfig() {
       process.env[`CYPRESS_TASK_${submoduleLoggingConfigKey}`];
     logOrInformUndefined(processEnvCypressTaskPrefix);
     return currentConfig(processEnvCypressTaskPrefix);
-  } else if (foundProcess && process.env.EXPO_PUBLIC_SB_EXPO) {
+  } else if (foundProcess && process.env.EXPO_PUBLIC_BF_EXPO) {
     console.log(
       "Submodule logging config: using process.env with EXPO_PUBLIC_ prefix:",
     );
