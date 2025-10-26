@@ -97,11 +97,10 @@ This tells the build and test code in scorebridge-cloud and scorebridge-webapp w
 Once things are set up, a typical deployment and test of scorebridge-cloud, scorebridge-webapp, and scorebridge-device in the dev environment will look like this:
 
 ```
-scorebridge-cloud% npm run deployDev
-scorebridge-cloud% npm run exportEnvDev
+scorebridge-cloud% npm run deployTdh
 scorebridge-cloud% npm run refreshExportedDetailsEverywhere
 scorebridge-cloud% npm run test
-scorebridge-cloud% cd ../scorebridge-webapp
+scorebridge-cloud% cd ../scorebridge-device
 scorebridge-webapp% npm start
 ```
 
