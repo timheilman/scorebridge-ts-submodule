@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.2](https://github.com/timheilman/scorebridge-device/compare/v2.1.1...v2.1.2) (2026-01-18)
+
+- re-release 2.1.1 while major overhaul (3.0.0) is in development, to prevent closure of google play developer account
+
 ## [2.1.1](https://github.com/timheilman/scorebridge-device/compare/v2.1.0...v2.1.1) (2025-07-21)
 
 ### Bug Fixes
