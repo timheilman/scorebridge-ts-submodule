@@ -15,7 +15,7 @@ export function cachedAwsSdkV3Client<T>(
   envDict: Record<string, T>,
 ) {
   if (profile) {
-    if (profileDict[awsRegion] && profileDict[awsRegion][profile]) {
+    if (profileDict[awsRegion]?.[profile]) {
       return profileDict[awsRegion][profile];
     }
     profileDict[awsRegion] ??= {};
