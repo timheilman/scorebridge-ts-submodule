@@ -107,24 +107,24 @@ export async function batchDeleteGames({
 
 export const batchDeleteClubItems = async ({
   ddbClient,
-  scoreBridgeTableName,
+  bridgeFridgeTableName,
   clubId,
 }: {
   ddbClient: DynamoDBDocumentClient;
-  scoreBridgeTableName: string;
+  bridgeFridgeTableName: string;
   clubId: string;
 }) =>
   batchDeleteDdbRecords({
     items: await batchQuery({
       ddbClient,
-      tableName: scoreBridgeTableName,
+      tableName: bridgeFridgeTableName,
       expressionAttributeValues: {
         ":pk": clubKey(clubId),
       },
       keyConditionExpression: "pk = :pk",
     }),
     ddbClient,
-    tableName: scoreBridgeTableName,
+    tableName: bridgeFridgeTableName,
   });
 
 export const chunk = <T>(arr: T[], size: number) =>
