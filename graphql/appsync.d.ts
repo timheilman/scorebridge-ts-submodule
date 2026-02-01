@@ -1,4 +1,4 @@
-// THIS IS A GENERATED FILE; SEE scorebridge-cloud/package.json
+// THIS IS A GENERATED FILE; SEE bridgefridge-cloud/package.json
 // Types here are derived from schema.api.graphql
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;

@@ -2,7 +2,7 @@
 // log("DEBUG", "message")
 
 // but to help locate which file is doing the logging, we want per-file:
-// const log = logFn("src.features.signIn.ScoreBridgeAuthenticator")
+// const log = logFn("src.features.signIn.BridgeFridgeAuthenticator")
 // to then use in the above message
 
 // But we want to configure only once:

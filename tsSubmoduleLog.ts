@@ -17,13 +17,12 @@ function logOrInformUndefined(s: string | undefined) {
   }
 }
 
-// because this fn is used only from within scorebridge-ts-submodule, we must
-// guess-and-check as to whether we are in node, webapp prod, a webapp Cypress
-// test, a webapp Cypress task, or device, and pull the env var appropriately
-// for each context.
+// because this fn is used only from within bridgefridge-ts-submodule, we must
+// guess-and-check as to whether we are in node, a bridgefridge-device webapp Cypress
+// test, a bridgefridge-device webapp Cypress task, or bridgefridge-device, code and
+// pull the env var appropriately for each context.
 //
 // cloud: node, process.env, no prefix
-// webapp prod: vite, import.meta.env, VITE_
 // webapp Cypress test: cypress, Cypress.env(), no prefix
 // webapp Cypress task: cypress, process.env, no prefix
 // device: expo, process.env, EXPO_PUBLIC_

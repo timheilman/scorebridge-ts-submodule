@@ -178,12 +178,12 @@ type Subscription {
     @aws_subscribe(mutations: ["updateCurrentGameId"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  # This is for webapp-to-device communication to update the club's name
+  # This is for personalDevice-to-clubDevice communication to update the club's name
   onUpdateClubName(clubId: String!): UpdateClubNameResponse
     @aws_subscribe(mutations: ["updateClubName"])
     @aws_cognito_user_pools(cognito_groups: ["adminSuper", "clubDevice"])
 
-  # This is for for device-to-device communication to know player names for display
+  # This is for for clubDevice-to-clubDevice communication to know player names for display
   # after round 1
   onAssignPlayer(clubId: String!): AssignPlayerResponse
     @aws_subscribe(mutations: ["assignPlayer"])

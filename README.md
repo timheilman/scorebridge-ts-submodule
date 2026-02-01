@@ -1,24 +1,23 @@
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-- [ScoreBridge](#scorebridge)
+- [BridgeFridge](#bridgefridge)
   - [Background](#background)
   - [The Four Code Repositories](#the-four-code-repositories)
-    - [scorebridge-ts-submodule](#scorebridge-ts-submodule)
-    - [scorebridge-webapp](#scorebridge-webapp)
-    - [scorebridge-device](#scorebridge-device)
-    - [scorebridge-cloud](#scorebridge-cloud)
+    - [bridgefridge-ts-submodule](#bridgefridge-ts-submodule)
+    - [bridgefridge-device](#bridgefridge-device)
+    - [bridgefridge-cloud](#bridgefridge-cloud)
   - [Identities and Environments](#identities-and-environments)
     - [Services, AWS subaccounts, and Stages/Environments](#services-aws-subaccounts-and-stagesenvironments)
     - [AWS IAM Identity Center, SSO, and the CLI](#aws-iam-identity-center-sso-and-the-cli)
     - [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
-    - [scorebridge-cloud informing webapp and device of env-specific values](#scorebridge-cloud-informing-webapp-and-device-of-env-specific-values)
+    - [bridgefridge-cloud informing webapp and device of env-specific values](#bridgefridge-cloud-informing-webapp-and-device-of-env-specific-values)
   - [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
 - [RELEASE NOTES](#release-notes)
   - [1.0.0, Version Code 12](#100-version-code-12)
 
 <!-- TOC end -->
 
-## ScoreBridge
+## BridgeFridge
 
 ### Background
 
@@ -28,132 +27,105 @@ Presently we use Google sheets and extensive macros that Zack has written in the
 
 ### The Four Code Repositories
 
-The project is in four parts:
+The project is in three parts:
 
-#### scorebridge-ts-submodule
+#### bridgefridge-ts-submodule
 
-This TypeScript [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) is consumed by the three others. Code moves here when it is needed from more than one other repository. The following documentation is presented here because parts of it apply to all three other repositories.
+This TypeScript [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) is consumed by the two others. Code moves here when it is needed from both other repositories. The following documentation is presented here because parts of it apply to both other repositories.
 
-#### scorebridge-webapp
+#### bridgefridge-device
 
-The [webapp](https://github.com/timheilman/scorebridge-webapp) is a React app that runs in a browser. The club admin (Zack) uses the webapp to administer the game. It is hosted by the continuous integration/continuous deployment (CI/CD) facility provided by AWS Amplify Frontend Hosting. Although AWS Amplify also offers a backend hosting facility, we do not use it preferring instead to use the serverless NPM framework as described in scorebridge-cloud, below.
+The [Expo app](https://github.com/timheilman/bridgefridge-device) is a React Native app that runs on iOS, Android, and the web. The app has two modes: "club device mode" and "personal device mode." Distribution of the device app is done using the Google Play Store, for now in "internal testing". Eventually generally-available distribution through the Google Play Store and Apple App Store is the target.
 
-#### scorebridge-device
+##### Web App
 
-The [device app](https://github.com/timheilman/scorebridge-device) is a React Native app that runs on iOS and Android. Players use the device app to enter identities and scores. So far in development the only build/deployment model in place is that using Expo Go. The Expo iOS or Android app is used to run the device app on a phone or tablet. Ideally, eventually distribution of the device app should be done using the Apple App Store and Google Play Store, but for now Expo Go is the only means available.
+The web app is served at https://www.bridgefridge.com/ by the continuous integration/continuous deployment (CI/CD) facility provided by AWS Amplify Frontend Hosting. Although AWS Amplify also offers a backend hosting facility, we do not use it preferring instead to use the CDK framework as described in bridgefridge-cloud, below. The Web App serves personal device mode only.
 
-#### scorebridge-cloud
+##### Personal Device Mode
 
-The [cloud backend](https://github.com/timheilman/scorebridge-cloud) is built and deployed using the [NPM serverless](https://www.NPMjs.com/package/serverless) framework. It coordinates interaction between the webapp and device app. It uses AWS AppSync, Cognito, DynamoDB, and Lambda. It is NOT hosted by the CI/CD facility provided by AWS Amplify Backend Hosting; instead it is hosted on AWS by the NPM serverless framework.
+Authentication in this mode is performed using an email and password. The club admin (Zack) uses the Expo app in "personal device" mode, or on the web, to administer the game.
+
+##### Club Device Mode
+
+Club Device Mode is available only when the Expo app is running on a phone or tablet. Authentication in this mode is performed using OAuth 2.0 Device Authorization Flow, as registered by a club admin. Players use the Expo app in this mode to enter identities and scores.
+
+#### bridgefridge-cloud
+
+The [cloud backend](https://github.com/timheilman/bridgefridge-cloud) is built and deployed using the [AWS CDK](https://aws.amazon.com/cdk/) framework. It coordinates the different instances of bridgefridge-device on devices and on the web. It uses AWS AppSync, Cognito, DynamoDB, and Lambda, among other services. It is NOT hosted by the CI/CD facility provided by AWS Amplify Backend Hosting; instead it is hosted on AWS by the CDK framework.
 
 ### Identities and Environments
 
-Two separate systems are used for identity management in this project. For the identities of developers on the project, we use the AWS IAM Identity Center. (For the identities of club admins and players in the game, we use AWS Cognito; see scorebridge-cloud for more information.) Although this part regarding developer identities is a bear, it is the best practice currently recommended by the union of AWS and the NPM serverless framework.
+Two separate systems are used for identity management in this project. For the identities of developers on the project, we use the AWS IAM Identity Center. (For the identities of club admins and their club devices, we use AWS Cognito; see bridgefridge-cloud for more information.) Although this part regarding developer identities is a bear, it is the best practice currently recommended for AWS CDK projects.
 
 #### Services, AWS subaccounts, and Stages/Environments
 
-In the serverless NPM framework, each "stage" or "environment" (these terms are synonymous) of scorebridge-webapp and scorebridge-cloud are hosted under differing AWS subaccounts of a root AWS account. (These AWS subaccounts can host multiple environments, but each environment is only within a single AWS subaccount.) An AWS subaccount corresponds to what the serverless NPM framework calls a "service".
+In the serverless NPM framework, each "stage" or "environment" (these terms are synonymous) of bridgefridge-device and bridgefridge-cloud are hosted under differing AWS subaccounts of a root AWS account. (These AWS subaccounts can host multiple environments, but each environment is only within a single AWS subaccount.)
 
-All this is done to provide isolation between environments. For example, the production environment for both scorebridge-webapp and scorebridge-cloud is hosted under one AWS account; the development environment is hosted under another.
+All this is done to provide isolation between environments. For example, the production environment for both bridgefridge-device as a webapp and bridgefridge-cloud is hosted under one AWS account; the development environment is hosted under another.
 
-Each AWS subaccount corresponding to an NPM serverless framework service is administered beneath a root AWS account, using AWS Organizations.
+Each AWS subaccount is administered beneath a root AWS account, using AWS Organizations.
 
 #### AWS IAM Identity Center, SSO, and the CLI
 
 The AWS IAM Identity Center (previously known as AWS Single-Sign-On and still called `aws sso` on the AWS CLI) instance is associated with the root account of the project. The root account/subaccount relationship is managed in AWS Organizations. Permission sets provide differential access for those AWS IAM Identity Center accounts to each of the AWS subaccounts beneath the root account, associated with each NPM serverless framework service.
 
-Each developer on the project will need an account in AWS IAM Identity Center. This is not the same as an IAM account. Instead, AWS IAM Identity Center acts as the Identity Provider (IdP) for IAM. As such, there is an [SSO signin URL for the scorebridge Identity Center](https://d-92674207af.awsapps.com/start) that is separate from the general AWS signin page for AWS IAM (NOT-IdentityCenter) accounts. (If you fork this project to run your own instance of this project, you will need to create your own AWS IAM Identity Center instance and signin URL.)
+Each developer on the project will need an account in AWS IAM Identity Center. This is not the same as an IAM account. Instead, AWS IAM Identity Center acts as the Identity Provider (IdP) for IAM. As such, there is an [SSO signin URL for the bridgefridge Identity Center](https://d-92674207af.awsapps.com/start) that is separate from the general AWS signin page for AWS IAM (NOT-IdentityCenter) accounts. (If you fork this project to run your own instance of this project, you will need to create your own AWS IAM Identity Center instance and signin URL.)
 
-Your AWS Identity Center account is the one that you use to [configure the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for build, deployment, and testing of scorebridge-webapp and scorebridge-cloud. Once you have a profile in the AWS CLI configuration file for a particular env and permission set (using `aws configure sso`), you will need to update it with an extra line. Proceeding from here by example is probably clearest. The extra line begins with `credential_process` in the following example `~/.aws/config` file:
+Your AWS Identity Center account is the one that you use to [configure the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for build, deployment, and testing of bridgefridge-webapp and bridgefridge-cloud. Once you have a profile in the AWS CLI configuration file for a particular env and permission set (using `aws configure sso`), you will need to update it with an extra line. Proceeding from here by example is probably clearest. The extra line begins with `credential_process` in the following example `~/.aws/config` file:
 
 ```
-[profile ScoreBridge-sbc00-tdh-PowerUser-profile]
-sso_session = ScoreBridge-sbc00-tdh-PowerUser-session
+[profile BridgeFridge-sbc00-tdh-PowerUser-profile]
+sso_session = BridgeFridge-sbc00-tdh-PowerUser-session
 sso_account_id = 437893194722
 sso_role_name = PowerUserAccess
 region = us-west-2
 output = json
-credential_process = aws configure export-credentials --profile ScoreBridge-sbc00-tdh-PowerUser-profile
-[sso-session ScoreBridge-sbc00-tdh-PowerUser-session]
+credential_process = aws configure export-credentials --profile BridgeFridge-sbc00-tdh-PowerUser-profile
+[sso-session BridgeFridge-sbc00-tdh-PowerUser-session]
 sso_start_url = https://d-92674207af.awsapps.com/start
 sso_region = us-west-2
 sso_registration_scopes = sso:account:access
 ```
 
-In this example profile and session, `sbc00` corresponds to the NPM serverless framework service name. It is kept short because AWS lambdas deployed by the NPM serverless framework are automatically named using both the NPM serverless framework service name _and_ the environment name, since a single NPM serverless framework service (and thus, AWS subaccount) can host multiple environments. `PowerUser` corresponds to the AWS IAM Identity Center permissions set. `437893194722` is the AWS account number of the AWS subaccount, corresponding to the NPM serverless service `sbc00`, that hosts the `dev` and `tmpenv` environments. `https://d-92674207af.awsapps.com/start` is the SSO start URL provided by scorebridge's root account AWS IAM Identity Center instance. `us-west-2` is the AWS region in which the environments are hosted. `tdh` refers to my own AWS IAM Identity Center account.
+In this example profile and session, `sbc00` corresponds to the NPM serverless framework service name. It is kept short because AWS lambdas deployed by the NPM serverless framework are automatically named using both the NPM serverless framework service name _and_ the environment name, since a single NPM serverless framework service (and thus, AWS subaccount) can host multiple environments. `PowerUser` corresponds to the AWS IAM Identity Center permissions set. `437893194722` is the AWS account number of the AWS subaccount, corresponding to the NPM serverless service `sbc00`, that hosts the `dev` and `tmpenv` environments. `https://d-92674207af.awsapps.com/start` is the SSO start URL provided by bridgefridge's root account AWS IAM Identity Center instance. `us-west-2` is the AWS region in which the environments are hosted. `tdh` refers to my own AWS IAM Identity Center account.
 
 #### Expected env vars for your CLI
 
-Once you have an AWS SSO profile set up, this project expects this env var to be set:
+Once you have an AWS SSO profile set up, this project expects these env vars to be set:
 
 ```zsh
-export BF_STAGE_AWS_CLI_PROFILE=ScoreBridge-sbc00-tdh-PowerUser-profile
+export BF_STAGE_AWS_CLI_PROFILE=BridgeFridge-dev-tdh-PowerUser-profile
+export BF_DNS_AWS_CLI_PROFILE=BridgeFridge-prod-tdh-PowerUser-profile
+export STAGE=tdh
+export AWS_REGION=us-west-2
 ```
 
-This tells the build and test code in scorebridge-cloud and scorebridge-webapp which AWS SSO profile to use for the build, deploy, and test. Switching which NPM serverless framework service/AWS subaccount you are pointed at is done by switching this env var to a different AWS SSO profile. Within that service/account which env you are pointed at is done by setting the `STAGE` env var to the name of that env, which is accomplished by the `npm run exportEnvDev` and `npm run refreshExportedDetailsEverywhere` commands described below. See the `package.json` file in scorebridge-cloud for more information.
+This tells the build and test code in bridgefridge-cloud and bridgefridge-device which AWS SSO profile to use for the build, deploy, and test. Switching which AWS subaccount you are pointed at is done by switching this env var to a different AWS SSO profile (TODO: [SCOR-588](https://theilman.atlassian.net/browse/SCOR-588) there is a plan to redo this). Within that service/account which env you are pointed at is done by setting the `STAGE` env var to the name of that env. See the `package.json` file in bridgefridge-cloud for more information.
 
-#### scorebridge-cloud informing webapp and device of env-specific values
+#### bridgefridge-cloud and bridgefridge-device webapp deployments
 
-Once things are set up, a typical deployment and test of scorebridge-cloud, scorebridge-webapp, and scorebridge-device in the dev environment will look like this:
+Once things are set up, a typical deployment and test of bridgefridge-cloud and bridgefridge-device in the dev environment will look like this:
 
 ```
-scorebridge-cloud% npm run deployTdh
-scorebridge-cloud% npm run refreshExportedDetailsEverywhere
-scorebridge-cloud% npm run test
-scorebridge-cloud% cd ../scorebridge-device
-scorebridge-webapp% npm start
+bridgefridge-cloud% npm run deploy
+bridgefridge-cloud% npm run test
+bridgefridge-cloud% cd ../bridgefridge-device
+bridgefridge-device% npm start
 ```
 
 And in a separate terminal:
 
 ```
-scorebridge-webapp% npm run cypress:open
-```
-
-Then in the Cypress window, select E2E testing. The tests should pass. For the device repo, in a separate terminal:
-
-```
-scorebridge-device% npx expo start
+bridgefridge-device% npm test
+bridgefridge-device% npm run cypress:run
 ```
 
 Then, to run the app:
 
-- For android, in the Expo Go app, scan the presented QR code
-- For iOS, with the Expo Go app already installed, in the Camera app scan the presented QR code
+- On android or iOS, launch a development build of the app and point it at the dev server started via npm start.
 
 The app should launch and run.
 
 ### This submodule should be an NPM package
 
 Ideally this submodule would be an NPM package. However, at this stage in development this repo is still so volatile that the overhead of publishing and consuming an NPM package is not worth it. When the repo stabilizes, it should be converted to an NPM package.
-
-## RELEASE NOTES
-
-### 1.1.2, Version Code 15
-
-Fixes:
-
-- Absence of translations in app
-- Failure at device registration "App UserPool Not Configured"
-
-### 1.1.1, Version Code 14
-
-Major redesign.
-
-BREAKING CHANGE: support for Android 5 (API level 22) and below has been dropped. Only Android 6+ (API level 23) and above is supported. This represents 98.5% of Android devices in use.
-
-- Portrait or landscape orientation now supported
-- Introduces a bottom navigation bar
-- Board data can be revised at any time during a round
-- Heavier reliance upon icons, almost all text removed
-- Board and player assignments now require confirmation
-- Intra-round screens (contract, initial lead, result) collapsed to one (boards)
-- Inter-round screens expanded to three (board rotation warning, round review, round welcome)
-
-### 1.0.0, Version Code 12
-
-- fix: do not auto-advance from (nor prohibit moving back to) the player assignment screen once all four players have been assigned when some other table has already entered a level, strain, doubling, and declarer, skipped a board, or passed out a board
-  - for example, when the ghost players at a sit-out table in a half-table game have already skipped a board before players at another table have entered their names
-- fix: when two tablets select the same table, only let one of them "win", forcing the other back to the table selection screen
-- fix: if somehow two tablets wind up with the same table selected, allow either of them to unassign their table (if available), with the result that both tablets get unassigned from that table
-- refactor: improve robustness and simplicity by using an object rather than array to track on each tablet which tables have been assigned on any (other) tablet
