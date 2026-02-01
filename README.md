@@ -1,19 +1,20 @@
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [BridgeFridge](#bridgefridge)
-  - [Background](#background)
-  - [The Four Code Repositories](#the-four-code-repositories)
-    - [bridgefridge-ts-submodule](#bridgefridge-ts-submodule)
-    - [bridgefridge-device](#bridgefridge-device)
-    - [bridgefridge-cloud](#bridgefridge-cloud)
-  - [Identities and Environments](#identities-and-environments)
-    - [Services, AWS subaccounts, and Stages/Environments](#services-aws-subaccounts-and-stagesenvironments)
-    - [AWS IAM Identity Center, SSO, and the CLI](#aws-iam-identity-center-sso-and-the-cli)
-    - [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
-    - [bridgefridge-cloud informing webapp and device of env-specific values](#bridgefridge-cloud-informing-webapp-and-device-of-env-specific-values)
-  - [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
-- [RELEASE NOTES](#release-notes)
-  - [1.0.0, Version Code 12](#100-version-code-12)
+   * [Background](#background)
+   * [The Four Code Repositories](#the-four-code-repositories)
+      + [bridgefridge-ts-submodule](#bridgefridge-ts-submodule)
+      + [bridgefridge-device](#bridgefridge-device)
+         - [Web App](#web-app)
+         - [Personal Device Mode](#personal-device-mode)
+         - [Club Device Mode](#club-device-mode)
+      + [bridgefridge-cloud](#bridgefridge-cloud)
+   * [Identities and Environments](#identities-and-environments)
+      + [Services, AWS subaccounts, and Stages/Environments](#services-aws-subaccounts-and-stagesenvironments)
+      + [AWS IAM Identity Center, SSO, and the CLI](#aws-iam-identity-center-sso-and-the-cli)
+      + [Expected env vars for your CLI](#expected-env-vars-for-your-cli)
+      + [bridgefridge-cloud and bridgefridge-device webapp deployments](#bridgefridge-cloud-and-bridgefridge-device-webapp-deployments)
+   * [This submodule should be an NPM package](#this-submodule-should-be-an-npm-package)
 
 <!-- TOC end -->
 
